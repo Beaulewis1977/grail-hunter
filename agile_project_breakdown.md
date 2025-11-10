@@ -38,7 +38,7 @@ real-time sneaker deals in your size delivered instantly."_
 
 ### 1.2 Project Timeline & Milestones
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                       PROJECT TIMELINE (12 WEEKS)                        │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -304,7 +304,7 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 
 ### Epic Organization by Phase
 
-```
+```text
 PHASE 1: Foundation & MVP
 ├── EPIC-001: Core Architecture & Orchestration
 ├── EPIC-002: First Platform Integration (eBay)
@@ -590,7 +590,7 @@ Craigslist is straightforward HTML parsing.
 
 **Depop:**
 
-- Internal API (https://webapi.depop.com/api/v2/)
+- Internal API (<https://webapi.depop.com/api/v2/>)
 - Rate limit: ~100 requests/hour
 - Clean JSON responses
 - Difficulty: ⭐⭐ (Medium)
@@ -899,20 +899,20 @@ market value (e.g., 20%+ discount).
 
 **Technical Approach:**
 
-**Option 1: Scrape GOAT/StockX (High Risk)**
+#### Option 1: Scrape GOAT/StockX (High Risk)
 
 - Pros: Real-time market prices
 - Cons: Violates ToS, aggressive anti-scraping
 - Recommendation: ⚠️ **HIGH RISK** - NOT RECOMMENDED for Phase 3
 
-**Option 2: Static Price Database (Recommended)**
+#### Option 2: Static Price Database (Recommended)
 
 - Pros: Legal, fast, no scraping
 - Cons: Prices can be outdated (refresh weekly)
 - Implementation: Manually curate top 100 "grail" sneakers with market values
 - Source: Public price guides, Reddit r/Sneakers, forums
 
-**Option 3: User-Provided Market Value**
+#### Option 3: User-Provided Market Value
 
 - Pros: Flexible, no scraping
 - Cons: Requires user effort
@@ -1081,31 +1081,31 @@ P0/P1 bugs.
 
 **Testing Strategy:**
 
-**1. Unit Tests (Jest)**
+#### 1. Unit Tests (Jest)
 
 - Test individual functions: parsing, normalization, hashing
 - Target: 80% code coverage
 - Mock external APIs (eBay, SendGrid, etc.)
 
-**2. Integration Tests**
+#### 2. Integration Tests
 
 - Test platform scrapers end-to-end
 - Verify data flows from scraper → normalizer → dataset
 - Test notification delivery (email, webhook)
 
-**3. End-to-End Tests (Apify Test Runner)**
+#### 3. End-to-End Tests (Apify Test Runner)
 
 - Run full actor with test input
 - Verify output dataset matches schema
 - Test all 12 platforms (allow some failures for high-risk platforms)
 
-**4. Load Testing**
+#### 4. Load Testing
 
 - Test with 100+ search terms
 - Verify performance under load (should complete in <15 min)
 - Monitor memory usage (must stay under 4GB)
 
-**5. Manual QA**
+#### 5. Manual QA
 
 - Test all input schema options
 - Verify email/webhook notifications
@@ -1149,7 +1149,7 @@ credibility.
 
 **Marketing Channels:**
 
-**1. Reddit (Primary Channel)**
+#### 1. Reddit (Primary Channel)
 
 - Target subreddits:
   - r/Sneakers (2.9M members)
@@ -1159,14 +1159,14 @@ credibility.
 - Strategy: Value-first approach (post deals found by actor, mention tool in comments)
 - Budget: $0 (organic)
 
-**2. Discord (Secondary Channel)**
+#### 2. Discord (Secondary Channel)
 
 - Join 20+ sneaker cook groups
 - Provide value: Share deals, release calendar info
 - Mention actor when users ask "how did you find that?"
 - Budget: $0 (organic)
 
-**3. YouTube (Content Marketing)**
+#### 3. YouTube (Content Marketing)
 
 - Create tutorial videos:
   - "How to Find Sneaker Deals with Automation (Free Tool)"
@@ -1175,7 +1175,7 @@ credibility.
 - Partner with micro-influencers (500-5K subscribers)
 - Budget: $0-100 (optional: pay micro-influencers $20-50 for video)
 
-**4. Apify Store (Organic Discovery)**
+#### 4. Apify Store (Organic Discovery)
 
 - Optimize store listing:
   - SEO keywords: "sneaker", "scraper", "deals", "alert", "notification"
@@ -1184,7 +1184,7 @@ credibility.
   - Video demo
 - Leverage Apify Challenge badge (if won)
 
-**5. Landing Page (Optional)**
+#### 5. Landing Page (Optional)
 
 - Simple landing page: sneakermeta.com (optional)
 - Benefits: Custom branding, email capture, SEO
@@ -1243,35 +1243,35 @@ analytics tracking, customer support channels, legal disclaimers, and pricing op
 
 **Tasks:**
 
-**1. Apify Monetization Setup**
+#### 1. Apify Monetization Setup
 
 - Configure rental pricing: $4.99, $9.99, $29.99/month
 - Set up PayPal/bank account for payouts
 - Enable free trial (14 days)
 - Tax configuration (if applicable)
 
-**2. Analytics & Tracking**
+#### 2. Analytics & Tracking
 
 - Google Analytics on landing page (if created)
 - Apify Actor analytics: runs, users, errors
 - Conversion funnel tracking: Free trial → Paid
 - Revenue tracking: MRR, ARPU, churn rate
 
-**3. Customer Support**
+#### 3. Customer Support
 
-- Email: support@sneakermeta.com (or Gmail)
+- Email: <support@sneakermeta.com> (or Gmail)
 - Discord: Create #support channel
 - Response time target: <24 hours
 - FAQ document (common issues + solutions)
 
-**4. Legal & Compliance**
+#### 4. Legal & Compliance
 
 - Legal disclaimer in README (see EPIC-005)
 - Terms of Service (optional for MVP, required if >1,000 users)
 - Privacy Policy (if collecting user emails)
 - GDPR compliance (if EU users): Add data processing notice
 
-**5. Pricing Optimization**
+#### 5. Pricing Optimization
 
 - A/B test: $4.99 vs. $7.99 for Hobby tier
 - Monitor conversion rates per tier
@@ -2031,7 +2031,7 @@ find deals on a Gen-Z focused marketplace**.
 
 **Technical Tasks:**
 
-1. Analyze Depop API (https://webapi.depop.com/api/v2/search/products/)
+1. Analyze Depop API (<https://webapi.depop.com/api/v2/search/products/>)
 2. Create `src/scrapers/depop-scraper.js`
 3. Build API request with query parameters
 4. Parse JSON response (clean format)
@@ -2107,6 +2107,7 @@ cities**, so that **I can find local deals**.
 **Technical Tasks:**
 
 1. Refactor scraper manager to use AutoscaledPool
+
    ```javascript
    const pool = new AutoscaledPool({
      maxConcurrency: 5,
@@ -2116,6 +2117,7 @@ cities**, so that **I can find local deals**.
      },
    });
    ```
+
 2. Profile performance: Measure time per platform
 3. Optimize slow platforms:
    - Reduce wait times
@@ -2152,14 +2154,17 @@ cities**, so that **I can find local deals**.
 **Technical Tasks:**
 
 1. Add webhook configuration to input schema:
+
    ```json
    {
      "webhookUrl": "https://example.com/webhook",
      "webhookSecret": "secret123" // Optional for HMAC
    }
    ```
+
 2. Create `src/utils/webhook-notifier.js`
 3. Implement webhook POST request:
+
    ```javascript
    await fetch(webhookUrl, {
      method: 'POST',
@@ -2170,9 +2175,11 @@ cities**, so that **I can find local deals**.
      body: JSON.stringify(payload),
    });
    ```
+
 4. Add retry logic (3 attempts, exponential backoff)
 5. Generate HMAC-SHA256 signature for security
 6. Create webhook payload schema:
+
    ```json
    {
      "event": "new_listings_found",
@@ -2181,6 +2188,7 @@ cities**, so that **I can find local deals**.
      "listings": [...]
    }
    ```
+
 7. Write integration test (mock webhook endpoint)
 8. Document webhook format in README
 
@@ -2220,6 +2228,7 @@ that **my team can see deals instantly**.
 1. Study Discord webhook format (embed structure)
 2. Extend webhook notifier with Discord-specific formatting
 3. Create rich embed JSON:
+
    ```javascript
    {
      "embeds": [{
@@ -2232,6 +2241,7 @@ that **my team can see deals instantly**.
      }]
    }
    ```
+
 4. Handle Discord rate limits (30 requests/minute)
 5. Test with real Discord server
 6. Document Discord setup in README (how to get webhook URL)
@@ -2271,6 +2281,7 @@ business team stays informed**.
 1. Study Slack webhook format (blocks and attachments)
 2. Extend webhook notifier with Slack-specific formatting
 3. Create Slack blocks JSON:
+
    ```javascript
    {
      "attachments": [{
@@ -2282,6 +2293,7 @@ business team stays informed**.
      }]
    }
    ```
+
 4. Handle Slack rate limits
 5. Test with real Slack workspace
 6. Document Slack setup in README
@@ -2318,19 +2330,23 @@ multiple specific sizes**, so that **I only see listings in my size**.
 **Technical Tasks:**
 
 1. Add size filter to input schema:
+
    ```json
    {
      "sizes": ["10", "10.5", "11"]
    }
    ```
+
 2. Create size parsing utility: `src/utils/size-parser.js`
 3. Implement size extraction regex:
    - Match patterns: `\b(1[0-5]|[1-9])(\.5)?\b`, `size\s*(\d+\.?\d*)`
 4. Add size conversion (EU to US, UK to US) - optional for MVP
 5. Filter listings after normalization:
+
    ```javascript
    listings = listings.filter((l) => input.sizes.includes(l.listing.size_us_mens));
    ```
+
 6. Write unit tests for size parser
 7. Test with real listings (various formats)
 
@@ -2359,15 +2375,19 @@ etc.)**, so that **I only see listings matching my preferences**.
 **Technical Tasks:**
 
 1. Add condition filter to input schema:
+
    ```json
    {
      "conditions": ["new_in_box", "used_like_new"]
    }
    ```
+
 2. Filter listings after normalization:
+
    ```javascript
    listings = listings.filter((l) => input.conditions.includes(l.listing.condition));
    ```
+
 3. Ensure all normalizers map conditions correctly
 4. Write unit tests
 5. Test with real listings
@@ -2397,18 +2417,22 @@ etc.)**, so that **I only see listings matching my preferences**.
 **Technical Tasks:**
 
 1. Add exclude keywords to input schema:
+
    ```json
    {
      "excludeKeywords": ["replica", "fake", "custom"]
    }
    ```
+
 2. Implement filter logic:
+
    ```javascript
    listings = listings.filter((l) => {
      const text = `${l.product.name} ${l.listing.description}`.toLowerCase();
      return !input.excludeKeywords.some((kw) => text.includes(kw.toLowerCase()));
    });
    ```
+
 3. Test with real listings (find some "replica" listings)
 4. Document in README (common exclude keywords)
 
@@ -2455,6 +2479,7 @@ regex**, so that **I can extract condition accurately without AI costs**.
 
 1. Create `src/utils/sneaker-parser.js`
 2. Define regex patterns for conditions:
+
    ```javascript
    const patterns = [
      { regex: /\b(ds|deadstock|bnib)\b/i, value: 'new_in_box' },
@@ -2462,6 +2487,7 @@ regex**, so that **I can extract condition accurately without AI costs**.
      // ... more patterns
    ];
    ```
+
 3. Implement `parseCondition(text)` function
 4. Implement `parseTags(text)` function
 5. Create sneaker terminology dictionary
@@ -2505,6 +2531,7 @@ regex**, so that **I can extract condition accurately without AI costs**.
 
 1. Add size parsing to `src/utils/sneaker-parser.js`
 2. Define regex patterns for sizes:
+
    ```javascript
    const sizePatterns = [
      /\b(?:size|sz)[:\s]*([1-9]|1[0-5])(?:\.5)?\b/i,
@@ -2512,6 +2539,7 @@ regex**, so that **I can extract condition accurately without AI costs**.
      /\b([1-9]|1[0-5])(?:\.5)?\s*(?:US|M)\b/i,
    ];
    ```
+
 3. Implement `parseSize(text)` function
 4. Handle edge cases (e.g., "2015" should not be parsed as size)
 5. Write unit tests (50+ test cases)
@@ -2553,6 +2581,7 @@ that **I can extract data that regex cannot parse**.
 1. Sign up for OpenAI API
 2. Install `openai` package
 3. Add to input schema:
+
    ```json
    {
      "advancedOptions": {
@@ -2561,8 +2590,10 @@ that **I can extract data that regex cannot parse**.
      }
    }
    ```
+
 4. Create `src/utils/ai-parser.js`
 5. Implement GPT-3.5 Turbo call:
+
    ```javascript
    const prompt = `Extract sneaker information from: "${title}"\nReturn JSON: { "condition": "...", "size": "...", "colorway": "..." }`;
    const response = await openai.chat.completions.create({
@@ -2571,6 +2602,7 @@ that **I can extract data that regex cannot parse**.
      temperature: 0,
    });
    ```
+
 6. Parse GPT response (extract JSON)
 7. Add fallback logic: If regex succeeds, skip AI
 8. Add cost tracking (log API calls)
@@ -2743,6 +2775,7 @@ drops in price**, so that **I can capitalize on price reductions**.
    - `seenListings = 0`
    - `priceDrops = 0`
 2. Log statistics at end of run:
+
    ```javascript
    Actor.log.info('Deduplication Summary', {
      totalScraped,
@@ -2751,6 +2784,7 @@ drops in price**, so that **I can capitalize on price reductions**.
      priceDrops,
    });
    ```
+
 3. Add summary to email notification (optional)
 
 **Dependencies:** US-031, US-032
@@ -2791,6 +2825,7 @@ releases**, so that **I can prepare to buy at retail before resale prices spike*
 3. Use Cheerio crawler (HTML parsing)
 4. Extract release data from calendar page
 5. Normalize to release calendar schema:
+
    ```javascript
    {
      name: "Air Jordan 1 Lost and Found",
@@ -2803,6 +2838,7 @@ releases**, so that **I can prepare to buy at retail before resale prices spike*
      source: "The Drop Date",
    }
    ```
+
 6. Save to separate dataset: `await Actor.pushData(releases, { datasetId: 'release_calendar' })`
 7. Write integration test
 8. Schedule daily run (9 AM)
@@ -2872,12 +2908,14 @@ before release
 **Technical Tasks:**
 
 1. Add to input schema:
+
    ```json
    {
      "enableReleaseCalendar": false,
      "releaseNotificationTime": "09:00" // HH:MM format
    }
    ```
+
 2. Create daily digest email template: `src/templates/release-digest.html`
 3. Implement digest logic:
    - Load releases from dataset
@@ -2926,6 +2964,7 @@ sneakers**, so that **I can calculate deal scores without scraping high-risk pla
    - Source: Public price guides
    - Source: YouTube reseller videos
 2. Create `src/data/price-database.json`:
+
    ```json
    [
      {
@@ -2938,8 +2977,10 @@ sneakers**, so that **I can calculate deal scores without scraping high-risk pla
      }
    ]
    ```
+
 3. Add helper function: `getPriceFromDatabase(sku)`
 4. Allow user overrides in input:
+
    ```json
    {
      "customMarketValues": {
@@ -2947,6 +2988,7 @@ sneakers**, so that **I can calculate deal scores without scraping high-risk pla
      }
    }
    ```
+
 5. Document in README (how to find SKUs)
 
 **Dependencies:** None
@@ -2988,6 +3030,7 @@ sneakers**, so that **I can calculate deal scores without scraping high-risk pla
 
 1. Create `src/utils/deal-scorer.js`
 2. Implement scoring logic:
+
    ```javascript
    function calculateDealScore(listing, marketValue) {
      const savings = marketValue - listing.listing.price;
@@ -3002,6 +3045,7 @@ sneakers**, so that **I can calculate deal scores without scraping high-risk pla
      return { savings, savingsPercentage, dealScore };
    }
    ```
+
 3. Integrate with main pipeline:
    - Look up market value for each listing
    - Calculate deal score
@@ -3044,6 +3088,7 @@ sneakers**, so that **I can calculate deal scores without scraping high-risk pla
 
 1. Extend deduplicator to track full price history (not just previous price)
 2. Store in KV Store:
+
    ```javascript
    {
      listingHash: "abc123",
@@ -3057,6 +3102,7 @@ sneakers**, so that **I can calculate deal scores without scraping high-risk pla
      trend: "DROPPING"
    }
    ```
+
 3. Calculate trend:
    - If latest price < average of last 3: "DROPPING"
    - If latest price > average of last 3: "RISING"
@@ -3143,6 +3189,7 @@ upgrade to access premium features**.
 **Technical Tasks:**
 
 1. Add `subscriptionTier` to input schema:
+
    ```json
    {
      "subscriptionTier": {
@@ -3152,7 +3199,9 @@ upgrade to access premium features**.
      }
    }
    ```
+
 2. Define tier limits: `src/config/tiers.js`
+
    ```javascript
    const TIER_LIMITS = {
      free: { platforms: 1, maxResults: 10, alerts: false, webhook: false, aiParsing: false },
@@ -3160,7 +3209,9 @@ upgrade to access premium features**.
      pro: { platforms: 12, maxResults: 500, alerts: true, webhook: true, aiParsing: true },
    };
    ```
+
 3. Implement enforcement in main.js:
+
    ```javascript
    const limits = TIER_LIMITS[input.subscriptionTier];
    if (input.platforms.length > limits.platforms) {
@@ -3169,6 +3220,7 @@ upgrade to access premium features**.
      );
    }
    ```
+
 4. Add upgrade prompts throughout:
    - Input validation
    - Feature usage (e.g., AI parsing)
@@ -3208,9 +3260,11 @@ upgrade to access premium features**.
 
 1. Use Apify built-in analytics (Actor → Analytics in Console)
 2. Add custom events (optional):
+
    ```javascript
    Actor.log.info('User upgraded to Pro', { tier: 'pro' });
    ```
+
 3. Track key metrics:
    - Runs per day
    - Unique users
@@ -3261,6 +3315,7 @@ can find deals on a popular marketplace**.
 4. Build GraphQL query
 5. Handle aggressive rate limits (100 req/hour max)
 6. Add failure handling:
+
    ```javascript
    try {
      const listings = await scrapeMercari();
@@ -3269,7 +3324,9 @@ can find deals on a popular marketplace**.
      return []; // Graceful degradation
    }
    ```
+
 7. Mark as BETA in input schema:
+
    ```json
    {
      "platforms": {
@@ -3277,6 +3334,7 @@ can find deals on a popular marketplace**.
      }
    }
    ```
+
 8. Write integration test (expect some failures)
 9. Monitor failure rate (auto-disable if >50% for 7 days)
 
@@ -3442,6 +3500,7 @@ it works in production**.
 1. Create E2E test suite: `__tests__/e2e/full-run.test.js`
 2. Use Apify Test Runner or manual tests
 3. Test with real input:
+
    ```json
    {
      "searchTerms": ["Jordan 1 Bred"],
@@ -3449,6 +3508,7 @@ it works in production**.
      "notificationEmail": "test@example.com"
    }
    ```
+
 4. Verify outputs:
    - Check dataset (correct schema)
    - Check email received
@@ -3674,7 +3734,7 @@ get help when they encounter issues**.
 **When** they have questions or issues  
 **Then** they can reach support via:
 
-- [ ] Email: support@sneakermeta.com (or Gmail)
+- [ ] Email: <support@sneakermeta.com> (or Gmail)
 - [ ] Discord: #support channel in SneakerMeta server
 - [ ] GitHub Issues (for bugs)
 
@@ -3815,7 +3875,7 @@ the product and add new features**.
 
 ### Sprint Overview
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                          SPRINT TIMELINE                                 │
 ├─────────────────────────────────────────────────────────────────────────┤
@@ -4127,7 +4187,7 @@ to Apify Challenge.
 
 ### Sprint Velocity Tracking
 
-```
+```text
 Sprint  | Planned | Completed | Velocity | Notes
 --------|---------|-----------|----------|---------------------------
 Sprint 1|   28    |    23     |   23     | Learning curve, eBay API delay
@@ -4440,7 +4500,7 @@ TOTAL   |  165    |   155     |  25.8    | Average velocity
 
 **User Funnel:**
 
-```
+```text
 Apify Store Views: 2,000+
     ↓ (10% try actor)
 Trial Users: 200+
@@ -4454,7 +4514,7 @@ Retained Paying: 14-28
 
 **Revenue Calculation:**
 
-```
+```text
 MRR = (Hobby users × $4.99) + (Pro users × $9.99) + (Business users × $29.99)
 
 Conservative:
@@ -4593,7 +4653,7 @@ Total: $1,898 MRR
 
 ---
 
-**END OF DOCUMENT**
+## END OF DOCUMENT
 
 ---
 
