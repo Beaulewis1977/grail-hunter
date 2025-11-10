@@ -1,0 +1,40 @@
+name: CodeRabbit Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - develop
+
+concurrency:
+  group: coderabbit-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: read
+
+jobs:
+  coderabbit-review:
+    name: CodeRabbit Code Review
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run CodeRabbit Review
+        uses: coderabbit-ai/gh-action@v1.9.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          coderabbit_token: ${{ secrets.CODERABBIT_TOKEN }}
+          config_file: '.coderabbitai.yaml'
+          check_name: 'CodeRabbit Review'
+          submit_review: true
+          fail_on_critical: false
+          verbose: true

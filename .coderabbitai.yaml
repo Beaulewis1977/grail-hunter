@@ -1,0 +1,74 @@
+language: en
+timezone: America/New_York
+
+reviews:
+  auto_review: true
+  auto_review_on_fork: false
+  request_review: author
+  collapse_review_comments: true
+  auto_reply_code_review: true
+  review_comment_only: false
+  review_status_last_commit_only: true
+  review_backend: true
+  review_no_review_labels:
+    - 'no-review'
+    - 'skip-review'
+    - 'documentation-only'
+
+chat:
+  auto_reply: true
+  ignored_keywords:
+    - '@dependabot'
+    - 'renovate'
+
+pr_description:
+  enabled: true
+  require_description: true
+
+review_all_files: true
+
+exclude:
+  - '.git/**'
+  - 'node_modules/**'
+  - 'dist/**'
+  - 'build/**'
+  - '*.pdf'
+  - '.env'
+  - '.env.*'
+
+review_trigger: all_commits
+
+tools:
+  security_scan: true
+  type_checking: true
+  test_coverage_analysis: false
+  eslint:
+    enable: true
+    ignore_patterns:
+      - '.git'
+      - 'node_modules'
+      - 'dist'
+  prettier:
+    enable: true
+  markdownlint:
+    enable: true
+
+summary:
+  enabled: true
+  include_stats: true
+  include_summary_table: true
+
+draft:
+  auto_review_on_draft: true
+
+comment_style: github_markdown
+heavy_review: true
+
+disable_inline_comments:
+  - '*.pdf'
+  - '*.zip'
+  - 'package-lock.json'
+  - 'yarn.lock'
+
+labels:
+  reviewed: 'reviewed'

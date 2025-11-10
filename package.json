@@ -1,0 +1,42 @@
+{
+  "name": "grail-hunter",
+  "version": "0.1.0",
+  "description": "SneakerMeta Apify Actor - Multi-platform sneaker marketplace price tracking",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "eslint . --ext .js,.ts,.jsx,.tsx && markdownlint '**/*.md' && prettier --check .",
+    "lint:fix": "eslint . --ext .js,.ts,.jsx,.tsx --fix && markdownlint '**/*.md' --fix && prettier --write .",
+    "format": "prettier --write .",
+    "test": "echo \"No tests configured yet\"",
+    "pre-commit": "lint-staged"
+  },
+  "keywords": [
+    "apify",
+    "actor",
+    "scraping",
+    "sneakers",
+    "marketplace",
+    "price-tracking"
+  ],
+  "author": "Beaulewis1977",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
+    "eslint": "^8.55.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "markdownlint-cli": "^0.37.0",
+    "prettier": "^3.1.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

@@ -1,0 +1,87 @@
+Hello. I want to enter the https://apify.com/challenge#join-the-challenge and do this actor. I need you to review the rules of the challenge and look at other actors. See if theres any like what I want to build. Then look into sneaker dealers and collectors and create an initial design docs for building this. /// Web Scraping Actor for Sneakers and Shoes
+
+To track collectible sneakers (e.g. rare Air Jordans or limited-edition releases), we can build an Apify “actor” that continuously searches multiple marketplaces for specific shoe models and sizes.  The actor would run on a schedule (e.g. hourly) and send alerts (email/Slack) when matching listings appear.
+
+Target Marketplaces
+
+Focus on both general classifieds/marketplaces and dedicated sneaker platforms.  Key sites include:
+
+Facebook Marketplace – Apify’s Facebook Marketplace Scraper can extract listing data by location or search query.  For example, you can input a URL like facebook.com/marketplace/<CITY>/search/?query=... to find items in a given city.  This scraper pulls details (title, price, seller, photos, etc.) for each listing.
+
+Craigslist – Craigslist has multiple Apify actors.  For broad searching, use a “Search Results” scraper: it takes one or more Craigslist search-URLs (like craigslist.org/search/sss?query=shoes) and returns each listing’s title, price, location, time, images, etc. in structured JSON.  For real-time alerts, another actor (“Craigslist Scraper” by ZScrape) can monitor new posts matching your keywords and even send email alerts.
+
+eBay – eBay often has both new and used sneakers.  Apify’s unofficial eBay Scraper lets you input an eBay search URL or category page and extract all listings (price, description, images, seller info, etc.).  This can capture auction-style or “Buy It Now” sneaker listings.
+
+OfferUp (US) – In the US, OfferUp is a popular local marketplace.  The Apify OfferUp Scraper takes a keyword and ZIP code and returns matching listings with title, price, images, location, seller info, etc..  It even uses US residential proxies to avoid blocking.
+
+Sneaker-specific marketplaces – High-end collectible shoes are often sold on authenticated resale platforms.  Apify has actors for GOAT and StockX: the GOAT Product Search Scraper pulls verified sneaker listings (IDs, prices, release dates, images) from GOAT, and the StockX Product Search Scraper extracts detailed data (name, brand, market stats, etc.) from StockX using search-URL queries.  These platforms verify authenticity, so the data is highly reliable.
+
+Global/local classifieds – For non-US markets, consider equivalents like Gumtree (UK/Australia) and Kijiji (Canada).  For example, the Apify Gumtree Scraper lets you input location and keywords to scrape Gumtree ads (title, price, description, images, link).  (Similarly, “Kijiji Scraper” exists on Apify for Canadian markets.)
+
+
+Each of these tools can be scheduled or triggered by your actor.  In practice, you might run multiple sub-actors or one actor looping through sites: e.g., supply a list of Facebook Marketplace URLs (by city), Craigslist search URLs, OfferUp keywords, etc., to crawl each and collect results.
+
+Search Keywords and Models
+
+We should search for specific sneaker models, brands, and sizes.  Start with popular collectible models (e.g. Air Jordan 1, Air Jordan 11, Nike Dunks, Yeezy Boost 350, etc.) and include all relevant variants/collaborations (e.g. Off-White x Jordan 1, Travis Scott Dunks).  For each model, use multiple query terms and synonyms to catch misspellings or abbreviations.  For example: “Air Jordan 1”, “AJ1”, “Jordan 1”, “J1”, or nicknames like “Bred 1”.  Also combine with size filters if possible (e.g. appending “size 10” or “Men’s 10”).  You may need to issue separate search queries for each size or include size keywords in the search.  Because users often shorten or misspell listings, supplying several variations (e.g. “snkr”, “sneaker”, “shoe”, model names) will improve recall.
+
+In many marketplaces you’ll capture the size from the listing text or title.  After scraping, the actor can filter results by size or parse the description field for a size value (common patterns like “US 10” or “Men’s 10”).
+
+No single source lists all required search terms, but broad sneaker-collector knowledge helps here.  (For instance, sneaker blogs and forums list “grails” and popular collabs, but beyond the scope of these sources.)  The important part is that our actor takes as input a set of keyword queries (for example via a JSON array) covering each desired model and size.  We can always iterate the list based on what collectors report as popular.
+
+Geographic Scope
+
+Begin with the US market, which covers Craigslist (US city sites), Facebook Marketplace (US cities), OfferUp (US zip codes), StockX, GOAT, eBay, etc.  These tools generally allow specifying location in the input (e.g. a Facebook URL for “sanfrancisco”, or a Craigslist domain like “newyork.craigslist.org”).  For global expansion later, switch to international equivalents: e.g. Craigslist country subdomains, Gumtree in the UK (“london.gumtree.com/search?q=shoese” with the Gumtree actor), Kijiji in Canada, etc.
+
+Important note: most marketplaces block aggressive scraping.  Use rotating proxies or anti-blocking measures.  For example, the OfferUp Scraper explicitly “uses US residential proxies” to avoid bans, and Apify generally recommends enabling its proxy service for high-volume crawls.  Always set reasonable request intervals or pagination limits and obey robots policies.
+
+Notifications & Continuous Monitoring
+
+The actor should run continuously or on a schedule (e.g. via Apify’s scheduling or external cron).  After each run, new matching listings should trigger a notification.  Apify can integrate with email or Slack:
+
+Email alerts:  Apify’s built-in Send Email actor can be called at the end of your run. You feed it a list of recipients, subject, and body (e.g. summary of new listings).  This is intended for notifications and reporting.
+
+Slack/Webhooks:  Apify offers Slack integration (you can connect your workspace and post run outputs directly) and generic webhooks.  For example, you could have the actor POST results to a Zapier hook or Slack Incoming Webhook.
+
+
+Whichever method, the key is: detect new items vs. previously seen.  Store results between runs (e.g. in Apify’s dataset or key-value store) and compare.  Only alert on truly new listings.  The user’s note “notify somehow for sure” implies that each time the actor finds new relevant shoes, it should push an alert in real time.
+
+Implementation Outline
+
+1. Inputs: A list of target searches, e.g. JSON with items like { site: "facebook", url: "...search query URL..." } or { site: "craigslist", query: "nike dunk size 10", location: "chicago" }.  Also include desired sizes/brands.
+
+
+2. Scraping Logic: For each search:
+
+If Facebook Marketplace: use the Facebook Marketplace Scraper actor (it handles the query URL and pagination).
+
+If Craigslist: use the Craigslist Search Results Scraper or the email-alert Craigslist scraper.
+
+If eBay/OfferUp/StockX/GOAT: call the respective Apify scraper with the given query or URL.
+
+Aggregate all listings from all sources.
+
+
+
+3. Filtering and Deduplication: Parse the scraped data for model name, size, price, and URL.  Filter out duplicates or stale posts.  Compare to a stored list of previous results so you can identify new listings.
+
+
+4. Alerting: If any new matching listings appear, compile them into a brief report and send via email/Slack. Use Apify’s Send Email actor for emails, or push to Slack/webhook.
+
+
+5. Scheduling: Deploy the actor with a schedule (e.g. run every hour).  Apify’s scheduler can handle this, and it will automatically queue runs and invoke your workflow.
+
+
+
+Considerations
+
+Proxy/Anti-blocking: As noted, use Apify Proxy (set useApifyProxy=true) to avoid being blocked, especially on Craigslist or high-traffic sites.  Some custom actors (like OfferUp/GOAT/StockX) already include proxy support.
+
+Parsing Challenges: Some sites (like StockX/GOAT) load data via JavaScript, but the Apify actors handle that.  For classified ads (Craigslist, FB), sizes are in text – you may need to use regex or string matching to extract shoe size.
+
+Extensibility: Start with a core list of highly sought models (e.g. Air Jordan 1, 11, Retro 4; Nike SB Dunks; Yeezy; etc.).  Over time, add others based on demand. Since sneaker trends change, you can update the query list and rerun.
+
+
+In summary: Build an Apify actor (or set of tasks) that hits all major marketplace sites with sneaker-related search queries and location filters, parses out each listing’s details, and compares to past runs.  Use multiple search terms per shoe model to handle variations.  Monitor continuously (24/7 scheduling) and push notifications (email/Slack) for any newly discovered rare or desired sneakers.  Existing Apify store scrapers for Facebook Marketplace, Craigslist, eBay, OfferUp, GOAT and StockX make this practical.  This effectively acts as a custom “sneaker bot” that keeps users alerted to new listings.
+
+Sources: We drew on Apify’s documentation and actor descriptions for marketplace scraping tools, which demonstrate exactly how to scrape and schedule data extraction from Facebook Marketplace, Craigslist, eBay, OfferUp, GOAT, and StockX. The Nike Scraper example also notes that one use-case is to “keep an eye on rare items for sneaker market…create a sneaker bot with notifications”, aligning with this design.

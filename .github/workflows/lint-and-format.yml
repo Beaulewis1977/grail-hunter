@@ -1,0 +1,102 @@
+name: Lint & Format Check
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  lint:
+    name: ESLint & Code Quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Check formatting
+        run: npx prettier --check .
+        continue-on-error: true
+
+      - name: Lint markdown
+        run: npx markdownlint '**/*.md'
+        continue-on-error: true
+
+  format-check:
+    name: Prettier Format Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check if code is formatted
+        run: npx prettier --check .
+
+      - name: Suggest formatting fixes
+        if: failure()
+        run: |
+          echo "Some files need formatting. Run:"
+          echo "npm run lint:fix"
+        continue-on-error: true
+
+  commitlint:
+    name: Conventional Commits Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate commits
+        run: npx commitlint --from origin/main --to HEAD
+        continue-on-error: true
