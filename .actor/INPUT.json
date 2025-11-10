@@ -1,0 +1,15 @@
+{
+  "keywords": ["Air Jordan 1", "Nike Dunk Low"],
+  "size": "10.5",
+  "priceRange": {
+    "min": 50,
+    "max": 300
+  },
+  "condition": "used_good",
+  "platform": "grailed",
+  "maxResults": 20,
+  "notificationConfig": {
+    "webhookUrl": "https://webhook.site/unique-webhook-id",
+    "saveToDataset": true
+  }
+}
