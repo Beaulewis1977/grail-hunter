@@ -1,4 +1,3 @@
-
 /**
  * Filtering Engine
  * Applies user-defined filters to listings
@@ -137,4 +136,3 @@ export class ListingFilter {
     });
   }
 }
-

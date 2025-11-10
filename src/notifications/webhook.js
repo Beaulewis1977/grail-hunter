@@ -1,4 +1,3 @@
-
 /**
  * Webhook Notification Handler
  * Sends POST notifications to user-defined webhook URLs
@@ -135,4 +134,3 @@ export class WebhookNotifier {
     };
   }
 }
-

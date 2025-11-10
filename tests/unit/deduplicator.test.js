@@ -1,4 +1,3 @@
-
 /**
  * Unit tests for deduplication engine
  */
@@ -52,8 +51,16 @@ describe('DeduplicationEngine', () => {
       deduplicator.seenHashes = new Set();
 
       const listings = [
-        { source: { platform: 'Grailed', id: '1' }, product: { name: 'Test 1' }, listing: { price: 100 } },
-        { source: { platform: 'Grailed', id: '2' }, product: { name: 'Test 2' }, listing: { price: 200 } },
+        {
+          source: { platform: 'Grailed', id: '1' },
+          product: { name: 'Test 1' },
+          listing: { price: 100 },
+        },
+        {
+          source: { platform: 'Grailed', id: '2' },
+          product: { name: 'Test 2' },
+          listing: { price: 200 },
+        },
       ];
 
       const newListings = await deduplicator.findNewListings(listings);
@@ -65,14 +72,22 @@ describe('DeduplicationEngine', () => {
     it('should filter out previously seen listings', async () => {
       deduplicator.kvStore = mockKvStore;
 
-      const listing1 = { source: { platform: 'Grailed', id: '1' }, product: { name: 'Test' }, listing: { price: 100 } };
+      const listing1 = {
+        source: { platform: 'Grailed', id: '1' },
+        product: { name: 'Test' },
+        listing: { price: 100 },
+      };
       const hash1 = deduplicator.generateHash(listing1);
 
       deduplicator.seenHashes = new Set([hash1]);
 
       const listings = [
         listing1,
-        { source: { platform: 'Grailed', id: '2' }, product: { name: 'Test 2' }, listing: { price: 200 } },
+        {
+          source: { platform: 'Grailed', id: '2' },
+          product: { name: 'Test 2' },
+          listing: { price: 200 },
+        },
       ];
 
       const newListings = await deduplicator.findNewListings(listings);
@@ -114,4 +129,3 @@ describe('DeduplicationEngine', () => {
     });
   });
 });
-

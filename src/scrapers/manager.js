@@ -1,4 +1,3 @@
-
 /**
  * Scraper Manager
  * Routes scraping tasks to appropriate platform scrapers
@@ -81,14 +80,19 @@ export class ScraperManager {
           throw error;
         }
 
-        const delay = Math.pow(2, attempt) * 1000; // 2s, 4s, 8s
+        const delay = 2 ** attempt * 1000; // 2s, 4s, 8s
         logger.warn(`Retry attempt ${attempt}/${maxRetries} after ${delay}ms`, {
           error: error.message,
         });
 
-        await new Promise((resolve) => setTimeout(resolve, delay));
+        await new Promise((resolve) => {
+          setTimeout(resolve, delay);
+        });
       }
     }
+    // This line should never be reached due to the logic above,
+    // but it satisfies the consistent-return rule
+    throw new Error('retryWithBackoff: Maximum retries exceeded');
   }
 
   /**
@@ -98,4 +102,3 @@ export class ScraperManager {
     return Object.keys(this.scrapers);
   }
 }
-

@@ -1,4 +1,3 @@
-
 /**
  * Base Scraper Interface
  * Defines the contract that all scrapers must implement
@@ -16,19 +15,19 @@ export class BaseScraper {
 
   /**
    * Scrape listings from the platform
-   * @param {object} searchParams - Search parameters
+   * @param {object} _searchParams - Search parameters
    * @returns {Promise<Array>} Raw listings
    */
-  async scrape(searchParams) {
+  async scrape(_searchParams) {
     throw new Error('scrape() must be implemented by subclass');
   }
 
   /**
    * Build search URL from keywords
-   * @param {Array} keywords - Search keywords
+   * @param {Array} _keywords - Search keywords
    * @returns {Array} URLs to scrape
    */
-  buildSearchUrls(keywords) {
+  buildSearchUrls(_keywords) {
     throw new Error('buildSearchUrls() must be implemented by subclass');
   }
 
@@ -41,4 +40,3 @@ export class BaseScraper {
     }
   }
 }
-

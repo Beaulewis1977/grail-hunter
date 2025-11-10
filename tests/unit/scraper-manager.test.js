@@ -1,4 +1,3 @@
-
 /**
  * Unit tests for scraper manager
  */
@@ -49,4 +48,3 @@ describe('ScraperManager', () => {
     });
   });
 });
-

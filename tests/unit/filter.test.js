@@ -1,4 +1,3 @@
-
 /**
  * Unit tests for listing filter
  */
@@ -180,4 +179,3 @@ describe('ListingFilter', () => {
     });
   });
 });
-

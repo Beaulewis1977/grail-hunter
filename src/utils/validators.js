@@ -1,4 +1,3 @@
-
 /**
  * Input Validation Utilities
  * Validates user input against schema requirements
@@ -37,7 +36,7 @@ export function validateInput(input) {
   if (input.platform && input.platform !== 'grailed') {
     throw new ValidationError(
       `Platform "${input.platform}" is not yet supported. Phase 1 only supports "grailed". ` +
-      `Supported platforms: ${SUPPORTED_PLATFORMS.join(', ')}`
+        `Supported platforms: ${SUPPORTED_PLATFORMS.join(', ')}`
     );
   }
 
@@ -73,7 +72,14 @@ export function validateInput(input) {
   }
 
   // Validate condition
-  const validConditions = ['new_in_box', 'used_like_new', 'used_good', 'used_fair', 'used_poor', 'unspecified'];
+  const validConditions = [
+    'new_in_box',
+    'used_like_new',
+    'used_good',
+    'used_fair',
+    'used_poor',
+    'unspecified',
+  ];
   if (input.condition && !validConditions.includes(input.condition)) {
     throw new ValidationError(
       `Invalid condition: "${input.condition}". Valid values: ${validConditions.join(', ')}`
@@ -86,7 +92,7 @@ export function validateInput(input) {
     if (typeof input.notificationConfig !== 'object' || Array.isArray(input.notificationConfig)) {
       throw new ValidationError('notificationConfig must be an object');
     }
-    
+
     const { webhookUrl, webhookSecret } = input.notificationConfig;
 
     if (webhookUrl && typeof webhookUrl !== 'string') {
@@ -144,4 +150,3 @@ export function normalizeInput(input) {
     },
   };
 }
-

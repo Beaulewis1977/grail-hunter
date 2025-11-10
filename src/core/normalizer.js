@@ -1,4 +1,3 @@
-
 /**
  * Data Normalization Engine
  * Converts platform-specific data to standardized schema
@@ -19,15 +18,35 @@ export class DataNormalizer {
       logger.warn('Invalid rawListing provided to normalize', { platform });
       return null;
     }
-    
-    logger.debug(`Normalizing listing from ${platform}`, { listingId: rawListing.id });
 
-    switch (platform.toLowerCase()) {
+    // Bug Fix #5: Add validation for platform parameter before calling toLowerCase()
+    if (typeof platform !== 'string') {
+      logger.warn('Invalid platform parameter - not a string', {
+        platform,
+        type: typeof platform,
+      });
+      return this.normalizeGeneric(rawListing, platform);
+    }
+
+    // Trim the platform value
+    const platformTrimmed = platform.trim();
+
+    // Check if platform is empty after trimming
+    if (!platformTrimmed) {
+      logger.warn('Invalid platform parameter - empty string after trimming', {
+        platform,
+      });
+      return this.normalizeGeneric(rawListing, platform);
+    }
+
+    logger.debug(`Normalizing listing from ${platformTrimmed}`, { listingId: rawListing.id });
+
+    switch (platformTrimmed.toLowerCase()) {
       case 'grailed':
         return this.normalizeGrailed(rawListing);
       default:
-        logger.warn(`Unknown platform: ${platform}, using generic normalizer`);
-        return this.normalizeGeneric(rawListing, platform);
+        logger.warn(`Unknown platform: ${platformTrimmed}, using generic normalizer`);
+        return this.normalizeGeneric(rawListing, platformTrimmed);
     }
   }
 
@@ -129,7 +148,7 @@ export class DataNormalizer {
   extractBrand(title) {
     // Bug Fix #3: Add type safety check for title
     if (typeof title !== 'string') return null;
-    
+
     const upperTitle = title.toUpperCase();
 
     // Check for Air Jordan first (before Jordan)
@@ -137,7 +156,18 @@ export class DataNormalizer {
       return 'Air Jordan';
     }
 
-    const brands = ['Nike', 'Adidas', 'Jordan', 'Yeezy', 'New Balance', 'Asics', 'Puma', 'Reebok', 'Vans', 'Converse'];
+    const brands = [
+      'Nike',
+      'Adidas',
+      'Jordan',
+      'Yeezy',
+      'New Balance',
+      'Asics',
+      'Puma',
+      'Reebok',
+      'Vans',
+      'Converse',
+    ];
 
     for (const brand of brands) {
       if (upperTitle.includes(brand.toUpperCase())) {
@@ -154,7 +184,7 @@ export class DataNormalizer {
   extractModel(title) {
     // Bug Fix #4: Add type safety check for title
     if (typeof title !== 'string') return null;
-    
+
     // Common sneaker models
     const models = [
       'Air Jordan 1',
@@ -186,11 +216,11 @@ export class DataNormalizer {
 
     const conditionStr = condition.toLowerCase();
     const mapping = {
-      'new': 'new_in_box',
+      new: 'new_in_box',
       'brand new': 'new_in_box',
       'gently used': 'used_like_new',
-      'used': 'used_good',
-      'worn': 'used_fair',
+      used: 'used_good',
+      worn: 'used_fair',
     };
 
     return mapping[conditionStr] || 'unspecified';
@@ -231,4 +261,3 @@ export class DataNormalizer {
     return desc.length > 500 ? `${desc.substring(0, 497)}...` : desc;
   }
 }
-

@@ -1,4 +1,3 @@
-
 /**
  * Unit tests for input validators
  */
@@ -127,4 +126,3 @@ describe('Input Validators', () => {
     });
   });
 });
-

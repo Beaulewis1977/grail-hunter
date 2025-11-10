@@ -1,4 +1,3 @@
-
 /**
  * Unit tests for notification manager
  */
@@ -34,9 +33,7 @@ describe('NotificationManager', () => {
   });
 
   it('should send to dataset for all listings', async () => {
-    const listings = [
-      { product: { name: 'Test' }, listing: { price: 100 } },
-    ];
+    const listings = [{ product: { name: 'Test' }, listing: { price: 100 } }];
 
     await manager.send(listings);
 
@@ -77,4 +74,3 @@ describe('NotificationManager', () => {
     expect(mockDatasetSend).toHaveBeenCalled(); // Dataset still called
   });
 });
-

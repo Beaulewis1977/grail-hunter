@@ -1,4 +1,3 @@
-
 /**
  * Unit tests for data normalizer
  */
@@ -115,4 +114,3 @@ describe('DataNormalizer', () => {
     });
   });
 });
-

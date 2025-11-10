@@ -1,4 +1,3 @@
-
 /**
  * Dataset Notification Handler
  * Pushes listings to Apify dataset (always enabled)
@@ -31,4 +30,3 @@ export class DatasetNotifier {
     }
   }
 }
-

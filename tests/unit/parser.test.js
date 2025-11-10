@@ -1,4 +1,3 @@
-
 /**
  * Unit tests for sneaker parser
  */
@@ -91,4 +90,3 @@ describe('SneakerParser', () => {
     });
   });
 });
-

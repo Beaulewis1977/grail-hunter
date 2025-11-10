@@ -1,4 +1,3 @@
-
 /**
  * Unit tests for dataset notifier
  */
@@ -26,9 +25,7 @@ describe('DatasetNotifier', () => {
   });
 
   it('should push listings to dataset', async () => {
-    const listings = [
-      { product: { name: 'Test' }, listing: { price: 100 } },
-    ];
+    const listings = [{ product: { name: 'Test' }, listing: { price: 100 } }];
 
     await notifier.send(listings);
 
@@ -47,4 +44,3 @@ describe('DatasetNotifier', () => {
     expect(mockPushData).not.toHaveBeenCalled();
   });
 });
-

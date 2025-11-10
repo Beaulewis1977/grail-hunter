@@ -9,9 +9,12 @@
 
 ## Executive Summary
 
-Phase 1 of the Grail Hunter actor is **complete and production-ready**. This implementation delivers a fully functional, well-tested sneaker monitoring actor for Grailed with comprehensive notification support, intelligent parsing, and deduplication.
+Phase 1 of the Grail Hunter actor is **complete and production-ready**. This implementation delivers
+a fully functional, well-tested sneaker monitoring actor for Grailed with comprehensive notification
+support, intelligent parsing, and deduplication.
 
 ### Key Achievements
+
 - ✅ **75 unit and integration tests** - All passing
 - ✅ **80.34% code coverage** - Exceeding 80% target
 - ✅ **Complete project infrastructure** - ESLint, Prettier, Husky pre-commit hooks
@@ -25,6 +28,7 @@ Phase 1 of the Grail Hunter actor is **complete and production-ready**. This imp
 ### 1. Core Architecture ✅
 
 #### Project Structure
+
 ```
 grail-hunter/
 ├── .actor/                    # Apify actor configuration
@@ -65,9 +69,11 @@ grail-hunter/
 ### 2. Core Modules ✅
 
 #### Data Normalizer (`src/core/normalizer.js`)
+
 **Purpose:** Converts platform-specific data to standardized schema
 
 **Features:**
+
 - Grailed data normalization
 - Standardized product/listing/source structure
 - Handles missing fields gracefully
@@ -76,9 +82,11 @@ grail-hunter/
 **Test Coverage:** 93.47%
 
 #### Sneaker Parser (`src/core/parser.js`)
+
 **Purpose:** Extracts structured data from unstructured text
 
 **Features:**
+
 - Condition parsing (DS, VNDS, NDS, etc.)
 - Size extraction (US Men's)
 - Tag detection (OG All, Player Edition, etc.)
@@ -87,6 +95,7 @@ grail-hunter/
 **Test Coverage:** 100% ✅
 
 **Supported Conditions:**
+
 - `new_in_box` - DS, Deadstock, BNIB, Brand New
 - `used_like_new` - VNDS, Very Near Deadstock
 - `used_good` - NDS, Near Deadstock
@@ -94,6 +103,7 @@ grail-hunter/
 - `used_poor` - Beat, Beaters
 
 **Supported Tags:**
+
 - `og_all` - Original box included
 - `ds` / `vnds` / `nds` - Condition tags
 - `player_edition` - PE sneakers
@@ -103,9 +113,11 @@ grail-hunter/
 - `replacement_box` - Replacement box
 
 #### Listing Filter (`src/core/filter.js`)
+
 **Purpose:** Apply user-defined filters to listings
 
 **Features:**
+
 - Price range filtering (min/max)
 - Size filtering (exact match)
 - Condition filtering (minimum condition)
@@ -114,9 +126,11 @@ grail-hunter/
 **Test Coverage:** 95.65%
 
 #### Deduplication Engine (`src/core/deduplicator.js`)
+
 **Purpose:** Track seen listings to prevent duplicate alerts
 
 **Features:**
+
 - MD5 hash-based identification
 - Persistent state via Apify Key-Value Store
 - Configurable max storage (10,000 listings)
@@ -128,9 +142,11 @@ grail-hunter/
 ### 3. Scrapers ✅
 
 #### Grailed Scraper (`src/scrapers/grailed.js`)
+
 **Purpose:** Scrape sneaker listings from Grailed
 
 **Implementation:**
+
 - Uses existing Apify actor: `vmscrapers/grailed`
 - Handles pagination
 - Rate limiting support
@@ -139,9 +155,11 @@ grail-hunter/
 **Status:** Implemented but not tested (requires API calls)
 
 #### Scraper Manager (`src/scrapers/manager.js`)
+
 **Purpose:** Orchestrate multiple platform scrapers
 
 **Features:**
+
 - Platform routing
 - Graceful degradation (if one platform fails, others continue)
 - Parallel scraping support
@@ -152,9 +170,11 @@ grail-hunter/
 ### 4. Notification System ✅
 
 #### Webhook Notifier (`src/notifications/webhook.js`)
+
 **Purpose:** Send notifications to user-defined webhook URLs
 
 **Features:**
+
 - HTTP POST with JSON payload
 - HMAC signature verification support
 - Retry logic with exponential backoff
@@ -163,9 +183,11 @@ grail-hunter/
 **Test Coverage:** 94.87%
 
 #### Dataset Notifier (`src/notifications/dataset.js`)
+
 **Purpose:** Save listings to Apify dataset
 
 **Features:**
+
 - Push listings to dataset
 - Handles empty listings gracefully
 - Integrates with Apify SDK
@@ -173,9 +195,11 @@ grail-hunter/
 **Test Coverage:** 77.77%
 
 #### Notification Manager (`src/notifications/manager.js`)
+
 **Purpose:** Coordinate multiple notification channels
 
 **Features:**
+
 - Multi-channel delivery (webhook + dataset)
 - Graceful failure handling
 - Notification statistics
@@ -185,9 +209,11 @@ grail-hunter/
 ### 5. Utilities ✅
 
 #### Input Validation (`src/utils/validators.js`)
+
 **Purpose:** Validate and normalize user input
 
 **Features:**
+
 - Required field validation
 - Type checking
 - Default value handling
@@ -196,9 +222,11 @@ grail-hunter/
 **Test Coverage:** 76.19%
 
 #### Error Handling (`src/utils/errors.js`)
+
 **Purpose:** Custom error classes for different failure scenarios
 
 **Implemented Errors:**
+
 - `ValidationError` - Invalid input
 - `ScraperError` - Scraping failures
 - `NotificationError` - Notification delivery failures
@@ -207,9 +235,11 @@ grail-hunter/
 **Test Coverage:** 100% ✅
 
 #### Structured Logging (`src/utils/logger.js`)
+
 **Purpose:** Consistent logging across the actor
 
 **Features:**
+
 - Pino-based structured logging
 - Log levels (debug, info, warn, error)
 - Pretty printing in development
@@ -220,12 +250,14 @@ grail-hunter/
 ### 6. Testing Infrastructure ✅
 
 #### Test Suite Statistics
+
 - **Total Tests:** 75
 - **Passing:** 75 (100%)
 - **Failing:** 0
 - **Coverage:** 80.34% statements, 80.66% lines
 
 #### Unit Tests (10 files)
+
 1. `deduplicator.test.js` - Deduplication logic
 2. `filter.test.js` - Filtering logic
 3. `normalizer.test.js` - Data normalization
@@ -238,28 +270,33 @@ grail-hunter/
 10. `scraper-manager.test.js` - Scraper orchestration
 
 #### Integration Tests (1 file)
+
 1. `end-to-end.test.js` - Full actor flow
 
 ### 7. Code Quality Tools ✅
 
 #### ESLint Configuration
+
 - Extends `airbnb-base` style guide
 - Integrates with Prettier
 - Custom rules for Apify development
 - Pre-commit hook enforcement
 
 #### Prettier Configuration
+
 - Single quotes
 - 2-space indentation
 - Trailing commas (ES5)
 - Semicolons required
 
 #### Husky Pre-commit Hooks
+
 - Runs ESLint on staged files
 - Runs all tests before commit
 - Prevents broken code from being committed
 
 #### Markdown Linting
+
 - Enforces consistent Markdown formatting
 - Checks documentation quality
 
@@ -269,16 +306,18 @@ grail-hunter/
 
 ```json
 {
-  "keywords": ["Air Jordan 1"],        // Required: Search terms
-  "size": "10.5",                      // Optional: US Men's size
-  "priceRange": {                      // Optional: Price filter
+  "keywords": ["Air Jordan 1"], // Required: Search terms
+  "size": "10.5", // Optional: US Men's size
+  "priceRange": {
+    // Optional: Price filter
     "min": 50,
     "max": 300
   },
-  "condition": "used_good",            // Optional: Minimum condition
-  "platform": "grailed",               // Required: Only "grailed" in Phase 1
-  "maxResults": 50,                    // Optional: Max results (default: 50)
-  "notificationConfig": {              // Optional: Notification settings
+  "condition": "used_good", // Optional: Minimum condition
+  "platform": "grailed", // Required: Only "grailed" in Phase 1
+  "maxResults": 50, // Optional: Max results (default: 50)
+  "notificationConfig": {
+    // Optional: Notification settings
     "webhookUrl": "https://...",
     "webhookSecret": "secret123",
     "saveToDataset": true
@@ -287,6 +326,7 @@ grail-hunter/
 ```
 
 **Validation:**
+
 - `keywords` - Array of 1-20 strings (required)
 - `size` - Valid US Men's size pattern (optional)
 - `priceRange.min/max` - Non-negative numbers (optional)
@@ -494,6 +534,7 @@ To test webhook notifications:
 ### Phase 2: eBay Integration (Estimated 2.5 hours)
 
 **Features to Implement:**
+
 - [ ] eBay scraper integration (use existing Apify actor)
 - [ ] eBay-specific normalizer
 - [ ] Handle auction vs buy-it-now listings
@@ -503,13 +544,15 @@ To test webhook notifications:
 - [ ] Documentation updates
 
 **Input Schema Changes:**
+
 ```json
 {
-  "platform": ["grailed", "ebay"]  // Support multiple platforms
+  "platform": ["grailed", "ebay"] // Support multiple platforms
 }
 ```
 
 **Challenges:**
+
 - Auction listings have dynamic pricing
 - Shipping costs may need to be included
 - Different seller rating systems
@@ -517,6 +560,7 @@ To test webhook notifications:
 ### Phase 3: StockX Integration (Estimated 2.5 hours)
 
 **Features to Implement:**
+
 - [ ] StockX scraper integration
 - [ ] Market value benchmarking
 - [ ] "Deal Score" calculation (% below market)
@@ -526,6 +570,7 @@ To test webhook notifications:
 - [ ] Updated tests
 
 **New Features:**
+
 ```json
 {
   "dealScore": {
@@ -538,6 +583,7 @@ To test webhook notifications:
 ```
 
 **Challenges:**
+
 - StockX requires authentication
 - Anti-bot protection (Cloudflare)
 - Dynamic pricing based on size
@@ -546,6 +592,7 @@ To test webhook notifications:
 ### Phase 4: GOAT Integration + Advanced Features (Estimated 4 hours)
 
 **Features to Implement:**
+
 - [ ] GOAT scraper integration
 - [ ] All 4 platforms operational
 - [ ] Advanced filters (authenticated only, OG All preference)
@@ -556,6 +603,7 @@ To test webhook notifications:
 - [ ] Apify Store listing preparation
 
 **Advanced Filters:**
+
 ```json
 {
   "advancedFilters": {
@@ -681,7 +729,8 @@ apify push
 
 ### None at this time
 
-The codebase is clean, well-tested, and follows best practices. No technical debt was incurred during Phase 1 development.
+The codebase is clean, well-tested, and follows best practices. No technical debt was incurred
+during Phase 1 development.
 
 ### Recommended Maintenance Schedule
 
@@ -729,15 +778,18 @@ The codebase is clean, well-tested, and follows best practices. No technical deb
 
 ## Conclusion
 
-Phase 1 is **complete, tested, and production-ready**. The foundation is solid for building Phase 2-4. The code is well-documented, thoroughly tested, and follows industry best practices.
+Phase 1 is **complete, tested, and production-ready**. The foundation is solid for building Phase
+2-4. The code is well-documented, thoroughly tested, and follows industry best practices.
 
 **Next Steps:**
+
 1. ✅ User review and approval
 2. ⏳ Merge to `main` branch
 3. ⏳ Deploy to Apify platform
 4. ⏳ Begin Phase 2: eBay Integration
 
 **Questions?** Refer to:
+
 - README.md - User-facing documentation
 - DEVELOPMENT_PHASES.md - Development roadmap
 - technical_architecture.md - Technical details

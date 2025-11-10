@@ -1,4 +1,3 @@
-
 /**
  * Unit tests for custom error classes
  */
@@ -48,4 +47,3 @@ describe('Custom Errors', () => {
     });
   });
 });
-

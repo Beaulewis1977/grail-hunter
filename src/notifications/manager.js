@@ -1,4 +1,3 @@
-
 /**
  * Notification Manager
  * Orchestrates multi-channel notifications
@@ -80,4 +79,3 @@ export class NotificationManager {
     return results;
   }
 }
-

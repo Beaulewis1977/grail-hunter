@@ -1,4 +1,3 @@
-
 /**
  * Integration test: End-to-end actor execution
  * Note: This test mocks external dependencies but tests the full pipeline
@@ -120,4 +119,3 @@ describe('End-to-End Integration', () => {
     expect(newListings).toHaveLength(0);
   });
 });
-

@@ -2,7 +2,8 @@
 
 > **"Never miss your grail again"**
 
-Multi-platform sneaker monitoring and alert system built for sneaker collectors and resellers. Your 24/7 sneaker scout.
+Multi-platform sneaker monitoring and alert system built for sneaker collectors and resellers. Your
+24/7 sneaker scout.
 
 [![Apify Challenge 2024-2025](https://img.shields.io/badge/Apify-Challenge%202024--2025-blue)](https://apify.com/challenge)
 [![Built with Apify](https://img.shields.io/badge/Built%20with-Apify-orange)](https://apify.com)
@@ -11,7 +12,9 @@ Multi-platform sneaker monitoring and alert system built for sneaker collectors 
 
 ## 🎯 Overview
 
-**Grail Hunter** is a sophisticated Apify actor that aggregates sneaker listings from 4 major marketplaces and delivers real-time alerts when your target sneakers appear. Stop manually checking multiple tabs—let Grail Hunter find the deals for you.
+**Grail Hunter** is a sophisticated Apify actor that aggregates sneaker listings from 4 major
+marketplaces and delivers real-time alerts when your target sneakers appear. Stop manually checking
+multiple tabs—let Grail Hunter find the deals for you.
 
 This project is developed as part of the **Apify Challenge 2024-2025**.
 
@@ -34,12 +37,12 @@ Grail Hunter monitors sneaker listings across multiple platforms in real-time:
 
 Grail Hunter monitors these 4 major sneaker marketplaces:
 
-| Platform | Type | Description |
-|----------|------|-------------|
-| **eBay** | Marketplace | World's largest P2P marketplace |
-| **Grailed** | Marketplace | Premium streetwear and sneaker marketplace |
-| **StockX** | Authenticated | Stock market for sneakers with authentication |
-| **GOAT** | Authenticated | Premium authenticated sneaker platform |
+| Platform    | Type          | Description                                   |
+| ----------- | ------------- | --------------------------------------------- |
+| **eBay**    | Marketplace   | World's largest P2P marketplace               |
+| **Grailed** | Marketplace   | Premium streetwear and sneaker marketplace    |
+| **StockX**  | Authenticated | Stock market for sneakers with authentication |
+| **GOAT**    | Authenticated | Premium authenticated sneaker platform        |
 
 ---
 
@@ -58,32 +61,38 @@ Grail Hunter monitors these 4 major sneaker marketplaces:
 ## 🚀 Key Features
 
 ### 🔍 Smart Search
+
 - Flexible search criteria (brand, model, colorway, size)
 - Support for multiple search terms in a single run
 - Price range filtering
 
 ### 🤖 Intelligent Parsing
+
 - Automatically understands sneakerhead slang (VNDS, DS, OG All)
 - Extracts condition, size, and special tags
 - AI-powered fallback for ambiguous listings
 
 ### 📊 Data Normalization
+
 - Unified schema across all platforms
 - Standardized condition ratings
 - Consistent pricing and sizing information
 
 ### 🔔 Multi-Channel Alerts
+
 - Email notifications with rich HTML formatting
 - Slack/Discord webhooks with embed cards
 - Custom webhook integration for automation tools
 - Real-time alerts for new listings
 
 ### 💰 Deal Scoring
+
 - Compares P2P prices against authenticated platform values
 - Identifies listings below market value
 - Calculates savings percentage and amount
 
 ### 🎯 Deduplication
+
 - Tracks seen listings across multiple runs
 - Prevents duplicate alerts
 - Persistent state management
@@ -93,12 +102,17 @@ Grail Hunter monitors these 4 major sneaker marketplaces:
 ## 📋 Use Cases
 
 ### For Collectors
-Set alerts for your "grail" sneakers and get notified the moment they appear in your size at your target price.
+
+Set alerts for your "grail" sneakers and get notified the moment they appear in your size at your
+target price.
 
 ### For Resellers
-Monitor multiple models across all platforms to identify underpriced listings before the competition.
+
+Monitor multiple models across all platforms to identify underpriced listings before the
+competition.
 
 ### For Deal Hunters
+
 Track release calendars and get alerts for upcoming drops and price drops on existing listings.
 
 ---
@@ -166,6 +180,7 @@ apify run
 ### Basic Example
 
 **Input (`.actor/INPUT.json`):**
+
 ```json
 {
   "keywords": ["Air Jordan 1", "Nike Dunk Low"],
@@ -185,6 +200,7 @@ apify run
 ```
 
 **Output:**
+
 ```json
 [
   {
@@ -217,19 +233,17 @@ apify run
 ### Advanced Examples
 
 #### 1. Multiple Keywords Search
+
 ```json
 {
-  "keywords": [
-    "Air Jordan 1 Bred",
-    "Yeezy 350 Zebra",
-    "Travis Scott Jordan 1"
-  ],
+  "keywords": ["Air Jordan 1 Bred", "Yeezy 350 Zebra", "Travis Scott Jordan 1"],
   "size": "10.5",
   "maxResults": 20
 }
 ```
 
 #### 2. Price Range Filter
+
 ```json
 {
   "keywords": ["Nike Dunk Low"],
@@ -242,6 +256,7 @@ apify run
 ```
 
 #### 3. Webhook Notifications
+
 ```json
 {
   "keywords": ["Air Jordan 1"],
@@ -473,7 +488,8 @@ grail-hunter/
 - ⏳ **Phase 3:** StockX integration + market value benchmarking
 - ⏳ **Phase 4:** GOAT integration + advanced features
 
-See [IMPLEMENTATION_STATUS.md](./IMPLEMENTATION_STATUS.md) for detailed status and [DEVELOPMENT_PHASES.md](./DEVELOPMENT_PHASES.md) for the complete roadmap.
+See [IMPLEMENTATION_STATUS.md](./IMPLEMENTATION_STATUS.md) for detailed status and
+[DEVELOPMENT_PHASES.md](./DEVELOPMENT_PHASES.md) for the complete roadmap.
 
 ---
 
@@ -482,6 +498,7 @@ See [IMPLEMENTATION_STATUS.md](./IMPLEMENTATION_STATUS.md) for detailed status a
 ### Common Issues
 
 **Issue: Tests fail with "Apify is not defined"**
+
 ```bash
 # Solution: Ensure you're using Node.js 18+
 node --version
@@ -492,6 +509,7 @@ npm install
 ```
 
 **Issue: Webhook not delivering**
+
 ```bash
 # Solution: Test with webhook.site first
 # Check logs for error details
@@ -502,6 +520,7 @@ curl -X POST https://your-webhook-url
 ```
 
 **Issue: No listings found**
+
 ```bash
 # Solution: Try broader search terms
 # Check if platform is actually Grailed
@@ -509,6 +528,7 @@ curl -X POST https://your-webhook-url
 ```
 
 **Issue: Coverage threshold not met**
+
 ```bash
 # Solution: Run tests to generate coverage report
 npm test
@@ -521,16 +541,19 @@ npm test
 ## 📖 Documentation
 
 ### For Users
+
 - [README.md](./README.md) - This file
 - [INPUT_SCHEMA.json](./.actor/INPUT_SCHEMA.json) - Input documentation
 - [OUTPUT_SCHEMA.json](./.actor/OUTPUT_SCHEMA.json) - Output documentation
 
 ### For Developers
+
 - [IMPLEMENTATION_STATUS.md](./IMPLEMENTATION_STATUS.md) - Detailed implementation status
 - [DEVELOPMENT_PHASES.md](./DEVELOPMENT_PHASES.md) - Development roadmap
 - [technical_architecture.md](./technical_architecture.md) - Technical architecture
 
 ### Code Documentation
+
 All functions are documented with JSDoc comments. Example:
 
 ```javascript
@@ -546,7 +569,8 @@ parse(listing) { ... }
 
 ## 🤝 Contributing
 
-This is an Apify Challenge submission project. While direct contributions are not accepted during the challenge period, feedback and suggestions are welcome!
+This is an Apify Challenge submission project. While direct contributions are not accepted during
+the challenge period, feedback and suggestions are welcome!
 
 ### Development Workflow
 

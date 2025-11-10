@@ -50,14 +50,7 @@
       "type": "string",
       "description": "Only show listings in this condition or better",
       "editor": "select",
-      "enum": [
-        "new_in_box",
-        "used_like_new",
-        "used_good",
-        "used_fair",
-        "used_poor",
-        "unspecified"
-      ],
+      "enum": ["new_in_box", "used_like_new", "used_good", "used_fair", "used_poor", "unspecified"],
       "enumTitles": [
         "New in Box (DS/BNIB)",
         "Used - Like New (VNDS)",

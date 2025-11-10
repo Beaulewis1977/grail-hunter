@@ -1,4 +1,5 @@
 # SneakerMeta: Agile Project Management & Breakdown
+
 ## Multi-Platform Sneaker Alert & Aggregation Actor
 
 **Version:** 1.0  
@@ -7,7 +8,7 @@
 **Target Audience:** Sneaker collectors, resellers, and enthusiasts  
 **Business Model:** $2.99-$9.99/month subscription  
 **Estimated Timeline:** 12 weeks (3 months)  
-**Team Size:** 1-2 developers  
+**Team Size:** 1-2 developers
 
 ---
 
@@ -28,10 +29,12 @@
 
 ### 1.1 Executive Summary
 
-**SneakerMeta** is a sophisticated Apify actor that aggregates collectible sneaker listings from 12+ marketplaces and delivers real-time alerts when matching items appear. The project follows an Agile Scrum methodology with 2-week sprints, focusing on iterative delivery and continuous user feedback.
+**SneakerMeta** is a sophisticated Apify actor that aggregates collectible sneaker listings from 12+
+marketplaces and delivers real-time alerts when matching items appear. The project follows an Agile
+Scrum methodology with 2-week sprints, focusing on iterative delivery and continuous user feedback.
 
-**Core Value Proposition:**
-*"One Actor, All Platforms. Stop opening 8 tabs—get deduplicated, real-time sneaker deals in your size delivered instantly."*
+**Core Value Proposition:** _"One Actor, All Platforms. Stop opening 8 tabs—get deduplicated,
+real-time sneaker deals in your size delivered instantly."_
 
 ### 1.2 Project Timeline & Milestones
 
@@ -48,7 +51,7 @@ PHASE 1: Foundation & MVP (Weeks 1-4) ──────────────
 └──────────────────────────────┴────────────────────────────────────┘
            │
            ▼ MILESTONE 1: MVP Launch & Apify Challenge Submission
-           
+
 PHASE 2: Platform Expansion (Weeks 5-6) ────────────────►
 │ Sprint 3 (W5-6)                                        │
 │ Add 3 more platforms                                   │
@@ -57,7 +60,7 @@ PHASE 2: Platform Expansion (Weeks 5-6) ─────────────�
 └────────────────────────────────────────────────────────┘
            │
            ▼ MILESTONE 2: 6-Platform Release
-           
+
 PHASE 3: Advanced Features (Weeks 7-10) ──────────────────────────────►
 │ Sprint 4 (W7-8)              │ Sprint 5 (W9-10)                    │
 │ AI/Regex parsing engine      │ Release calendar monitoring         │
@@ -66,7 +69,7 @@ PHASE 3: Advanced Features (Weeks 7-10) ─────────────�
 └──────────────────────────────┴─────────────────────────────────────┘
            │
            ▼ MILESTONE 3: Feature Complete
-           
+
 PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 │ Sprint 6 (W11-12)                                 │
 │ Final testing & optimization                      │
@@ -80,29 +83,31 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 
 **Key Milestones:**
 
-| Milestone | Week | Deliverable | Success Criteria |
-|-----------|------|-------------|------------------|
-| **M1: MVP Launch** | Week 4 | Working actor with 3 platforms, email alerts, Apify Challenge submission | Successfully scrapes 3 platforms, sends email alerts, 65+ quality score |
-| **M2: Expansion** | Week 6 | 6 platforms total, webhook support | All 6 platforms working, webhook integration complete |
-| **M3: Feature Complete** | Week 10 | All 12 platforms, AI parsing, release calendar, deduplication | All core features implemented and tested |
-| **M4: Public Launch** | Week 12 | Full documentation, marketing materials, 50+ users | Actor live on Apify Store, first paying users acquired |
+| Milestone                | Week    | Deliverable                                                              | Success Criteria                                                        |
+| ------------------------ | ------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| **M1: MVP Launch**       | Week 4  | Working actor with 3 platforms, email alerts, Apify Challenge submission | Successfully scrapes 3 platforms, sends email alerts, 65+ quality score |
+| **M2: Expansion**        | Week 6  | 6 platforms total, webhook support                                       | All 6 platforms working, webhook integration complete                   |
+| **M3: Feature Complete** | Week 10 | All 12 platforms, AI parsing, release calendar, deduplication            | All core features implemented and tested                                |
+| **M4: Public Launch**    | Week 12 | Full documentation, marketing materials, 50+ users                       | Actor live on Apify Store, first paying users acquired                  |
 
 ### 1.3 Team Structure
 
 **Solo Developer Setup (Recommended for MVP):**
+
 - **Role:** Full-stack developer + Product owner
 - **Time Commitment:** 20-30 hours/week
 - **Skills Required:** Node.js, web scraping, Apify SDK, Agile methodology
 
 **Team Setup (If available):**
 
-| Role | Responsibilities | Time Allocation |
-|------|------------------|-----------------|
-| **Lead Developer** | Architecture, orchestration module, complex scrapers | 60% |
-| **Junior Developer** | Simple scrapers, testing, documentation | 30% |
-| **Product Owner** | Backlog management, user feedback, marketing | 10% |
+| Role                 | Responsibilities                                     | Time Allocation |
+| -------------------- | ---------------------------------------------------- | --------------- |
+| **Lead Developer**   | Architecture, orchestration module, complex scrapers | 60%             |
+| **Junior Developer** | Simple scrapers, testing, documentation              | 30%             |
+| **Product Owner**    | Backlog management, user feedback, marketing         | 10%             |
 
 **External Support:**
+
 - **Legal Consultant:** Review ToS risks (Week 2, 1-2 hours)
 - **Beta Testers:** Sneakerhead community (Weeks 5-12, ongoing)
 - **Marketing Partner:** Social media promotion (Weeks 11-12)
@@ -140,11 +145,13 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
    - Action items for next sprint
 
 **Velocity Tracking:**
+
 - **Target Velocity:** 30-40 story points per 2-week sprint (solo developer)
 - **Initial Velocity:** 20-25 points (Sprint 1, learning curve)
 - **Mature Velocity:** 35-45 points (Sprints 3-6, optimized workflow)
 
 **Tools:**
+
 - **Project Management:** Jira, Trello, or GitHub Projects
 - **Version Control:** GitHub (public repo for Apify Challenge)
 - **Communication:** Slack channel for beta testers
@@ -159,6 +166,7 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 **Goal:** Deliver a working MVP with core functionality and submit to Apify Challenge
 
 **Objectives:**
+
 1. ✅ Build core orchestration architecture
 2. ✅ Integrate 3 platforms (eBay API, Grailed, Kixify)
 3. ✅ Implement basic email notifications
@@ -166,6 +174,7 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 5. ✅ Submit to Apify Challenge
 
 **Deliverables:**
+
 - Working Apify actor deployed to store
 - Standardized data schema
 - Email alert system
@@ -173,6 +182,7 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 - Apify Challenge submission
 
 **Success Criteria:**
+
 - [ ] All 3 platforms scrape successfully (95%+ success rate)
 - [ ] Email alerts delivered within 10 minutes
 - [ ] Actor Quality Score ≥ 65
@@ -180,6 +190,7 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 - [ ] Positive feedback from 5+ beta testers
 
 **Key Risks:**
+
 - ⚠️ eBay API approval delays (Mitigation: Apply early, have backup HTML scraping)
 - ⚠️ Email deliverability issues (Mitigation: Use SendGrid with verified domain)
 - ⚠️ Quality score below 65 (Mitigation: Follow Apify best practices checklist)
@@ -191,24 +202,28 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 **Goal:** Expand to 6 platforms and add webhook support for power users
 
 **Objectives:**
+
 1. ✅ Add 3 more platforms (Poshmark, Depop, Craigslist)
 2. ✅ Implement webhook notifications
 3. ✅ Add advanced filtering (size, condition, price ranges)
 4. ✅ Improve performance with caching
 
 **Deliverables:**
+
 - 6 platforms total operational
 - Webhook integration with Zapier/Discord/Slack
 - Advanced filter UI in input schema
 - Performance optimization (3-5 min total scrape time)
 
 **Success Criteria:**
+
 - [ ] All 6 platforms maintain 90%+ success rate
 - [ ] Webhooks deliver within 5 minutes of new listing
 - [ ] Scraping time reduced by 30% vs. MVP
 - [ ] 50+ active users (target)
 
 **Key Risks:**
+
 - ⚠️ Platform anti-scraping measures (Mitigation: Residential proxies, rate limiting)
 - ⚠️ Craigslist multi-city complexity (Mitigation: User provides specific URLs)
 
@@ -219,6 +234,7 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 **Goal:** Build intelligent features that differentiate SneakerMeta from competitors
 
 **Objectives:**
+
 1. ✅ AI & Regex parsing engine (extract condition, size, colorway from text)
 2. ✅ Deduplication system (prevent alert spam)
 3. ✅ Release calendar monitoring (upcoming drops)
@@ -226,6 +242,7 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 5. ✅ Price tracking (historical data, price drop alerts)
 
 **Deliverables:**
+
 - AI parsing module (OpenAI integration)
 - Deduplication engine with Key-Value Store
 - Release calendar scraper (The Drop Date, Sole Retriever)
@@ -233,6 +250,7 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 - Price history tracking
 
 **Success Criteria:**
+
 - [ ] AI parsing accuracy ≥ 85% on unstructured listings
 - [ ] Deduplication reduces alerts by 70-80%
 - [ ] Release calendar finds 95%+ of major drops
@@ -240,6 +258,7 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 - [ ] User retention improves to 70%+
 
 **Key Risks:**
+
 - ⚠️ OpenAI API costs (Mitigation: Only use for ambiguous listings, cache results)
 - ⚠️ Calendar site changes (Mitigation: Monitor 3 sources, fallback logic)
 
@@ -250,6 +269,7 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 **Goal:** Finalize product, launch marketing, and achieve first revenue
 
 **Objectives:**
+
 1. ✅ Complete all 12 platforms (add Mercari, OfferUp, Vinted)
 2. ✅ Comprehensive testing (end-to-end, integration, load)
 3. ✅ Professional documentation (README, video tutorials, API docs)
@@ -257,6 +277,7 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 5. ✅ Monetization setup (tiered pricing)
 
 **Deliverables:**
+
 - All 12 platforms operational
 - Test suite with 80%+ code coverage
 - 5-minute demo video + 3 tutorial videos
@@ -264,6 +285,7 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 - Tiered pricing ($4.99, $9.99, $29.99/month)
 
 **Success Criteria:**
+
 - [ ] 12 platforms maintain 85%+ overall success rate
 - [ ] Zero P0/P1 bugs in production
 - [ ] 200+ users (100+ free trial, 100+ paid target)
@@ -271,7 +293,9 @@ PHASE 4: Polish & Launch (Weeks 11-12) ────────────►
 - [ ] 4.5+ star rating on Apify Store
 
 **Key Risks:**
-- ⚠️ High-risk platforms (Mercari, OfferUp) fail frequently (Mitigation: Mark as "beta", graceful degradation)
+
+- ⚠️ High-risk platforms (Mercari, OfferUp) fail frequently (Mitigation: Mark as "beta", graceful
+  degradation)
 - ⚠️ Marketing budget constraints (Mitigation: Organic growth via communities)
 
 ---
@@ -316,19 +340,23 @@ PHASE 4: Polish & Launch
 **Estimated Effort:** 13 story points  
 **Sprint:** Sprint 1 (Weeks 1-2)
 
-**Description:**
-Build the foundational architecture that will power the entire SneakerMeta actor. This includes the main orchestrator that routes scraping tasks, the plugin system for platform scrapers, data normalization engine, and core Apify SDK integration.
+**Description:** Build the foundational architecture that will power the entire SneakerMeta actor.
+This includes the main orchestrator that routes scraping tasks, the plugin system for platform
+scrapers, data normalization engine, and core Apify SDK integration.
 
 **Business Value:**
+
 - Enables rapid addition of new platforms (20+ hours saved per new platform)
 - Provides clean, maintainable codebase for future features
 - Ensures Apify best practices (required for 65+ quality score)
 - Foundation for scaling to 12+ platforms
 
 **Dependencies:**
+
 - None (first epic to be completed)
 
 **Acceptance Criteria:**
+
 - [ ] Main orchestrator successfully routes tasks to platform-specific scrapers
 - [ ] Plugin system allows adding new scrapers with <50 lines of boilerplate code
 - [ ] Data normalization converts any platform format to standardized schema
@@ -337,12 +365,14 @@ Build the foundational architecture that will power the entire SneakerMeta actor
 - [ ] Logging: INFO/WARNING/ERROR levels with structured output
 
 **Technical Notes:**
+
 - Use Apify SDK v3 with TypeScript/JavaScript
 - Implement Strategy Pattern for scraper selection
 - Factory Pattern for scraper instantiation
 - Repository Pattern for data storage
 
 **Related User Stories:**
+
 - US-001, US-002, US-003, US-004
 
 ---
@@ -354,20 +384,24 @@ Build the foundational architecture that will power the entire SneakerMeta actor
 **Estimated Effort:** 8 story points  
 **Sprint:** Sprint 1 (Weeks 1-2)
 
-**Description:**
-Integrate eBay using their official Finding API. eBay is chosen as the first platform because it has a well-documented API, high listing volume, and low legal risk. This integration serves as the template for future API-based integrations.
+**Description:** Integrate eBay using their official Finding API. eBay is chosen as the first
+platform because it has a well-documented API, high listing volume, and low legal risk. This
+integration serves as the template for future API-based integrations.
 
 **Business Value:**
+
 - Proves core architecture works end-to-end
 - eBay has largest inventory (100K+ sneaker listings)
 - Legal/safe (official API)
 - Template for other API-based platforms
 
 **Dependencies:**
+
 - EPIC-001 (Core Architecture must be complete)
 - eBay Developer Account (apply Week 1, usually approved in 1-2 days)
 
 **Acceptance Criteria:**
+
 - [ ] eBay Finding API integrated with OAuth 2.0 authentication
 - [ ] Search by keyword, filter by price range, category (Athletic Shoes)
 - [ ] Successfully retrieve 50+ listings per search term
@@ -377,10 +411,12 @@ Integrate eBay using their official Finding API. eBay is chosen as the first pla
 - [ ] Extract "Authenticity Guarantee" badge when present
 
 **API Limits:**
+
 - Free tier: 5,000 calls/day
 - Recommended: Cache results for 1 hour
 
 **Related User Stories:**
+
 - US-005, US-006, US-007
 
 ---
@@ -392,20 +428,24 @@ Integrate eBay using their official Finding API. eBay is chosen as the first pla
 **Estimated Effort:** 8 story points  
 **Sprint:** Sprint 2 (Weeks 3-4)
 
-**Description:**
-Build multi-channel notification system starting with email alerts. This is a core value proposition—users must receive timely notifications when matching listings appear. Email is the MVP, with webhooks and push notifications added later.
+**Description:** Build multi-channel notification system starting with email alerts. This is a core
+value proposition—users must receive timely notifications when matching listings appear. Email is
+the MVP, with webhooks and push notifications added later.
 
 **Business Value:**
+
 - Core product feature (alerts are the main value)
 - Email has highest open rate (20-30% for transactional)
 - Immediate actionability (users can purchase within minutes)
 - Foundation for premium features (SMS, push notifications)
 
 **Dependencies:**
+
 - EPIC-001, EPIC-002 (needs data to notify about)
 - SendGrid account (free tier: 100 emails/day)
 
 **Acceptance Criteria:**
+
 - [ ] SendGrid integration with verified sender domain
 - [ ] HTML email template with listing cards
 - [ ] Send alerts within 10 minutes of new listing detection
@@ -415,6 +455,7 @@ Build multi-channel notification system starting with email alerts. This is a co
 - [ ] Handle SendGrid failures gracefully (retry 3x with exponential backoff)
 
 **Email Template Requirements:**
+
 - Responsive design (mobile-friendly)
 - Clear call-to-action (View Listing button)
 - Product image, price, size, condition
@@ -422,6 +463,7 @@ Build multi-channel notification system starting with email alerts. This is a co
 - Powered by SneakerMeta footer
 
 **Related User Stories:**
+
 - US-008, US-009, US-010
 
 ---
@@ -433,19 +475,23 @@ Build multi-channel notification system starting with email alerts. This is a co
 **Estimated Effort:** 5 story points  
 **Sprint:** Sprint 1-2 (Weeks 1-4)
 
-**Description:**
-Implement robust data storage using Apify Dataset and Key-Value Store. Dataset stores scraped listings, KV Store manages actor state (seen hashes, user preferences, last scrape timestamps). Proper data management is required for 65+ quality score.
+**Description:** Implement robust data storage using Apify Dataset and Key-Value Store. Dataset
+stores scraped listings, KV Store manages actor state (seen hashes, user preferences, last scrape
+timestamps). Proper data management is required for 65+ quality score.
 
 **Business Value:**
+
 - Enables deduplication (prevents alert spam)
 - Allows incremental scraping (only new listings)
 - Persistent state across scheduled runs
 - Historical data for price tracking (Phase 3)
 
 **Dependencies:**
+
 - EPIC-001 (Core Architecture)
 
 **Acceptance Criteria:**
+
 - [ ] Dataset output matches defined schema (100% consistency)
 - [ ] Each listing has unique `id` field for deduplication
 - [ ] Key-Value Store tracks seen listing hashes
@@ -454,10 +500,12 @@ Implement robust data storage using Apify Dataset and Key-Value Store. Dataset s
 - [ ] Dataset API accessible for external integrations
 
 **Data Retention:**
+
 - Dataset: Keep latest 10,000 listings (rolling window)
 - KV Store: Keep state for 90 days
 
 **Related User Stories:**
+
 - US-011, US-012, US-013
 
 ---
@@ -469,19 +517,23 @@ Implement robust data storage using Apify Dataset and Key-Value Store. Dataset s
 **Estimated Effort:** 5 story points  
 **Sprint:** Sprint 2 (Weeks 3-4)
 
-**Description:**
-Create comprehensive documentation and submit to Apify Challenge. Documentation is a mandatory requirement for the challenge and directly impacts the quality score. Includes README, video demo, input/output examples, and troubleshooting guide.
+**Description:** Create comprehensive documentation and submit to Apify Challenge. Documentation is
+a mandatory requirement for the challenge and directly impacts the quality score. Includes README,
+video demo, input/output examples, and troubleshooting guide.
 
 **Business Value:**
+
 - Required for Apify Challenge eligibility
 - Increases user adoption (clear docs = more users)
 - Reduces support burden (self-service troubleshooting)
 - Demonstrates professionalism (impacts judging)
 
 **Dependencies:**
+
 - EPIC-001, EPIC-002, EPIC-003, EPIC-004 (complete MVP required)
 
 **Acceptance Criteria:**
+
 - [ ] README.md with: description, features, setup, examples, limitations
 - [ ] 2-3 minute demo video showing full workflow
 - [ ] Screenshots of input schema and output dataset
@@ -491,6 +543,7 @@ Create comprehensive documentation and submit to Apify Challenge. Documentation 
 - [ ] Apify Challenge submission completed
 
 **Video Demo Requirements:**
+
 - Show input configuration
 - Live scraping demo (eBay + Grailed)
 - Email notification received
@@ -498,6 +551,7 @@ Create comprehensive documentation and submit to Apify Challenge. Documentation 
 - Explain unique value proposition
 
 **Related User Stories:**
+
 - US-014, US-015, US-016
 
 ---
@@ -509,40 +563,47 @@ Create comprehensive documentation and submit to Apify Challenge. Documentation 
 **Estimated Effort:** 13 story points  
 **Sprint:** Sprint 3 (Weeks 5-6)
 
-**Description:**
-Add three more platforms to bring total to 6. These are peer-to-peer marketplaces with varying scraping difficulties. Poshmark and Depop require internal API reverse engineering, Craigslist is straightforward HTML parsing.
+**Description:** Add three more platforms to bring total to 6. These are peer-to-peer marketplaces
+with varying scraping difficulties. Poshmark and Depop require internal API reverse engineering,
+Craigslist is straightforward HTML parsing.
 
 **Business Value:**
+
 - Expands coverage to 6 platforms (50% of total goal)
 - P2P platforms have best deals (underpriced listings common)
 - Differentiation from single-platform scrapers
 - Broader appeal to sneaker resellers
 
 **Dependencies:**
+
 - EPIC-001 (Core Architecture)
 - Residential proxies (Apify proxy configuration)
 
 **Platform-Specific Notes:**
 
 **Poshmark:**
+
 - Internal REST API (mobile app endpoint)
 - Rate limit: ~150 requests/hour
 - Requires User-Agent spoofing
 - Difficulty: ⭐⭐⭐ (Hard)
 
 **Depop:**
+
 - Internal API (https://webapi.depop.com/api/v2/)
 - Rate limit: ~100 requests/hour
 - Clean JSON responses
 - Difficulty: ⭐⭐ (Medium)
 
 **Craigslist:**
+
 - Simple HTML parsing with Cheerio
 - Rate limit: ~100 requests/hour per city
 - Requires city-specific URLs (user-provided)
 - Difficulty: ⭐⭐ (Medium)
 
 **Acceptance Criteria:**
+
 - [ ] All 3 platforms successfully scrape 50+ listings per search
 - [ ] Rate limiting implemented per platform
 - [ ] Residential proxy rotation configured
@@ -551,6 +612,7 @@ Add three more platforms to bring total to 6. These are peer-to-peer marketplace
 - [ ] Data normalization: Convert all formats to standardized schema
 
 **Related User Stories:**
+
 - US-017, US-018, US-019, US-020
 
 ---
@@ -562,19 +624,23 @@ Add three more platforms to bring total to 6. These are peer-to-peer marketplace
 **Estimated Effort:** 8 story points  
 **Sprint:** Sprint 3 (Weeks 5-6)
 
-**Description:**
-Add webhook support for integration with Zapier, Discord, Slack, and custom endpoints. Webhooks enable power users to build automated workflows (e.g., auto-post deals to Discord servers) and represent a key premium feature.
+**Description:** Add webhook support for integration with Zapier, Discord, Slack, and custom
+endpoints. Webhooks enable power users to build automated workflows (e.g., auto-post deals to
+Discord servers) and represent a key premium feature.
 
 **Business Value:**
+
 - Appeals to power users and reseller communities
 - Enables automation workflows (Zapier has 5,000+ integrations)
 - Discord integration targets sneaker "cook groups" (active communities)
 - Foundation for premium tier ($9.99/month)
 
 **Dependencies:**
+
 - EPIC-003 (Notification System)
 
 **Acceptance Criteria:**
+
 - [ ] Generic webhook POST endpoint support
 - [ ] Webhook payload includes all listing details (JSON format)
 - [ ] HMAC signature for security (verify webhook authenticity)
@@ -585,6 +651,7 @@ Add webhook support for integration with Zapier, Discord, Slack, and custom endp
 - [ ] Webhook failure notifications (email fallback)
 
 **Webhook Payload Schema:**
+
 ```json
 {
   "event": "new_listings_found",
@@ -595,6 +662,7 @@ Add webhook support for integration with Zapier, Discord, Slack, and custom endp
 ```
 
 **Related User Stories:**
+
 - US-021, US-022, US-023
 
 ---
@@ -606,19 +674,22 @@ Add webhook support for integration with Zapier, Discord, Slack, and custom endp
 **Estimated Effort:** 5 story points  
 **Sprint:** Sprint 3 (Weeks 5-6)
 
-**Description:**
-Enhance input schema with advanced filters: size ranges, multiple conditions, price thresholds, exclude keywords, brand filters. These filters reduce noise and improve alert relevance.
+**Description:** Enhance input schema with advanced filters: size ranges, multiple conditions, price
+thresholds, exclude keywords, brand filters. These filters reduce noise and improve alert relevance.
 
 **Business Value:**
+
 - Reduces false positives (alert fatigue)
 - Improves user satisfaction (only relevant alerts)
 - Competitive advantage (more precise than competitors)
 - Enables niche use cases (e.g., "only Player Edition Kobes")
 
 **Dependencies:**
+
 - EPIC-001 (Core Architecture)
 
 **Acceptance Criteria:**
+
 - [ ] Size filter: Support ranges (e.g., 10-11.5) and multiple sizes (e.g., 10, 10.5, 11)
 - [ ] Condition filter: Multiple selections (new, used-like-new, used-good)
 - [ ] Price range: Min and max price filters
@@ -629,6 +700,7 @@ Enhance input schema with advanced filters: size ranges, multiple conditions, pr
 - [ ] Filter validation in input schema
 
 **Related User Stories:**
+
 - US-024, US-025, US-026
 
 ---
@@ -640,30 +712,34 @@ Enhance input schema with advanced filters: size ranges, multiple conditions, pr
 **Estimated Effort:** 13 story points  
 **Sprint:** Sprint 4 (Weeks 7-8)
 
-**Description:**
-Build intelligent parsing system that extracts structured data (size, condition, colorway) from unstructured text (listing titles and descriptions). Uses regex for common patterns and OpenAI API as fallback for ambiguous listings.
+**Description:** Build intelligent parsing system that extracts structured data (size, condition,
+colorway) from unstructured text (listing titles and descriptions). Uses regex for common patterns
+and OpenAI API as fallback for ambiguous listings.
 
 **Business Value:**
+
 - **CRITICAL DIFFERENTIATOR** - No competitors have this
 - Unlocks P2P platforms (where data is messy)
 - Enables accurate filtering (80% of listings lack structured size/condition)
 - Demonstrates technical excellence (Apify Challenge "innovation" criteria)
 
 **Dependencies:**
+
 - EPIC-006 (P2P platforms generate unstructured data)
 - OpenAI API account (GPT-3.5 Turbo, ~$0.002 per parse)
 
 **Parsing Targets:**
 
-| Field | Example Input | Expected Output | Method |
-|-------|---------------|-----------------|--------|
-| **Condition** | "VNDS worn 1x, 9/10" | `used_like_new` | Regex |
-| **Size** | "Size 10.5 US Men's" | `10.5` | Regex |
-| **Colorway** | "Jordan 1 Bred OG" | `Bred` | Regex + Dictionary |
-| **Tags** | "OG all, no box" | `["og_all", "no_box"]` | Regex |
-| **Ambiguous** | "Barely worn, feel like new, TTS" | (fallback to OpenAI) | AI |
+| Field         | Example Input                     | Expected Output        | Method             |
+| ------------- | --------------------------------- | ---------------------- | ------------------ |
+| **Condition** | "VNDS worn 1x, 9/10"              | `used_like_new`        | Regex              |
+| **Size**      | "Size 10.5 US Men's"              | `10.5`                 | Regex              |
+| **Colorway**  | "Jordan 1 Bred OG"                | `Bred`                 | Regex + Dictionary |
+| **Tags**      | "OG all, no box"                  | `["og_all", "no_box"]` | Regex              |
+| **Ambiguous** | "Barely worn, feel like new, TTS" | (fallback to OpenAI)   | AI                 |
 
 **Acceptance Criteria:**
+
 - [ ] Regex engine parses 85%+ of structured listings correctly
 - [ ] AI fallback handles ambiguous cases with 80%+ accuracy
 - [ ] Parsing adds <500ms latency per listing
@@ -673,11 +749,13 @@ Build intelligent parsing system that extracts structured data (size, condition,
 - [ ] Colorway database: 100+ common sneaker colorways
 
 **OpenAI Integration:**
+
 - Model: GPT-3.5 Turbo
 - Prompt engineering: Zero-shot classification
 - Cost: ~$0.002 per parse (~$1-2 per 1,000 listings)
 
 **Related User Stories:**
+
 - US-027, US-028, US-029, US-030
 
 ---
@@ -689,16 +767,19 @@ Build intelligent parsing system that extracts structured data (size, condition,
 **Estimated Effort:** 8 story points  
 **Sprint:** Sprint 4 (Weeks 7-8)
 
-**Description:**
-Implement hash-based deduplication that tracks seen listings across runs. Prevents alert spam by only notifying users about new listings. Uses Apify Key-Value Store for persistent state.
+**Description:** Implement hash-based deduplication that tracks seen listings across runs. Prevents
+alert spam by only notifying users about new listings. Uses Apify Key-Value Store for persistent
+state.
 
 **Business Value:**
+
 - **CRITICAL FOR USER RETENTION** - Alert spam = unsubscribes
 - Reduces email/webhook volume by 70-80%
 - Enables scheduled runs (hourly, daily) without spam
 - Foundation for price tracking (Phase 3)
 
 **Dependencies:**
+
 - EPIC-004 (Data Management)
 
 **Deduplication Strategy:**
@@ -718,6 +799,7 @@ Implement hash-based deduplication that tracks seen listings across runs. Preven
    - Separate alert type: "Price Drop Alert"
 
 **Acceptance Criteria:**
+
 - [ ] Generate unique hash for each listing
 - [ ] Persist hashes in Key-Value Store across runs
 - [ ] Only alert on listings not in seen hash set
@@ -727,6 +809,7 @@ Implement hash-based deduplication that tracks seen listings across runs. Preven
 - [ ] Performance: Hash lookup <10ms per listing
 
 **Related User Stories:**
+
 - US-031, US-032, US-033
 
 ---
@@ -738,27 +821,31 @@ Implement hash-based deduplication that tracks seen listings across runs. Preven
 **Estimated Effort:** 8 story points  
 **Sprint:** Sprint 5 (Weeks 9-10)
 
-**Description:**
-Scrape sneaker release calendars (The Drop Date, Sole Retriever, Finish Line) to proactively alert users about upcoming drops. This shifts the product from reactive (finding deals) to proactive (alerting before releases).
+**Description:** Scrape sneaker release calendars (The Drop Date, Sole Retriever, Finish Line) to
+proactively alert users about upcoming drops. This shifts the product from reactive (finding deals)
+to proactive (alerting before releases).
 
 **Business Value:**
+
 - **MASSIVE DIFFERENTIATOR** - Competes with paid "cook groups" ($30-50/month)
 - Proactive > Reactive (users can prepare for releases)
 - Increases perceived value (2 features in 1: deals + release calendar)
 - Targets serious collectors (higher willingness to pay)
 
 **Dependencies:**
+
 - EPIC-003 (Notification System)
 
 **Calendar Sources:**
 
-| Source | URL | Scraping Method | Data Quality |
-|--------|-----|-----------------|--------------|
-| **The Drop Date** | thedropdate.com | Cheerio (HTML) | ⭐⭐⭐⭐⭐ Excellent |
-| **Sole Retriever** | soleretriever.com | Playwright (JS rendering) | ⭐⭐⭐⭐ Very Good |
-| **Finish Line** | finishline.com | Cheerio (HTML) | ⭐⭐⭐ Good |
+| Source             | URL               | Scraping Method           | Data Quality         |
+| ------------------ | ----------------- | ------------------------- | -------------------- |
+| **The Drop Date**  | thedropdate.com   | Cheerio (HTML)            | ⭐⭐⭐⭐⭐ Excellent |
+| **Sole Retriever** | soleretriever.com | Playwright (JS rendering) | ⭐⭐⭐⭐ Very Good   |
+| **Finish Line**    | finishline.com    | Cheerio (HTML)            | ⭐⭐⭐ Good          |
 
 **Extracted Data:**
+
 - Sneaker name (e.g., "Air Jordan 1 High OG 'Lost and Found'")
 - Release date (e.g., "2025-11-15")
 - Retail price (e.g., "$180")
@@ -766,6 +853,7 @@ Scrape sneaker release calendars (The Drop Date, Sole Retriever, Finish Line) to
 - Raffle links (Nike SNKRS, Foot Locker, etc.)
 
 **Acceptance Criteria:**
+
 - [ ] Scrape 3 calendar sources daily
 - [ ] Aggregate and deduplicate releases (same shoe from multiple sources)
 - [ ] Send daily digest email: "Upcoming Drops This Week"
@@ -775,11 +863,13 @@ Scrape sneaker release calendars (The Drop Date, Sole Retriever, Finish Line) to
 - [ ] Handle calendar site changes gracefully (fallback to other sources)
 
 **Notification Strategy:**
+
 - **Daily Digest:** All releases in next 7 days (sent 9 AM user timezone)
 - **1-Day Alert:** Major releases (limited edition, collaborations) 24 hours before
 - **30-Minute Alert:** For SNKRS drops (requires fast action)
 
 **Related User Stories:**
+
 - US-034, US-035, US-036
 
 ---
@@ -791,43 +881,51 @@ Scrape sneaker release calendars (The Drop Date, Sole Retriever, Finish Line) to
 **Estimated Effort:** 8 story points  
 **Sprint:** Sprint 5 (Weeks 9-10)
 
-**Description:**
-Implement intelligent deal scoring by comparing P2P marketplace prices against authenticated platform prices (GOAT, StockX). Highlights listings that are significantly below market value (e.g., 20%+ discount).
+**Description:** Implement intelligent deal scoring by comparing P2P marketplace prices against
+authenticated platform prices (GOAT, StockX). Highlights listings that are significantly below
+market value (e.g., 20%+ discount).
 
 **Business Value:**
+
 - Helps users identify true deals vs. scams
 - Targets resellers (who need profit margin calculations)
 - Premium feature justification ($9.99/month tier)
 - Reduces decision fatigue (score = instant insight)
 
 **Dependencies:**
+
 - EPIC-009 (AI Parsing for price extraction)
 - Access to GOAT/StockX data (see technical notes)
 
 **Technical Approach:**
 
 **Option 1: Scrape GOAT/StockX (High Risk)**
+
 - Pros: Real-time market prices
 - Cons: Violates ToS, aggressive anti-scraping
 - Recommendation: ⚠️ **HIGH RISK** - NOT RECOMMENDED for Phase 3
 
 **Option 2: Static Price Database (Recommended)**
+
 - Pros: Legal, fast, no scraping
 - Cons: Prices can be outdated (refresh weekly)
 - Implementation: Manually curate top 100 "grail" sneakers with market values
 - Source: Public price guides, Reddit r/Sneakers, forums
 
 **Option 3: User-Provided Market Value**
+
 - Pros: Flexible, no scraping
 - Cons: Requires user effort
 - Implementation: User sets "expected market value" per search term
 
 **MVP Implementation (Recommended: Option 2 + 3 Hybrid):**
+
 1. Built-in price database for top 100 grails
 2. User can override with custom market value
 3. Calculate savings percentage: `(market_value - listing_price) / market_value * 100`
 
 **Deal Score Calculation:**
+
 ```javascript
 if (savingsPercentage >= 30%) return "EXCELLENT DEAL";
 if (savingsPercentage >= 20%) return "GOOD DEAL";
@@ -836,6 +934,7 @@ return "MARKET PRICE";
 ```
 
 **Acceptance Criteria:**
+
 - [ ] Price database with 100+ popular sneakers
 - [ ] Calculate savings percentage for each listing
 - [ ] Highlight deals in email/webhook notifications
@@ -844,6 +943,7 @@ return "MARKET PRICE";
 - [ ] Price history tracking (see price trends over time)
 
 **Related User Stories:**
+
 - US-037, US-038, US-039
 
 ---
@@ -855,10 +955,11 @@ return "MARKET PRICE";
 **Estimated Effort:** 5 story points  
 **Sprint:** Sprint 5 (Weeks 9-10)
 
-**Description:**
-Implement tiered pricing with free, hobby, and pro plans. Gate advanced features (AI parsing, release calendar, webhook, deal scoring) behind paid tiers. Set up Apify monetization.
+**Description:** Implement tiered pricing with free, hobby, and pro plans. Gate advanced features
+(AI parsing, release calendar, webhook, deal scoring) behind paid tiers. Set up Apify monetization.
 
 **Business Value:**
+
 - **REVENUE GENERATION** - Core monetization strategy
 - Freemium model increases user acquisition (free trial)
 - Premium tiers target power users (resellers willing to pay)
@@ -866,24 +967,26 @@ Implement tiered pricing with free, hobby, and pro plans. Gate advanced features
 
 **Pricing Tiers:**
 
-| Feature | Free | Hobby ($4.99/mo) | Pro ($9.99/mo) | Business ($29.99/mo) |
-|---------|------|------------------|----------------|----------------------|
-| **Platforms** | 1 (eBay only) | 3 (eBay, Grailed, Kixify) | All 12 | All 12 |
-| **Max Results** | 10 per run | 50 per run | 500 per run | Unlimited |
-| **Email Alerts** | ❌ | ✅ | ✅ | ✅ |
-| **Webhook** | ❌ | ❌ | ✅ | ✅ |
-| **AI Parsing** | ❌ | ❌ | ✅ | ✅ |
-| **Release Calendar** | ❌ | ❌ | ✅ | ✅ |
-| **Deal Scoring** | ❌ | ❌ | ✅ | ✅ |
-| **Price History** | ❌ | ❌ | ❌ | ✅ |
-| **API Access** | ❌ | ❌ | ❌ | ✅ |
-| **Scheduled Runs** | Manual | Daily | Hourly | Every 15 min |
+| Feature              | Free          | Hobby ($4.99/mo)          | Pro ($9.99/mo) | Business ($29.99/mo) |
+| -------------------- | ------------- | ------------------------- | -------------- | -------------------- |
+| **Platforms**        | 1 (eBay only) | 3 (eBay, Grailed, Kixify) | All 12         | All 12               |
+| **Max Results**      | 10 per run    | 50 per run                | 500 per run    | Unlimited            |
+| **Email Alerts**     | ❌            | ✅                        | ✅             | ✅                   |
+| **Webhook**          | ❌            | ❌                        | ✅             | ✅                   |
+| **AI Parsing**       | ❌            | ❌                        | ✅             | ✅                   |
+| **Release Calendar** | ❌            | ❌                        | ✅             | ✅                   |
+| **Deal Scoring**     | ❌            | ❌                        | ✅             | ✅                   |
+| **Price History**    | ❌            | ❌                        | ❌             | ✅                   |
+| **API Access**       | ❌            | ❌                        | ❌             | ✅                   |
+| **Scheduled Runs**   | Manual        | Daily                     | Hourly         | Every 15 min         |
 
 **Free Trial:**
+
 - 14 days free trial of Pro plan (no credit card required)
 - Goal: Convert 20% of free trials to paid (industry standard: 10-25%)
 
 **Implementation:**
+
 ```javascript
 // Tier enforcement
 const tier = input.subscriptionTier || 'free';
@@ -895,6 +998,7 @@ if (input.platforms.length > limits.maxPlatforms) {
 ```
 
 **Acceptance Criteria:**
+
 - [ ] Configure Apify monetization (rental model)
 - [ ] Tier enforcement logic in main.js
 - [ ] Upgrade prompts in error messages
@@ -902,6 +1006,7 @@ if (input.platforms.length > limits.maxPlatforms) {
 - [ ] Analytics: Track tier usage and conversion rates
 
 **Related User Stories:**
+
 - US-040, US-041, US-042
 
 ---
@@ -913,27 +1018,30 @@ if (input.platforms.length > limits.maxPlatforms) {
 **Estimated Effort:** 13 story points  
 **Sprint:** Sprint 6 (Weeks 11-12)
 
-**Description:**
-Add final 3 platforms to reach 12 total. These are the highest-risk platforms with aggressive anti-scraping measures. Mark as "beta" and implement graceful degradation.
+**Description:** Add final 3 platforms to reach 12 total. These are the highest-risk platforms with
+aggressive anti-scraping measures. Mark as "beta" and implement graceful degradation.
 
 **Business Value:**
+
 - Achieves 12-platform goal (marketing claim)
 - Completeness perception (vs. 9-platform competitors)
 - Mercari/OfferUp have unique inventory (not on other platforms)
 
 **Dependencies:**
+
 - EPIC-001 (Core Architecture)
 - Premium residential proxies (Apify)
 
 **Platform Risk Assessment:**
 
-| Platform | Difficulty | Risk | Strategy |
-|----------|-----------|------|----------|
-| **Mercari** | ⭐⭐⭐⭐ (Very Hard) | ⚠️ High | Internal GraphQL API, aggressive rate limits, mark as "beta" |
-| **OfferUp** | ⭐⭐⭐⭐ (Very Hard) | ⚠️ High | Playwright automation, Cloudflare, slow scraping (10-15 sec delays) |
-| **Vinted** | ⭐⭐⭐ (Hard) | ⚠️ Medium | Internal API, EU-focused (limited US presence), geographic restrictions |
+| Platform    | Difficulty           | Risk      | Strategy                                                                |
+| ----------- | -------------------- | --------- | ----------------------------------------------------------------------- |
+| **Mercari** | ⭐⭐⭐⭐ (Very Hard) | ⚠️ High   | Internal GraphQL API, aggressive rate limits, mark as "beta"            |
+| **OfferUp** | ⭐⭐⭐⭐ (Very Hard) | ⚠️ High   | Playwright automation, Cloudflare, slow scraping (10-15 sec delays)     |
+| **Vinted**  | ⭐⭐⭐ (Hard)        | ⚠️ Medium | Internal API, EU-focused (limited US presence), geographic restrictions |
 
 **Acceptance Criteria:**
+
 - [ ] All 3 platforms scrape successfully (target 70%+ success rate, lower than other platforms)
 - [ ] Mark as "BETA" in platform selection UI
 - [ ] Graceful degradation: Actor continues if these platforms fail
@@ -942,11 +1050,13 @@ Add final 3 platforms to reach 12 total. These are the highest-risk platforms wi
 - [ ] Monitor failure rates: Auto-disable platform if failure rate >50% for 7 days
 
 **Risk Mitigation:**
+
 - Daily monitoring of scraper health
 - Fallback logic if platform is down
 - Clear user expectations ("BETA - May be unreliable")
 
 **Related User Stories:**
+
 - US-043, US-044, US-045
 
 ---
@@ -958,10 +1068,12 @@ Add final 3 platforms to reach 12 total. These are the highest-risk platforms wi
 **Estimated Effort:** 8 story points  
 **Sprint:** Sprint 6 (Weeks 11-12)
 
-**Description:**
-Comprehensive testing to ensure production readiness. Includes unit tests, integration tests, end-to-end tests, load testing, and manual QA. Target: 80%+ code coverage, zero P0/P1 bugs.
+**Description:** Comprehensive testing to ensure production readiness. Includes unit tests,
+integration tests, end-to-end tests, load testing, and manual QA. Target: 80%+ code coverage, zero
+P0/P1 bugs.
 
 **Business Value:**
+
 - Prevents production failures (customer churn)
 - Increases reliability (user trust)
 - Required for 65+ Apify quality score
@@ -970,32 +1082,38 @@ Comprehensive testing to ensure production readiness. Includes unit tests, integ
 **Testing Strategy:**
 
 **1. Unit Tests (Jest)**
+
 - Test individual functions: parsing, normalization, hashing
 - Target: 80% code coverage
 - Mock external APIs (eBay, SendGrid, etc.)
 
 **2. Integration Tests**
+
 - Test platform scrapers end-to-end
 - Verify data flows from scraper → normalizer → dataset
 - Test notification delivery (email, webhook)
 
 **3. End-to-End Tests (Apify Test Runner)**
+
 - Run full actor with test input
 - Verify output dataset matches schema
 - Test all 12 platforms (allow some failures for high-risk platforms)
 
 **4. Load Testing**
+
 - Test with 100+ search terms
 - Verify performance under load (should complete in <15 min)
 - Monitor memory usage (must stay under 4GB)
 
 **5. Manual QA**
+
 - Test all input schema options
 - Verify email/webhook notifications
 - Check for UI/UX issues in Apify Console
 - Beta tester feedback
 
 **Acceptance Criteria:**
+
 - [ ] 80%+ code coverage (unit tests)
 - [ ] All integration tests pass
 - [ ] E2E test runs successfully 10 consecutive times
@@ -1006,6 +1124,7 @@ Comprehensive testing to ensure production readiness. Includes unit tests, integ
 - [ ] Beta testers report 4+/5 satisfaction
 
 **Related User Stories:**
+
 - US-046, US-047, US-048
 
 ---
@@ -1017,10 +1136,12 @@ Comprehensive testing to ensure production readiness. Includes unit tests, integ
 **Estimated Effort:** 8 story points  
 **Sprint:** Sprint 6 (Weeks 11-12)
 
-**Description:**
-Execute marketing campaign to acquire first 200 users. Focus on organic growth through sneaker communities (Reddit, Discord, YouTube). Leverage Apify Challenge submission for credibility.
+**Description:** Execute marketing campaign to acquire first 200 users. Focus on organic growth
+through sneaker communities (Reddit, Discord, YouTube). Leverage Apify Challenge submission for
+credibility.
 
 **Business Value:**
+
 - User acquisition (target: 200+ users by Week 12)
 - Revenue generation ($500-1,000 MRR target)
 - Community building (early adopters become advocates)
@@ -1029,6 +1150,7 @@ Execute marketing campaign to acquire first 200 users. Focus on organic growth t
 **Marketing Channels:**
 
 **1. Reddit (Primary Channel)**
+
 - Target subreddits:
   - r/Sneakers (2.9M members)
   - r/SneakerMarket (100K members)
@@ -1038,12 +1160,14 @@ Execute marketing campaign to acquire first 200 users. Focus on organic growth t
 - Budget: $0 (organic)
 
 **2. Discord (Secondary Channel)**
+
 - Join 20+ sneaker cook groups
 - Provide value: Share deals, release calendar info
 - Mention actor when users ask "how did you find that?"
 - Budget: $0 (organic)
 
 **3. YouTube (Content Marketing)**
+
 - Create tutorial videos:
   - "How to Find Sneaker Deals with Automation (Free Tool)"
   - "Setting Up SneakerMeta Actor: Complete Guide"
@@ -1052,6 +1176,7 @@ Execute marketing campaign to acquire first 200 users. Focus on organic growth t
 - Budget: $0-100 (optional: pay micro-influencers $20-50 for video)
 
 **4. Apify Store (Organic Discovery)**
+
 - Optimize store listing:
   - SEO keywords: "sneaker", "scraper", "deals", "alert", "notification"
   - High-quality screenshots
@@ -1060,6 +1185,7 @@ Execute marketing campaign to acquire first 200 users. Focus on organic growth t
 - Leverage Apify Challenge badge (if won)
 
 **5. Landing Page (Optional)**
+
 - Simple landing page: sneakermeta.com (optional)
 - Benefits: Custom branding, email capture, SEO
 - Cost: $10/year domain + free hosting (Vercel, Netlify)
@@ -1067,6 +1193,7 @@ Execute marketing campaign to acquire first 200 users. Focus on organic growth t
 **Content Calendar (Weeks 11-12):**
 
 **Week 11:**
+
 - Monday: Publish demo video on YouTube
 - Tuesday: Post in r/Sneakers (value-first: "Found these deals using automation")
 - Wednesday: Join 10 Discord servers, introduce in #general
@@ -1074,6 +1201,7 @@ Execute marketing campaign to acquire first 200 users. Focus on organic growth t
 - Friday: Post in r/SneakerMarket
 
 **Week 12:**
+
 - Monday: Post in r/Flipping (focus on reseller use case)
 - Tuesday: Reach out to 5 YouTube micro-influencers
 - Wednesday: Update Apify Store listing (based on feedback)
@@ -1081,6 +1209,7 @@ Execute marketing campaign to acquire first 200 users. Focus on organic growth t
 - Friday: Launch celebration post (if Apify Challenge results announced)
 
 **Acceptance Criteria:**
+
 - [ ] 200+ total users (100+ free trial, 100+ paid target)
 - [ ] 50+ active users (ran actor in last 7 days)
 - [ ] 20% free trial → paid conversion
@@ -1090,6 +1219,7 @@ Execute marketing campaign to acquire first 200 users. Focus on organic growth t
 - [ ] 4.5+ star rating on Apify Store (from 10+ reviews)
 
 **Related User Stories:**
+
 - US-049, US-050, US-051
 
 ---
@@ -1101,10 +1231,11 @@ Execute marketing campaign to acquire first 200 users. Focus on organic growth t
 **Estimated Effort:** 5 story points  
 **Sprint:** Sprint 6 (Weeks 11-12)
 
-**Description:**
-Set up business operations: Apify monetization configuration, payment processing, analytics tracking, customer support channels, legal disclaimers, and pricing optimization.
+**Description:** Set up business operations: Apify monetization configuration, payment processing,
+analytics tracking, customer support channels, legal disclaimers, and pricing optimization.
 
 **Business Value:**
+
 - Revenue generation ($500-1,000 MRR target)
 - Professional operations (trust and credibility)
 - Legal protection (disclaimers reduce liability)
@@ -1113,35 +1244,41 @@ Set up business operations: Apify monetization configuration, payment processing
 **Tasks:**
 
 **1. Apify Monetization Setup**
+
 - Configure rental pricing: $4.99, $9.99, $29.99/month
 - Set up PayPal/bank account for payouts
 - Enable free trial (14 days)
 - Tax configuration (if applicable)
 
 **2. Analytics & Tracking**
+
 - Google Analytics on landing page (if created)
 - Apify Actor analytics: runs, users, errors
 - Conversion funnel tracking: Free trial → Paid
 - Revenue tracking: MRR, ARPU, churn rate
 
 **3. Customer Support**
+
 - Email: support@sneakermeta.com (or Gmail)
 - Discord: Create #support channel
 - Response time target: <24 hours
 - FAQ document (common issues + solutions)
 
 **4. Legal & Compliance**
+
 - Legal disclaimer in README (see EPIC-005)
 - Terms of Service (optional for MVP, required if >1,000 users)
 - Privacy Policy (if collecting user emails)
 - GDPR compliance (if EU users): Add data processing notice
 
 **5. Pricing Optimization**
+
 - A/B test: $4.99 vs. $7.99 for Hobby tier
 - Monitor conversion rates per tier
 - Survey users: "What price would you pay?"
 
 **Acceptance Criteria:**
+
 - [ ] Apify monetization live and working
 - [ ] Receive first paying customer (🎉)
 - [ ] Analytics tracking all key metrics
@@ -1150,6 +1287,7 @@ Set up business operations: Apify monetization configuration, payment processing
 - [ ] $500+ MRR by end of Week 12 (target)
 
 **Related User Stories:**
+
 - US-052, US-053, US-054
 
 ---
@@ -1159,6 +1297,7 @@ Set up business operations: Apify monetization configuration, payment processing
 ### Legend
 
 **Story Points (Fibonacci Scale):**
+
 - **1 point:** < 2 hours (trivial task)
 - **2 points:** 2-4 hours (simple feature)
 - **3 points:** 4-8 hours (half-day feature)
@@ -1167,6 +1306,7 @@ Set up business operations: Apify monetization configuration, payment processing
 - **13 points:** 1 week+ (epic-level, should be broken down)
 
 **Priority Levels:**
+
 - **P0 - Critical:** Must have for MVP/launch, blocking
 - **P1 - High:** Important for success, high ROI
 - **P2 - Medium:** Nice to have, moderate impact
@@ -1185,14 +1325,15 @@ Set up business operations: Apify monetization configuration, payment processing
 **Story Points:** 2  
 **Sprint:** Sprint 1
 
-**User Story:**
-As a **developer**, I want to **initialize the Apify actor project with proper structure and configuration**, so that **I have a solid foundation for building the application**.
+**User Story:** As a **developer**, I want to **initialize the Apify actor project with proper
+structure and configuration**, so that **I have a solid foundation for building the application**.
 
 **Acceptance Criteria:**
 
 **Given** I am starting a new Apify project  
 **When** I run `apify init`  
 **Then** the project structure is created with:
+
 - [ ] `.actor/actor.json` with correct metadata
 - [ ] `.actor/input_schema.json` (empty, to be filled)
 - [ ] `src/main.js` entry point
@@ -1204,6 +1345,7 @@ As a **developer**, I want to **initialize the Apify actor project with proper s
 **And** the actor successfully completes (even if it does nothing yet)
 
 **Technical Tasks:**
+
 1. Run `apify init sneaker-meta-actor`
 2. Install dependencies: `npm install apify@^3.1.0 crawlee@^3.5.0`
 3. Create folder structure: `src/scrapers/`, `src/utils/`, `src/config/`
@@ -1221,19 +1363,21 @@ As a **developer**, I want to **initialize the Apify actor project with proper s
 **Story Points:** 3  
 **Sprint:** Sprint 1
 
-**User Story:**
-As a **developer**, I want to **define a standardized output schema for all listings**, so that **data from different platforms is consistent and predictable**.
+**User Story:** As a **developer**, I want to **define a standardized output schema for all
+listings**, so that **data from different platforms is consistent and predictable**.
 
 **Acceptance Criteria:**
 
 **Given** I have analyzed multiple platform data formats  
 **When** I create the schema  
 **Then** it includes these required fields:
+
 - [ ] `product.name` (string)
 - [ ] `product.brand` (string)
 - [ ] `listing.price` (number)
 - [ ] `listing.size_us_mens` (string)
-- [ ] `listing.condition` (enum: new_in_box, used_like_new, used_good, used_fair, used_poor, unspecified)
+- [ ] `listing.condition` (enum: new_in_box, used_like_new, used_good, used_fair, used_poor,
+      unspecified)
 - [ ] `source.platform` (string)
 - [ ] `source.url` (string)
 - [ ] `source.id` (string)
@@ -1244,6 +1388,7 @@ As a **developer**, I want to **define a standardized output schema for all list
 **And** the schema is validated in unit tests
 
 **Technical Tasks:**
+
 1. Create `src/schemas/output-schema.js` with schema definition
 2. Document schema in `docs/OUTPUT_SCHEMA.md` with examples
 3. Create TypeScript types (if using TS) or JSDoc comments
@@ -1261,8 +1406,9 @@ As a **developer**, I want to **define a standardized output schema for all list
 **Story Points:** 5  
 **Sprint:** Sprint 1
 
-**User Story:**
-As a **developer**, I want to **build a data normalization engine that converts platform-specific data to the standardized schema**, so that **all downstream processing works uniformly**.
+**User Story:** As a **developer**, I want to **build a data normalization engine that converts
+platform-specific data to the standardized schema**, so that **all downstream processing works
+uniformly**.
 
 **Acceptance Criteria:**
 
@@ -1275,11 +1421,13 @@ As a **developer**, I want to **build a data normalization engine that converts 
 **And** it generates a unique listing ID if not provided
 
 **And** I have platform-specific normalizers for:
+
 - [ ] eBay
 - [ ] Grailed
 - [ ] Kixify
 
 **Technical Tasks:**
+
 1. Create `src/utils/normalizer.js` with base class
 2. Implement `BaseNormalizer` with common logic
 3. Create platform-specific normalizers:
@@ -1301,8 +1449,8 @@ As a **developer**, I want to **build a data normalization engine that converts 
 **Story Points:** 5  
 **Sprint:** Sprint 1
 
-**User Story:**
-As a **developer**, I want to **build a scraper manager that routes scraping tasks to platform-specific scrapers**, so that **adding new platforms is simple and maintainable**.
+**User Story:** As a **developer**, I want to **build a scraper manager that routes scraping tasks
+to platform-specific scrapers**, so that **adding new platforms is simple and maintainable**.
 
 **Acceptance Criteria:**
 
@@ -1315,11 +1463,13 @@ As a **developer**, I want to **build a scraper manager that routes scraping tas
 **And** it logs scraping progress (platform started, completed, failed)
 
 **And** adding a new platform requires:
+
 - [ ] Create new scraper class
 - [ ] Register in scraper factory
 - [ ] No changes to main orchestrator
 
 **Technical Tasks:**
+
 1. Create `src/scrapers/manager.js` with ScraperManager class
 2. Implement scraper factory pattern (select scraper by platform name)
 3. Add parallel execution with error handling (Promise.allSettled)
@@ -1339,8 +1489,8 @@ As a **developer**, I want to **build a scraper manager that routes scraping tas
 **Story Points:** 5  
 **Sprint:** Sprint 1
 
-**User Story:**
-As a **sneaker collector**, I want to **search eBay for sneakers matching my criteria**, so that **I can find deals on the platform with the largest inventory**.
+**User Story:** As a **sneaker collector**, I want to **search eBay for sneakers matching my
+criteria**, so that **I can find deals on the platform with the largest inventory**.
 
 **Acceptance Criteria:**
 
@@ -1356,6 +1506,7 @@ As a **sneaker collector**, I want to **search eBay for sneakers matching my cri
 **And** it retries on API failures (3 attempts)
 
 **Technical Tasks:**
+
 1. Apply for eBay Developer account (do this Week 1 Day 1)
 2. Create `src/scrapers/ebay-scraper.js`
 3. Implement OAuth 2.0 authentication
@@ -1379,8 +1530,8 @@ As a **sneaker collector**, I want to **search eBay for sneakers matching my cri
 **Story Points:** 5  
 **Sprint:** Sprint 1
 
-**User Story:**
-As a **sneaker collector**, I want to **search Grailed for sneakers**, so that **I can find deals on peer-to-peer marketplace listings**.
+**User Story:** As a **sneaker collector**, I want to **search Grailed for sneakers**, so that **I
+can find deals on peer-to-peer marketplace listings**.
 
 **Acceptance Criteria:**
 
@@ -1395,6 +1546,7 @@ As a **sneaker collector**, I want to **search Grailed for sneakers**, so that *
 **And** it uses residential proxies if available
 
 **Technical Tasks:**
+
 1. Reverse engineer Grailed internal API (GraphQL endpoint)
 2. Create `src/scrapers/grailed-scraper.js`
 3. Build GraphQL query for search
@@ -1417,8 +1569,8 @@ As a **sneaker collector**, I want to **search Grailed for sneakers**, so that *
 **Story Points:** 3  
 **Sprint:** Sprint 1
 
-**User Story:**
-As a **sneaker collector**, I want to **search Kixify for sneakers**, so that **I can find deals on a sneaker-specific marketplace**.
+**User Story:** As a **sneaker collector**, I want to **search Kixify for sneakers**, so that **I
+can find deals on a sneaker-specific marketplace**.
 
 **Acceptance Criteria:**
 
@@ -1431,6 +1583,7 @@ As a **sneaker collector**, I want to **search Kixify for sneakers**, so that **
 **And** it handles pagination (up to 5 pages)
 
 **Technical Tasks:**
+
 1. Analyze Kixify HTML structure
 2. Create `src/scrapers/kixify-scraper.js`
 3. Use Cheerio crawler for HTML parsing
@@ -1453,8 +1606,8 @@ As a **sneaker collector**, I want to **search Kixify for sneakers**, so that **
 **Story Points:** 3  
 **Sprint:** Sprint 2
 
-**User Story:**
-As a **product owner**, I want to **integrate SendGrid for email delivery**, so that **users can receive alert notifications reliably**.
+**User Story:** As a **product owner**, I want to **integrate SendGrid for email delivery**, so that
+**users can receive alert notifications reliably**.
 
 **Acceptance Criteria:**
 
@@ -1467,6 +1620,7 @@ As a **product owner**, I want to **integrate SendGrid for email delivery**, so 
 **And** free tier limit (100 emails/day) is monitored
 
 **Technical Tasks:**
+
 1. Sign up for SendGrid (free tier)
 2. Create API key with "Mail Send" permission
 3. Verify sender domain (or use sandbox for testing)
@@ -1488,14 +1642,15 @@ As a **product owner**, I want to **integrate SendGrid for email delivery**, so 
 **Story Points:** 3  
 **Sprint:** Sprint 2
 
-**User Story:**
-As a **sneaker collector**, I want to **receive beautifully formatted email alerts**, so that **I can quickly identify deals and click through to listings**.
+**User Story:** As a **sneaker collector**, I want to **receive beautifully formatted email
+alerts**, so that **I can quickly identify deals and click through to listings**.
 
 **Acceptance Criteria:**
 
 **Given** there are 5 new matching listings  
 **When** I receive the email alert  
 **Then** the email includes:
+
 - [ ] Eye-catching subject: "🔥 5 New Sneaker Deals Found"
 - [ ] Header with SneakerMeta branding
 - [ ] Each listing displayed as a card with:
@@ -1513,6 +1668,7 @@ As a **sneaker collector**, I want to **receive beautifully formatted email aler
 **And** the template works across email clients (Gmail, Outlook, Apple Mail)
 
 **Technical Tasks:**
+
 1. Create `src/templates/email-alert.html`
 2. Use inline CSS (required for email compatibility)
 3. Design responsive layout (media queries for mobile)
@@ -1532,8 +1688,8 @@ As a **sneaker collector**, I want to **receive beautifully formatted email aler
 **Story Points:** 5  
 **Sprint:** Sprint 2
 
-**User Story:**
-As a **sneaker collector**, I want to **receive email alerts within 10 minutes of matching listings appearing**, so that **I can act quickly before deals disappear**.
+**User Story:** As a **sneaker collector**, I want to **receive email alerts within 10 minutes of
+matching listings appearing**, so that **I can act quickly before deals disappear**.
 
 **Acceptance Criteria:**
 
@@ -1546,6 +1702,7 @@ As a **sneaker collector**, I want to **receive email alerts within 10 minutes o
 **And** users can opt for digest mode: batch listings and send once per day
 
 **Technical Tasks:**
+
 1. Integrate email template with notification logic
 2. Add template data binding (replace placeholders with listing data)
 3. Implement batching logic for digest mode:
@@ -1569,8 +1726,8 @@ As a **sneaker collector**, I want to **receive email alerts within 10 minutes o
 **Story Points:** 2  
 **Sprint:** Sprint 1
 
-**User Story:**
-As a **developer**, I want to **store all scraped listings in an Apify Dataset**, so that **users can access structured data via API and the data persists across runs**.
+**User Story:** As a **developer**, I want to **store all scraped listings in an Apify Dataset**, so
+that **users can access structured data via API and the data persists across runs**.
 
 **Acceptance Criteria:**
 
@@ -1583,6 +1740,7 @@ As a **developer**, I want to **store all scraped listings in an Apify Dataset**
 **And** I can export the dataset as JSON, CSV, or Excel
 
 **Technical Tasks:**
+
 1. Use `await Actor.pushData(listings)` to save to dataset
 2. Ensure each listing has a unique `id` (e.g., `${platform}_${listingId}`)
 3. Validate data before saving (schema validation)
@@ -1601,8 +1759,8 @@ As a **developer**, I want to **store all scraped listings in an Apify Dataset**
 **Story Points:** 3  
 **Sprint:** Sprint 2
 
-**User Story:**
-As a **developer**, I want to **track seen listings using hash storage**, so that **the actor only alerts on new listings in future runs**.
+**User Story:** As a **developer**, I want to **track seen listings using hash storage**, so that
+**the actor only alerts on new listings in future runs**.
 
 **Acceptance Criteria:**
 
@@ -1614,6 +1772,7 @@ As a **developer**, I want to **track seen listings using hash storage**, so tha
 **And** the hash set is limited to 10,000 most recent entries (rolling window)
 
 **Technical Tasks:**
+
 1. Create hash generation function: `generateHash(listing)`
    - Hash format: MD5 of `${platform}:${listingId}`
 2. Store seen hashes in Key-Value Store: `await Actor.setValue('seen_hashes', hashSet)`
@@ -1637,8 +1796,8 @@ As a **developer**, I want to **track seen listings using hash storage**, so tha
 **Story Points:** 2  
 **Sprint:** Sprint 2
 
-**User Story:**
-As a **sneaker collector**, I want to **schedule the actor to run automatically every hour**, so that **I receive continuous monitoring without manual intervention**.
+**User Story:** As a **sneaker collector**, I want to **schedule the actor to run automatically
+every hour**, so that **I receive continuous monitoring without manual intervention**.
 
 **Acceptance Criteria:**
 
@@ -1650,6 +1809,7 @@ As a **sneaker collector**, I want to **schedule the actor to run automatically 
 **And** I can view the run history in Apify Console
 
 **Technical Tasks:**
+
 1. Document how to set up scheduled runs in Apify Console
    - Navigate to Actor → Settings → Schedule
    - Add cron expression: `0 * * * *` (every hour)
@@ -1670,14 +1830,15 @@ As a **sneaker collector**, I want to **schedule the actor to run automatically 
 **Story Points:** 3  
 **Sprint:** Sprint 2
 
-**User Story:**
-As a **new user**, I want to **read clear documentation that explains how to use the actor**, so that **I can set it up without confusion**.
+**User Story:** As a **new user**, I want to **read clear documentation that explains how to use the
+actor**, so that **I can set it up without confusion**.
 
 **Acceptance Criteria:**
 
 **Given** I am a new user with no prior Apify experience  
 **When** I read the README  
 **Then** it includes:
+
 - [ ] Clear description of what the actor does
 - [ ] List of features and supported platforms
 - [ ] Input schema explanation with examples
@@ -1694,6 +1855,7 @@ As a **new user**, I want to **read clear documentation that explains how to use
 **And** it contributes to achieving 65+ quality score
 
 **Technical Tasks:**
+
 1. Create comprehensive README.md (3,000-5,000 words)
 2. Add sections:
    - Title and description
@@ -1722,14 +1884,15 @@ As a **new user**, I want to **read clear documentation that explains how to use
 **Story Points:** 3  
 **Sprint:** Sprint 2
 
-**User Story:**
-As a **potential user**, I want to **watch a short demo video**, so that **I can quickly understand the actor's value without reading documentation**.
+**User Story:** As a **potential user**, I want to **watch a short demo video**, so that **I can
+quickly understand the actor's value without reading documentation**.
 
 **Acceptance Criteria:**
 
 **Given** I visit the actor's Apify Store page  
 **When** I watch the demo video  
 **Then** it demonstrates:
+
 - [ ] Input configuration (adding search terms, selecting platforms, setting price range)
 - [ ] Live scraping (show actor running in Apify Console)
 - [ ] Results dataset (preview JSON output)
@@ -1742,6 +1905,7 @@ As a **potential user**, I want to **watch a short demo video**, so that **I can
 **And** it ends with a call-to-action (Try it free)
 
 **Technical Tasks:**
+
 1. Write video script (2-3 minutes, ~300-450 words)
 2. Record screen capture (use OBS Studio or Loom)
 3. Record voiceover or add text overlays
@@ -1762,14 +1926,15 @@ As a **potential user**, I want to **watch a short demo video**, so that **I can
 **Story Points:** 2  
 **Sprint:** Sprint 2
 
-**User Story:**
-As a **developer**, I want to **submit the actor to the Apify Challenge**, so that **I can compete for prizes and gain visibility**.
+**User Story:** As a **developer**, I want to **submit the actor to the Apify Challenge**, so that
+**I can compete for prizes and gain visibility**.
 
 **Acceptance Criteria:**
 
 **Given** the MVP is complete and documented  
 **When** I submit to the Apify Challenge  
 **Then** the submission includes:
+
 - [ ] Published actor on Apify Store
 - [ ] Public GitHub repository link
 - [ ] Comprehensive README
@@ -1781,6 +1946,7 @@ As a **developer**, I want to **submit the actor to the Apify Challenge**, so th
 **And** the actor is live and accessible to public
 
 **Technical Tasks:**
+
 1. Publish actor to Apify Store:
    - `apify push`
    - Make actor public
@@ -1811,8 +1977,8 @@ As a **developer**, I want to **submit the actor to the Apify Challenge**, so th
 **Story Points:** 5  
 **Sprint:** Sprint 3
 
-**User Story:**
-As a **sneaker collector**, I want to **search Poshmark for sneakers**, so that **I can find deals on a popular fashion marketplace**.
+**User Story:** As a **sneaker collector**, I want to **search Poshmark for sneakers**, so that **I
+can find deals on a popular fashion marketplace**.
 
 **Acceptance Criteria:**
 
@@ -1827,6 +1993,7 @@ As a **sneaker collector**, I want to **search Poshmark for sneakers**, so that 
 **And** it uses residential proxies
 
 **Technical Tasks:**
+
 1. Reverse engineer Poshmark internal API (inspect mobile app traffic)
 2. Create `src/scrapers/poshmark-scraper.js`
 3. Build API request with search parameters
@@ -1849,8 +2016,8 @@ As a **sneaker collector**, I want to **search Poshmark for sneakers**, so that 
 **Story Points:** 3  
 **Sprint:** Sprint 3
 
-**User Story:**
-As a **sneaker collector**, I want to **search Depop for sneakers**, so that **I can find deals on a Gen-Z focused marketplace**.
+**User Story:** As a **sneaker collector**, I want to **search Depop for sneakers**, so that **I can
+find deals on a Gen-Z focused marketplace**.
 
 **Acceptance Criteria:**
 
@@ -1863,6 +2030,7 @@ As a **sneaker collector**, I want to **search Depop for sneakers**, so that **I
 **And** it handles rate limits (100 requests/hour)
 
 **Technical Tasks:**
+
 1. Analyze Depop API (https://webapi.depop.com/api/v2/search/products/)
 2. Create `src/scrapers/depop-scraper.js`
 3. Build API request with query parameters
@@ -1883,8 +2051,8 @@ As a **sneaker collector**, I want to **search Depop for sneakers**, so that **I
 **Story Points:** 5  
 **Sprint:** Sprint 3
 
-**User Story:**
-As a **sneaker collector**, I want to **search Craigslist for sneakers in multiple cities**, so that **I can find local deals**.
+**User Story:** As a **sneaker collector**, I want to **search Craigslist for sneakers in multiple
+cities**, so that **I can find local deals**.
 
 **Acceptance Criteria:**
 
@@ -1898,6 +2066,7 @@ As a **sneaker collector**, I want to **search Craigslist for sneakers in multip
 **And** it handles simple CAPTCHAs (log warning, continue)
 
 **Technical Tasks:**
+
 1. Create `src/scrapers/craigslist-scraper.js`
 2. Use Cheerio crawler for HTML parsing
 3. Handle multiple city URLs (user-provided in input)
@@ -1911,7 +2080,8 @@ As a **sneaker collector**, I want to **search Craigslist for sneakers in multip
 
 **Dependencies:** US-004
 
-**Note:** User must provide specific city search URLs (e.g., `https://newyork.craigslist.org/search/sss?query=jordan+1`)
+**Note:** User must provide specific city search URLs (e.g.,
+`https://newyork.craigslist.org/search/sss?query=jordan+1`)
 
 ---
 
@@ -1922,8 +2092,8 @@ As a **sneaker collector**, I want to **search Craigslist for sneakers in multip
 **Story Points:** 3  
 **Sprint:** Sprint 3
 
-**User Story:**
-As a **user**, I want the **actor to complete scraping in under 5 minutes**, so that **I receive alerts quickly**.
+**User Story:** As a **user**, I want the **actor to complete scraping in under 5 minutes**, so that
+**I receive alerts quickly**.
 
 **Acceptance Criteria:**
 
@@ -1935,12 +2105,15 @@ As a **user**, I want the **actor to complete scraping in under 5 minutes**, so 
 **And** memory usage stays <2GB
 
 **Technical Tasks:**
+
 1. Refactor scraper manager to use AutoscaledPool
    ```javascript
    const pool = new AutoscaledPool({
      maxConcurrency: 5,
      minConcurrency: 2,
-     runTaskFunction: async () => { /* scrape platform */ },
+     runTaskFunction: async () => {
+       /* scrape platform */
+     },
    });
    ```
 2. Profile performance: Measure time per platform
@@ -1963,8 +2136,8 @@ As a **user**, I want the **actor to complete scraping in under 5 minutes**, so 
 **Story Points:** 5  
 **Sprint:** Sprint 3
 
-**User Story:**
-As a **power user**, I want to **send new listing data to a webhook URL**, so that **I can integrate with Zapier, Make, or my own automation**.
+**User Story:** As a **power user**, I want to **send new listing data to a webhook URL**, so that
+**I can integrate with Zapier, Make, or my own automation**.
 
 **Acceptance Criteria:**
 
@@ -1977,6 +2150,7 @@ As a **power user**, I want to **send new listing data to a webhook URL**, so th
 **And** webhook delivery completes within 5 minutes
 
 **Technical Tasks:**
+
 1. Add webhook configuration to input schema:
    ```json
    {
@@ -2021,8 +2195,8 @@ As a **power user**, I want to **send new listing data to a webhook URL**, so th
 **Story Points:** 3  
 **Sprint:** Sprint 3
 
-**User Story:**
-As a **sneaker reseller**, I want to **receive alerts in my Discord server**, so that **my team can see deals instantly**.
+**User Story:** As a **sneaker reseller**, I want to **receive alerts in my Discord server**, so
+that **my team can see deals instantly**.
 
 **Acceptance Criteria:**
 
@@ -2030,6 +2204,7 @@ As a **sneaker reseller**, I want to **receive alerts in my Discord server**, so
 **When** new listings are found  
 **Then** a message is posted to my Discord channel  
 **And** the message includes rich embeds with:
+
 - [ ] Listing title
 - [ ] Price (highlighted)
 - [ ] Size and condition
@@ -2041,6 +2216,7 @@ As a **sneaker reseller**, I want to **receive alerts in my Discord server**, so
 **And** up to 10 listings are included (Discord embed limit)
 
 **Technical Tasks:**
+
 1. Study Discord webhook format (embed structure)
 2. Extend webhook notifier with Discord-specific formatting
 3. Create rich embed JSON:
@@ -2072,8 +2248,8 @@ As a **sneaker reseller**, I want to **receive alerts in my Discord server**, so
 **Story Points:** 2  
 **Sprint:** Sprint 3
 
-**User Story:**
-As a **professional reseller**, I want to **receive alerts in Slack**, so that **my business team stays informed**.
+**User Story:** As a **professional reseller**, I want to **receive alerts in Slack**, so that **my
+business team stays informed**.
 
 **Acceptance Criteria:**
 
@@ -2081,6 +2257,7 @@ As a **professional reseller**, I want to **receive alerts in Slack**, so that *
 **When** new listings are found  
 **Then** a message is posted to my Slack channel  
 **And** the message includes attachments with:
+
 - [ ] Listing title
 - [ ] Price, size, condition
 - [ ] Platform
@@ -2090,6 +2267,7 @@ As a **professional reseller**, I want to **receive alerts in Slack**, so that *
 **And** up to 10 listings are included
 
 **Technical Tasks:**
+
 1. Study Slack webhook format (blocks and attachments)
 2. Extend webhook notifier with Slack-specific formatting
 3. Create Slack blocks JSON:
@@ -2119,8 +2297,8 @@ As a **professional reseller**, I want to **receive alerts in Slack**, so that *
 **Story Points:** 3  
 **Sprint:** Sprint 3
 
-**User Story:**
-As a **sneaker collector**, I want to **filter by size range (e.g., 10-11.5) or multiple specific sizes**, so that **I only see listings in my size**.
+**User Story:** As a **sneaker collector**, I want to **filter by size range (e.g., 10-11.5) or
+multiple specific sizes**, so that **I only see listings in my size**.
 
 **Acceptance Criteria:**
 
@@ -2128,6 +2306,7 @@ As a **sneaker collector**, I want to **filter by size range (e.g., 10-11.5) or 
 **When** the actor scrapes listings  
 **Then** it only includes listings with sizes: 10, 10.5, or 11  
 **And** it handles various size formats:
+
 - [ ] "10.5"
 - [ ] "Size 10.5 US Men's"
 - [ ] "10.5M"
@@ -2137,6 +2316,7 @@ As a **sneaker collector**, I want to **filter by size range (e.g., 10-11.5) or 
 **And** size matching is case-insensitive and flexible
 
 **Technical Tasks:**
+
 1. Add size filter to input schema:
    ```json
    {
@@ -2149,9 +2329,7 @@ As a **sneaker collector**, I want to **filter by size range (e.g., 10-11.5) or 
 4. Add size conversion (EU to US, UK to US) - optional for MVP
 5. Filter listings after normalization:
    ```javascript
-   listings = listings.filter(l => 
-     input.sizes.includes(l.listing.size_us_mens)
-   );
+   listings = listings.filter((l) => input.sizes.includes(l.listing.size_us_mens));
    ```
 6. Write unit tests for size parser
 7. Test with real listings (various formats)
@@ -2167,8 +2345,8 @@ As a **sneaker collector**, I want to **filter by size range (e.g., 10-11.5) or 
 **Story Points:** 2  
 **Sprint:** Sprint 3
 
-**User Story:**
-As a **sneaker collector**, I want to **filter by condition (new, used-like-new, etc.)**, so that **I only see listings matching my preferences**.
+**User Story:** As a **sneaker collector**, I want to **filter by condition (new, used-like-new,
+etc.)**, so that **I only see listings matching my preferences**.
 
 **Acceptance Criteria:**
 
@@ -2179,6 +2357,7 @@ As a **sneaker collector**, I want to **filter by condition (new, used-like-new,
 **And** the filter works consistently across all platforms
 
 **Technical Tasks:**
+
 1. Add condition filter to input schema:
    ```json
    {
@@ -2187,9 +2366,7 @@ As a **sneaker collector**, I want to **filter by condition (new, used-like-new,
    ```
 2. Filter listings after normalization:
    ```javascript
-   listings = listings.filter(l => 
-     input.conditions.includes(l.listing.condition)
-   );
+   listings = listings.filter((l) => input.conditions.includes(l.listing.condition));
    ```
 3. Ensure all normalizers map conditions correctly
 4. Write unit tests
@@ -2206,8 +2383,8 @@ As a **sneaker collector**, I want to **filter by condition (new, used-like-new,
 **Story Points:** 2  
 **Sprint:** Sprint 3
 
-**User Story:**
-As a **sneaker collector**, I want to **exclude listings containing certain keywords (e.g., "replica", "fake", "custom")**, so that **I only see authentic items**.
+**User Story:** As a **sneaker collector**, I want to **exclude listings containing certain keywords
+(e.g., "replica", "fake", "custom")**, so that **I only see authentic items**.
 
 **Acceptance Criteria:**
 
@@ -2218,6 +2395,7 @@ As a **sneaker collector**, I want to **exclude listings containing certain keyw
 **And** partial matches work (e.g., "replicas" matches "replica")
 
 **Technical Tasks:**
+
 1. Add exclude keywords to input schema:
    ```json
    {
@@ -2226,9 +2404,9 @@ As a **sneaker collector**, I want to **exclude listings containing certain keyw
    ```
 2. Implement filter logic:
    ```javascript
-   listings = listings.filter(l => {
+   listings = listings.filter((l) => {
      const text = `${l.product.name} ${l.listing.description}`.toLowerCase();
-     return !input.excludeKeywords.some(kw => text.includes(kw.toLowerCase()));
+     return !input.excludeKeywords.some((kw) => text.includes(kw.toLowerCase()));
    });
    ```
 3. Test with real listings (find some "replica" listings)
@@ -2249,19 +2427,21 @@ As a **sneaker collector**, I want to **exclude listings containing certain keyw
 **Story Points:** 5  
 **Sprint:** Sprint 4
 
-**User Story:**
-As a **system**, I want to **parse sneakerhead terminology from listing text using regex**, so that **I can extract condition accurately without AI costs**.
+**User Story:** As a **system**, I want to **parse sneakerhead terminology from listing text using
+regex**, so that **I can extract condition accurately without AI costs**.
 
 **Acceptance Criteria:**
 
 **Given** a listing title "VNDS Jordan 1 Bred sz 10.5, worn 1x"  
 **When** the parser processes it  
 **Then** it extracts:
+
 - [ ] Condition: `used_like_new` (from "VNDS")
 - [ ] Size: `10.5` (from "sz 10.5")
 - [ ] Tags: `["vnds"]`
 
 **And** it handles common abbreviations:
+
 - [ ] DS, deadstock, BNIB → `new_in_box`
 - [ ] VNDS → `used_like_new`
 - [ ] NDS → `used_good`
@@ -2272,6 +2452,7 @@ As a **system**, I want to **parse sneakerhead terminology from listing text usi
 **And** it works on 80%+ of structured listings
 
 **Technical Tasks:**
+
 1. Create `src/utils/sneaker-parser.js`
 2. Define regex patterns for conditions:
    ```javascript
@@ -2298,8 +2479,8 @@ As a **system**, I want to **parse sneakerhead terminology from listing text usi
 **Story Points:** 3  
 **Sprint:** Sprint 4
 
-**User Story:**
-As a **system**, I want to **extract shoe sizes from unstructured text**, so that **I can accurately filter listings by size**.
+**User Story:** As a **system**, I want to **extract shoe sizes from unstructured text**, so that
+**I can accurately filter listings by size**.
 
 **Acceptance Criteria:**
 
@@ -2308,6 +2489,7 @@ As a **system**, I want to **extract shoe sizes from unstructured text**, so tha
 **Then** it extracts size: `10.5`
 
 **And** it handles various formats:
+
 - [ ] "Size 10.5"
 - [ ] "sz 10.5"
 - [ ] "10.5M"
@@ -2320,6 +2502,7 @@ As a **system**, I want to **extract shoe sizes from unstructured text**, so tha
 **And** parsing is fast (<50ms per listing)
 
 **Technical Tasks:**
+
 1. Add size parsing to `src/utils/sneaker-parser.js`
 2. Define regex patterns for sizes:
    ```javascript
@@ -2345,8 +2528,8 @@ As a **system**, I want to **extract shoe sizes from unstructured text**, so tha
 **Story Points:** 5  
 **Sprint:** Sprint 4
 
-**User Story:**
-As a **system**, I want to **use OpenAI API as fallback for ambiguous listings**, so that **I can extract data that regex cannot parse**.
+**User Story:** As a **system**, I want to **use OpenAI API as fallback for ambiguous listings**, so
+that **I can extract data that regex cannot parse**.
 
 **Acceptance Criteria:**
 
@@ -2358,6 +2541,7 @@ As a **system**, I want to **use OpenAI API as fallback for ambiguous listings**
 **And** the cost per parse is <$0.005
 
 **And** AI parsing is only used when:
+
 - [ ] Regex fails to extract condition
 - [ ] User enables AI parsing in advanced options
 
@@ -2365,6 +2549,7 @@ As a **system**, I want to **use OpenAI API as fallback for ambiguous listings**
 **And** API failures are handled gracefully (fall back to "unspecified")
 
 **Technical Tasks:**
+
 1. Sign up for OpenAI API
 2. Install `openai` package
 3. Add to input schema:
@@ -2403,8 +2588,8 @@ As a **system**, I want to **use OpenAI API as fallback for ambiguous listings**
 **Story Points:** 2  
 **Sprint:** Sprint 4
 
-**User Story:**
-As a **business owner**, I want to **minimize OpenAI API costs**, so that **the feature is profitable**.
+**User Story:** As a **business owner**, I want to **minimize OpenAI API costs**, so that **the
+feature is profitable**.
 
 **Acceptance Criteria:**
 
@@ -2415,6 +2600,7 @@ As a **business owner**, I want to **minimize OpenAI API costs**, so that **the 
 **And** AI-parsed results are cached (same listing not parsed twice)
 
 **Technical Tasks:**
+
 1. Implement caching for AI parsing:
    - Store parsed results in Key-Value Store
    - Key: listing title hash
@@ -2442,8 +2628,8 @@ As a **business owner**, I want to **minimize OpenAI API costs**, so that **the 
 **Story Points:** 5  
 **Sprint:** Sprint 4
 
-**User Story:**
-As a **sneaker collector**, I want to **only receive alerts for new listings**, so that **I don't get spammed with duplicates**.
+**User Story:** As a **sneaker collector**, I want to **only receive alerts for new listings**, so
+that **I don't get spammed with duplicates**.
 
 **Acceptance Criteria:**
 
@@ -2453,6 +2639,7 @@ As a **sneaker collector**, I want to **only receive alerts for new listings**, 
 **And** only genuinely new listings trigger notifications
 
 **And** the system tracks:
+
 - [ ] Seen listing hashes (MD5 of platform:id)
 - [ ] Rolling window of last 10,000 hashes
 - [ ] Hashes expire after 30 days
@@ -2461,6 +2648,7 @@ As a **sneaker collector**, I want to **only receive alerts for new listings**, 
 **And** state persists across runs (Key-Value Store)
 
 **Technical Tasks:**
+
 1. Implement hash generation (MD5 of `${platform}:${listingId}`)
 2. Create `src/utils/deduplicator.js`
 3. Load seen hashes from KV Store on startup
@@ -2486,8 +2674,8 @@ As a **sneaker collector**, I want to **only receive alerts for new listings**, 
 **Story Points:** 5  
 **Sprint:** Sprint 4
 
-**User Story:**
-As a **sneaker reseller**, I want to **be notified when a previously seen listing drops in price**, so that **I can capitalize on price reductions**.
+**User Story:** As a **sneaker reseller**, I want to **be notified when a previously seen listing
+drops in price**, so that **I can capitalize on price reductions**.
 
 **Acceptance Criteria:**
 
@@ -2498,12 +2686,14 @@ As a **sneaker reseller**, I want to **be notified when a previously seen listin
 **And** the alert highlights: Original price, new price, savings %
 
 **And** price history is tracked:
+
 - [ ] Current price
 - [ ] Previous price
 - [ ] Price history (last 5 prices)
 - [ ] First seen date
 
 **Technical Tasks:**
+
 1. Extend deduplicator to track prices
 2. Store price data in KV Store:
    - Key: `price_${listingHash}`
@@ -2528,14 +2718,15 @@ As a **sneaker reseller**, I want to **be notified when a previously seen listin
 **Story Points:** 2  
 **Sprint:** Sprint 4
 
-**User Story:**
-As a **user**, I want to **see deduplication statistics in the run log**, so that **I understand how many new vs. seen listings were found**.
+**User Story:** As a **user**, I want to **see deduplication statistics in the run log**, so that
+**I understand how many new vs. seen listings were found**.
 
 **Acceptance Criteria:**
 
 **Given** the actor completes a run  
 **When** I view the log  
 **Then** it displays:
+
 - [ ] Total listings scraped: 150
 - [ ] New listings: 45
 - [ ] Seen listings (deduplicated): 105
@@ -2545,6 +2736,7 @@ As a **user**, I want to **see deduplication statistics in the run log**, so tha
 **And** the log is clear and easy to read
 
 **Technical Tasks:**
+
 1. Add counters in deduplicator:
    - `totalScraped = 0`
    - `newListings = 0`
@@ -2572,8 +2764,8 @@ As a **user**, I want to **see deduplication statistics in the run log**, so tha
 **Story Points:** 5  
 **Sprint:** Sprint 5
 
-**User Story:**
-As a **sneaker collector**, I want to **be alerted about upcoming sneaker releases**, so that **I can prepare to buy at retail before resale prices spike**.
+**User Story:** As a **sneaker collector**, I want to **be alerted about upcoming sneaker
+releases**, so that **I can prepare to buy at retail before resale prices spike**.
 
 **Acceptance Criteria:**
 
@@ -2581,6 +2773,7 @@ As a **sneaker collector**, I want to **be alerted about upcoming sneaker releas
 **When** the actor runs with release calendar enabled  
 **Then** it scrapes upcoming releases for the next 30 days  
 **And** it extracts:
+
 - [ ] Sneaker name
 - [ ] Release date
 - [ ] Retail price
@@ -2592,6 +2785,7 @@ As a **sneaker collector**, I want to **be alerted about upcoming sneaker releas
 **And** the scraper runs daily (scheduled)
 
 **Technical Tasks:**
+
 1. Analyze The Drop Date website structure (thedropdate.com)
 2. Create `src/scrapers/calendar/the-drop-date.js`
 3. Use Cheerio crawler (HTML parsing)
@@ -2624,8 +2818,8 @@ As a **sneaker collector**, I want to **be alerted about upcoming sneaker releas
 **Story Points:** 3  
 **Sprint:** Sprint 5
 
-**User Story:**
-As a **sneaker collector**, I want to **have backup release calendar sources**, so that **I don't miss releases if one site goes down**.
+**User Story:** As a **sneaker collector**, I want to **have backup release calendar sources**, so
+that **I don't miss releases if one site goes down**.
 
 **Acceptance Criteria:**
 
@@ -2636,6 +2830,7 @@ As a **sneaker collector**, I want to **have backup release calendar sources**, 
 **And** releases are deduplicated across both sources (same SKU = same release)
 
 **Technical Tasks:**
+
 1. Analyze Sole Retriever (soleretriever.com)
 2. Create `src/scrapers/calendar/sole-retriever.js`
 3. Use Playwright (JavaScript rendering required)
@@ -2656,23 +2851,26 @@ As a **sneaker collector**, I want to **have backup release calendar sources**, 
 **Story Points:** 3  
 **Sprint:** Sprint 5
 
-**User Story:**
-As a **sneaker collector**, I want to **receive a daily digest of upcoming releases**, so that **I can plan my purchases**.
+**User Story:** As a **sneaker collector**, I want to **receive a daily digest of upcoming
+releases**, so that **I can plan my purchases**.
 
 **Acceptance Criteria:**
 
 **Given** the release calendar is updated daily  
 **When** 9 AM user timezone arrives  
 **Then** a digest email is sent with:
+
 - [ ] All releases in the next 7 days
 - [ ] Releases organized by date
 - [ ] Release details: name, date, price, image
 - [ ] Links to raffle entries (if available)
 
-**And** high-priority releases (limited editions, collaborations) get a separate alert 24 hours before release  
+**And** high-priority releases (limited editions, collaborations) get a separate alert 24 hours
+before release  
 **And** users can disable release calendar notifications in input
 
 **Technical Tasks:**
+
 1. Add to input schema:
    ```json
    {
@@ -2703,14 +2901,15 @@ As a **sneaker collector**, I want to **receive a daily digest of upcoming relea
 **Story Points:** 3  
 **Sprint:** Sprint 5
 
-**User Story:**
-As a **system**, I want to **have a database of market values for popular sneakers**, so that **I can calculate deal scores without scraping high-risk platforms**.
+**User Story:** As a **system**, I want to **have a database of market values for popular
+sneakers**, so that **I can calculate deal scores without scraping high-risk platforms**.
 
 **Acceptance Criteria:**
 
 **Given** I have researched market values  
 **When** the database is created  
 **Then** it includes 100+ popular sneakers with:
+
 - [ ] Product name
 - [ ] SKU
 - [ ] Average market value (from public sources)
@@ -2721,6 +2920,7 @@ As a **system**, I want to **have a database of market values for popular sneake
 **And** users can override values in input
 
 **Technical Tasks:**
+
 1. Research market values for top 100 grail sneakers:
    - Source: Reddit r/Sneakers pricing guides
    - Source: Public price guides
@@ -2760,19 +2960,21 @@ As a **system**, I want to **have a database of market values for popular sneake
 **Story Points:** 5  
 **Sprint:** Sprint 5
 
-**User Story:**
-As a **sneaker reseller**, I want to **see a deal score for each listing**, so that **I can quickly identify underpriced items**.
+**User Story:** As a **sneaker reseller**, I want to **see a deal score for each listing**, so that
+**I can quickly identify underpriced items**.
 
 **Acceptance Criteria:**
 
 **Given** a listing is priced at $750 and market value is $950  
 **When** the deal score is calculated  
 **Then** it shows:
+
 - [ ] Savings: $200
 - [ ] Savings %: 21.1%
 - [ ] Deal score: "EXCELLENT DEAL" (>20% savings)
 
 **And** deal scores are categorized:
+
 - [ ] **EXCELLENT:** ≥30% below market
 - [ ] **GOOD:** 20-29% below market
 - [ ] **FAIR:** 10-19% below market
@@ -2783,19 +2985,20 @@ As a **sneaker reseller**, I want to **see a deal score for each listing**, so t
 **And** deal scores are highlighted in email notifications
 
 **Technical Tasks:**
+
 1. Create `src/utils/deal-scorer.js`
 2. Implement scoring logic:
    ```javascript
    function calculateDealScore(listing, marketValue) {
      const savings = marketValue - listing.listing.price;
      const savingsPercentage = (savings / marketValue) * 100;
-     
+
      let dealScore;
      if (savingsPercentage >= 30) dealScore = 'EXCELLENT DEAL';
      else if (savingsPercentage >= 20) dealScore = 'GOOD DEAL';
      else if (savingsPercentage >= 10) dealScore = 'FAIR DEAL';
      else dealScore = 'MARKET PRICE';
-     
+
      return { savings, savingsPercentage, dealScore };
    }
    ```
@@ -2819,14 +3022,15 @@ As a **sneaker reseller**, I want to **see a deal score for each listing**, so t
 **Story Points:** 3  
 **Sprint:** Sprint 5
 
-**User Story:**
-As a **sneaker reseller**, I want to **see price history for a listing**, so that **I can understand if the price is trending up or down**.
+**User Story:** As a **sneaker reseller**, I want to **see price history for a listing**, so that
+**I can understand if the price is trending up or down**.
 
 **Acceptance Criteria:**
 
 **Given** a listing has been seen multiple times over 7 days  
 **When** I view the listing in the dataset  
 **Then** it includes price history:
+
 - [ ] `priceHistory`: Array of `{ price, date }` objects
 - [ ] Current price
 - [ ] Lowest price seen
@@ -2837,6 +3041,7 @@ As a **sneaker reseller**, I want to **see price history for a listing**, so tha
 **And** price trends are displayed in notifications (optional)
 
 **Technical Tasks:**
+
 1. Extend deduplicator to track full price history (not just previous price)
 2. Store in KV Store:
    ```javascript
@@ -2871,14 +3076,15 @@ As a **sneaker reseller**, I want to **see price history for a listing**, so tha
 **Story Points:** 2  
 **Sprint:** Sprint 5
 
-**User Story:**
-As a **business owner**, I want to **set up paid tiers on Apify**, so that **I can generate revenue from the actor**.
+**User Story:** As a **business owner**, I want to **set up paid tiers on Apify**, so that **I can
+generate revenue from the actor**.
 
 **Acceptance Criteria:**
 
 **Given** the actor is ready for monetization  
 **When** I configure pricing in Apify Console  
 **Then** I set up 3 tiers:
+
 - [ ] **Hobby:** $4.99/month
 - [ ] **Pro:** $9.99/month
 - [ ] **Business:** $29.99/month (optional for MVP)
@@ -2888,6 +3094,7 @@ As a **business owner**, I want to **set up paid tiers on Apify**, so that **I c
 **And** the pricing is visible on Apify Store listing
 
 **Technical Tasks:**
+
 1. Navigate to Actor → Monetization in Apify Console
 2. Enable "Paid Actor"
 3. Set pricing:
@@ -2915,8 +3122,8 @@ As a **business owner**, I want to **set up paid tiers on Apify**, so that **I c
 **Story Points:** 5  
 **Sprint:** Sprint 5
 
-**User Story:**
-As a **business owner**, I want to **enforce tier limits**, so that **users must upgrade to access premium features**.
+**User Story:** As a **business owner**, I want to **enforce tier limits**, so that **users must
+upgrade to access premium features**.
 
 **Acceptance Criteria:**
 
@@ -2926,6 +3133,7 @@ As a **business owner**, I want to **enforce tier limits**, so that **users must
 **And** the error message includes upgrade link
 
 **And** tier limits are enforced:
+
 - [ ] Free: 1 platform, 10 results, no alerts
 - [ ] Hobby: 3 platforms, 50 results, email alerts
 - [ ] Pro: 12 platforms, 500 results, all features
@@ -2933,6 +3141,7 @@ As a **business owner**, I want to **enforce tier limits**, so that **users must
 **And** the enforcement is clear and user-friendly
 
 **Technical Tasks:**
+
 1. Add `subscriptionTier` to input schema:
    ```json
    {
@@ -2955,7 +3164,9 @@ As a **business owner**, I want to **enforce tier limits**, so that **users must
    ```javascript
    const limits = TIER_LIMITS[input.subscriptionTier];
    if (input.platforms.length > limits.platforms) {
-     throw new Error(`Upgrade to Hobby for ${input.platforms.length} platforms. Visit: https://apify.com/...`);
+     throw new Error(
+       `Upgrade to Hobby for ${input.platforms.length} platforms. Visit: https://apify.com/...`
+     );
    }
    ```
 4. Add upgrade prompts throughout:
@@ -2975,14 +3186,15 @@ As a **business owner**, I want to **enforce tier limits**, so that **users must
 **Story Points:** 2  
 **Sprint:** Sprint 5
 
-**User Story:**
-As a **business owner**, I want to **track user behavior and conversions**, so that **I can optimize pricing and features**.
+**User Story:** As a **business owner**, I want to **track user behavior and conversions**, so that
+**I can optimize pricing and features**.
 
 **Acceptance Criteria:**
 
 **Given** users are running the actor  
 **When** I view analytics  
 **Then** I can see:
+
 - [ ] Total runs per tier
 - [ ] Free trial → Paid conversion rate
 - [ ] Most popular platforms
@@ -2993,6 +3205,7 @@ As a **business owner**, I want to **track user behavior and conversions**, so t
 **And** I can export data for analysis
 
 **Technical Tasks:**
+
 1. Use Apify built-in analytics (Actor → Analytics in Console)
 2. Add custom events (optional):
    ```javascript
@@ -3025,8 +3238,8 @@ As a **business owner**, I want to **track user behavior and conversions**, so t
 **Story Points:** 8  
 **Sprint:** Sprint 6
 
-**User Story:**
-As a **sneaker collector**, I want to **search Mercari for sneakers**, so that **I can find deals on a popular marketplace**.
+**User Story:** As a **sneaker collector**, I want to **search Mercari for sneakers**, so that **I
+can find deals on a popular marketplace**.
 
 **Acceptance Criteria:**
 
@@ -3041,6 +3254,7 @@ As a **sneaker collector**, I want to **search Mercari for sneakers**, so that *
 **And** the README warns about reliability issues
 
 **Technical Tasks:**
+
 1. Reverse engineer Mercari GraphQL API (complex)
 2. Create `src/scrapers/mercari-scraper.js`
 3. Implement Cloudflare bypass (residential proxies required)
@@ -3079,8 +3293,8 @@ As a **sneaker collector**, I want to **search Mercari for sneakers**, so that *
 **Story Points:** 8  
 **Sprint:** Sprint 6
 
-**User Story:**
-As a **sneaker collector**, I want to **search OfferUp for sneakers**, so that **I can find local deals**.
+**User Story:** As a **sneaker collector**, I want to **search OfferUp for sneakers**, so that **I
+can find local deals**.
 
 **Acceptance Criteria:**
 
@@ -3094,6 +3308,7 @@ As a **sneaker collector**, I want to **search OfferUp for sneakers**, so that *
 **And** scraping is slow (10-15 second delays between requests)
 
 **Technical Tasks:**
+
 1. Create `src/scrapers/offerup-scraper.js`
 2. Use Playwright crawler (JavaScript rendering)
 3. Handle Cloudflare protection
@@ -3118,8 +3333,8 @@ As a **sneaker collector**, I want to **search OfferUp for sneakers**, so that *
 **Story Points:** 5  
 **Sprint:** Sprint 6
 
-**User Story:**
-As a **sneaker collector in the EU**, I want to **search Vinted for sneakers**, so that **I can find deals in Europe**.
+**User Story:** As a **sneaker collector in the EU**, I want to **search Vinted for sneakers**, so
+that **I can find deals in Europe**.
 
 **Acceptance Criteria:**
 
@@ -3132,6 +3347,7 @@ As a **sneaker collector in the EU**, I want to **search Vinted for sneakers**, 
 **And** the README notes Vinted is EU-focused (limited US presence)
 
 **Technical Tasks:**
+
 1. Analyze Vinted API (varies by country: .com, .fr, .de, etc.)
 2. Create `src/scrapers/vinted-scraper.js`
 3. Build API request
@@ -3154,8 +3370,8 @@ As a **sneaker collector in the EU**, I want to **search Vinted for sneakers**, 
 **Story Points:** 8  
 **Sprint:** Sprint 6
 
-**User Story:**
-As a **developer**, I want to **have comprehensive test coverage**, so that **I can confidently deploy to production**.
+**User Story:** As a **developer**, I want to **have comprehensive test coverage**, so that **I can
+confidently deploy to production**.
 
 **Acceptance Criteria:**
 
@@ -3164,12 +3380,14 @@ As a **developer**, I want to **have comprehensive test coverage**, so that **I 
 **Then** all tests pass  
 **And** code coverage is ≥80%  
 **And** critical functions have 100% coverage:
+
 - [ ] Data normalization
 - [ ] Parsing (condition, size)
 - [ ] Deduplication
 - [ ] Hash generation
 
 **Technical Tasks:**
+
 1. Set up Jest testing framework
 2. Write unit tests:
    - `__tests__/normalizer.test.js` (test each platform normalizer)
@@ -3196,14 +3414,15 @@ As a **developer**, I want to **have comprehensive test coverage**, so that **I 
 **Story Points:** 5  
 **Sprint:** Sprint 6
 
-**User Story:**
-As a **QA tester**, I want to **run the actor end-to-end**, so that **I can verify it works in production**.
+**User Story:** As a **QA tester**, I want to **run the actor end-to-end**, so that **I can verify
+it works in production**.
 
 **Acceptance Criteria:**
 
 **Given** the actor is deployed  
 **When** I run E2E tests  
 **Then** the actor successfully:
+
 - [ ] Scrapes 6 platforms (eBay, Grailed, Kixify, Poshmark, Depop, Craigslist)
 - [ ] Normalizes all data correctly
 - [ ] Deduplicates across runs
@@ -3212,12 +3431,14 @@ As a **QA tester**, I want to **run the actor end-to-end**, so that **I can veri
 - [ ] Completes in <10 minutes
 
 **And** I test multiple scenarios:
+
 - [ ] New user (first run)
 - [ ] Returning user (second run with deduplication)
 - [ ] Empty results (no matching listings)
 - [ ] Platform failure (one platform down)
 
 **Technical Tasks:**
+
 1. Create E2E test suite: `__tests__/e2e/full-run.test.js`
 2. Use Apify Test Runner or manual tests
 3. Test with real input:
@@ -3250,8 +3471,8 @@ As a **QA tester**, I want to **run the actor end-to-end**, so that **I can veri
 **Story Points:** 3  
 **Sprint:** Sprint 6
 
-**User Story:**
-As a **product owner**, I want to **recruit beta testers from sneaker communities**, so that **I get real-world feedback before public launch**.
+**User Story:** As a **product owner**, I want to **recruit beta testers from sneaker communities**,
+so that **I get real-world feedback before public launch**.
 
 **Acceptance Criteria:**
 
@@ -3259,6 +3480,7 @@ As a **product owner**, I want to **recruit beta testers from sneaker communitie
 **When** I recruit 10+ beta testers  
 **Then** they test the actor for 1 week  
 **And** they provide feedback via survey:
+
 - [ ] Ease of use (1-5 scale)
 - [ ] Feature satisfaction (1-5 scale)
 - [ ] Bugs encountered
@@ -3269,6 +3491,7 @@ As a **product owner**, I want to **recruit beta testers from sneaker communitie
 **And** critical bugs are fixed before launch
 
 **Technical Tasks:**
+
 1. Create beta tester recruitment post:
    - Reddit r/Sneakers: "Free tool to find sneaker deals - looking for testers"
    - Discord servers: "Testing a new sneaker alert bot"
@@ -3293,14 +3516,15 @@ As a **product owner**, I want to **recruit beta testers from sneaker communitie
 **Story Points:** 3  
 **Sprint:** Sprint 6
 
-**User Story:**
-As a **marketer**, I want to **promote the actor on Reddit**, so that **I acquire first users organically**.
+**User Story:** As a **marketer**, I want to **promote the actor on Reddit**, so that **I acquire
+first users organically**.
 
 **Acceptance Criteria:**
 
 **Given** the actor is live on Apify Store  
 **When** I execute Reddit marketing  
 **Then** I post in 5+ relevant subreddits:
+
 - [ ] r/Sneakers (2.9M members)
 - [ ] r/SneakerMarket (100K members)
 - [ ] r/Flipping (170K members)
@@ -3308,15 +3532,18 @@ As a **marketer**, I want to **promote the actor on Reddit**, so that **I acquir
 - [ ] r/AutomateYourself (50K members)
 
 **And** posts provide value first (not just promotion):
+
 - Example: "I built a tool that found me these deals [images] - here's how"
 - Mention tool in comments when users ask
 
 **And** I achieve:
+
 - [ ] 50+ upvotes per post (target)
 - [ ] 20+ comment engagements
 - [ ] 50+ users try the actor
 
 **Technical Tasks:**
+
 1. Write 5 Reddit posts (value-first approach):
    - Post 1 (r/Sneakers): "Found these deals using automation [images + story]"
    - Post 2 (r/SneakerMarket): "PSA: How to find sneaker deals across 12 platforms"
@@ -3341,20 +3568,22 @@ As a **marketer**, I want to **promote the actor on Reddit**, so that **I acquir
 **Story Points:** 5  
 **Sprint:** Sprint 6
 
-**User Story:**
-As a **content creator**, I want to **publish YouTube tutorials**, so that **I reach a wider audience and demonstrate value**.
+**User Story:** As a **content creator**, I want to **publish YouTube tutorials**, so that **I reach
+a wider audience and demonstrate value**.
 
 **Acceptance Criteria:**
 
 **Given** the actor is fully documented  
 **When** I create YouTube videos  
 **Then** I publish 3-4 videos:
+
 - [ ] Video 1: "How to Find Sneaker Deals with Automation (Free Tool)" [5-7 min]
 - [ ] Video 2: "SneakerMeta Setup Guide - Step-by-Step Tutorial" [8-10 min]
 - [ ] Video 3: "I Made $500 Flipping Sneakers Using This Tool" [success story, 7-10 min]
 - [ ] Video 4 (optional): "Ultimate Sneaker Reselling Automation Stack" [15-20 min]
 
 **And** videos are optimized for SEO:
+
 - [ ] Keywords in title: "sneaker", "deals", "automation", "reselling"
 - [ ] Tags: "sneaker reselling", "sneaker deals", "Apify", "web scraping"
 - [ ] Thumbnail: Eye-catching with text overlay
@@ -3362,6 +3591,7 @@ As a **content creator**, I want to **publish YouTube tutorials**, so that **I r
 **And** videos get 500+ views total (target)
 
 **Technical Tasks:**
+
 1. Write video scripts (4 videos, ~1,000 words each)
 2. Record screen captures (OBS Studio or Loom)
 3. Record voiceover (clear audio)
@@ -3386,24 +3616,27 @@ As a **content creator**, I want to **publish YouTube tutorials**, so that **I r
 **Story Points:** 3  
 **Sprint:** Sprint 6
 
-**User Story:**
-As a **community manager**, I want to **engage with sneaker Discord servers**, so that **I build relationships and acquire users organically**.
+**User Story:** As a **community manager**, I want to **engage with sneaker Discord servers**, so
+that **I build relationships and acquire users organically**.
 
 **Acceptance Criteria:**
 
 **Given** Discord is a primary channel for sneakerheads  
 **When** I join 20+ sneaker Discord servers  
 **Then** I provide value first:
+
 - [ ] Share deals found by the actor
 - [ ] Answer questions about sneaker hunting
 - [ ] Share release calendar info
 
 **And** I mention the tool naturally (when users ask "how did you find that?")  
 **And** I achieve:
+
 - [ ] 30+ users from Discord
 - [ ] Positive community reputation (no spam complaints)
 
 **Technical Tasks:**
+
 1. Research and join 20 sneaker Discord servers:
    - Use directories: disboard.org, top.gg
    - Search: "sneaker Discord", "cook group"
@@ -3432,14 +3665,15 @@ As a **community manager**, I want to **engage with sneaker Discord servers**, s
 **Story Points:** 2  
 **Sprint:** Sprint 6
 
-**User Story:**
-As a **business owner**, I want to **provide support channels**, so that **users can get help when they encounter issues**.
+**User Story:** As a **business owner**, I want to **provide support channels**, so that **users can
+get help when they encounter issues**.
 
 **Acceptance Criteria:**
 
 **Given** users are running the actor  
 **When** they have questions or issues  
 **Then** they can reach support via:
+
 - [ ] Email: support@sneakermeta.com (or Gmail)
 - [ ] Discord: #support channel in SneakerMeta server
 - [ ] GitHub Issues (for bugs)
@@ -3449,6 +3683,7 @@ As a **business owner**, I want to **provide support channels**, so that **users
 **And** common issues are documented in FAQ
 
 **Technical Tasks:**
+
 1. Set up support email:
    - Use Gmail or custom domain
    - Create email signature with links to docs
@@ -3478,14 +3713,15 @@ As a **business owner**, I want to **provide support channels**, so that **users
 **Story Points:** 2  
 **Sprint:** Sprint 6
 
-**User Story:**
-As a **business owner**, I want to **track revenue and user metrics**, so that **I can measure success and make data-driven decisions**.
+**User Story:** As a **business owner**, I want to **track revenue and user metrics**, so that **I
+can measure success and make data-driven decisions**.
 
 **Acceptance Criteria:**
 
 **Given** the actor has paying users  
 **When** I check metrics weekly  
 **Then** I track:
+
 - [ ] **MRR (Monthly Recurring Revenue):** Total subscription revenue per month
 - [ ] **Total Users:** Free + Paid
 - [ ] **Paying Users:** Count of paid subscribers
@@ -3495,11 +3731,13 @@ As a **business owner**, I want to **track revenue and user metrics**, so that *
 - [ ] **Run Frequency:** Average runs per user per week
 
 **And** I use data to:
+
 - [ ] Optimize pricing (A/B test $4.99 vs. $7.99)
 - [ ] Identify churn reasons (survey canceling users)
 - [ ] Prioritize feature development (based on usage)
 
 **Technical Tasks:**
+
 1. Use Apify built-in analytics (Actor → Analytics)
 2. Create tracking spreadsheet (Google Sheets):
    - Week, MRR, Total Users, Paying Users, ARPU, Conversion Rate
@@ -3525,14 +3763,15 @@ As a **business owner**, I want to **track revenue and user metrics**, so that *
 **Story Points:** 3  
 **Sprint:** Sprint 6
 
-**User Story:**
-As a **business owner**, I want to **plan for future growth**, so that **I can scale the product and add new features**.
+**User Story:** As a **business owner**, I want to **plan for future growth**, so that **I can scale
+the product and add new features**.
 
 **Acceptance Criteria:**
 
 **Given** the MVP is live and successful  
 **When** I plan future roadmap  
 **Then** I document:
+
 - [ ] **Phase 5 (Months 4-6):** Features to add
   - SMS notifications (Twilio integration)
   - Push notifications (OneSignal)
@@ -3549,6 +3788,7 @@ As a **business owner**, I want to **plan for future growth**, so that **I can s
 **And** I collect user feedback for prioritization
 
 **Technical Tasks:**
+
 1. Create public roadmap document: `docs/ROADMAP.md`
 2. List potential future features:
    - SMS alerts
@@ -3604,25 +3844,27 @@ As a **business owner**, I want to **plan for future growth**, so that **I can s
 
 **Sprint Backlog:**
 
-| ID | User Story | Points | Priority | Assignee | Status |
-|----|------------|--------|----------|----------|--------|
-| US-001 | Initialize Apify Actor Project | 2 | P0 | Dev | To Do |
-| US-002 | Design Standardized Output Schema | 3 | P0 | Dev | To Do |
-| US-003 | Build Data Normalization Engine | 5 | P0 | Dev | To Do |
-| US-004 | Implement Scraper Manager | 5 | P0 | Dev | To Do |
-| US-005 | Integrate eBay Finding API | 5 | P0 | Dev | To Do |
-| US-006 | Integrate Grailed Scraper | 5 | P0 | Dev | To Do |
-| US-007 | Integrate Kixify Scraper | 3 | P0 | Dev | To Do |
-| **TOTAL** | | **28** | | | |
+| ID        | User Story                        | Points | Priority | Assignee | Status |
+| --------- | --------------------------------- | ------ | -------- | -------- | ------ |
+| US-001    | Initialize Apify Actor Project    | 2      | P0       | Dev      | To Do  |
+| US-002    | Design Standardized Output Schema | 3      | P0       | Dev      | To Do  |
+| US-003    | Build Data Normalization Engine   | 5      | P0       | Dev      | To Do  |
+| US-004    | Implement Scraper Manager         | 5      | P0       | Dev      | To Do  |
+| US-005    | Integrate eBay Finding API        | 5      | P0       | Dev      | To Do  |
+| US-006    | Integrate Grailed Scraper         | 5      | P0       | Dev      | To Do  |
+| US-007    | Integrate Kixify Scraper          | 3      | P0       | Dev      | To Do  |
+| **TOTAL** |                                   | **28** |          |          |        |
 
 **Daily Breakdown (Example):**
 
 **Week 1:**
+
 - **Day 1-2:** US-001, US-002 (Project setup, schema design)
 - **Day 3-4:** US-003 (Normalization engine)
 - **Day 5:** US-004 (Scraper manager - start)
 
 **Week 2:**
+
 - **Day 1-2:** US-004 (Scraper manager - complete)
 - **Day 3:** US-005 (eBay API integration)
 - **Day 4:** US-006 (Grailed scraper)
@@ -3631,6 +3873,7 @@ As a **business owner**, I want to **plan for future growth**, so that **I can s
 **Sprint Ceremonies:**
 
 **Sprint Planning (Monday, Week 1):**
+
 - Review product backlog
 - Select stories for Sprint 1
 - Assign story points
@@ -3638,21 +3881,25 @@ As a **business owner**, I want to **plan for future growth**, so that **I can s
 - Identify blockers: eBay API approval (apply Day 1)
 
 **Daily Standup (Every day, 15 min):**
+
 - What did I complete yesterday?
 - What will I work on today?
 - Any blockers?
 
 **Sprint Review (Friday, Week 2):**
+
 - Demo: Show eBay + Grailed + Kixify working
 - Get feedback from beta tester(s)
 - Update product backlog
 
 **Sprint Retrospective (Friday, Week 2):**
+
 - What went well?
 - What could be improved?
 - Action items for Sprint 2
 
 **Risks:**
+
 - ⚠️ **eBay API approval delays** - Mitigation: Apply Day 1, have HTML scraping backup
 - ⚠️ **Grailed API changes** - Mitigation: Flexible parsing, error handling
 
@@ -3660,7 +3907,8 @@ As a **business owner**, I want to **plan for future growth**, so that **I can s
 
 ### Sprint 2: MVP Completion (Weeks 3-4)
 
-**Sprint Goal:** Complete MVP with email notifications, data management, and documentation. Submit to Apify Challenge.
+**Sprint Goal:** Complete MVP with email notifications, data management, and documentation. Submit
+to Apify Challenge.
 
 **Team Capacity:** 80 hours  
 **Planned Story Points:** 24  
@@ -3668,29 +3916,32 @@ As a **business owner**, I want to **plan for future growth**, so that **I can s
 
 **Sprint Backlog:**
 
-| ID | User Story | Points | Priority | Assignee | Status |
-|----|------------|--------|----------|----------|--------|
-| US-008 | Set Up SendGrid Email Integration | 3 | P0 | Dev | To Do |
-| US-009 | Design HTML Email Template | 3 | P0 | Dev | To Do |
-| US-010 | Implement Email Notification Logic | 5 | P0 | Dev | To Do |
-| US-011 | Implement Apify Dataset Storage | 2 | P0 | Dev | To Do |
-| US-012 | Implement Deduplication Hash Storage | 3 | P1 | Dev | To Do |
-| US-013 | Support Scheduled Runs | 2 | P1 | Dev | To Do |
-| US-014 | Write Comprehensive README | 3 | P0 | Dev | To Do |
-| US-015 | Create Demo Video | 3 | P0 | Dev | To Do |
-| US-016 | Submit to Apify Challenge | 2 | P0 | Dev | To Do |
-| **TOTAL** | | **26** | | | |
+| ID        | User Story                           | Points | Priority | Assignee | Status |
+| --------- | ------------------------------------ | ------ | -------- | -------- | ------ |
+| US-008    | Set Up SendGrid Email Integration    | 3      | P0       | Dev      | To Do  |
+| US-009    | Design HTML Email Template           | 3      | P0       | Dev      | To Do  |
+| US-010    | Implement Email Notification Logic   | 5      | P0       | Dev      | To Do  |
+| US-011    | Implement Apify Dataset Storage      | 2      | P0       | Dev      | To Do  |
+| US-012    | Implement Deduplication Hash Storage | 3      | P1       | Dev      | To Do  |
+| US-013    | Support Scheduled Runs               | 2      | P1       | Dev      | To Do  |
+| US-014    | Write Comprehensive README           | 3      | P0       | Dev      | To Do  |
+| US-015    | Create Demo Video                    | 3      | P0       | Dev      | To Do  |
+| US-016    | Submit to Apify Challenge            | 2      | P0       | Dev      | To Do  |
+| **TOTAL** |                                      | **26** |          |          |        |
 
 **Key Milestones:**
+
 - **End of Week 3:** Notifications working, data storage complete
 - **End of Week 4:** Documentation complete, Apify Challenge submission
 
 **Sprint Review:**
+
 - Demo full MVP: Input → Scraping → Email alert → Dataset output
 - Get feedback from 3+ beta testers
 - Target: 65+ Apify Quality Score
 
 **Risks:**
+
 - ⚠️ **Quality score below 65** - Mitigation: Follow Apify checklist, ask for review
 - ⚠️ **Email deliverability issues** - Mitigation: Verify domain, test thoroughly
 
@@ -3706,32 +3957,36 @@ As a **business owner**, I want to **plan for future growth**, so that **I can s
 
 **Sprint Backlog:**
 
-| ID | User Story | Points | Priority | Assignee | Status |
-|----|------------|--------|----------|----------|--------|
-| US-017 | Integrate Poshmark Scraper | 5 | P1 | Dev | To Do |
-| US-018 | Integrate Depop Scraper | 3 | P1 | Dev | To Do |
-| US-019 | Integrate Craigslist Scraper | 5 | P1 | Dev | To Do |
-| US-020 | Optimize Scraping Performance | 3 | P2 | Dev | To Do |
-| US-021 | Implement Generic Webhook Support | 5 | P1 | Dev | To Do |
-| US-022 | Implement Discord Webhook Integration | 3 | P1 | Dev | To Do |
-| US-023 | Implement Slack Webhook Integration | 2 | P2 | Dev | To Do |
-| US-024 | Add Advanced Size Filtering | 3 | P2 | Dev | To Do |
-| US-025 | Add Condition Filtering | 2 | P2 | Dev | To Do |
-| US-026 | Add Keyword Exclusion Filter | 2 | P2 | Dev | To Do |
-| **TOTAL** | | **33** | | | |
+| ID        | User Story                            | Points | Priority | Assignee | Status |
+| --------- | ------------------------------------- | ------ | -------- | -------- | ------ |
+| US-017    | Integrate Poshmark Scraper            | 5      | P1       | Dev      | To Do  |
+| US-018    | Integrate Depop Scraper               | 3      | P1       | Dev      | To Do  |
+| US-019    | Integrate Craigslist Scraper          | 5      | P1       | Dev      | To Do  |
+| US-020    | Optimize Scraping Performance         | 3      | P2       | Dev      | To Do  |
+| US-021    | Implement Generic Webhook Support     | 5      | P1       | Dev      | To Do  |
+| US-022    | Implement Discord Webhook Integration | 3      | P1       | Dev      | To Do  |
+| US-023    | Implement Slack Webhook Integration   | 2      | P2       | Dev      | To Do  |
+| US-024    | Add Advanced Size Filtering           | 3      | P2       | Dev      | To Do  |
+| US-025    | Add Condition Filtering               | 2      | P2       | Dev      | To Do  |
+| US-026    | Add Keyword Exclusion Filter          | 2      | P2       | Dev      | To Do  |
+| **TOTAL** |                                       | **33** |          |          |        |
 
 **Stretch Goals (if ahead of schedule):**
+
 - US-027 (Regex-based condition parser)
 
 **Key Milestones:**
+
 - **End of Week 5:** 6 platforms working
 - **End of Week 6:** Webhooks functional, advanced filters implemented
 
 **Sprint Review:**
+
 - Demo: Scrape 6 platforms, send Discord/Slack notification
 - Test performance: Should complete in <5 minutes
 
 **Risks:**
+
 - ⚠️ **Platform anti-scraping** - Mitigation: Residential proxies, rate limiting
 - ⚠️ **Performance issues** - Mitigation: Parallel scraping, optimize slow platforms
 
@@ -3747,26 +4002,29 @@ As a **business owner**, I want to **plan for future growth**, so that **I can s
 
 **Sprint Backlog:**
 
-| ID | User Story | Points | Priority | Assignee | Status |
-|----|------------|--------|----------|----------|--------|
-| US-027 | Build Regex-Based Condition Parser | 5 | P1 | Dev | To Do |
-| US-028 | Build Regex-Based Size Parser | 3 | P1 | Dev | To Do |
-| US-029 | Integrate OpenAI for AI Parsing | 5 | P1 | Dev | To Do |
-| US-030 | Optimize AI Parsing Costs | 2 | P2 | Dev | To Do |
-| US-031 | Implement Hash-Based Deduplication | 5 | P0 | Dev | To Do |
-| US-032 | Implement Price Change Detection | 5 | P2 | Dev | To Do |
-| US-033 | Add Deduplication Statistics | 2 | P3 | Dev | To Do |
-| **TOTAL** | | **27** | | | |
+| ID        | User Story                         | Points | Priority | Assignee | Status |
+| --------- | ---------------------------------- | ------ | -------- | -------- | ------ |
+| US-027    | Build Regex-Based Condition Parser | 5      | P1       | Dev      | To Do  |
+| US-028    | Build Regex-Based Size Parser      | 3      | P1       | Dev      | To Do  |
+| US-029    | Integrate OpenAI for AI Parsing    | 5      | P1       | Dev      | To Do  |
+| US-030    | Optimize AI Parsing Costs          | 2      | P2       | Dev      | To Do  |
+| US-031    | Implement Hash-Based Deduplication | 5      | P0       | Dev      | To Do  |
+| US-032    | Implement Price Change Detection   | 5      | P2       | Dev      | To Do  |
+| US-033    | Add Deduplication Statistics       | 2      | P3       | Dev      | To Do  |
+| **TOTAL** |                                    | **27** |          |          |        |
 
 **Key Milestones:**
+
 - **End of Week 7:** Parsing engine working (85%+ accuracy)
 - **End of Week 8:** Deduplication working, alerts reduced by 70-80%
 
 **Sprint Review:**
+
 - Demo: Show parsing extracting condition/size from unstructured listings
 - Demo: Show deduplication preventing repeat alerts
 
 **Risks:**
+
 - ⚠️ **OpenAI API costs too high** - Mitigation: Aggressive caching, optimize prompts
 - ⚠️ **Parsing accuracy below target** - Mitigation: Expand regex patterns, improve AI prompt
 
@@ -3782,29 +4040,32 @@ As a **business owner**, I want to **plan for future growth**, so that **I can s
 
 **Sprint Backlog:**
 
-| ID | User Story | Points | Priority | Assignee | Status |
-|----|------------|--------|----------|----------|--------|
-| US-034 | Scrape The Drop Date Release Calendar | 5 | P1 | Dev | To Do |
-| US-035 | Scrape Sole Retriever Release Calendar | 3 | P1 | Dev | To Do |
-| US-036 | Send Release Calendar Notifications | 3 | P1 | Dev | To Do |
-| US-037 | Build Price Database for Grails | 3 | P2 | Dev | To Do |
-| US-038 | Implement Deal Scoring Algorithm | 5 | P2 | Dev | To Do |
-| US-039 | Add Price History Tracking | 3 | P3 | Dev | To Do |
-| US-040 | Configure Apify Monetization | 2 | P1 | Dev | To Do |
-| US-041 | Implement Tier Enforcement Logic | 5 | P1 | Dev | To Do |
-| US-042 | Add Analytics Tracking | 2 | P2 | Dev | To Do |
-| **TOTAL** | | **31** | | | |
+| ID        | User Story                             | Points | Priority | Assignee | Status |
+| --------- | -------------------------------------- | ------ | -------- | -------- | ------ |
+| US-034    | Scrape The Drop Date Release Calendar  | 5      | P1       | Dev      | To Do  |
+| US-035    | Scrape Sole Retriever Release Calendar | 3      | P1       | Dev      | To Do  |
+| US-036    | Send Release Calendar Notifications    | 3      | P1       | Dev      | To Do  |
+| US-037    | Build Price Database for Grails        | 3      | P2       | Dev      | To Do  |
+| US-038    | Implement Deal Scoring Algorithm       | 5      | P2       | Dev      | To Do  |
+| US-039    | Add Price History Tracking             | 3      | P3       | Dev      | To Do  |
+| US-040    | Configure Apify Monetization           | 2      | P1       | Dev      | To Do  |
+| US-041    | Implement Tier Enforcement Logic       | 5      | P1       | Dev      | To Do  |
+| US-042    | Add Analytics Tracking                 | 2      | P2       | Dev      | To Do  |
+| **TOTAL** |                                        | **31** |          |          |        |
 
 **Key Milestones:**
+
 - **End of Week 9:** Release calendar working, daily digest sent
 - **End of Week 10:** Deal scoring working, tiered pricing live
 
 **Sprint Review:**
+
 - Demo: Show release calendar digest email
 - Demo: Show deal scoring highlighting underpriced listings
 - Demo: Show tier enforcement (upgrade prompt)
 
 **Risks:**
+
 - ⚠️ **Calendar sites change structure** - Mitigation: Monitor 3 sources, fallback logic
 - ⚠️ **User confusion on pricing** - Mitigation: Clear tier comparison table
 
@@ -3820,41 +4081,46 @@ As a **business owner**, I want to **plan for future growth**, so that **I can s
 
 **Sprint Backlog:**
 
-| ID | User Story | Points | Priority | Assignee | Status |
-|----|------------|--------|----------|----------|--------|
-| US-043 | Integrate Mercari Scraper (Beta) | 8 | P2 | Dev | To Do |
-| US-044 | Integrate OfferUp Scraper (Beta) | 8 | P2 | Dev | To Do |
-| US-045 | Integrate Vinted Scraper | 5 | P3 | Dev | To Do |
-| US-046 | Write Unit and Integration Tests | 8 | P0 | Dev | To Do |
-| US-047 | Perform End-to-End Testing | 5 | P0 | Dev | To Do |
-| US-048 | Conduct Beta Testing with Community | 3 | P1 | Dev | To Do |
-| US-049 | Launch Reddit Marketing Campaign | 3 | P1 | Dev | To Do |
-| US-050 | Create YouTube Tutorial Content | 5 | P1 | Dev | To Do |
-| US-051 | Execute Discord Community Marketing | 3 | P2 | Dev | To Do |
-| US-052 | Set Up Customer Support Channels | 2 | P1 | Dev | To Do |
-| US-053 | Monitor Revenue and User Metrics | 2 | P1 | Dev | To Do |
-| US-054 | Prepare for Scale and Future Features | 3 | P3 | Dev | To Do |
-| **TOTAL** | | **55** | | | |
+| ID        | User Story                            | Points | Priority | Assignee | Status |
+| --------- | ------------------------------------- | ------ | -------- | -------- | ------ |
+| US-043    | Integrate Mercari Scraper (Beta)      | 8      | P2       | Dev      | To Do  |
+| US-044    | Integrate OfferUp Scraper (Beta)      | 8      | P2       | Dev      | To Do  |
+| US-045    | Integrate Vinted Scraper              | 5      | P3       | Dev      | To Do  |
+| US-046    | Write Unit and Integration Tests      | 8      | P0       | Dev      | To Do  |
+| US-047    | Perform End-to-End Testing            | 5      | P0       | Dev      | To Do  |
+| US-048    | Conduct Beta Testing with Community   | 3      | P1       | Dev      | To Do  |
+| US-049    | Launch Reddit Marketing Campaign      | 3      | P1       | Dev      | To Do  |
+| US-050    | Create YouTube Tutorial Content       | 5      | P1       | Dev      | To Do  |
+| US-051    | Execute Discord Community Marketing   | 3      | P2       | Dev      | To Do  |
+| US-052    | Set Up Customer Support Channels      | 2      | P1       | Dev      | To Do  |
+| US-053    | Monitor Revenue and User Metrics      | 2      | P1       | Dev      | To Do  |
+| US-054    | Prepare for Scale and Future Features | 3      | P3       | Dev      | To Do  |
+| **TOTAL** |                                       | **55** |          |          |        |
 
 **Note:** US-043, US-044, US-045 are stretch goals (35 points). Core launch tasks = 20 points.
 
 **Key Milestones:**
+
 - **End of Week 11:** All testing complete, marketing materials ready
 - **End of Week 12:** Public launch, first paying users, 200+ total users (target)
 
 **Sprint Review:**
+
 - Demo: Full product walk-through
 - Metrics: Users, MRR, quality score, feedback
 - Celebrate launch! 🎉
 
 **Sprint Retrospective:**
+
 - What worked well throughout the project?
 - What would we do differently next time?
 - Lessons learned for future phases
 
 **Risks:**
+
 - ⚠️ **High-risk platforms fail too often** - Mitigation: Mark as BETA, auto-disable if needed
-- ⚠️ **Marketing doesn't drive enough users** - Mitigation: Adjust strategy, double down on working channels
+- ⚠️ **Marketing doesn't drive enough users** - Mitigation: Adjust strategy, double down on working
+  channels
 - ⚠️ **Critical bugs in production** - Mitigation: Hotfix immediately, communicate with users
 
 ---
@@ -3872,12 +4138,13 @@ Sprint 5|   31    |    29     |   29     | Release calendar tricky
 Sprint 6|   20*   |    20*    |   20*    | Core launch (excluding stretch)
 --------|---------|-----------|----------|---------------------------
 TOTAL   |  165    |   155     |  25.8    | Average velocity
-        |         |           |   avg    | 
+        |         |           |   avg    |
 
 * Sprint 6: 20 core pts, 35 stretch pts (Beta platforms)
 ```
 
 **Velocity Analysis:**
+
 - **Target Velocity:** 30 points/sprint (ideal)
 - **Actual Average:** 25.8 points/sprint
 - **Recommendation:** Adjust future sprint planning to 25-28 points
@@ -3993,22 +4260,26 @@ TOTAL   |  165    |   155     |  25.8    | Average velocity
 ### Additional Criteria for Specific Stories
 
 **Platform Integration Stories (US-005, US-006, etc.):**
+
 - [ ] Successfully scrapes 20+ listings
 - [ ] Data normalized to standard schema
 - [ ] Error handling for API failures
 - [ ] Rate limiting implemented
 
 **Notification Stories (US-008, US-010, etc.):**
+
 - [ ] Notifications sent within target time (<10 minutes)
 - [ ] Email/webhook reaches destination
 - [ ] Fallback mechanism if primary fails
 
 **Parsing Stories (US-027, US-028, US-029):**
+
 - [ ] Parsing accuracy ≥85% on test dataset
 - [ ] Performance <50ms per listing
 - [ ] Edge cases handled (ambiguous listings)
 
 **Documentation Stories (US-014, US-015):**
+
 - [ ] README is comprehensive (3,000+ words)
 - [ ] Demo video is <3 minutes, clear audio
 - [ ] Screenshots are high-quality (1080p)
@@ -4019,20 +4290,21 @@ TOTAL   |  165    |   155     |  25.8    | Average velocity
 
 ### Technical Risks
 
-| Risk ID | Risk Description | Likelihood | Impact | Severity | Mitigation Strategy |
-|---------|------------------|------------|--------|----------|---------------------|
-| **TR-01** | eBay API approval delayed | Medium | High | 🟠 **HIGH** | Apply on Day 1, have HTML scraping backup ready |
-| **TR-02** | Platform anti-scraping measures block actors | High | High | 🔴 **CRITICAL** | Use residential proxies, rate limiting, graceful degradation |
-| **TR-03** | Platform changes API/HTML structure | High | Medium | 🟠 **HIGH** | Monitor errors daily, implement flexible parsing, version control |
-| **TR-04** | OpenAI API costs exceed budget | Medium | Medium | 🟡 **MEDIUM** | Aggressive caching, optimize prompts, set budget alerts |
-| **TR-05** | Email deliverability issues (spam folder) | Medium | High | 🟠 **HIGH** | Verify sender domain, use reputable ESP (SendGrid), test thoroughly |
-| **TR-06** | Apify quality score below 65 | Low | Critical | 🟠 **HIGH** | Follow Apify checklist, get review before submission, iterate |
-| **TR-07** | Performance issues (runtime >15 min) | Medium | Medium | 🟡 **MEDIUM** | Parallel scraping, optimize slow platforms, use AutoscaledPool |
-| **TR-08** | High memory usage (>4GB, crashes) | Low | High | 🟡 **MEDIUM** | Profile memory, optimize data structures, limit concurrent scrapers |
-| **TR-09** | Deduplication fails (alert spam) | Low | High | 🟠 **HIGH** | Thorough testing, hash collision handling, state verification |
-| **TR-10** | High-risk platforms fail too often | High | Low | 🟡 **MEDIUM** | Mark as BETA, auto-disable if failure >50% for 7 days |
+| Risk ID   | Risk Description                             | Likelihood | Impact   | Severity        | Mitigation Strategy                                                 |
+| --------- | -------------------------------------------- | ---------- | -------- | --------------- | ------------------------------------------------------------------- |
+| **TR-01** | eBay API approval delayed                    | Medium     | High     | 🟠 **HIGH**     | Apply on Day 1, have HTML scraping backup ready                     |
+| **TR-02** | Platform anti-scraping measures block actors | High       | High     | 🔴 **CRITICAL** | Use residential proxies, rate limiting, graceful degradation        |
+| **TR-03** | Platform changes API/HTML structure          | High       | Medium   | 🟠 **HIGH**     | Monitor errors daily, implement flexible parsing, version control   |
+| **TR-04** | OpenAI API costs exceed budget               | Medium     | Medium   | 🟡 **MEDIUM**   | Aggressive caching, optimize prompts, set budget alerts             |
+| **TR-05** | Email deliverability issues (spam folder)    | Medium     | High     | 🟠 **HIGH**     | Verify sender domain, use reputable ESP (SendGrid), test thoroughly |
+| **TR-06** | Apify quality score below 65                 | Low        | Critical | 🟠 **HIGH**     | Follow Apify checklist, get review before submission, iterate       |
+| **TR-07** | Performance issues (runtime >15 min)         | Medium     | Medium   | 🟡 **MEDIUM**   | Parallel scraping, optimize slow platforms, use AutoscaledPool      |
+| **TR-08** | High memory usage (>4GB, crashes)            | Low        | High     | 🟡 **MEDIUM**   | Profile memory, optimize data structures, limit concurrent scrapers |
+| **TR-09** | Deduplication fails (alert spam)             | Low        | High     | 🟠 **HIGH**     | Thorough testing, hash collision handling, state verification       |
+| **TR-10** | High-risk platforms fail too often           | High       | Low      | 🟡 **MEDIUM**   | Mark as BETA, auto-disable if failure >50% for 7 days               |
 
 **Severity Key:**
+
 - 🔴 **CRITICAL:** Project-blocking, requires immediate attention
 - 🟠 **HIGH:** Major impact, requires priority fix
 - 🟡 **MEDIUM:** Moderate impact, address in next sprint
@@ -4042,32 +4314,35 @@ TOTAL   |  165    |   155     |  25.8    | Average velocity
 
 ### Business Risks
 
-| Risk ID | Risk Description | Likelihood | Impact | Severity | Mitigation Strategy |
-|---------|------------------|------------|--------|----------|---------------------|
-| **BR-01** | Legal action from platforms (ToS violations) | Low | Critical | 🟠 **HIGH** | Add disclaimers, only scrape public data, exclude high-risk platforms (StockX, GOAT, Facebook), consult legal counsel |
-| **BR-02** | User acquisition below target (<200 users) | Medium | High | 🟠 **HIGH** | Multi-channel marketing (Reddit, Discord, YouTube), value-first approach, iterate on messaging |
-| **BR-03** | Revenue below target (<$500 MRR) | Medium | High | 🟠 **HIGH** | Optimize pricing (A/B test), improve conversion funnel, add premium features, survey users |
-| **BR-04** | High churn rate (>30% monthly) | Medium | Medium | 🟡 **MEDIUM** | Survey canceling users, fix pain points, improve reliability, add value |
-| **BR-05** | Competition launches similar product | Low | Medium | 🟡 **MEDIUM** | Differentiate with unique features (AI parsing, release calendar), focus on quality, build community |
-| **BR-06** | Apify changes pricing/terms | Low | Medium | 🟡 **MEDIUM** | Monitor Apify announcements, diversify platform (consider self-hosting), maintain good relationship |
-| **BR-07** | Market saturation (sneaker resale declines) | Low | High | 🟠 **HIGH** | Monitor market trends, diversify to other verticals (watches, streetwear, collectibles), adapt quickly |
-| **BR-08** | Negative community reaction (seen as spam) | Medium | Medium | 🟡 **MEDIUM** | Value-first marketing, respect community rules, engage authentically, build trust before promoting |
+| Risk ID   | Risk Description                             | Likelihood | Impact   | Severity      | Mitigation Strategy                                                                                                   |
+| --------- | -------------------------------------------- | ---------- | -------- | ------------- | --------------------------------------------------------------------------------------------------------------------- |
+| **BR-01** | Legal action from platforms (ToS violations) | Low        | Critical | 🟠 **HIGH**   | Add disclaimers, only scrape public data, exclude high-risk platforms (StockX, GOAT, Facebook), consult legal counsel |
+| **BR-02** | User acquisition below target (<200 users)   | Medium     | High     | 🟠 **HIGH**   | Multi-channel marketing (Reddit, Discord, YouTube), value-first approach, iterate on messaging                        |
+| **BR-03** | Revenue below target (<$500 MRR)             | Medium     | High     | 🟠 **HIGH**   | Optimize pricing (A/B test), improve conversion funnel, add premium features, survey users                            |
+| **BR-04** | High churn rate (>30% monthly)               | Medium     | Medium   | 🟡 **MEDIUM** | Survey canceling users, fix pain points, improve reliability, add value                                               |
+| **BR-05** | Competition launches similar product         | Low        | Medium   | 🟡 **MEDIUM** | Differentiate with unique features (AI parsing, release calendar), focus on quality, build community                  |
+| **BR-06** | Apify changes pricing/terms                  | Low        | Medium   | 🟡 **MEDIUM** | Monitor Apify announcements, diversify platform (consider self-hosting), maintain good relationship                   |
+| **BR-07** | Market saturation (sneaker resale declines)  | Low        | High     | 🟠 **HIGH**   | Monitor market trends, diversify to other verticals (watches, streetwear, collectibles), adapt quickly                |
+| **BR-08** | Negative community reaction (seen as spam)   | Medium     | Medium   | 🟡 **MEDIUM** | Value-first marketing, respect community rules, engage authentically, build trust before promoting                    |
 
 **Contingency Plans:**
 
 **If TR-02 (Anti-scraping blocks):**
+
 1. Switch to higher-quality proxies (datacenter → residential)
 2. Increase delays between requests
 3. Temporarily disable problematic platform
 4. Notify users of reduced platform availability
 
 **If BR-02 (User acquisition fails):**
+
 1. Week 1: Double down on Reddit (post in more subreddits)
 2. Week 2: Partner with micro-influencers (pay $50-100 for video)
 3. Week 3: Run paid ads ($200 budget for Google Ads)
 4. Week 4: Offer lifetime deal ($99 one-time) for early adopters
 
 **If BR-03 (Revenue below target):**
+
 1. A/B test pricing: $4.99 → $7.99 for Hobby tier
 2. Add discount codes for annual plans (15% off)
 3. Upsell free users with targeted emails
@@ -4077,12 +4352,12 @@ TOTAL   |  165    |   155     |  25.8    | Average velocity
 
 ### Dependency Risks
 
-| Risk ID | Risk Description | Likelihood | Impact | Mitigation Strategy |
-|---------|------------------|------------|--------|---------------------|
-| **DR-01** | OpenAI API downtime or deprecation | Low | Medium | Cache all parsing results, have regex-only fallback, monitor API status |
-| **DR-02** | SendGrid account suspension | Low | High | Follow email best practices, verify domain, have backup ESP (Mailgun) configured |
-| **DR-03** | Apify platform outage | Low | Medium | Monitor Apify status page, communicate with users, have local testing environment |
-| **DR-04** | GitHub unavailable (code hosting) | Low | Low | Use GitLab as backup, maintain local code backups |
+| Risk ID   | Risk Description                   | Likelihood | Impact | Mitigation Strategy                                                               |
+| --------- | ---------------------------------- | ---------- | ------ | --------------------------------------------------------------------------------- |
+| **DR-01** | OpenAI API downtime or deprecation | Low        | Medium | Cache all parsing results, have regex-only fallback, monitor API status           |
+| **DR-02** | SendGrid account suspension        | Low        | High   | Follow email best practices, verify domain, have backup ESP (Mailgun) configured  |
+| **DR-03** | Apify platform outage              | Low        | Medium | Monitor Apify status page, communicate with users, have local testing environment |
+| **DR-04** | GitHub unavailable (code hosting)  | Low        | Low    | Use GitLab as backup, maintain local code backups                                 |
 
 ---
 
@@ -4094,44 +4369,44 @@ TOTAL   |  165    |   155     |  25.8    | Average velocity
 
 #### Product Metrics
 
-| Metric | Target (Week 4) | Target (Week 8) | Target (Week 12) | Measurement Method |
-|--------|----------------|-----------------|------------------|--------------------|
-| **Apify Quality Score** | 65+ | 70+ | 75+ | Apify Console → Analytics |
-| **Actor Run Success Rate** | 85% | 90% | 90% | (Successful runs / Total runs) × 100 |
-| **Average Runtime** | <10 min | <7 min | <5 min | Apify run logs |
-| **Platform Success Rate** | 90% per platform | 90% | 85% (with BETA platforms) | Track failures per platform |
-| **Parsing Accuracy** | N/A | 85% | 90% | Manual review of 100 listings |
-| **Deduplication Rate** | N/A | N/A | 70-80% | (Deduplicated / Total scraped) × 100 |
+| Metric                     | Target (Week 4)  | Target (Week 8) | Target (Week 12)          | Measurement Method                   |
+| -------------------------- | ---------------- | --------------- | ------------------------- | ------------------------------------ |
+| **Apify Quality Score**    | 65+              | 70+             | 75+                       | Apify Console → Analytics            |
+| **Actor Run Success Rate** | 85%              | 90%             | 90%                       | (Successful runs / Total runs) × 100 |
+| **Average Runtime**        | <10 min          | <7 min          | <5 min                    | Apify run logs                       |
+| **Platform Success Rate**  | 90% per platform | 90%             | 85% (with BETA platforms) | Track failures per platform          |
+| **Parsing Accuracy**       | N/A              | 85%             | 90%                       | Manual review of 100 listings        |
+| **Deduplication Rate**     | N/A              | N/A             | 70-80%                    | (Deduplicated / Total scraped) × 100 |
 
 #### User Metrics
 
-| Metric | Target (Week 4) | Target (Week 8) | Target (Week 12) | Measurement Method |
-|--------|----------------|-----------------|------------------|--------------------|
-| **Total Users** | 50+ | 100+ | 200+ | Apify Analytics → Users |
-| **Active Users (7-day)** | 30+ | 60+ | 100+ | Users with ≥1 run in last 7 days |
-| **User Retention (30-day)** | N/A | 60% | 70% | (Users in Month 2 / Users in Month 1) × 100 |
-| **Average Runs per User/Week** | 3+ | 4+ | 5+ | Total runs / Active users / Weeks |
-| **Beta Tester Satisfaction** | N/A | N/A | 4.0+/5.0 | Google Forms survey |
+| Metric                         | Target (Week 4) | Target (Week 8) | Target (Week 12) | Measurement Method                          |
+| ------------------------------ | --------------- | --------------- | ---------------- | ------------------------------------------- |
+| **Total Users**                | 50+             | 100+            | 200+             | Apify Analytics → Users                     |
+| **Active Users (7-day)**       | 30+             | 60+             | 100+             | Users with ≥1 run in last 7 days            |
+| **User Retention (30-day)**    | N/A             | 60%             | 70%              | (Users in Month 2 / Users in Month 1) × 100 |
+| **Average Runs per User/Week** | 3+              | 4+              | 5+               | Total runs / Active users / Weeks           |
+| **Beta Tester Satisfaction**   | N/A             | N/A             | 4.0+/5.0         | Google Forms survey                         |
 
 #### Revenue Metrics
 
-| Metric | Target (Week 4) | Target (Week 8) | Target (Week 12) | Measurement Method |
-|--------|----------------|-----------------|------------------|--------------------|
-| **Monthly Recurring Revenue (MRR)** | $0 (pre-launch) | $200+ | $500-1,000 | Sum of all subscriptions |
-| **Paying Users** | 0 | 30+ | 100+ | Count of paid subscribers |
-| **Average Revenue Per User (ARPU)** | $0 | $6-7 | $5-10 | MRR / Paying users |
-| **Free → Paid Conversion Rate** | N/A | 15% | 20% | (Paid users / Total users) × 100 |
-| **Churn Rate** | N/A | <20% | <15% | (Cancellations / Total paid) × 100 |
+| Metric                              | Target (Week 4) | Target (Week 8) | Target (Week 12) | Measurement Method                 |
+| ----------------------------------- | --------------- | --------------- | ---------------- | ---------------------------------- |
+| **Monthly Recurring Revenue (MRR)** | $0 (pre-launch) | $200+           | $500-1,000       | Sum of all subscriptions           |
+| **Paying Users**                    | 0               | 30+             | 100+             | Count of paid subscribers          |
+| **Average Revenue Per User (ARPU)** | $0              | $6-7            | $5-10            | MRR / Paying users                 |
+| **Free → Paid Conversion Rate**     | N/A             | 15%             | 20%              | (Paid users / Total users) × 100   |
+| **Churn Rate**                      | N/A             | <20%            | <15%             | (Cancellations / Total paid) × 100 |
 
 #### Marketing Metrics
 
-| Metric | Target (Week 4) | Target (Week 8) | Target (Week 12) | Measurement Method |
-|--------|----------------|-----------------|------------------|--------------------|
-| **Apify Store Views** | 500+ | 1,000+ | 2,000+ | Apify Store analytics |
-| **Demo Video Views** | 100+ | 300+ | 500+ | YouTube analytics |
-| **Reddit Post Engagement** | N/A | N/A | 200+ upvotes total | Reddit karma |
-| **Discord Server Members** | N/A | N/A | 50+ | Discord server stats |
-| **GitHub Stars** | 10+ | 25+ | 50+ | GitHub repository |
+| Metric                     | Target (Week 4) | Target (Week 8) | Target (Week 12)   | Measurement Method    |
+| -------------------------- | --------------- | --------------- | ------------------ | --------------------- |
+| **Apify Store Views**      | 500+            | 1,000+          | 2,000+             | Apify Store analytics |
+| **Demo Video Views**       | 100+            | 300+            | 500+               | YouTube analytics     |
+| **Reddit Post Engagement** | N/A             | N/A             | 200+ upvotes total | Reddit karma          |
+| **Discord Server Members** | N/A             | N/A             | 50+                | Discord server stats  |
+| **GitHub Stars**           | 10+             | 25+             | 50+                | GitHub repository     |
 
 ---
 
@@ -4139,17 +4414,18 @@ TOTAL   |  165    |   155     |  25.8    | Average velocity
 
 **Apify Challenge typically judges on these criteria:**
 
-| Criterion | Weight | Our Approach | Target Score |
-|-----------|--------|--------------|--------------|
-| **Utility & Market Demand** | 30% | Solves real problem (sneaker deal hunting), target 50K+ resellers, $6B market | 9/10 |
-| **Technical Excellence** | 25% | Clean architecture, 12 platforms, AI parsing, deduplication, error handling | 8/10 |
-| **User Experience** | 20% | Comprehensive docs, video demo, intuitive input schema, helpful errors | 9/10 |
-| **Innovation** | 15% | Multi-platform orchestration, AI parsing, release calendar, deal scoring | 8/10 |
-| **Monetization Potential** | 10% | Clear pricing, tiered model, realistic projections ($500-1,000 MRR target) | 9/10 |
+| Criterion                   | Weight | Our Approach                                                                  | Target Score |
+| --------------------------- | ------ | ----------------------------------------------------------------------------- | ------------ |
+| **Utility & Market Demand** | 30%    | Solves real problem (sneaker deal hunting), target 50K+ resellers, $6B market | 9/10         |
+| **Technical Excellence**    | 25%    | Clean architecture, 12 platforms, AI parsing, deduplication, error handling   | 8/10         |
+| **User Experience**         | 20%    | Comprehensive docs, video demo, intuitive input schema, helpful errors        | 9/10         |
+| **Innovation**              | 15%    | Multi-platform orchestration, AI parsing, release calendar, deal scoring      | 8/10         |
+| **Monetization Potential**  | 10%    | Clear pricing, tiered model, realistic projections ($500-1,000 MRR target)    | 9/10         |
 
 **Weighted Average:** (9×0.3) + (8×0.25) + (9×0.2) + (8×0.15) + (9×0.1) = **8.5/10**
 
 **Strategy to Win:**
+
 1. **Emphasize Novelty:** Highlight "orchestrator" model (reuses existing Actors + custom scrapers)
 2. **Demonstrate Impact:** Show real examples of deals found, money saved by users
 3. **Build Community:** Leverage beta testers for testimonials, positive reviews
@@ -4163,6 +4439,7 @@ TOTAL   |  165    |   155     |  25.8    | Average velocity
 **By Week 12:**
 
 **User Funnel:**
+
 ```
 Apify Store Views: 2,000+
     ↓ (10% try actor)
@@ -4176,6 +4453,7 @@ Retained Paying: 14-28
 ```
 
 **Revenue Calculation:**
+
 ```
 MRR = (Hobby users × $4.99) + (Pro users × $9.99) + (Business users × $29.99)
 
@@ -4204,6 +4482,7 @@ Total: $1,898 MRR
 ### Success Milestones
 
 **Phase 1 Success (Week 4):**
+
 - ✅ MVP launched on Apify Store
 - ✅ Apify Challenge submitted
 - ✅ 65+ quality score achieved
@@ -4211,6 +4490,7 @@ Total: $1,898 MRR
 - ✅ Zero critical bugs in production
 
 **Phase 2 Success (Week 8):**
+
 - ✅ 6 platforms operational (90%+ success rate)
 - ✅ Webhook support functional
 - ✅ 100+ users (50+ active)
@@ -4219,6 +4499,7 @@ Total: $1,898 MRR
 - ✅ 4.0+ user satisfaction
 
 **Phase 3 Success (Week 12):**
+
 - ✅ 12 platforms operational (85%+ success rate including BETA)
 - ✅ AI parsing, deduplication, release calendar, deal scoring all working
 - ✅ 200+ users (100+ active)
@@ -4229,6 +4510,7 @@ Total: $1,898 MRR
 - ✅ Positive community reputation (no spam complaints)
 
 **Project Success Definition:**
+
 - Apify Challenge finalist or winner (Top 10)
 - OR $1,000+ MRR sustained for 3 months
 - OR 500+ users with 4.5+ rating
@@ -4241,6 +4523,7 @@ Total: $1,898 MRR
 ### Tools & Resources
 
 **Development Tools:**
+
 - **Code Editor:** VS Code with ESLint, Prettier extensions
 - **Version Control:** GitHub (public repo for challenge)
 - **Project Management:** Jira, Trello, or GitHub Projects
@@ -4248,18 +4531,21 @@ Total: $1,898 MRR
 - **API Testing:** Postman, Insomnia
 
 **External Services:**
+
 - **Apify:** Actor hosting, storage, proxies
 - **SendGrid:** Email delivery (free tier: 100 emails/day)
 - **OpenAI:** AI parsing (GPT-3.5 Turbo, ~$0.002 per parse)
 - **GitHub:** Code hosting, version control
 
 **Design & Marketing:**
+
 - **Video Recording:** OBS Studio, Loom
 - **Video Editing:** DaVinci Resolve (free), iMovie
 - **Graphics:** Canva (free tier)
 - **Screenshot:** Snagit, built-in OS tools
 
 **Community Channels:**
+
 - **Reddit:** r/Sneakers, r/SneakerMarket, r/Flipping, r/Reselling
 - **Discord:** 20+ sneaker/reseller servers
 - **YouTube:** Tutorial videos, demos
@@ -4269,6 +4555,7 @@ Total: $1,898 MRR
 ### Glossary
 
 **Agile Terms:**
+
 - **Sprint:** Time-boxed iteration (2 weeks in this project)
 - **Story Points:** Relative measure of effort (Fibonacci scale: 1, 2, 3, 5, 8, 13)
 - **Velocity:** Average story points completed per sprint
@@ -4277,6 +4564,7 @@ Total: $1,898 MRR
 - **Definition of Done:** Checklist of criteria for completing a story
 
 **Technical Terms:**
+
 - **Actor:** Apify's serverless computing unit
 - **Dataset:** Structured storage for scraped data (JSON, CSV)
 - **Key-Value Store:** Storage for files, state, and metadata
@@ -4287,6 +4575,7 @@ Total: $1,898 MRR
 - **MD5 Hash:** Cryptographic hash function for generating unique IDs
 
 **Sneaker Terms:**
+
 - **DS (Deadstock):** Brand new, never worn
 - **VNDS (Very Near Deadstock):** Worn once or twice, like new
 - **OG All:** Includes original box, laces, and accessories
@@ -4298,9 +4587,9 @@ Total: $1,898 MRR
 
 ## Document Change Log
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2025-11-10 | Dev Team | Initial comprehensive Agile project breakdown created |
+| Version | Date       | Author   | Changes                                               |
+| ------- | ---------- | -------- | ----------------------------------------------------- |
+| 1.0     | 2025-11-10 | Dev Team | Initial comprehensive Agile project breakdown created |
 
 ---
 

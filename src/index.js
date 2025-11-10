@@ -1,7 +1,7 @@
 /**
  * Grail Hunter - Multi-Platform Sneaker Monitor
  * Phase 1: Foundation + Grailed MVP
- * 
+ *
  * This actor scrapes sneaker listings from Grailed and sends notifications
  * for new listings that match your search criteria.
  */
@@ -24,7 +24,7 @@ Actor.main(async () => {
   try {
     // 1. Get and validate input
     const rawInput = await Actor.getInput();
-    
+
     if (!rawInput) {
       throw new ValidationError('No input provided to actor. Check INPUT_SCHEMA.json');
     }
@@ -65,9 +65,7 @@ Actor.main(async () => {
 
     // 4. Normalize data
     logger.info('🔄 Normalizing listings...');
-    const normalizedListings = rawListings.map((raw) => 
-      normalizer.normalize(raw, input.platform)
-    );
+    const normalizedListings = rawListings.map((raw) => normalizer.normalize(raw, input.platform));
 
     // 5. Parse listings (extract size, condition, tags)
     logger.info('🧠 Parsing listings...');
@@ -124,7 +122,6 @@ Actor.main(async () => {
 
     // Exit with success code
     process.exit(0);
-
   } catch (error) {
     logger.error('❌ Actor execution failed', {
       error: error.message,

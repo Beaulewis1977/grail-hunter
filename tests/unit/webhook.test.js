@@ -1,4 +1,3 @@
-
 /**
  * Unit tests for webhook notifier
  */
@@ -118,4 +117,3 @@ describe('WebhookNotifier', () => {
     });
   });
 });
-

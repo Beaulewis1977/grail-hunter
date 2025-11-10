@@ -1,4 +1,3 @@
-
 /**
  * Grailed Scraper
  * Orchestrates the vmscrapers/grailed Apify actor
@@ -90,4 +89,3 @@ export class GrailedScraper extends BaseScraper {
     }
   }
 }
-

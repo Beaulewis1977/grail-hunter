@@ -1,4 +1,3 @@
-
 /**
  * Platform Configuration
  * Defines platform-specific settings for scraping
@@ -47,4 +46,3 @@ export const PLATFORM_CONFIGS = {
 export const SUPPORTED_PLATFORMS = Object.keys(PLATFORM_CONFIGS).filter(
   (key) => PLATFORM_CONFIGS[key].enabled !== false
 );
-
