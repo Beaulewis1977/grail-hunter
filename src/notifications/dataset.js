@@ -13,8 +13,12 @@ export class DatasetNotifier {
    * @param {Array} listings - Listings to save
    */
   async send(listings) {
-    if (!listings || listings.length === 0) {
-      logger.info('No listings to push to dataset');
+    if (!Array.isArray(listings) || listings.length === 0) {
+      logger.info('No listings to push to dataset', {
+        isArray: Array.isArray(listings),
+        type: typeof listings,
+        length: listings?.length,
+      });
       return;
     }
 

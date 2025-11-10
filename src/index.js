@@ -65,7 +65,15 @@ Actor.main(async () => {
 
     // 4. Normalize data
     logger.info('🔄 Normalizing listings...');
-    const normalizedListings = rawListings.map((raw) => normalizer.normalize(raw, input.platform));
+    const normalizedListings = rawListings
+      .map((raw) => normalizer.normalize(raw, input.platform))
+      .filter((listing) => listing != null);
+
+    const droppedCount = rawListings.length - normalizedListings.length;
+    if (droppedCount > 0) {
+      logger.info(`⚠️  Dropped ${droppedCount} invalid listing(s) during normalization`);
+    }
+    logger.info(`✅ Successfully normalized ${normalizedListings.length} listings`);
 
     // 5. Parse listings (extract size, condition, tags)
     logger.info('🧠 Parsing listings...');
