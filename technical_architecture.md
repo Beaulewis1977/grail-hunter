@@ -1,11 +1,12 @@
 # SneakerMeta: Technical Architecture Documentation
 ### Multi-Platform Sneaker Alert & Aggregation System
 
-**Version:** 1.0  
-**Date:** November 10, 2025  
-**Project Type:** Apify Actor Challenge Submission  
-**Target Market:** Sneaker collectors, resellers, and enthusiasts  
-**Business Model:** $2.99-$9.99/month subscription  
+**Version:** 1.1
+**Date:** November 10, 2025
+**Project Type:** Apify Actor Challenge Submission
+**Target Market:** Sneaker collectors, resellers, and enthusiasts
+**Business Model:** FREE during challenge (through Jan 31, 2026), then tiered pricing
+**Tagline:** "Never miss your grail again" | "Your 24/7 sneaker scout"  
 
 ---
 
@@ -2737,9 +2738,349 @@ async function trackUsage(userId, tier) {
 - 75 Pro users @ $9.99 = $749.25/mo
 - 15 Business users @ $29.99 = $449.85/mo
 
-**Total Monthly Revenue**: ~$2,700  
-**After Apify Commission**: ~$2,160  
+**Total Monthly Revenue**: ~$2,700
+**After Apify Commission**: ~$2,160
 **Annual Run Rate**: ~$25,920
+
+### 8.7 Challenge Pricing Strategy (FREE Launch)
+
+**CRITICAL UPDATE FOR APIFY CHALLENGE:**
+
+To maximize Monthly Active Users (MAUs) - the primary judging criterion - the Actor will launch as **FREE** with generous limits during the challenge period (through January 31, 2026).
+
+**Challenge Pricing Model**:
+| Tier | Price | Platforms | Max Results | Alerts | Features |
+|------|-------|-----------|-------------|--------|----------|
+| **Free** | $0 | 4 (All MVP) | 100/platform | All channels | Unlimited searches, hourly runs, viral features |
+
+**Strategic Rationale**:
+- **Zero Friction**: No authentication, no payment = maximum user acquisition
+- **MAU Maximization**: Free tier removes all barriers to adoption
+- **Viral Growth**: Users share freely when there's no cost
+- **Challenge Focus**: Win $100k Grand Prize first, monetize after
+
+**Post-Challenge Migration** (After Jan 31, 2026):
+- Grandfather existing users with legacy "Founder" tier
+- Introduce tiered pricing for new users (see Section 8.1)
+- Announce 30 days before transition
+
+**Implementation**:
+```javascript
+// Challenge mode enforcement
+const CHALLENGE_MODE = process.env.CHALLENGE_MODE === 'true'; // Until Jan 31, 2026
+
+async function validateTier(input) {
+  if (CHALLENGE_MODE) {
+    // During challenge: Everyone gets full access
+    return {
+      maxPlatforms: 999,
+      maxSearchTerms: 999,
+      maxResultsPerPlatform: 500,
+      allFeatures: true
+    };
+  }
+
+  // Post-challenge: Use tiered limits from Section 8.2
+  const tier = input.subscriptionTier || 'free';
+  return TIER_LIMITS[tier];
+}
+```
+
+### 8.8 Viral Growth & Referral System
+
+**Overview**: Built-in viral mechanics to drive organic user acquisition and maximize MAUs for the Apify Challenge.
+
+#### 8.8.1 Public "Recent Grails Found" Feed
+
+**Concept**: Auto-publish high-value deals to a public feed, creating social proof and driving discovery.
+
+**Implementation**:
+```javascript
+// After deduplication, publish top deals publicly
+async function publishPublicFeed(newAlerts) {
+  const publicDataset = await Actor.openDataset('public-grails-feed');
+
+  // Filter for high-value deals (score 80+)
+  const topDeals = newAlerts.filter(alert =>
+    alert.metadata?.dealScore >= 80
+  );
+
+  // Anonymize and publish
+  for (const deal of topDeals) {
+    await publicDataset.pushData({
+      product: deal.product,
+      listing: {
+        price: deal.listing.price,
+        condition: deal.listing.condition,
+        platform: deal.source.platform,
+        // REMOVE: seller info, URLs (privacy)
+      },
+      dealScore: deal.metadata.dealScore,
+      savingsPercent: deal.metadata.savingsPercent,
+      foundAt: deal.scrape.timestamp,
+      tagline: "Never miss your grail again" // Branding
+    });
+  }
+}
+```
+
+**Public Feed URL**: `https://apify.com/[username]/grail-hunter/dataset/public-grails-feed`
+
+**Marketing Use**:
+- Share link in r/Sneakers, Discord, NikeTalk
+- Embed in README.md as "Live Proof"
+- Auto-tweet top deals with attribution
+
+#### 8.8.2 Social Sharing Features
+
+**"Share This Alert" Button**: Add to all notification messages
+
+**Slack/Discord Implementation**:
+```javascript
+async function sendSlackAlert(alert, webhookUrl) {
+  const dealUrl = alert.source.url;
+  const shareText = `🔥 ${alert.product.name} for $${alert.listing.price} on ${alert.source.platform}!`;
+
+  const message = {
+    text: shareText,
+    blocks: [
+      {
+        type: "section",
+        text: { type: "mrkdwn", text: shareText }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `💰 *${alert.metadata.savingsPercent}% off market* | Deal Score: ${alert.metadata.dealScore}/100`
+        }
+      },
+      {
+        type: "actions",
+        elements: [
+          {
+            type: "button",
+            text: { type: "plain_text", text: "View Listing" },
+            url: dealUrl
+          },
+          {
+            type: "button",
+            text: { type: "plain_text", text: "Share This Deal 🔗" },
+            url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${dealUrl}`
+          }
+        ]
+      }
+    ]
+  };
+
+  await fetch(webhookUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(message)
+  });
+}
+```
+
+**Email Template Addition**:
+```html
+<div style="text-align: center; margin-top: 20px;">
+  <a href="mailto:?subject=Check this sneaker deal&body={{shareText}}">📧 Share via Email</a> |
+  <a href="https://twitter.com/intent/tweet?text={{shareText}}">🐦 Tweet</a> |
+  <a href="https://discord.com/channels/@me">💬 Share on Discord</a>
+</div>
+```
+
+#### 8.8.3 Social Proof Counters
+
+**"X Users Hunting This Shoe"** - Display active interest
+
+**Implementation**:
+```javascript
+async function trackShoeInterest(sneakerModel) {
+  const kvStore = await Actor.openKeyValueStore();
+  const key = `interest_${sneakerModel.replace(/\s+/g, '_')}`;
+
+  const interest = await kvStore.getValue(key) || { count: 0, users: [] };
+
+  // Increment anonymous counter
+  interest.count += 1;
+  interest.lastUpdated = new Date().toISOString();
+
+  await kvStore.setValue(key, interest);
+
+  // Include in alerts
+  return interest.count;
+}
+
+// In notification message
+const huntingCount = await trackShoeInterest(alert.product.model);
+message.text = `🔥 ${alert.product.name} (${huntingCount} users hunting this) - $${alert.listing.price}`;
+```
+
+#### 8.8.4 Referral Tracking (Lightweight)
+
+**No Rewards Needed** - Sharing = Social Currency in sneaker culture
+
+**Implementation**:
+```javascript
+// Optional referral code in INPUT_SCHEMA
+{
+  "referralCode": {
+    "type": "string",
+    "description": "Optional: Enter a friend's code to support them"
+  }
+}
+
+// Track attribution (for analytics only)
+async function trackReferral(referralCode) {
+  if (!referralCode) return;
+
+  const kvStore = await Actor.openKeyValueStore();
+  const referrals = await kvStore.getValue(`referrals_${referralCode}`) || [];
+  referrals.push({
+    timestamp: new Date().toISOString(),
+    source: 'new_user_signup'
+  });
+
+  await kvStore.setValue(`referrals_${referralCode}`, referrals);
+
+  // Future: Add leaderboard, badges, exclusive access
+}
+```
+
+**Viral Coefficient Target**: 1.5x (each user refers 1.5 others)
+
+#### 8.8.5 Growth Metrics Dashboard
+
+**Track for Challenge Judging**:
+```javascript
+async function recordGrowthMetrics() {
+  const kvStore = await Actor.openKeyValueStore();
+  const month = new Date().toISOString().slice(0, 7); // YYYY-MM
+
+  const metrics = await kvStore.getValue(`metrics_${month}`) || {
+    totalRuns: 0,
+    uniqueUsers: new Set(),
+    publicDealsPublished: 0,
+    alertsShared: 0,
+    referralSignups: 0
+  };
+
+  metrics.totalRuns += 1;
+  metrics.uniqueUsers.add(userId);
+  metrics.publicDealsPublished += publicDeals.length;
+
+  await kvStore.setValue(`metrics_${month}`, {
+    ...metrics,
+    uniqueUsers: Array.from(metrics.uniqueUsers) // Convert Set to Array
+  });
+
+  // MAU = uniqueUsers.length
+  Actor.log.info(`Monthly Active Users (MAU): ${metrics.uniqueUsers.length}`);
+}
+```
+
+**Key Metrics for Challenge**:
+- **MAUs**: Count of unique users per month
+- **Viral Coefficient**: (New users from referrals) / (Total users)
+- **Share Rate**: (Alerts shared) / (Total alerts sent)
+- **Public Feed Engagement**: Views/clicks on public dataset
+
+### 8.9 Hybrid Rate Limiting Strategy
+
+**Approach**: Combine Apify Proxy with smart request delays to avoid platform blocks.
+
+#### 8.9.1 Apify Proxy Configuration
+
+**For Custom Scrapers** (Flight Club, Stadium Goods, Release Calendars):
+
+```javascript
+import { Actor } from 'apify';
+
+async function getProxyConfiguration() {
+  return Actor.createProxyConfiguration({
+    groups: ['RESIDENTIAL'], // Residential IPs for anti-detection
+    countryCode: 'US', // US proxies for domestic sites
+  });
+}
+
+// Use in Playwright/Puppeteer
+const proxyConfiguration = await getProxyConfiguration();
+const browser = await chromium.launch({
+  proxy: await proxyConfiguration.newUrl(),
+});
+```
+
+#### 8.9.2 Smart Rate Limiting (Per-Platform)
+
+**Platform-Specific Limits** (configured in `.env.local`):
+```
+RATE_LIMIT_EBAY=200          # requests/hour
+RATE_LIMIT_GRAILED=150       # requests/hour
+RATE_LIMIT_STOCKX=100        # requests/hour
+RATE_LIMIT_GOAT=100          # requests/hour
+RATE_LIMIT_FLIGHTCLUB=80     # requests/hour (custom scraper)
+RATE_LIMIT_STADIUMGOODS=80   # requests/hour (custom scraper)
+```
+
+**Implementation**:
+```javascript
+class RateLimiter {
+  constructor(platform, requestsPerHour) {
+    this.platform = platform;
+    this.maxRequests = requestsPerHour;
+    this.requests = [];
+    this.minDelay = (3600 / requestsPerHour) * 1000; // ms between requests
+  }
+
+  async throttle() {
+    const now = Date.now();
+
+    // Remove requests older than 1 hour
+    this.requests = this.requests.filter(t => now - t < 3600000);
+
+    // Check if at limit
+    if (this.requests.length >= this.maxRequests) {
+      const oldestRequest = this.requests[0];
+      const waitTime = 3600000 - (now - oldestRequest);
+      Actor.log.warning(`${this.platform} rate limit reached. Waiting ${waitTime}ms`);
+      await new Promise(resolve => setTimeout(resolve, waitTime));
+    }
+
+    // Add random jitter (±20%) to mimic human behavior
+    const jitter = this.minDelay * (0.8 + Math.random() * 0.4);
+    await new Promise(resolve => setTimeout(resolve, jitter));
+
+    this.requests.push(now);
+  }
+}
+
+// Usage
+const ebayLimiter = new RateLimiter('eBay', process.env.RATE_LIMIT_EBAY);
+await ebayLimiter.throttle();
+// ... make eBay request
+```
+
+#### 8.9.3 Orchestrated Actor Rate Limiting
+
+**For Existing Actors** (GOAT, eBay, Grailed scrapers):
+- Rely on their internal rate limiting
+- Monitor for errors and back off if needed
+
+```javascript
+async function callExistingActor(actorId, input) {
+  try {
+    const run = await Actor.call(actorId, input);
+    return run.defaultDataset;
+  } catch (error) {
+    if (error.message.includes('rate limit')) {
+      Actor.log.warning(`${actorId} hit rate limit. Skipping for this run.`);
+      return []; // Graceful degradation
+    }
+    throw error;
+  }
+}
+```
 
 ---
 

@@ -70,3 +70,7 @@ research_files/
 working-notes/
 drafts/
 archive/
+
+.mcp.json
+settings.local.json
+.claude.json

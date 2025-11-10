@@ -503,6 +503,63 @@ When the Actor finds a legitimate, high-value deal (e.g., "VNDS Off-White Chicag
 The post is not "Check out my Actor." The post is "Heads up, just found an amazing deal on..."
 When other users inevitably ask, "How did you find that so fast? It's already sold," the reply is: "I've been using this Apify Actor to monitor all the sites at once. Here's the link if you want to use it; it's free."
 This method provides tangible value to the community first (the deal), establishing credibility. The Actor is then presented as the solution to a shared problem, not as spam. This is the most effective and ethical path to building a loyal user base and winning the MAU metric.
+
+D. Viral Growth Mechanics (MAU Amplification)
+
+To maximize MAUs for the challenge, the Actor integrates built-in viral mechanics that encourage organic sharing and community growth.
+
+Public "Recent Grails Found" Feed
+The Actor automatically publishes anonymized high-value deals (deal score 80+) to a public dataset: https://apify.com/[username]/grail-hunter/dataset/public-grails-feed
+
+This feed becomes a live marketing asset:
+- Provides continuous social proof ("Look what the Actor found today!")
+- Drives discovery through shareability (users share feed in communities)
+- Automates the "Provide, Don't Promote" strategy (automated value delivery)
+Implementation: The Actor posts top deals to a separate public dataset after each run, removing seller info and URLs for privacy.
+
+Social Sharing Features
+Every alert includes "Share This Deal" buttons for:
+- Email forwarding
+- Twitter/X posting
+- Discord messaging
+
+This leverages sneakerhead culture: sharing a great find = social currency in the community. When users share alerts, they organically promote the Actor with authentic, valuable content.
+Implementation: Notification messages include pre-formatted share links and social media intent URLs.
+
+Social Proof Counters
+Alerts display "X users hunting this shoe" counters, creating:
+- Urgency (FOMO - "Others want this too!")
+- Community feeling (shared interest)
+- Increased perceived value (popular = valuable)
+
+Implementation: Track anonymous interest counters in KV Store, increment when users search for specific models, display in notifications.
+
+Referral Tracking (Lightweight)
+Optional referral code input allows users to support friends. No financial rewards needed—sharing = kudos in sneaker culture.
+
+Future potential: Leaderboards, badges, exclusive early access for top referrers.
+Implementation: Track referral attribution in KV Store for analytics. Display top referrers on public feed.
+
+Viral Coefficient Target: 1.5x
+Goal: Each user refers 1.5 others through sharing alerts, public feed visibility, and organic word-of-mouth. This exponential growth directly maximizes the MAU metric for challenge judging.
+
+E. Pricing Strategy for Challenge (FREE Launch)
+
+Critical Strategic Decision: Launch as FREE with no authentication required.
+
+Rationale:
+- Zero Friction: No payment, no login = maximum user acquisition
+- MAU Maximization: The challenge judges heavily on cumulative MAUs. Free tier removes all barriers.
+- Viral Amplification: Users share freely when there's no cost/commitment
+- Challenge Focus: Win $100k Grand Prize first, monetize after January 31, 2026
+
+Post-Challenge Migration:
+- Grandfather existing users with "Founder" tier (legacy free access)
+- Introduce tiered pricing for new users ($4.99 Hobby, $9.99 Pro)
+- Announce transition 30 days before implementation
+
+This strategy prioritizes challenge victory over immediate revenue. The Actor's MAU count becomes its competitive advantage.
+
 Works cited
 The Apify $1M Challenge · Apify, accessed November 9, 2025, https://apify.com/challenge#join-the-challenge
 Goat Product Search Scraper - Apify, accessed November 9, 2025, https://apify.com/ecomscrape/goat-product-search-scraper

@@ -1,6 +1,8 @@
 # Grail Hunter 👟
 
-> **Multi-platform sneaker monitoring and alert system built for sneaker collectors and resellers**
+> **"Never miss your grail again"**
+
+Multi-platform sneaker monitoring and alert system built for sneaker collectors and resellers. Your 24/7 sneaker scout.
 
 [![Apify Challenge 2024-2025](https://img.shields.io/badge/Apify-Challenge%202024--2025-blue)](https://apify.com/challenge)
 [![Built with Apify](https://img.shields.io/badge/Built%20with-Apify-orange)](https://apify.com)

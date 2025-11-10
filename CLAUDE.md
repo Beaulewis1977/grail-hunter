@@ -197,18 +197,21 @@ Every listing must conform to this structure:
 1. Orchestrator main loop (call existing Actors for eBay, Grailed, StockX, GOAT)
 2. Data normalization to unified schema
 3. KV Store-based deduplication (MD5 hash)
-4. Basic email notifications
+4. Multi-channel notifications (Email, Slack, Discord with "Share This Deal" buttons)
+5. Public "Recent Grails Found" feed (publish high-value deals anonymously)
 
-### Phase 2 - Intelligence
+### Phase 2 - Viral Growth & Intelligence
 1. Regex-based terminology parser (DS, VNDS, OG All, sizes)
-2. Slack/Discord webhook alerts
-3. Custom scrapers for Flight Club & Stadium Goods
-4. Price drop detection
+2. Social proof counters ("X users hunting this shoe")
+3. Referral tracking (lightweight, no rewards)
+4. Custom scrapers for Flight Club & Stadium Goods
+5. Price drop detection
 
-### Phase 3 - Polish
+### Phase 3 - Polish & Scale
 1. AI fallback parsing (OpenAI)
-2. Release calendar monitoring
-3. Deal scoring (P2P vs authenticated price comparison)
+2. Growth metrics dashboard (MAU tracking)
+3. Release calendar monitoring
+4. Deal scoring algorithm (P2P vs authenticated price comparison)
 
 ## Error Handling Philosophy
 
@@ -258,11 +261,35 @@ Use mock data from documentation examples to avoid live scraping during tests.
 ## Key Files to Know
 
 - **src/index.js** - Actor entry point (basic scaffold, add orchestrator here)
-- **.actor/INPUT_SCHEMA.json** - User input validation (complete, don't modify)
+- **.actor/INPUT_SCHEMA.json** - User input validation (includes viral features!)
 - **.actor/OUTPUT_SCHEMA.json** - Listing schema (complete, don't modify)
-- **.env.local** - Config (Apify token already set)
-- **technical_architecture.md** - Reference for all implementation details
-- **sneakers-gemini-1.md** - Strategic rules (Facebook/Instagram forbidden!)
+- **.env.local** - Config (Apify token set, CHALLENGE_MODE=true)
+- **technical_architecture.md** - Reference for implementation (see sections 8.7-8.9)
+- **sneakers-gemini-1.md** - Strategic rules (Facebook/Instagram forbidden, viral growth strategy)
+
+## Critical Strategic Updates
+
+**FREE Launch Strategy:**
+- CHALLENGE_MODE=true in .env.local (until Jan 31, 2026)
+- No tier validation during challenge (everyone gets full access)
+- No authentication required (zero friction)
+- Goal: Maximize MAUs for challenge judging
+
+**Viral Growth Features:**
+- Public "Recent Grails Found" feed (auto-publish deals with score 80+)
+- "Share This Deal" buttons in all notifications
+- Social proof counters ("X users hunting this shoe")
+- Optional referral tracking (no rewards, just kudos)
+
+**Storage Strategy:**
+- Dataset: User results
+- KV Store: Deduplication memory
+- Public Dataset: `public-grails-feed` for viral marketing
+
+**Rate Limiting:**
+- Apify Proxy for custom scrapers (residential IPs)
+- Per-platform limits in .env.local
+- Smart delays with jitter (mimic human behavior)
 
 ## Dependencies Ready
 
@@ -273,5 +300,5 @@ Use mock data from documentation examples to avoid live scraping during tests.
 
 - Node.js 22, Apify CLI installed
 - Apify account with challenge registered
-- .env.local populated with API tokens
+- .env.local populated with API tokens + CHALLENGE_MODE=true
 - Pre-commit hooks active (auto-lint on commit)
