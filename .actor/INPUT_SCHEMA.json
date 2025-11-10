@@ -1,0 +1,177 @@
+{
+  "title": "Grail Hunter Input Configuration",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "searchTerms": {
+      "title": "Search Terms",
+      "type": "array",
+      "description": "Array of sneaker models or keywords to search (e.g., 'Air Jordan 1 Bred', 'Yeezy 350 Zebra')",
+      "editor": "stringList",
+      "prefill": [
+        "Air Jordan 1 Bred",
+        "Nike Dunk Low"
+      ],
+      "minLength": 1,
+      "maxLength": 20
+    },
+    "desiredSizes": {
+      "title": "Desired Sizes (US Men's)",
+      "type": "array",
+      "description": "Array of US Men's sizes to filter for (e.g., '10', '10.5', '11')",
+      "editor": "stringList",
+      "prefill": [
+        "10",
+        "10.5",
+        "11"
+      ]
+    },
+    "maxPrice": {
+      "title": "Maximum Price (USD)",
+      "type": "number",
+      "description": "Optional. Only return listings at or below this price. Leave empty for no limit.",
+      "minimum": 0,
+      "maximum": 10000
+    },
+    "targetPlatforms": {
+      "title": "Platforms to Search",
+      "type": "array",
+      "description": "Select which platforms to search",
+      "editor": "select",
+      "isMultiSelect": true,
+      "options": [
+        {
+          "value": "ebay",
+          "label": "eBay"
+        },
+        {
+          "value": "grailed",
+          "label": "Grailed"
+        },
+        {
+          "value": "stockx",
+          "label": "StockX"
+        },
+        {
+          "value": "goat",
+          "label": "GOAT"
+        },
+        {
+          "value": "flightclub",
+          "label": "Flight Club (Coming Soon)"
+        },
+        {
+          "value": "stadiumgoods",
+          "label": "Stadium Goods (Coming Soon)"
+        }
+      ],
+      "default": [
+        "ebay",
+        "grailed",
+        "stockx",
+        "goat"
+      ]
+    },
+    "craigslistLocations": {
+      "title": "Craigslist Search URLs (optional)",
+      "type": "array",
+      "description": "Full search URLs for Craigslist (e.g., 'https://newyork.craigslist.org/search/sss?query=jordan'). Only used if Craigslist is in targetPlatforms.",
+      "editor": "stringList"
+    },
+    "notificationSettings": {
+      "title": "Notification Settings",
+      "type": "object",
+      "description": "Configure how you receive alerts",
+      "properties": {
+        "emailAddress": {
+          "title": "Email Address",
+          "type": "string",
+          "format": "email",
+          "description": "Email to receive alerts (leave empty to disable)"
+        },
+        "slackWebhookUrl": {
+          "title": "Slack Webhook URL",
+          "type": "string",
+          "description": "Slack webhook for alerts (leave empty to disable)"
+        },
+        "discordWebhookUrl": {
+          "title": "Discord Webhook URL",
+          "type": "string",
+          "description": "Discord webhook for alerts (leave empty to disable)"
+        }
+      }
+    },
+    "filterSettings": {
+      "title": "Filter Settings",
+      "type": "object",
+      "description": "Advanced filtering options",
+      "properties": {
+        "minCondition": {
+          "title": "Minimum Condition",
+          "type": "string",
+          "description": "Only show listings in this condition or better",
+          "enum": [
+            "new_in_box",
+            "used_like_new",
+            "used_good",
+            "used_fair",
+            "used_poor",
+            "unspecified"
+          ],
+          "default": "used_good"
+        },
+        "requireOgBox": {
+          "title": "Require Original Box/Accessories",
+          "type": "boolean",
+          "description": "Only show listings with OG box and original accessories",
+          "default": false
+        },
+        "excludeAuctions": {
+          "title": "Exclude Auctions",
+          "type": "boolean",
+          "description": "Only show 'Buy It Now' listings (eBay)",
+          "default": true
+        }
+      }
+    },
+    "advancedOptions": {
+      "title": "Advanced Options",
+      "type": "object",
+      "description": "For power users only",
+      "properties": {
+        "useProxy": {
+          "title": "Use Apify Proxy",
+          "type": "boolean",
+          "description": "Use Apify residential proxies (recommended for reliability)",
+          "default": true
+        },
+        "requestTimeoutMs": {
+          "title": "Request Timeout (ms)",
+          "type": "number",
+          "description": "Timeout for individual requests",
+          "default": 30000,
+          "minimum": 5000,
+          "maximum": 120000
+        },
+        "maxResultsPerPlatform": {
+          "title": "Max Results Per Platform",
+          "type": "number",
+          "description": "Maximum listings to return per platform (1-500)",
+          "default": 50,
+          "minimum": 1,
+          "maximum": 500
+        },
+        "enableDebugLogging": {
+          "title": "Enable Debug Logging",
+          "type": "boolean",
+          "description": "Output detailed logs for troubleshooting",
+          "default": false
+        }
+      }
+    }
+  },
+  "required": [
+    "searchTerms",
+    "targetPlatforms"
+  ]
+}

@@ -1,0 +1,273 @@
+{
+  "title": "Grail Hunter Output Schema",
+  "type": "object",
+  "description": "Standardized sneaker listing from any platform",
+  "properties": {
+    "product": {
+      "title": "Product Information",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Full normalized sneaker name",
+          "example": "Air Jordan 1 Retro High OG 'Bred' (2016)"
+        },
+        "brand": {
+          "type": "string",
+          "description": "Primary brand",
+          "example": "Air Jordan"
+        },
+        "model": {
+          "type": "string",
+          "description": "Base model",
+          "example": "Air Jordan 1"
+        },
+        "colorway": {
+          "type": "string",
+          "description": "Color nickname or description",
+          "example": "Bred"
+        },
+        "sku": {
+          "type": "string",
+          "description": "Manufacturer SKU/Product code",
+          "example": "555088-001"
+        },
+        "releaseYear": {
+          "type": "integer",
+          "description": "Original release year",
+          "example": 2016
+        }
+      },
+      "required": [
+        "name",
+        "brand",
+        "model"
+      ]
+    },
+    "listing": {
+      "title": "Listing Information",
+      "type": "object",
+      "properties": {
+        "price": {
+          "type": "number",
+          "description": "Listing price in USD",
+          "example": 1200
+        },
+        "currency": {
+          "type": "string",
+          "description": "Currency code",
+          "example": "USD",
+          "default": "USD"
+        },
+        "sizeUsMens": {
+          "type": "string",
+          "description": "US Men's size",
+          "example": "10.5"
+        },
+        "condition": {
+          "type": "string",
+          "description": "Standardized condition rating",
+          "enum": [
+            "new_in_box",
+            "used_like_new",
+            "used_good",
+            "used_fair",
+            "used_poor",
+            "unspecified"
+          ],
+          "example": "new_in_box"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Array of parsed tags",
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "og_all",
+            "authentic"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "description": "Listing type",
+          "enum": [
+            "sell",
+            "buy",
+            "auction"
+          ],
+          "example": "sell"
+        },
+        "shippingPrice": {
+          "type": "number",
+          "description": "Shipping cost in USD (if available)",
+          "example": 0
+        },
+        "totalPrice": {
+          "type": "number",
+          "description": "Price + shipping",
+          "example": 1200
+        }
+      },
+      "required": [
+        "price",
+        "condition",
+        "type"
+      ]
+    },
+    "source": {
+      "title": "Source Information",
+      "type": "object",
+      "properties": {
+        "platform": {
+          "type": "string",
+          "description": "Platform name",
+          "enum": [
+            "eBay",
+            "Grailed",
+            "StockX",
+            "GOAT",
+            "Flight Club",
+            "Stadium Goods",
+            "Vinted",
+            "Depop",
+            "Craigslist"
+          ],
+          "example": "Grailed"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Direct link to listing",
+          "example": "https://grailed.com/listings/..."
+        },
+        "platformId": {
+          "type": "string",
+          "description": "Unique ID on platform",
+          "example": "12345678"
+        },
+        "isAuthenticated": {
+          "type": "boolean",
+          "description": "Whether platform authenticates items",
+          "example": false
+        }
+      },
+      "required": [
+        "platform",
+        "url",
+        "platformId",
+        "isAuthenticated"
+      ]
+    },
+    "seller": {
+      "title": "Seller Information",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Seller username",
+          "example": "sneakerhead123"
+        },
+        "rating": {
+          "type": "number",
+          "description": "Seller rating (0-5 scale)",
+          "minimum": 0,
+          "maximum": 5,
+          "example": 4.9
+        },
+        "reviewCount": {
+          "type": "integer",
+          "description": "Number of reviews",
+          "example": 152
+        },
+        "verified": {
+          "type": "boolean",
+          "description": "Is seller verified/trusted",
+          "example": true
+        }
+      }
+    },
+    "scrape": {
+      "title": "Scrape Metadata",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 scrape timestamp",
+          "example": "2026-01-15T14:30:00Z"
+        },
+        "scrapedAt": {
+          "type": "integer",
+          "description": "Unix timestamp (milliseconds)",
+          "example": 1737548400000
+        },
+        "isNew": {
+          "type": "boolean",
+          "description": "Whether this is a newly discovered listing",
+          "example": true
+        },
+        "priceHistory": {
+          "type": "array",
+          "description": "Price history if available",
+          "items": {
+            "type": "object",
+            "properties": {
+              "price": {
+                "type": "number"
+              },
+              "date": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "timestamp",
+        "isNew"
+      ]
+    },
+    "metadata": {
+      "title": "Additional Metadata",
+      "type": "object",
+      "description": "Extra data for analysis",
+      "properties": {
+        "dealScore": {
+          "type": "number",
+          "description": "Deal quality score (0-100, higher=better deal)",
+          "minimum": 0,
+          "maximum": 100,
+          "example": 85
+        },
+        "estimatedMarketValue": {
+          "type": "number",
+          "description": "Estimated retail/average resale value",
+          "example": 1500
+        },
+        "savingsAmount": {
+          "type": "number",
+          "description": "Amount saved vs market value",
+          "example": 300
+        },
+        "savingsPercent": {
+          "type": "number",
+          "description": "Savings percentage",
+          "example": 20
+        },
+        "sourceActorRun": {
+          "type": "string",
+          "description": "ID of actor run that scraped this",
+          "example": "run_123abc"
+        }
+      }
+    }
+  },
+  "required": [
+    "product",
+    "listing",
+    "source",
+    "scrape"
+  ]
+}

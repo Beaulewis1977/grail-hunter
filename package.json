@@ -6,11 +6,17 @@
   "main": "src/index.js",
   "scripts": {
     "prepare": "husky install",
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
     "lint": "eslint . --ext .js,.ts,.jsx,.tsx && markdownlint '**/*.md' && prettier --check .",
     "lint:fix": "eslint . --ext .js,.ts,.jsx,.tsx --fix && markdownlint '**/*.md' --fix && prettier --write .",
     "format": "prettier --write .",
-    "test": "echo \"No tests configured yet\"",
-    "pre-commit": "lint-staged"
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
+    "pre-commit": "lint-staged",
+    "build": "apify build",
+    "push": "apify push",
+    "pull": "apify pull"
   },
   "keywords": [
     "apify",
@@ -22,6 +28,14 @@
   ],
   "author": "Beaulewis1977",
   "license": "MIT",
+  "dependencies": {
+    "apify": "^3.1.0",
+    "crawlee": "^3.8.0",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
+    "pino": "^8.17.2",
+    "pino-pretty": "^10.3.1"
+  },
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
@@ -33,7 +47,9 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
     "markdownlint-cli": "^0.37.0",
-    "prettier": "^3.1.1"
+    "prettier": "^3.1.1",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.8"
   },
   "engines": {
     "node": ">=18.0.0",
