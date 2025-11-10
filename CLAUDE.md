@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Grail Hunter** (SneakerMeta) is an Apify Actor that monitors sneaker listings across 4 major marketplaces (eBay, Grailed, StockX, GOAT) and sends real-time alerts when target sneakers appear. This is an Apify Challenge 2024-2025 submission project.
 
-**Status:** Pre-implementation phase - comprehensive planning and architecture documentation complete, no source code yet.
+**Status:** Scaffolding complete. Ready for agent implementation. Project structure, schemas, configs, and dependencies are set up.
 
 ## Essential Documents (READ FIRST)
 
@@ -36,19 +36,15 @@ Before implementing any feature, read these in order:
 ## Development Commands
 
 ```bash
-# Setup
-npm install                    # Install dependencies + initialize Husky hooks
-
-# Code Quality
-npm run lint                   # Check linting (ESLint + Prettier + markdownlint)
-npm run lint:fix               # Auto-fix linting issues
-npm run format                 # Format code with Prettier
-
-# Testing (not configured yet)
-npm run test                   # Placeholder - will run tests when implemented
-
-# Git Hooks (automatic)
-git commit                     # Triggers pre-commit (lint-staged) + commit-msg (commitlint)
+npm install              # Setup (already done)
+npm start                # Run actor
+npm dev                  # Watch mode
+npm lint                 # Check linting
+npm lint:fix             # Auto-fix issues
+npm test                 # Run Jest tests with coverage
+npm build                # Build with Apify CLI
+npm push                 # Push to Apify
+npm pull                 # Pull from Apify
 ```
 
 ## Git Workflow
@@ -76,31 +72,26 @@ The actor is designed as an **orchestrator** that:
 5. Parses sneakerhead terminology (DS, VNDS, OG All) with AI/regex
 6. Sends multi-channel alerts (email, Slack, Discord, webhooks)
 
-### Core Components (To Be Implemented)
+### Project Structure (Scaffolded)
 
 ```
+.actor/
+├── actor.json                 # ✅ Apify metadata (4GB, 1hr timeout)
+├── INPUT_SCHEMA.json          # ✅ User input spec (search, sizes, platforms, notifications)
+└── OUTPUT_SCHEMA.json         # ✅ Standardized listing schema
+
 src/
-├── main.js                    # Orchestrator entry point
-├── orchestrator/
-│   ├── platform-router.js     # Routes to Actor calls vs custom scrapers
-│   └── data-aggregator.js     # Collects results from all sources
-├── scrapers/
-│   ├── ebay.js                # Calls existing Actor: getdataforme/ebay-scraper
-│   ├── grailed.js             # Calls existing Actor: vmscrapers/grailed
-│   ├── stockx.js              # Calls existing Actor: [TBD]
-│   ├── goat.js                # Calls existing Actor: ecomscrape/goat-product-search-scraper
-│   └── custom/                # Custom implementations for white space platforms
-├── parsers/
-│   ├── terminology-parser.js  # Regex + AI parsing for DS, VNDS, sizes, conditions
-│   └── normalizer.js          # Maps platform-specific data to unified schema
-├── deduplication/
-│   └── listing-tracker.js     # KV Store-based deduplication engine
-├── notifications/
-│   ├── email.js               # Apify send-email integration
-│   └── webhook.js             # Slack/Discord webhook sender
+├── index.js                   # ✅ Actor entry point (scaffolded)
+├── orchestrator/              # TODO: Platform router & data aggregator
+├── scrapers/                  # TODO: Call existing Actors + custom scrapers
+├── parsers/                   # TODO: Terminology parser & normalizer
+├── deduplication/             # TODO: KV Store listing tracker
+├── notifications/             # TODO: Email/Slack/Discord alerts
 └── utils/
-    ├── proxy-manager.js       # Apify proxy configuration
-    └── error-handler.js       # Graceful degradation for platform failures
+    └── logger.js              # ✅ Pino logging
+
+tests/                         # TODO: Jest test suite
+Dockerfile                     # ✅ Container config
 ```
 
 ### Data Flow
@@ -202,27 +193,22 @@ Every listing must conform to this structure:
 
 ## Implementation Priorities
 
-### MVP (Must Have - Phase 1)
+### Phase 1 (MVP) - Core Orchestrator
+1. Orchestrator main loop (call existing Actors for eBay, Grailed, StockX, GOAT)
+2. Data normalization to unified schema
+3. KV Store-based deduplication (MD5 hash)
+4. Basic email notifications
 
-1. INPUT_SCHEMA.json with search terms, sizes, price filters
-2. Orchestrator main loop calling 4 existing Actors
-3. Data normalization to unified schema
-4. Basic deduplication (KV Store with MD5 hash)
-5. Email notifications (Apify send-email)
-6. OUTPUT_SCHEMA.json definition
+### Phase 2 - Intelligence
+1. Regex-based terminology parser (DS, VNDS, OG All, sizes)
+2. Slack/Discord webhook alerts
+3. Custom scrapers for Flight Club & Stadium Goods
+4. Price drop detection
 
-### Phase 2 (Should Have)
-
-1. Regex-based terminology parsing
-2. Slack/Discord webhook notifications
-3. Custom scrapers for Flight Club, Stadium Goods
-4. Price drop alerts
-
-### Phase 3 (Nice to Have)
-
-1. AI-powered parsing fallback (OpenAI API)
+### Phase 3 - Polish
+1. AI fallback parsing (OpenAI)
 2. Release calendar monitoring
-3. Deal scoring (compare P2P vs authenticated prices)
+3. Deal scoring (P2P vs authenticated price comparison)
 
 ## Error Handling Philosophy
 
@@ -269,9 +255,23 @@ Use mock data from documentation examples to avoid live scraping during tests.
 - **Platform Research:** See existing_apify_actors_analysis.md
 - **Market Research:** See sneaker_market_research.md
 
-## Questions Before Starting
+## Key Files to Know
 
-1. Verify `CODERABBIT_TOKEN` is set in GitHub Secrets for AI review
-2. Confirm Apify account has access to residential proxies
-3. Check if OpenAI API key is needed for AI parsing (optional feature)
-4. Verify target platforms' current scraping Actor availability on Apify Store
+- **src/index.js** - Actor entry point (basic scaffold, add orchestrator here)
+- **.actor/INPUT_SCHEMA.json** - User input validation (complete, don't modify)
+- **.actor/OUTPUT_SCHEMA.json** - Listing schema (complete, don't modify)
+- **.env.local** - Config (Apify token already set)
+- **technical_architecture.md** - Reference for all implementation details
+- **sneakers-gemini-1.md** - Strategic rules (Facebook/Instagram forbidden!)
+
+## Dependencies Ready
+
+**Production:** apify, crawlee, axios, dotenv, pino (logging)
+**Dev:** Jest (testing), ESLint, Prettier, Husky (pre-commit hooks)
+
+## Environment
+
+- Node.js 22, Apify CLI installed
+- Apify account with challenge registered
+- .env.local populated with API tokens
+- Pre-commit hooks active (auto-lint on commit)
