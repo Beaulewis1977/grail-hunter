@@ -1,0 +1,71 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.production.local
+
+# IDE/Editor configs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-workspace
+
+# Build & dist outputs
+dist/
+build/
+.tsc-build/
+*.tsbuildinfo
+
+# Apify specific
+.actor/input_data/
+.actor/keyvalue-stores/
+.actor/dataset/
+.actor/request-queues/
+storage/
+apify_storage/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Node processes
+.pm2/
+.pid
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Local development
+.cache/
+.venv/
+venv/
+
+# Project-specific
+research_files/
+.research_files/
+*.pdf
+working-notes/
+drafts/
+archive/
