@@ -26,6 +26,13 @@ export function validateInput(input) {
     throw new ValidationError('keywords cannot exceed 20 items');
   }
 
+  // Bug Fix #9: Validate each keyword is a non-empty string
+  input.keywords.forEach((kw, index) => {
+    if (typeof kw !== 'string' || kw.trim().length === 0) {
+      throw new ValidationError(`keywords[${index}] must be a non-empty string`);
+    }
+  });
+
   // Validate platform (Phase 1: only grailed)
   if (input.platform && input.platform !== 'grailed') {
     throw new ValidationError(
@@ -75,6 +82,11 @@ export function validateInput(input) {
 
   // Validate notification config
   if (input.notificationConfig) {
+    // Bug Fix #10: Add type guard for notificationConfig
+    if (typeof input.notificationConfig !== 'object' || Array.isArray(input.notificationConfig)) {
+      throw new ValidationError('notificationConfig must be an object');
+    }
+    
     const { webhookUrl, webhookSecret } = input.notificationConfig;
 
     if (webhookUrl && typeof webhookUrl !== 'string') {

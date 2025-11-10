@@ -717,8 +717,8 @@ The codebase is clean, well-tested, and follows best practices. No technical deb
    - Follow the pattern in `src/scrapers/grailed.js`
    - Extend `src/core/normalizer.js` with platform-specific logic
    - Add tests in `tests/unit/` and `tests/integration/`
-   - Update `src/config/platforms.js`
-   - Update `INPUT_SCHEMA.json`
+   - Update the platform configuration in `src/config/platforms.js`
+   - Update the input schema in `INPUT_SCHEMA.json`
 
 5. **Getting Help:**
    - Check inline JSDoc comments

@@ -57,12 +57,14 @@ export class ScraperManager {
         platform,
       });
 
-      // Check if error is recoverable
-      if (error.recoverable !== false) {
+      // Bug Fix #8: Only degrade for explicitly recoverable errors
+      // Check if error is explicitly marked as recoverable
+      if (error.recoverable === true) {
         logger.warn(`Gracefully degrading: ${platform} will be skipped`);
         return [];
       }
 
+      // Bubble up non-recoverable errors
       throw error;
     }
   }

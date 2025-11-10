@@ -14,6 +14,12 @@ export class DataNormalizer {
    * @returns {object} Normalized listing
    */
   normalize(rawListing, platform) {
+    // Bug Fix #2: Add null/undefined guard for rawListing
+    if (!rawListing || typeof rawListing !== 'object') {
+      logger.warn('Invalid rawListing provided to normalize', { platform });
+      return null;
+    }
+    
     logger.debug(`Normalizing listing from ${platform}`, { listingId: rawListing.id });
 
     switch (platform.toLowerCase()) {
@@ -121,6 +127,9 @@ export class DataNormalizer {
    * Extract brand from title
    */
   extractBrand(title) {
+    // Bug Fix #3: Add type safety check for title
+    if (typeof title !== 'string') return null;
+    
     const upperTitle = title.toUpperCase();
 
     // Check for Air Jordan first (before Jordan)
@@ -143,6 +152,9 @@ export class DataNormalizer {
    * Extract model from title
    */
   extractModel(title) {
+    // Bug Fix #4: Add type safety check for title
+    if (typeof title !== 'string') return null;
+    
     // Common sneaker models
     const models = [
       'Air Jordan 1',
@@ -169,7 +181,8 @@ export class DataNormalizer {
    * Map Grailed condition to standardized enum
    */
   mapGrailedCondition(condition) {
-    if (!condition) return 'unspecified';
+    // Bug Fix #1: Add type safety check for condition
+    if (!condition || typeof condition !== 'string') return 'unspecified';
 
     const conditionStr = condition.toLowerCase();
     const mapping = {

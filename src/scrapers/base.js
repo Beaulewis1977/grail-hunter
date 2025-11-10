@@ -6,6 +6,10 @@
 
 export class BaseScraper {
   constructor(config) {
+    // Bug Fix #7: Add config guard before accessing properties
+    if (!config) {
+      throw new Error('Scraper configuration is required');
+    }
     this.config = config;
     this.platformName = config.name;
   }

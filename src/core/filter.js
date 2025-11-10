@@ -13,24 +13,26 @@ export class ListingFilter {
    * @param {object} filters - Filter criteria
    * @returns {Array} Filtered listings
    */
-  filter(listings, filters) {
+  filter(listings, filters = {}) {
+    // Bug Fix #5: Add default parameter for filters and use destructuring
     logger.info(`Filtering ${listings.length} listings`, { filters });
+    const { size, priceRange, condition } = filters;
 
     let filtered = listings;
 
     // Filter by size
-    if (filters.size) {
-      filtered = this.filterBySize(filtered, filters.size);
+    if (size) {
+      filtered = this.filterBySize(filtered, size);
     }
 
     // Filter by price range
-    if (filters.priceRange) {
-      filtered = this.filterByPriceRange(filtered, filters.priceRange);
+    if (priceRange) {
+      filtered = this.filterByPriceRange(filtered, priceRange);
     }
 
     // Filter by condition
-    if (filters.condition) {
-      filtered = this.filterByCondition(filtered, filters.condition);
+    if (condition) {
+      filtered = this.filterByCondition(filtered, condition);
     }
 
     // Remove listings with missing critical data

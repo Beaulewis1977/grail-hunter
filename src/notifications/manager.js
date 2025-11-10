@@ -49,6 +49,8 @@ export class NotificationManager {
         error: error.message,
       });
       logger.error('Dataset notification failed (critical)', { error: error.message });
+      // Bug Fix #6: Re-throw critical dataset failures instead of swallowing them
+      throw error;
     }
 
     // Send webhook if configured
