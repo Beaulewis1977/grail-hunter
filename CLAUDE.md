@@ -1,12 +1,16 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this
+repository.
 
 ## Project Overview
 
-**Grail Hunter** (SneakerMeta) is an Apify Actor that monitors sneaker listings across 4 major marketplaces (eBay, Grailed, StockX, GOAT) and sends real-time alerts when target sneakers appear. This is an Apify Challenge 2024-2025 submission project.
+**Grail Hunter** (SneakerMeta) is an Apify Actor that monitors sneaker listings across 4 major
+marketplaces (eBay, Grailed, StockX, GOAT) and sends real-time alerts when target sneakers appear.
+This is an Apify Challenge 2024-2025 submission project.
 
-**Status:** Scaffolding complete. Ready for agent implementation. Project structure, schemas, configs, and dependencies are set up.
+**Status:** Scaffolding complete. Ready for agent implementation. Project structure, schemas,
+configs, and dependencies are set up.
 
 ## Essential Documents (READ FIRST)
 
@@ -53,9 +57,11 @@ npm pull                 # Pull from Apify
 - **Protected branch:** `main` (releases only)
 - **Commit format:** Conventional Commits (`type(scope): subject`)
   - Valid types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `revert`
-  - Examples: `feat(scraper): add stockx platform support`, `fix(notifications): resolve email delivery`
+  - Examples: `feat(scraper): add stockx platform support`,
+    `fix(notifications): resolve email delivery`
 
 **Pre-commit hooks will:**
+
 - Lint staged files (ESLint, markdownlint, Prettier)
 - Validate commit message format
 - Block commits that fail validation
@@ -65,6 +71,7 @@ npm pull                 # Pull from Apify
 ### SneakerMeta Orchestrator Model
 
 The actor is designed as an **orchestrator** that:
+
 1. Calls existing Apify Actors for platforms with available scrapers
 2. Builds custom scrapers for "white space" platforms (Flight Club, Stadium Goods)
 3. Normalizes all data to a unified schema
@@ -132,26 +139,26 @@ Existing Actors      Custom Scrapers
 
 ### Platform Integration Strategy
 
-| Platform | Integration Method | Priority |
-|----------|-------------------|----------|
-| eBay | Call `getdataforme/ebay-scraper` | MVP |
-| Grailed | Call `vmscrapers/grailed` | MVP |
-| StockX | Call existing Actor | MVP |
-| GOAT | Call `ecomscrape/goat-product-search-scraper` | MVP |
-| Flight Club | Build custom scraper | Phase 2 |
-| Stadium Goods | Build custom scraper | Phase 2 |
+| Platform      | Integration Method                            | Priority |
+| ------------- | --------------------------------------------- | -------- |
+| eBay          | Call `getdataforme/ebay-scraper`              | MVP      |
+| Grailed       | Call `vmscrapers/grailed`                     | MVP      |
+| StockX        | Call existing Actor                           | MVP      |
+| GOAT          | Call `ecomscrape/goat-product-search-scraper` | MVP      |
+| Flight Club   | Build custom scraper                          | Phase 2  |
+| Stadium Goods | Build custom scraper                          | Phase 2  |
 
 ### Sneakerhead Terminology Parsing
 
 Must parse these terms from unstructured titles/descriptions:
 
-| Term | Meaning | Maps To |
-|------|---------|---------|
-| DS / BNIB | Deadstock / Brand New In Box | `condition: "new_in_box"` |
-| VNDS | Very Near Deadstock | `condition: "used_like_new"` |
-| NDS | Near Deadstock | `condition: "used_good"` |
-| OG All | Original box/laces included | `tags: ["og_all"]` |
-| Bred | Black/Red colorway | `colorway: "Bred"` |
+| Term      | Meaning                      | Maps To                      |
+| --------- | ---------------------------- | ---------------------------- |
+| DS / BNIB | Deadstock / Brand New In Box | `condition: "new_in_box"`    |
+| VNDS      | Very Near Deadstock          | `condition: "used_like_new"` |
+| NDS       | Near Deadstock               | `condition: "used_good"`     |
+| OG All    | Original box/laces included  | `tags: ["og_all"]`           |
+| Bred      | Black/Red colorway           | `colorway: "Bred"`           |
 
 Regex patterns defined in technical_architecture.md Table 1.
 
@@ -194,6 +201,7 @@ Every listing must conform to this structure:
 ## Implementation Priorities
 
 ### Phase 1 (MVP) - Core Orchestrator
+
 1. Orchestrator main loop (call existing Actors for eBay, Grailed, StockX, GOAT)
 2. Data normalization to unified schema
 3. KV Store-based deduplication (MD5 hash)
@@ -201,6 +209,7 @@ Every listing must conform to this structure:
 5. Public "Recent Grails Found" feed (publish high-value deals anonymously)
 
 ### Phase 2 - Viral Growth & Intelligence
+
 1. Regex-based terminology parser (DS, VNDS, OG All, sizes)
 2. Social proof counters ("X users hunting this shoe")
 3. Referral tracking (lightweight, no rewards)
@@ -208,6 +217,7 @@ Every listing must conform to this structure:
 5. Price drop detection
 
 ### Phase 3 - Polish & Scale
+
 1. AI fallback parsing (OpenAI)
 2. Growth metrics dashboard (MAU tracking)
 3. Release calendar monitoring
@@ -270,31 +280,35 @@ Use mock data from documentation examples to avoid live scraping during tests.
 ## Critical Strategic Updates
 
 **FREE Launch Strategy:**
+
 - CHALLENGE_MODE=true in .env.local (until Jan 31, 2026)
 - No tier validation during challenge (everyone gets full access)
 - No authentication required (zero friction)
 - Goal: Maximize MAUs for challenge judging
 
 **Viral Growth Features:**
+
 - Public "Recent Grails Found" feed (auto-publish deals with score 80+)
 - "Share This Deal" buttons in all notifications
 - Social proof counters ("X users hunting this shoe")
 - Optional referral tracking (no rewards, just kudos)
 
 **Storage Strategy:**
+
 - Dataset: User results
 - KV Store: Deduplication memory
 - Public Dataset: `public-grails-feed` for viral marketing
 
 **Rate Limiting:**
+
 - Apify Proxy for custom scrapers (residential IPs)
 - Per-platform limits in .env.local
 - Smart delays with jitter (mimic human behavior)
 
 ## Dependencies Ready
 
-**Production:** apify, crawlee, axios, dotenv, pino (logging)
-**Dev:** Jest (testing), ESLint, Prettier, Husky (pre-commit hooks)
+**Production:** apify, crawlee, axios, dotenv, pino (logging) **Dev:** Jest (testing), ESLint,
+Prettier, Husky (pre-commit hooks)
 
 ## Environment
 

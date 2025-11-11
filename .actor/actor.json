@@ -11,10 +11,7 @@
   "defaultDatasetId": "default",
   "defaultKeyValueStoreId": "default",
   "defaultRequestQueueId": "default",
-  "categories": [
-    "MONITORING",
-    "SCRAPERS"
-  ],
+  "categories": ["MONITORING", "SCRAPERS"],
   "inputs": "INPUT_SCHEMA.json",
   "storageClient": "eyJzdG9yYWdlIjogImFwaWZ5In0=",
   "dockerfile": "./Dockerfile",

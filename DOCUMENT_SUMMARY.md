@@ -155,6 +155,7 @@
 ## Technical Specifications
 
 ### Technology Stack
+
 - **Runtime**: Node.js 18+ LTS
 - **Framework**: Apify SDK 3.x
 - **Crawling**: Crawlee 3.x (Playwright, Cheerio)
@@ -164,11 +165,13 @@
 - **Proxy**: Apify Residential Proxy
 
 ### Resource Requirements
+
 - **Memory**: 4GB (recommended)
 - **Timeout**: 1 hour (recommended)
 - **CPU**: 2 cores (recommended)
 
 ### Estimated Costs
+
 - **Per run**: ~$0.50 (1h, 4GB)
 - **Monthly scheduled (daily)**: ~$15/month
 - Covered by user subscription revenue
@@ -178,11 +181,13 @@
 ## Compliance & Risk Mitigation
 
 ### ✅ Apify Challenge Compliant
+
 - **No Facebook or Instagram** scraping (automatic disqualification)
 - All 12 platforms are eligible
 - Meets all judging criteria
 
 ### ⚖️ Legal Considerations
+
 - **Public data only** (no login bypass)
 - **Respects robots.txt** where possible
 - **Rate limiting** (10-200 req/hour per platform)
@@ -190,6 +195,7 @@
 - **ToS compliance** documented per platform
 
 ### 🛡️ Security Best Practices
+
 - **AES-256 encryption** for credentials
 - **HMAC-SHA256** for webhook signatures
 - **Input sanitization** (XSS, SQL injection prevention)
@@ -202,22 +208,24 @@
 
 ### Challenge Score Estimate: **85/100**
 
-| Criterion | Score | Max |
-|-----------|-------|-----|
-| Novelty & Innovation | 25 | 30 |
-| Usefulness & Real-World Value | 23 | 25 |
-| Technical Excellence | 22 | 25 |
-| Monthly Active Users | 15 | 20 |
+| Criterion                     | Score | Max |
+| ----------------------------- | ----- | --- |
+| Novelty & Innovation          | 25    | 30  |
+| Usefulness & Real-World Value | 23    | 25  |
+| Technical Excellence          | 22    | 25  |
+| Monthly Active Users          | 15    | 20  |
 
 ### Revenue Projections
 
 **6 Months**:
+
 - 100 Hobby @ $4.99 = $499/mo
 - 20 Pro @ $9.99 = $199.80/mo
 - 5 Business @ $29.99 = $149.95/mo
 - **Total**: ~$850/mo → ~$680 after Apify commission
 
 **12 Months**:
+
 - 300 Hobby @ $4.99 = $1,497/mo
 - 75 Pro @ $9.99 = $749.25/mo
 - 15 Business @ $29.99 = $449.85/mo
@@ -228,6 +236,7 @@
 ## Next Steps for Implementation
 
 ### Week 1-2: MVP Development
+
 1. Set up Apify project structure
 2. Implement 4 core platforms:
    - eBay (orchestrate existing actor)
@@ -241,18 +250,21 @@
 7. **Submit to Apify Challenge**
 
 ### Week 3-4: Expansion
+
 1. Add Stadium Goods, Depop, Vinted
 2. Implement webhooks (Slack, Discord)
 3. Add AI parsing (OpenAI integration)
 4. Build release calendar module
 
 ### Months 2-3: Scale
+
 1. Complete all 12 platforms
 2. Implement tiered access
 3. Marketing push (Reddit, Discord, YouTube)
 4. Target 100+ MAUs
 
 ### Months 4-6: Challenge Optimization
+
 1. Achieve 85+ Actor Quality Score
 2. Scale to 200+ MAUs
 3. Polish documentation and demo
@@ -263,12 +275,15 @@
 ## Appendices Included
 
 ### Appendix A: Code Repository Structure
+
 Complete file/folder organization for GitHub
 
 ### Appendix B: Legal Disclaimer Template
+
 Ready-to-use markdown disclaimer for README
 
 ### Appendix C: SendGrid Email Template
+
 Complete HTML email template with inline CSS
 
 ---
@@ -276,27 +291,32 @@ Complete HTML email template with inline CSS
 ## Why This Document Wins
 
 ### 1. **Implementation-Ready**
+
 - Not just theory - includes working code snippets
 - Can start coding immediately from this blueprint
 - All edge cases and error handling documented
 
 ### 2. **Challenge-Optimized**
+
 - Explicitly designed to score 85/100 on Apify Challenge
 - White space platforms for novelty points
 - Clear path to 200+ MAUs
 
 ### 3. **Production-Grade**
+
 - Security, monitoring, backups, error handling
 - Monetization built-in from day 1
 - Scalable architecture (4 → 12 platforms)
 
 ### 4. **Market-Validated**
+
 - $6B sneaker resale market
 - Clear user personas
 - Competitive pricing ($2.99-$29.99/mo)
 - Validated by similar tools (Distill.io, Visualping)
 
 ### 5. **Legally Defensible**
+
 - Public data only
 - Respects ToS where possible
 - Legal disclaimer included
@@ -322,7 +342,7 @@ Complete HTML email template with inline CSS
 
 **Repository**: [To be created]  
 **Apify Store**: [To be published after MVP]  
-**Challenge Submission**: Week 2, Day 14  
+**Challenge Submission**: Week 2, Day 14
 
 **Author**: Technical Architecture Team  
 **Version**: 1.0  
@@ -330,4 +350,5 @@ Complete HTML email template with inline CSS
 
 ---
 
-*This document represents approximately 40+ hours of research, architecture design, and technical specification work.*
+_This document represents approximately 40+ hours of research, architecture design, and technical
+specification work._

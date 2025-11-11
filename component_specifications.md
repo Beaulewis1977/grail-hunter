@@ -1,11 +1,12 @@
 # SneakerMeta: Component Specification Document
+
 ## Apify Actor - Multi-Platform Sneaker Scraping & Alert System
 
 **Version:** 1.0  
 **Date:** November 10, 2025  
 **Project:** Apify Challenge Submission  
 **Target:** $2.99-$9.99/month subscription model  
-**Platforms:** 12+ sneaker marketplaces  
+**Platforms:** 12+ sneaker marketplaces
 
 ---
 
@@ -26,7 +27,8 @@
 
 ### 1.1 Complete JSON Schema Definition
 
-The input schema follows Apify's `INPUT_SCHEMA.json` format (schema version 1) and is located at `.actor/input_schema.json`.
+The input schema follows Apify's `INPUT_SCHEMA.json` format (schema version 1) and is located at
+`.actor/input_schema.json`.
 
 ```json
 {
@@ -293,23 +295,23 @@ The input schema follows Apify's `INPUT_SCHEMA.json` format (schema version 1) a
 
 ### 1.2 Field Descriptions & Data Types
 
-| Field | Type | Required | Default | Constraints | Description |
-|-------|------|----------|---------|-------------|-------------|
-| `searchTerms` | `array<string>` | ✅ Yes | - | 1-20 items, 2-100 chars each | Sneaker keywords to search |
-| `sizes` | `array<string>` | ❌ No | `[]` | Pattern: `^([1-9]\|1[0-5])(\\.5)?$` | US Men's sizes (e.g., "10.5") |
-| `minPrice` | `number` | ❌ No | `0` | 0-49,999 | Minimum price in USD |
-| `maxPrice` | `number` | ❌ No | - | 1-50,000 | Maximum price in USD |
-| `conditions` | `array<enum>` | ❌ No | `[]` | Enum values only | Filter by condition |
-| `targetPlatforms` | `array<enum>` | ✅ Yes | `["goat", "ebay", "grailed", "flightclub"]` | 1-12 items, unique | Platforms to scrape |
-| `craigslistLocations` | `array<string>` | ⚠️ Conditional | - | Must be valid Craigslist URLs | Required if 'craigslist' selected |
-| `maxResultsPerPlatform` | `number` | ❌ No | `50` | 10-500 | Max listings per platform |
-| `enableReleaseCalendar` | `boolean` | ❌ No | `false` | - | Monitor upcoming releases |
-| `dealThresholdPercentage` | `number` | ❌ No | `15` | 0-50 | Deal alert threshold |
-| `excludeKeywords` | `array<string>` | ❌ No | `[]` | 2-50 chars each | Keywords to exclude |
-| `notificationConfig` | `object` | ❌ No | `{}` | See nested schema | Notification settings |
-| `proxyConfiguration` | `object` | ❌ No | Apify proxy | See Apify docs | Proxy settings |
-| `advancedOptions` | `object` | ❌ No | `{}` | See nested schema | Advanced options |
-| `subscriptionTier` | `enum` | ❌ No | `"free"` | free/hobby/pro/business | User's subscription tier |
+| Field                     | Type            | Required       | Default                                     | Constraints                         | Description                       |
+| ------------------------- | --------------- | -------------- | ------------------------------------------- | ----------------------------------- | --------------------------------- |
+| `searchTerms`             | `array<string>` | ✅ Yes         | -                                           | 1-20 items, 2-100 chars each        | Sneaker keywords to search        |
+| `sizes`                   | `array<string>` | ❌ No          | `[]`                                        | Pattern: `^([1-9]\|1[0-5])(\\.5)?$` | US Men's sizes (e.g., "10.5")     |
+| `minPrice`                | `number`        | ❌ No          | `0`                                         | 0-49,999                            | Minimum price in USD              |
+| `maxPrice`                | `number`        | ❌ No          | -                                           | 1-50,000                            | Maximum price in USD              |
+| `conditions`              | `array<enum>`   | ❌ No          | `[]`                                        | Enum values only                    | Filter by condition               |
+| `targetPlatforms`         | `array<enum>`   | ✅ Yes         | `["goat", "ebay", "grailed", "flightclub"]` | 1-12 items, unique                  | Platforms to scrape               |
+| `craigslistLocations`     | `array<string>` | ⚠️ Conditional | -                                           | Must be valid Craigslist URLs       | Required if 'craigslist' selected |
+| `maxResultsPerPlatform`   | `number`        | ❌ No          | `50`                                        | 10-500                              | Max listings per platform         |
+| `enableReleaseCalendar`   | `boolean`       | ❌ No          | `false`                                     | -                                   | Monitor upcoming releases         |
+| `dealThresholdPercentage` | `number`        | ❌ No          | `15`                                        | 0-50                                | Deal alert threshold              |
+| `excludeKeywords`         | `array<string>` | ❌ No          | `[]`                                        | 2-50 chars each                     | Keywords to exclude               |
+| `notificationConfig`      | `object`        | ❌ No          | `{}`                                        | See nested schema                   | Notification settings             |
+| `proxyConfiguration`      | `object`        | ❌ No          | Apify proxy                                 | See Apify docs                      | Proxy settings                    |
+| `advancedOptions`         | `object`        | ❌ No          | `{}`                                        | See nested schema                   | Advanced options                  |
+| `subscriptionTier`        | `enum`          | ❌ No          | `"free"`                                    | free/hobby/pro/business             | User's subscription tier          |
 
 ### 1.3 Validation Rules & Error Messages
 
@@ -329,26 +331,26 @@ class InputValidator {
    */
   static validate(input) {
     const errors = [];
-    
+
     // Required fields
     if (!input.searchTerms || input.searchTerms.length === 0) {
       errors.push({
         field: 'searchTerms',
         code: 'REQUIRED_FIELD_MISSING',
         message: 'At least one search term is required',
-        suggestion: 'Add search terms like "Air Jordan 1", "Yeezy 350", etc.'
+        suggestion: 'Add search terms like "Air Jordan 1", "Yeezy 350", etc.',
       });
     }
-    
+
     if (!input.targetPlatforms || input.targetPlatforms.length === 0) {
       errors.push({
         field: 'targetPlatforms',
         code: 'REQUIRED_FIELD_MISSING',
         message: 'At least one target platform must be selected',
-        suggestion: 'Select platforms like "ebay", "grailed", "goat", etc.'
+        suggestion: 'Select platforms like "ebay", "grailed", "goat", etc.',
       });
     }
-    
+
     // Search terms validation
     if (input.searchTerms) {
       if (input.searchTerms.length > 20) {
@@ -357,17 +359,17 @@ class InputValidator {
           code: 'ARRAY_TOO_LONG',
           message: 'Maximum 20 search terms allowed',
           current: input.searchTerms.length,
-          max: 20
+          max: 20,
         });
       }
-      
+
       input.searchTerms.forEach((term, idx) => {
         if (term.length < 2) {
           errors.push({
             field: `searchTerms[${idx}]`,
             code: 'STRING_TOO_SHORT',
             message: `Search term "${term}" is too short (minimum 2 characters)`,
-            value: term
+            value: term,
           });
         }
         if (term.length > 100) {
@@ -375,12 +377,12 @@ class InputValidator {
             field: `searchTerms[${idx}]`,
             code: 'STRING_TOO_LONG',
             message: `Search term too long (maximum 100 characters)`,
-            value: term.substring(0, 50) + '...'
+            value: term.substring(0, 50) + '...',
           });
         }
       });
     }
-    
+
     // Size validation
     if (input.sizes && input.sizes.length > 0) {
       const sizeRegex = /^([1-9]|1[0-5])(\.5)?$/;
@@ -391,12 +393,12 @@ class InputValidator {
             code: 'INVALID_SIZE_FORMAT',
             message: `Invalid size format: "${size}". Must be US Men's size (1-15, half sizes allowed)`,
             value: size,
-            examples: ['10', '10.5', '11', '12.5']
+            examples: ['10', '10.5', '11', '12.5'],
           });
         }
       });
     }
-    
+
     // Price range validation
     if (input.minPrice !== undefined && input.maxPrice !== undefined) {
       if (input.minPrice >= input.maxPrice) {
@@ -406,30 +408,30 @@ class InputValidator {
           message: 'Minimum price must be less than maximum price',
           minPrice: input.minPrice,
           maxPrice: input.maxPrice,
-          suggestion: 'Set minPrice < maxPrice or leave one empty'
+          suggestion: 'Set minPrice < maxPrice or leave one empty',
         });
       }
     }
-    
+
     if (input.minPrice !== undefined && input.minPrice < 0) {
       errors.push({
         field: 'minPrice',
         code: 'INVALID_VALUE',
         message: 'Minimum price cannot be negative',
-        value: input.minPrice
+        value: input.minPrice,
       });
     }
-    
+
     if (input.maxPrice !== undefined && input.maxPrice > 50000) {
       errors.push({
         field: 'maxPrice',
         code: 'VALUE_TOO_LARGE',
         message: 'Maximum price cannot exceed $50,000',
         value: input.maxPrice,
-        max: 50000
+        max: 50000,
       });
     }
-    
+
     // Platform-specific conditional validation
     if (input.targetPlatforms && input.targetPlatforms.includes('craigslist')) {
       if (!input.craigslistLocations || input.craigslistLocations.length === 0) {
@@ -437,8 +439,10 @@ class InputValidator {
           field: 'craigslistLocations',
           code: 'CONDITIONAL_FIELD_MISSING',
           message: 'craigslistLocations is required when "craigslist" is selected',
-          suggestion: 'Provide Craigslist search URLs (e.g., "https://newyork.craigslist.org/search/sss?query=jordan+1")',
-          howToGet: '1. Go to craigslist.org\n2. Select your city\n3. Search for sneakers\n4. Copy the full URL from browser address bar'
+          suggestion:
+            'Provide Craigslist search URLs (e.g., "https://newyork.craigslist.org/search/sss?query=jordan+1")',
+          howToGet:
+            '1. Go to craigslist.org\n2. Select your city\n3. Search for sneakers\n4. Copy the full URL from browser address bar',
         });
       } else {
         // Validate Craigslist URL format
@@ -450,26 +454,28 @@ class InputValidator {
               code: 'INVALID_URL_FORMAT',
               message: `Invalid Craigslist URL: "${url}"`,
               value: url,
-              example: 'https://newyork.craigslist.org/search/sss?query=jordan+1'
+              example: 'https://newyork.craigslist.org/search/sss?query=jordan+1',
             });
           }
         });
       }
     }
-    
+
     // Notification validation
     if (input.notificationConfig) {
-      const hasAnyNotification = 
-        input.notificationConfig.emailTo || 
-        input.notificationConfig.slackWebhookUrl || 
+      const hasAnyNotification =
+        input.notificationConfig.emailTo ||
+        input.notificationConfig.slackWebhookUrl ||
         input.notificationConfig.discordWebhookUrl ||
         input.notificationConfig.webhookUrl;
-      
+
       if (!hasAnyNotification) {
         // Warning, not error
-        Actor.log.warning('No notification channels configured. Results will only be saved to dataset.');
+        Actor.log.warning(
+          'No notification channels configured. Results will only be saved to dataset.'
+        );
       }
-      
+
       // Email validation
       if (input.notificationConfig.emailTo) {
         const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -478,11 +484,11 @@ class InputValidator {
             field: 'notificationConfig.emailTo',
             code: 'INVALID_EMAIL',
             message: `Invalid email format: "${input.notificationConfig.emailTo}"`,
-            value: input.notificationConfig.emailTo
+            value: input.notificationConfig.emailTo,
           });
         }
       }
-      
+
       // Webhook URL validation
       if (input.notificationConfig.webhookUrl) {
         try {
@@ -492,12 +498,12 @@ class InputValidator {
             field: 'notificationConfig.webhookUrl',
             code: 'INVALID_URL',
             message: `Invalid webhook URL: "${input.notificationConfig.webhookUrl}"`,
-            error: e.message
+            error: e.message,
           });
         }
       }
     }
-    
+
     // AI parsing validation
     if (input.advancedOptions?.useAIParsing) {
       if (!input.advancedOptions?.openAIKey) {
@@ -505,23 +511,23 @@ class InputValidator {
           field: 'advancedOptions.openAIKey',
           code: 'CONDITIONAL_FIELD_MISSING',
           message: 'OpenAI API key is required when AI parsing is enabled',
-          suggestion: 'Get your API key from https://platform.openai.com/api-keys'
+          suggestion: 'Get your API key from https://platform.openai.com/api-keys',
         });
       } else if (!input.advancedOptions.openAIKey.startsWith('sk-')) {
         errors.push({
           field: 'advancedOptions.openAIKey',
           code: 'INVALID_API_KEY_FORMAT',
           message: 'OpenAI API key must start with "sk-"',
-          value: input.advancedOptions.openAIKey.substring(0, 10) + '...'
+          value: input.advancedOptions.openAIKey.substring(0, 10) + '...',
         });
       }
     }
-    
+
     // Subscription tier enforcement
     if (input.subscriptionTier) {
       const tier = input.subscriptionTier;
       const limits = TIER_LIMITS[tier];
-      
+
       if (input.targetPlatforms.length > limits.maxPlatforms) {
         errors.push({
           field: 'targetPlatforms',
@@ -529,10 +535,10 @@ class InputValidator {
           message: `Your ${tier} plan allows up to ${limits.maxPlatforms} platforms`,
           current: input.targetPlatforms.length,
           max: limits.maxPlatforms,
-          upgrade: tier === 'free' ? 'hobby' : tier === 'hobby' ? 'pro' : 'business'
+          upgrade: tier === 'free' ? 'hobby' : tier === 'hobby' ? 'pro' : 'business',
         });
       }
-      
+
       if (input.maxResultsPerPlatform > limits.maxResults) {
         errors.push({
           field: 'maxResultsPerPlatform',
@@ -540,26 +546,26 @@ class InputValidator {
           message: `Your ${tier} plan allows up to ${limits.maxResults} results per platform`,
           current: input.maxResultsPerPlatform,
           max: limits.maxResults,
-          upgrade: tier === 'free' ? 'hobby' : tier === 'hobby' ? 'pro' : 'business'
+          upgrade: tier === 'free' ? 'hobby' : tier === 'hobby' ? 'pro' : 'business',
         });
       }
     }
-    
+
     // Throw aggregated errors
     if (errors.length > 0) {
       const errorMessage = this.formatErrors(errors);
       throw new ValidationError(errorMessage, errors);
     }
-    
+
     return true;
   }
-  
+
   /**
    * Format validation errors into user-friendly message
    */
   static formatErrors(errors) {
     let message = `Input validation failed with ${errors.length} error(s):\n\n`;
-    
+
     errors.forEach((error, idx) => {
       message += `${idx + 1}. [${error.field}] ${error.message}\n`;
       if (error.suggestion) {
@@ -570,7 +576,7 @@ class InputValidator {
       }
       message += '\n';
     });
-    
+
     return message;
   }
 }
@@ -585,7 +591,7 @@ const TIER_LIMITS = {
     enableNotifications: false,
     enableWebhook: false,
     enableAI: false,
-    enableReleaseCalendar: false
+    enableReleaseCalendar: false,
   },
   hobby: {
     maxPlatforms: 3,
@@ -593,7 +599,7 @@ const TIER_LIMITS = {
     enableNotifications: true,
     enableWebhook: false,
     enableAI: false,
-    enableReleaseCalendar: false
+    enableReleaseCalendar: false,
   },
   pro: {
     maxPlatforms: 12,
@@ -601,7 +607,7 @@ const TIER_LIMITS = {
     enableNotifications: true,
     enableWebhook: true,
     enableAI: true,
-    enableReleaseCalendar: true
+    enableReleaseCalendar: true,
   },
   business: {
     maxPlatforms: 12,
@@ -609,8 +615,8 @@ const TIER_LIMITS = {
     enableNotifications: true,
     enableWebhook: true,
     enableAI: true,
-    enableReleaseCalendar: true
-  }
+    enableReleaseCalendar: true,
+  },
 };
 
 /**
@@ -629,26 +635,27 @@ module.exports = { InputValidator, ValidationError, TIER_LIMITS };
 
 ### 1.4 Default Values
 
-| Field | Default Value | Rationale |
-|-------|---------------|-----------|
-| `minPrice` | `0` | No minimum price restriction by default |
-| `maxResultsPerPlatform` | `50` | Balance between coverage and performance |
-| `enableReleaseCalendar` | `false` | Opt-in feature (adds runtime) |
-| `dealThresholdPercentage` | `15` | Reasonable threshold for "good deal" |
-| `notificationConfig.emailFrequency` | `"immediate"` | Users want instant alerts |
-| `notificationConfig.minListingsForEmail` | `1` | Alert on any new listing |
-| `advancedOptions.cacheTimeout` | `60` minutes | Balance freshness and API calls |
-| `advancedOptions.useAIParsing` | `false` | Opt-in to avoid costs |
-| `advancedOptions.enablePriceDropAlerts` | `false` | Opt-in feature |
-| `advancedOptions.requestDelay` | `1000` ms | Safe rate limiting |
-| `subscriptionTier` | `"free"` | Default tier for new users |
-| `targetPlatforms` | `["goat", "ebay", "grailed", "flightclub"]` | Best balance of coverage and reliability |
-| `proxyConfiguration.useApifyProxy` | `true` | Required for most platforms |
-| `proxyConfiguration.apifyProxyGroups` | `["RESIDENTIAL"]` | Residential proxies for anti-bot bypass |
+| Field                                    | Default Value                               | Rationale                                |
+| ---------------------------------------- | ------------------------------------------- | ---------------------------------------- |
+| `minPrice`                               | `0`                                         | No minimum price restriction by default  |
+| `maxResultsPerPlatform`                  | `50`                                        | Balance between coverage and performance |
+| `enableReleaseCalendar`                  | `false`                                     | Opt-in feature (adds runtime)            |
+| `dealThresholdPercentage`                | `15`                                        | Reasonable threshold for "good deal"     |
+| `notificationConfig.emailFrequency`      | `"immediate"`                               | Users want instant alerts                |
+| `notificationConfig.minListingsForEmail` | `1`                                         | Alert on any new listing                 |
+| `advancedOptions.cacheTimeout`           | `60` minutes                                | Balance freshness and API calls          |
+| `advancedOptions.useAIParsing`           | `false`                                     | Opt-in to avoid costs                    |
+| `advancedOptions.enablePriceDropAlerts`  | `false`                                     | Opt-in feature                           |
+| `advancedOptions.requestDelay`           | `1000` ms                                   | Safe rate limiting                       |
+| `subscriptionTier`                       | `"free"`                                    | Default tier for new users               |
+| `targetPlatforms`                        | `["goat", "ebay", "grailed", "flightclub"]` | Best balance of coverage and reliability |
+| `proxyConfiguration.useApifyProxy`       | `true`                                      | Required for most platforms              |
+| `proxyConfiguration.apifyProxyGroups`    | `["RESIDENTIAL"]`                           | Residential proxies for anti-bot bypass  |
 
 ### 1.5 Examples of Valid Inputs
 
 #### Example 1: Basic Search (Beginner)
+
 ```json
 {
   "searchTerms": ["Air Jordan 1"],
@@ -660,25 +667,15 @@ module.exports = { InputValidator, ValidationError, TIER_LIMITS };
 ```
 
 #### Example 2: Advanced Search (Power User)
+
 ```json
 {
-  "searchTerms": [
-    "Air Jordan 1 Bred",
-    "Air Jordan 1 Chicago",
-    "Travis Scott Jordan 1"
-  ],
+  "searchTerms": ["Air Jordan 1 Bred", "Air Jordan 1 Chicago", "Travis Scott Jordan 1"],
   "sizes": ["10", "10.5", "11"],
   "minPrice": 500,
   "maxPrice": 1500,
   "conditions": ["new_in_box", "used_like_new"],
-  "targetPlatforms": [
-    "goat",
-    "stockx",
-    "ebay",
-    "grailed",
-    "flightclub",
-    "stadiumgoods"
-  ],
+  "targetPlatforms": ["goat", "stockx", "ebay", "grailed", "flightclub", "stadiumgoods"],
   "maxResultsPerPlatform": 100,
   "dealThresholdPercentage": 20,
   "excludeKeywords": ["replica", "fake", "custom"],
@@ -704,6 +701,7 @@ module.exports = { InputValidator, ValidationError, TIER_LIMITS };
 ```
 
 #### Example 3: Craigslist-Specific Search
+
 ```json
 {
   "searchTerms": ["Jordan 4", "Yeezy"],
@@ -722,6 +720,7 @@ module.exports = { InputValidator, ValidationError, TIER_LIMITS };
 ```
 
 #### Example 4: Release Calendar Monitoring
+
 ```json
 {
   "searchTerms": ["Jordan 1", "Dunk", "Yeezy"],
@@ -761,6 +760,7 @@ module.exports = { InputValidator, ValidationError, TIER_LIMITS };
 ```
 
 **Conditional Field Display:**
+
 - Show `craigslistLocations` only when "craigslist" is selected in `targetPlatforms`
 - Show `openAIKey` only when `useAIParsing` is `true`
 - Show `webhookSecret` only when `webhookUrl` is provided
@@ -772,13 +772,14 @@ module.exports = { InputValidator, ValidationError, TIER_LIMITS };
 
 ### 2.1 Output Data Structure (JSON Schema)
 
-All scraped listings are stored in Apify Dataset with a standardized schema. The schema is defined in `src/schemas/output-schema.js`.
+All scraped listings are stored in Apify Dataset with a standardized schema. The schema is defined
+in `src/schemas/output-schema.js`.
 
 ```javascript
 /**
  * SneakerMeta Standardized Output Schema
  * Version: 1.0
- * 
+ *
  * All listings from all platforms are normalized to this structure.
  * This ensures consistent data format regardless of source platform.
  */
@@ -790,7 +791,7 @@ const OutputSchema = {
    * Example: "grailed_12345678", "ebay_384729103827"
    */
   id: String,
-  
+
   /**
    * Product information - describes the sneaker itself
    */
@@ -800,32 +801,32 @@ const OutputSchema = {
      * Example: "Air Jordan 1 Retro High OG 'Bred' (2016)"
      */
     name: String,
-    
+
     /**
      * Primary brand
      * Example: "Nike", "Adidas", "Air Jordan", "New Balance"
      */
     brand: String,
-    
+
     /**
      * Base model number/name
      * Example: "Air Jordan 1", "Yeezy 350", "Dunk Low"
      */
     model: String,
-    
+
     /**
      * Colorway nickname or official name
      * Example: "Bred", "Chicago", "Zebra", "Travis Scott"
      */
     colorway: String,
-    
+
     /**
      * Manufacturer's Stock Keeping Unit (SKU)
      * Example: "555088-001", "CW1590-100"
      * May be null if not available
      */
     sku: String | null,
-    
+
     /**
      * Release year
      * Example: 2016, 2020
@@ -833,7 +834,7 @@ const OutputSchema = {
      */
     releaseYear: Number | null
   },
-  
+
   /**
    * Listing details - specific to this particular sale listing
    */
@@ -843,62 +844,62 @@ const OutputSchema = {
      * Example: 750.00, 1200.50
      */
     price: Number,
-    
+
     /**
      * Original currency code
      * Example: "USD", "EUR", "GBP"
      */
     currency: String,
-    
+
     /**
      * US Men's shoe size
      * Example: "10.5", "11", "9"
      * May be null if not specified or not parseable
      */
     size_us_mens: String | null,
-    
+
     /**
      * US Women's shoe size (if applicable)
      * Example: "12", "12.5"
      */
     size_us_womens: String | null,
-    
+
     /**
      * EU size (if available)
      * Example: "44.5", "45"
      */
     size_eu: String | null,
-    
+
     /**
      * UK size (if available)
      * Example: "9.5", "10"
      */
     size_uk: String | null,
-    
+
     /**
      * Standardized condition
      * Enum: "new_in_box", "used_like_new", "used_good", "used_fair", "used_poor", "unspecified"
      */
     condition: String,
-    
+
     /**
      * Additional tags describing the listing
      * Example: ["og_all", "authenticated", "vnds", "player_edition"]
      */
     tags: Array<String>,
-    
+
     /**
      * Listing type
      * Enum: "sell", "buy" (wanted), "auction"
      */
     type: String,
-    
+
     /**
      * Full listing description (may be truncated to 1000 chars)
      * Example: "VNDS condition, worn once. Includes OG box, laces, and receipt..."
      */
     description: String | null,
-    
+
     /**
      * Listing creation timestamp (when seller listed it)
      * ISO 8601 format: "2025-11-10T14:30:00Z"
@@ -906,7 +907,7 @@ const OutputSchema = {
      */
     listedAt: String | null
   },
-  
+
   /**
    * Source information - where this listing was found
    */
@@ -916,39 +917,39 @@ const OutputSchema = {
      * Example: "GOAT", "eBay", "Grailed", "Flight Club"
      */
     platform: String,
-    
+
     /**
      * Direct URL to the listing
      * Example: "https://grailed.com/listings/12345678"
      */
     url: String,
-    
+
     /**
      * Platform-specific listing ID
      * Example: "12345678", "384729103827"
      */
     id: String,
-    
+
     /**
      * Whether this platform authenticates sneakers
      * True for: GOAT, StockX, Flight Club, Stadium Goods
      * False for: eBay, Grailed, Craigslist, etc.
      */
     is_authenticated: Boolean,
-    
+
     /**
      * Primary product image URL
      * Example: "https://www.shutterstock.com/image-vector/manufacturing-icon-collection-set-containing-260nw-2439256171.jpg"
      */
     imageUrl: String | null,
-    
+
     /**
      * Additional image URLs
      * Example: ["https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Phosphate_backbone.jpg/250px-Phosphate_backbone.jpg", "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Ape_skeletons.png/500px-Ape_skeletons.png"]
      */
     additionalImages: Array<String>
   },
-  
+
   /**
    * Seller information (when available)
    */
@@ -958,32 +959,32 @@ const OutputSchema = {
      * Example: "sneakerhead_nyc", "john_doe_123"
      */
     name: String | null,
-    
+
     /**
      * Seller rating (0-5 scale, normalized)
      * Example: 4.9, 5.0
      */
     rating: Number | null,
-    
+
     /**
      * Number of reviews/ratings
      * Example: 127, 503
      */
     reviewCount: Number | null,
-    
+
     /**
      * Verified seller status (if platform has verification)
      * Example: true, false
      */
     verified: Boolean | null,
-    
+
     /**
      * Seller location (city, state, country)
      * Example: "New York, NY", "Los Angeles, CA"
      */
     location: String | null
   },
-  
+
   /**
    * Scraping metadata - technical details about data collection
    */
@@ -993,26 +994,26 @@ const OutputSchema = {
      * ISO 8601 format: "2025-11-10T14:30:00Z"
      */
     timestamp: String,
-    
+
     /**
      * Apify actor run ID
      * Example: "abc123xyz456"
      */
     runId: String,
-    
+
     /**
      * Actor version that scraped this data
      * Example: "1.0.0", "1.2.3"
      */
     version: String,
-    
+
     /**
      * How data was obtained
      * Enum: "api", "scraping", "orchestrated"
      */
     method: String
   },
-  
+
   /**
    * Deal scoring (optional, only if deal scoring is enabled)
    */
@@ -1022,28 +1023,28 @@ const OutputSchema = {
      * Example: true, false
      */
     isBelowMarket: Boolean,
-    
+
     /**
      * Estimated market value from authenticated platforms
      * Example: 950.00
      * Null if market value not available
      */
     marketValue: Number | null,
-    
+
     /**
      * Percentage below market value
      * Example: 21.1 (means 21.1% below market)
      * Null if market value not available
      */
     savingsPercentage: Number | null,
-    
+
     /**
      * Dollar amount saved
      * Example: 200.00
      * Null if market value not available
      */
     savingsAmount: Number | null,
-    
+
     /**
      * Deal quality rating
      * Enum: "excellent" (>30%), "good" (20-30%), "fair" (10-20%), "market" (<10%)
@@ -1057,58 +1058,62 @@ const OutputSchema = {
 
 #### Product Fields
 
-| Field | Type | Nullable | Description | Examples |
-|-------|------|----------|-------------|----------|
-| `product.name` | `string` | ❌ No | Complete sneaker name | "Air Jordan 1 Retro High OG 'Bred'", "Yeezy Boost 350 V2 'Zebra'" |
-| `product.brand` | `string` | ❌ No | Manufacturer brand | "Nike", "Adidas", "Air Jordan", "New Balance" |
-| `product.model` | `string` | ❌ No | Base model designation | "Air Jordan 1", "Yeezy 350", "Dunk Low", "Air Max 1" |
-| `product.colorway` | `string` | ✅ Yes | Colorway name/nickname | "Bred", "Chicago", "Zebra", "Travis Scott", "Off-White" |
-| `product.sku` | `string` | ✅ Yes | Manufacturer SKU | "555088-001", "CW1590-100", "CP9654" |
-| `product.releaseYear` | `number` | ✅ Yes | Year of release | 2016, 2020, 2021 |
+| Field                 | Type     | Nullable | Description            | Examples                                                          |
+| --------------------- | -------- | -------- | ---------------------- | ----------------------------------------------------------------- |
+| `product.name`        | `string` | ❌ No    | Complete sneaker name  | "Air Jordan 1 Retro High OG 'Bred'", "Yeezy Boost 350 V2 'Zebra'" |
+| `product.brand`       | `string` | ❌ No    | Manufacturer brand     | "Nike", "Adidas", "Air Jordan", "New Balance"                     |
+| `product.model`       | `string` | ❌ No    | Base model designation | "Air Jordan 1", "Yeezy 350", "Dunk Low", "Air Max 1"              |
+| `product.colorway`    | `string` | ✅ Yes   | Colorway name/nickname | "Bred", "Chicago", "Zebra", "Travis Scott", "Off-White"           |
+| `product.sku`         | `string` | ✅ Yes   | Manufacturer SKU       | "555088-001", "CW1590-100", "CP9654"                              |
+| `product.releaseYear` | `number` | ✅ Yes   | Year of release        | 2016, 2020, 2021                                                  |
 
 #### Listing Fields
 
-| Field | Type | Nullable | Description | Validation |
-|-------|------|----------|-------------|------------|
-| `listing.price` | `number` | ❌ No | Price in USD | Must be > 0 |
-| `listing.currency` | `string` | ❌ No | Currency code | ISO 4217 (USD, EUR, GBP) |
-| `listing.size_us_mens` | `string` | ✅ Yes | US Men's size | Pattern: `^([1-9]\|1[0-5])(\\.5)?$` |
-| `listing.size_us_womens` | `string` | ✅ Yes | US Women's size | Pattern: `^([1-9]\|1[0-5])(\\.5)?$` |
-| `listing.size_eu` | `string` | ✅ Yes | EU size | Pattern: `^[3-5][0-9](\\.5)?$` |
-| `listing.size_uk` | `string` | ✅ Yes | UK size | Pattern: `^([1-9]\|1[0-5])(\\.5)?$` |
-| `listing.condition` | `enum` | ❌ No | Standardized condition | `new_in_box`, `used_like_new`, `used_good`, `used_fair`, `used_poor`, `unspecified` |
-| `listing.tags` | `array<string>` | ❌ No | Descriptive tags | `["og_all", "vnds", "authenticated"]` |
-| `listing.type` | `enum` | ❌ No | Listing type | `sell`, `buy`, `auction` |
-| `listing.description` | `string` | ✅ Yes | Full description | Max 1000 characters |
-| `listing.listedAt` | `string` | ✅ Yes | When listed | ISO 8601 timestamp |
+| Field                    | Type            | Nullable | Description            | Validation                                                                          |
+| ------------------------ | --------------- | -------- | ---------------------- | ----------------------------------------------------------------------------------- |
+| `listing.price`          | `number`        | ❌ No    | Price in USD           | Must be > 0                                                                         |
+| `listing.currency`       | `string`        | ❌ No    | Currency code          | ISO 4217 (USD, EUR, GBP)                                                            |
+| `listing.size_us_mens`   | `string`        | ✅ Yes   | US Men's size          | Pattern: `^([1-9]\|1[0-5])(\\.5)?$`                                                 |
+| `listing.size_us_womens` | `string`        | ✅ Yes   | US Women's size        | Pattern: `^([1-9]\|1[0-5])(\\.5)?$`                                                 |
+| `listing.size_eu`        | `string`        | ✅ Yes   | EU size                | Pattern: `^[3-5][0-9](\\.5)?$`                                                      |
+| `listing.size_uk`        | `string`        | ✅ Yes   | UK size                | Pattern: `^([1-9]\|1[0-5])(\\.5)?$`                                                 |
+| `listing.condition`      | `enum`          | ❌ No    | Standardized condition | `new_in_box`, `used_like_new`, `used_good`, `used_fair`, `used_poor`, `unspecified` |
+| `listing.tags`           | `array<string>` | ❌ No    | Descriptive tags       | `["og_all", "vnds", "authenticated"]`                                               |
+| `listing.type`           | `enum`          | ❌ No    | Listing type           | `sell`, `buy`, `auction`                                                            |
+| `listing.description`    | `string`        | ✅ Yes   | Full description       | Max 1000 characters                                                                 |
+| `listing.listedAt`       | `string`        | ✅ Yes   | When listed            | ISO 8601 timestamp                                                                  |
 
 #### Source Fields
 
-| Field | Type | Nullable | Description |
-|-------|------|----------|-------------|
-| `source.platform` | `string` | ❌ No | Platform name (e.g., "GOAT", "eBay") |
-| `source.url` | `string` | ❌ No | Direct listing URL |
-| `source.id` | `string` | ❌ No | Platform-specific listing ID |
-| `source.is_authenticated` | `boolean` | ❌ No | Whether platform authenticates sneakers |
-| `source.imageUrl` | `string` | ✅ Yes | Primary image URL |
-| `source.additionalImages` | `array<string>` | ✅ Yes | Additional image URLs |
+| Field                     | Type            | Nullable | Description                             |
+| ------------------------- | --------------- | -------- | --------------------------------------- |
+| `source.platform`         | `string`        | ❌ No    | Platform name (e.g., "GOAT", "eBay")    |
+| `source.url`              | `string`        | ❌ No    | Direct listing URL                      |
+| `source.id`               | `string`        | ❌ No    | Platform-specific listing ID            |
+| `source.is_authenticated` | `boolean`       | ❌ No    | Whether platform authenticates sneakers |
+| `source.imageUrl`         | `string`        | ✅ Yes   | Primary image URL                       |
+| `source.additionalImages` | `array<string>` | ✅ Yes   | Additional image URLs                   |
 
 ### 2.3 Data Types and Formats
 
 #### Timestamps
+
 All timestamps use **ISO 8601** format with UTC timezone:
+
 ```
 Format: YYYY-MM-DDTHH:MM:SSZ
 Example: "2025-11-10T14:30:00Z"
 ```
 
 #### Prices
+
 - **Type:** `number` (float)
 - **Currency:** Always converted to USD
 - **Precision:** 2 decimal places (e.g., 1200.50, not 1200.5)
 - **Example:** `750.00`, `1234.99`
 
 #### Sizes
+
 - **Type:** `string` (not number, to preserve "10.5" format)
 - **Format:** US sizing, may include half sizes
 - **Pattern:** `^([1-9]|1[0-5])(\.5)?$`
@@ -1117,6 +1122,7 @@ Example: "2025-11-10T14:30:00Z"
 #### Enums
 
 **Condition Enum:**
+
 ```javascript
 enum Condition {
   NEW_IN_BOX = "new_in_box",          // DS, BNIB, deadstock, brand new
@@ -1129,6 +1135,7 @@ enum Condition {
 ```
 
 **Listing Type Enum:**
+
 ```javascript
 enum ListingType {
   SELL = "sell",       // Standard sale listing
@@ -1138,6 +1145,7 @@ enum ListingType {
 ```
 
 **Deal Quality Enum:**
+
 ```javascript
 enum DealQuality {
   EXCELLENT = "excellent",  // >30% below market
@@ -1149,14 +1157,13 @@ enum DealQuality {
 
 ### 2.4 Metadata Fields (timestamps, source, etc.)
 
-**Automatic Metadata Addition:**
-Every listing gets these metadata fields automatically added:
+**Automatic Metadata Addition:** Every listing gets these metadata fields automatically added:
 
 ```javascript
 {
   // Unique identifier
   id: generateListingId(platform, platformId),
-  
+
   // Scraping metadata
   scrape: {
     timestamp: new Date().toISOString(),
@@ -1168,13 +1175,14 @@ Every listing gets these metadata fields automatically added:
 ```
 
 **Listing ID Generation Algorithm:**
+
 ```javascript
 function generateListingId(platform, platformId) {
   // If platform provides unique ID, use it
   if (platformId) {
     return `${platform.toLowerCase()}_${platformId}`;
   }
-  
+
   // Otherwise, create hash from unique fields
   const hashString = `${platform}:${url}:${title}:${price}`;
   return crypto.createHash('md5').update(hashString).digest('hex');
@@ -1184,12 +1192,13 @@ function generateListingId(platform, platformId) {
 ### 2.5 Deduplication Keys
 
 **Primary Deduplication Key:**
+
 - Field: `id`
 - Format: `{platform}_{listing_id}` or MD5 hash
 - Example: `"grailed_12345678"`, `"ebay_384729103827"`
 
-**Secondary Deduplication Logic:**
-For platforms without stable IDs, use composite key:
+**Secondary Deduplication Logic:** For platforms without stable IDs, use composite key:
+
 ```javascript
 {
   platform: "craigslist",
@@ -1201,6 +1210,7 @@ For platforms without stable IDs, use composite key:
 ```
 
 **Deduplication Algorithm:**
+
 ```javascript
 /**
  * Check if listing is duplicate
@@ -1210,15 +1220,16 @@ For platforms without stable IDs, use composite key:
  */
 function isDuplicate(listing, seenHashes) {
   // Generate hash from listing
-  const hash = crypto.createHash('md5')
+  const hash = crypto
+    .createHash('md5')
     .update(`${listing.source.platform}:${listing.source.id}`)
     .digest('hex');
-  
+
   // Check if seen before
   if (seenHashes.has(hash)) {
     return true;
   }
-  
+
   // Add to seen hashes
   seenHashes.add(hash);
   return false;
@@ -1228,6 +1239,7 @@ function isDuplicate(listing, seenHashes) {
 ### 2.6 Examples of Output Records
 
 #### Example 1: GOAT Listing (Authenticated Platform)
+
 ```json
 {
   "id": "goat_987654321",
@@ -1240,7 +1252,7 @@ function isDuplicate(listing, seenHashes) {
     "releaseYear": 2015
   },
   "listing": {
-    "price": 1850.00,
+    "price": 1850.0,
     "currency": "USD",
     "size_us_mens": "10.5",
     "size_us_womens": null,
@@ -1258,9 +1270,7 @@ function isDuplicate(listing, seenHashes) {
     "id": "987654321",
     "is_authenticated": true,
     "imageUrl": "https://i.ytimg.com/vi/IiCDqdOzteg/hqdefault.jpg",
-    "additionalImages": [
-      "https://i.ytimg.com/vi/VPgMuXXf5Qg/hqdefault.jpg"
-    ]
+    "additionalImages": ["https://i.ytimg.com/vi/VPgMuXXf5Qg/hqdefault.jpg"]
   },
   "seller": null,
   "scrape": {
@@ -1274,6 +1284,7 @@ function isDuplicate(listing, seenHashes) {
 ```
 
 #### Example 2: Grailed Listing (P2P Platform with AI Parsing)
+
 ```json
 {
   "id": "grailed_12345678",
@@ -1286,7 +1297,7 @@ function isDuplicate(listing, seenHashes) {
     "releaseYear": 2016
   },
   "listing": {
-    "price": 750.00,
+    "price": 750.0,
     "currency": "USD",
     "size_us_mens": "10.5",
     "size_us_womens": null,
@@ -1321,15 +1332,16 @@ function isDuplicate(listing, seenHashes) {
   },
   "dealScore": {
     "isBelowMarket": true,
-    "marketValue": 950.00,
+    "marketValue": 950.0,
     "savingsPercentage": 21.1,
-    "savingsAmount": 200.00,
+    "savingsAmount": 200.0,
     "dealQuality": "good"
   }
 }
 ```
 
 #### Example 3: eBay Listing (API-based)
+
 ```json
 {
   "id": "ebay_384729103827",
@@ -1342,7 +1354,7 @@ function isDuplicate(listing, seenHashes) {
     "releaseYear": 2021
   },
   "listing": {
-    "price": 150.00,
+    "price": 150.0,
     "currency": "USD",
     "size_us_mens": "11",
     "size_us_womens": null,
@@ -1377,15 +1389,16 @@ function isDuplicate(listing, seenHashes) {
   },
   "dealScore": {
     "isBelowMarket": true,
-    "marketValue": 180.00,
+    "marketValue": 180.0,
     "savingsPercentage": 16.7,
-    "savingsAmount": 30.00,
+    "savingsAmount": 30.0,
     "dealQuality": "fair"
   }
 }
 ```
 
 #### Example 4: Craigslist Listing (Unstructured Data)
+
 ```json
 {
   "id": "d47e8f9a3c2b1e8d6f5a4c3b2e1d0c9b",
@@ -1398,7 +1411,7 @@ function isDuplicate(listing, seenHashes) {
     "releaseYear": null
   },
   "listing": {
-    "price": 200.00,
+    "price": 200.0,
     "currency": "USD",
     "size_us_mens": "10",
     "size_us_womens": null,
@@ -1440,36 +1453,43 @@ function isDuplicate(listing, seenHashes) {
 Apify Dataset supports multiple export formats via API:
 
 #### JSON (Default)
+
 ```
 GET https://api.apify.com/v2/datasets/{DATASET_ID}/items?format=json
 ```
 
 #### JSON Lines (JSONL)
+
 ```
 GET https://api.apify.com/v2/datasets/{DATASET_ID}/items?format=jsonl
 ```
 
 #### CSV
+
 ```
 GET https://api.apify.com/v2/datasets/{DATASET_ID}/items?format=csv
 ```
 
 #### Excel (XLSX)
+
 ```
 GET https://api.apify.com/v2/datasets/{DATASET_ID}/items?format=xlsx
 ```
 
 #### XML
+
 ```
 GET https://api.apify.com/v2/datasets/{DATASET_ID}/items?format=xml
 ```
 
 #### RSS Feed
+
 ```
 GET https://api.apify.com/v2/datasets/{DATASET_ID}/items?format=rss
 ```
 
 **Field Filtering:**
+
 ```
 # Get only specific fields
 GET https://api.apify.com/v2/datasets/{DATASET_ID}/items?format=json&fields=product,listing,source
@@ -1479,6 +1499,7 @@ GET https://api.apify.com/v2/datasets/{DATASET_ID}/items?format=json&omit=scrape
 ```
 
 **Data Cleaning:**
+
 ```
 # Clean data (remove Apify internal fields like #debug, #error)
 GET https://api.apify.com/v2/datasets/{DATASET_ID}/items?format=json&clean=true
@@ -1495,6 +1516,7 @@ GET https://api.apify.com/v2/datasets/{DATASET_ID}/items?format=json&clean=true
 **HTML Email Template Location:** `src/templates/email-alert.html`
 
 **Template Variables:**
+
 ```javascript
 {
   listings: Array<Listing>,      // New listings to alert about
@@ -1508,390 +1530,392 @@ GET https://api.apify.com/v2/datasets/{DATASET_ID}/items?format=json&clean=true
 ```
 
 **Full HTML Template:**
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SneakerMeta Alert</title>
-  <style>
-    /* Reset styles */
-    body, html {
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background-color: #f4f4f7;
-    }
-    
-    /* Container */
-    .container {
-      max-width: 600px;
-      margin: 20px auto;
-      background: #ffffff;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    
-    /* Header */
-    .header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #ffffff;
-      padding: 40px 30px;
-      text-align: center;
-    }
-    
-    .header h1 {
-      margin: 0 0 10px 0;
-      font-size: 28px;
-      font-weight: 700;
-    }
-    
-    .header p {
-      margin: 0;
-      font-size: 16px;
-      opacity: 0.9;
-    }
-    
-    /* Best Deal Banner */
-    .best-deal-banner {
-      background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
-      color: #ffffff;
-      padding: 20px 30px;
-      text-align: center;
-    }
-    
-    .best-deal-banner h2 {
-      margin: 0 0 5px 0;
-      font-size: 20px;
-      font-weight: 700;
-    }
-    
-    .best-deal-banner p {
-      margin: 0;
-      font-size: 14px;
-      opacity: 0.95;
-    }
-    
-    /* Content */
-    .content {
-      padding: 30px;
-    }
-    
-    .summary {
-      background: #f8f9fa;
-      border-left: 4px solid #667eea;
-      padding: 15px 20px;
-      margin-bottom: 30px;
-      border-radius: 4px;
-    }
-    
-    .summary p {
-      margin: 5px 0;
-      font-size: 14px;
-      color: #495057;
-    }
-    
-    .summary strong {
-      color: #212529;
-    }
-    
-    /* Listing Card */
-    .listing {
-      border: 1px solid #e9ecef;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      transition: box-shadow 0.2s;
-    }
-    
-    .listing:hover {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    
-    .listing-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 15px;
-    }
-    
-    .listing-title {
-      flex: 1;
-      margin: 0;
-      font-size: 18px;
-      font-weight: 600;
-      color: #212529;
-      line-height: 1.4;
-    }
-    
-    .deal-badge {
-      background: #ff4757;
-      color: #ffffff;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-      margin-left: 10px;
-      white-space: nowrap;
-    }
-    
-    .listing-image {
-      width: 100%;
-      max-width: 500px;
-      height: auto;
-      border-radius: 6px;
-      margin: 15px 0;
-    }
-    
-    .listing-details {
-      margin: 15px 0;
-    }
-    
-    .price {
-      font-size: 32px;
-      font-weight: 700;
-      color: #28a745;
-      margin: 10px 0;
-    }
-    
-    .old-price {
-      text-decoration: line-through;
-      color: #6c757d;
-      font-size: 20px;
-      margin-left: 10px;
-    }
-    
-    .detail-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 0;
-      border-bottom: 1px solid #f1f3f5;
-      font-size: 14px;
-    }
-    
-    .detail-row:last-child {
-      border-bottom: none;
-    }
-    
-    .detail-label {
-      font-weight: 600;
-      color: #495057;
-    }
-    
-    .detail-value {
-      color: #212529;
-    }
-    
-    .condition-badge {
-      display: inline-block;
-      background: #e7f5ff;
-      color: #1971c2;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-    
-    .platform-badge {
-      display: inline-block;
-      background: #f8f9fa;
-      color: #495057;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    
-    .authenticated-badge {
-      display: inline-block;
-      background: #d3f9d8;
-      color: #2b8a3e;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    
-    /* CTA Button */
-    .cta {
-      display: inline-block;
-      background: #667eea;
-      color: #ffffff !important;
-      text-decoration: none;
-      padding: 14px 32px;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: 600;
-      margin-top: 15px;
-      transition: background 0.2s;
-    }
-    
-    .cta:hover {
-      background: #5568d3;
-    }
-    
-    /* Footer */
-    .footer {
-      background: #f8f9fa;
-      padding: 30px;
-      text-align: center;
-      border-top: 1px solid #e9ecef;
-    }
-    
-    .footer p {
-      margin: 10px 0;
-      font-size: 13px;
-      color: #6c757d;
-    }
-    
-    .footer a {
-      color: #667eea;
-      text-decoration: none;
-    }
-    
-    .footer a:hover {
-      text-decoration: underline;
-    }
-    
-    /* Responsive */
-    @media only screen and (max-width: 600px) {
-      .container {
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SneakerMeta Alert</title>
+    <style>
+      /* Reset styles */
+      body,
+      html {
         margin: 0;
-        border-radius: 0;
+        padding: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        background-color: #f4f4f7;
       }
-      
-      .header, .content, .footer {
-        padding: 20px;
+
+      /* Container */
+      .container {
+        max-width: 600px;
+        margin: 20px auto;
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
-      
+
+      /* Header */
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff;
+        padding: 40px 30px;
+        text-align: center;
+      }
+
       .header h1 {
-        font-size: 24px;
+        margin: 0 0 10px 0;
+        font-size: 28px;
+        font-weight: 700;
       }
-      
-      .listing-title {
+
+      .header p {
+        margin: 0;
         font-size: 16px;
+        opacity: 0.9;
       }
-      
+
+      /* Best Deal Banner */
+      .best-deal-banner {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
+        color: #ffffff;
+        padding: 20px 30px;
+        text-align: center;
+      }
+
+      .best-deal-banner h2 {
+        margin: 0 0 5px 0;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .best-deal-banner p {
+        margin: 0;
+        font-size: 14px;
+        opacity: 0.95;
+      }
+
+      /* Content */
+      .content {
+        padding: 30px;
+      }
+
+      .summary {
+        background: #f8f9fa;
+        border-left: 4px solid #667eea;
+        padding: 15px 20px;
+        margin-bottom: 30px;
+        border-radius: 4px;
+      }
+
+      .summary p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #495057;
+      }
+
+      .summary strong {
+        color: #212529;
+      }
+
+      /* Listing Card */
+      .listing {
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        transition: box-shadow 0.2s;
+      }
+
+      .listing:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .listing-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 15px;
+      }
+
+      .listing-title {
+        flex: 1;
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #212529;
+        line-height: 1.4;
+      }
+
+      .deal-badge {
+        background: #ff4757;
+        color: #ffffff;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-left: 10px;
+        white-space: nowrap;
+      }
+
+      .listing-image {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        border-radius: 6px;
+        margin: 15px 0;
+      }
+
+      .listing-details {
+        margin: 15px 0;
+      }
+
       .price {
-        font-size: 26px;
+        font-size: 32px;
+        font-weight: 700;
+        color: #28a745;
+        margin: 10px 0;
       }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <!-- Header -->
-    <div class="header">
-      <h1>🔥 {{totalCount}} New Sneaker{{totalCount > 1 ? 's' : ''}} Found!</h1>
-      <p>Matching your search criteria</p>
-    </div>
-    
-    {{#if bestDeal}}
-    <!-- Best Deal Banner -->
-    <div class="best-deal-banner">
-      <h2>💎 BEST DEAL: {{bestDeal.dealScore.savingsPercentage}}% OFF</h2>
-      <p>{{bestDeal.product.name}} - Save ${{bestDeal.dealScore.savingsAmount}}</p>
-    </div>
-    {{/if}}
-    
-    <!-- Content -->
-    <div class="content">
-      <!-- Summary -->
-      <div class="summary">
-        <p><strong>Search Terms:</strong> {{searchTerms.join(', ')}}</p>
-        <p><strong>Platforms:</strong> {{platforms.join(', ')}}</p>
-        <p><strong>Found:</strong> {{timestamp}}</p>
+
+      .old-price {
+        text-decoration: line-through;
+        color: #6c757d;
+        font-size: 20px;
+        margin-left: 10px;
+      }
+
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #f1f3f5;
+        font-size: 14px;
+      }
+
+      .detail-row:last-child {
+        border-bottom: none;
+      }
+
+      .detail-label {
+        font-weight: 600;
+        color: #495057;
+      }
+
+      .detail-value {
+        color: #212529;
+      }
+
+      .condition-badge {
+        display: inline-block;
+        background: #e7f5ff;
+        color: #1971c2;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .platform-badge {
+        display: inline-block;
+        background: #f8f9fa;
+        color: #495057;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .authenticated-badge {
+        display: inline-block;
+        background: #d3f9d8;
+        color: #2b8a3e;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      /* CTA Button */
+      .cta {
+        display: inline-block;
+        background: #667eea;
+        color: #ffffff !important;
+        text-decoration: none;
+        padding: 14px 32px;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 15px;
+        transition: background 0.2s;
+      }
+
+      .cta:hover {
+        background: #5568d3;
+      }
+
+      /* Footer */
+      .footer {
+        background: #f8f9fa;
+        padding: 30px;
+        text-align: center;
+        border-top: 1px solid #e9ecef;
+      }
+
+      .footer p {
+        margin: 10px 0;
+        font-size: 13px;
+        color: #6c757d;
+      }
+
+      .footer a {
+        color: #667eea;
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
+      /* Responsive */
+      @media only screen and (max-width: 600px) {
+        .container {
+          margin: 0;
+          border-radius: 0;
+        }
+
+        .header,
+        .content,
+        .footer {
+          padding: 20px;
+        }
+
+        .header h1 {
+          font-size: 24px;
+        }
+
+        .listing-title {
+          font-size: 16px;
+        }
+
+        .price {
+          font-size: 26px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1>🔥 {{totalCount}} New Sneaker{{totalCount > 1 ? 's' : ''}} Found!</h1>
+        <p>Matching your search criteria</p>
       </div>
-      
-      <!-- Listings -->
-      {{#each listings}}
-      <div class="listing">
-        <div class="listing-header">
-          <h2 class="listing-title">{{product.name}}</h2>
-          {{#if dealScore.isBelowMarket}}
-          <span class="deal-badge">SAVE {{dealScore.savingsPercentage}}%</span>
-          {{/if}}
+
+      {{#if bestDeal}}
+      <!-- Best Deal Banner -->
+      <div class="best-deal-banner">
+        <h2>💎 BEST DEAL: {{bestDeal.dealScore.savingsPercentage}}% OFF</h2>
+        <p>{{bestDeal.product.name}} - Save ${{bestDeal.dealScore.savingsAmount}}</p>
+      </div>
+      {{/if}}
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Summary -->
+        <div class="summary">
+          <p><strong>Search Terms:</strong> {{searchTerms.join(', ')}}</p>
+          <p><strong>Platforms:</strong> {{platforms.join(', ')}}</p>
+          <p><strong>Found:</strong> {{timestamp}}</p>
         </div>
-        
-        {{#if source.imageUrl}}
-        <img src="{{source.imageUrl}}" alt="{{product.name}}" class="listing-image">
-        {{/if}}
-        
-        <div class="listing-details">
-          <div class="price">
-            ${{listing.price}}
-            {{#if dealScore.marketValue}}
-            <span class="old-price">${{dealScore.marketValue}}</span>
+
+        <!-- Listings -->
+        {{#each listings}}
+        <div class="listing">
+          <div class="listing-header">
+            <h2 class="listing-title">{{product.name}}</h2>
+            {{#if dealScore.isBelowMarket}}
+            <span class="deal-badge">SAVE {{dealScore.savingsPercentage}}%</span>
             {{/if}}
           </div>
-          
-          <div class="detail-row">
-            <span class="detail-label">Size:</span>
-            <span class="detail-value">{{listing.size_us_mens}} US Men's</span>
-          </div>
-          
-          <div class="detail-row">
-            <span class="detail-label">Condition:</span>
-            <span class="detail-value">
-              <span class="condition-badge">{{listing.condition}}</span>
-            </span>
-          </div>
-          
-          <div class="detail-row">
-            <span class="detail-label">Platform:</span>
-            <span class="detail-value">
-              <span class="platform-badge">{{source.platform}}</span>
-              {{#if source.is_authenticated}}
-              <span class="authenticated-badge">✓ AUTHENTICATED</span>
+
+          {{#if source.imageUrl}}
+          <img src="{{source.imageUrl}}" alt="{{product.name}}" class="listing-image" />
+          {{/if}}
+
+          <div class="listing-details">
+            <div class="price">
+              ${{listing.price}} {{#if dealScore.marketValue}}
+              <span class="old-price">${{dealScore.marketValue}}</span>
               {{/if}}
-            </span>
+            </div>
+
+            <div class="detail-row">
+              <span class="detail-label">Size:</span>
+              <span class="detail-value">{{listing.size_us_mens}} US Men's</span>
+            </div>
+
+            <div class="detail-row">
+              <span class="detail-label">Condition:</span>
+              <span class="detail-value">
+                <span class="condition-badge">{{listing.condition}}</span>
+              </span>
+            </div>
+
+            <div class="detail-row">
+              <span class="detail-label">Platform:</span>
+              <span class="detail-value">
+                <span class="platform-badge">{{source.platform}}</span>
+                {{#if source.is_authenticated}}
+                <span class="authenticated-badge">✓ AUTHENTICATED</span>
+                {{/if}}
+              </span>
+            </div>
+
+            {{#if seller.name}}
+            <div class="detail-row">
+              <span class="detail-label">Seller:</span>
+              <span class="detail-value">
+                {{seller.name}} {{#if seller.verified}}✓{{/if}} {{#if
+                seller.rating}}({{seller.rating}}/5){{/if}}
+              </span>
+            </div>
+            {{/if}} {{#if listing.description}}
+            <div class="detail-row">
+              <span class="detail-label">Description:</span>
+              <span class="detail-value">{{listing.description}}</span>
+            </div>
+            {{/if}}
           </div>
-          
-          {{#if seller.name}}
-          <div class="detail-row">
-            <span class="detail-label">Seller:</span>
-            <span class="detail-value">
-              {{seller.name}}
-              {{#if seller.verified}}✓{{/if}}
-              {{#if seller.rating}}({{seller.rating}}/5){{/if}}
-            </span>
-          </div>
-          {{/if}}
-          
-          {{#if listing.description}}
-          <div class="detail-row">
-            <span class="detail-label">Description:</span>
-            <span class="detail-value">{{listing.description}}</span>
-          </div>
-          {{/if}}
+
+          <a href="{{source.url}}" class="cta">View Listing →</a>
         </div>
-        
-        <a href="{{source.url}}" class="cta">View Listing →</a>
+        {{/each}}
       </div>
-      {{/each}}
+
+      <!-- Footer -->
+      <div class="footer">
+        <p><strong>Powered by SneakerMeta</strong> | <a href="https://apify.com">Apify Actor</a></p>
+        <p>
+          <a href="#">Manage Alert Settings</a> |
+          <a href="{{unsubscribeUrl}}">Unsubscribe</a>
+        </p>
+        <p style="font-size: 11px; color: #adb5bd; margin-top: 20px;">
+          You received this email because you subscribed to SneakerMeta alerts.
+          <br />This is an automated message, please do not reply.
+        </p>
+      </div>
     </div>
-    
-    <!-- Footer -->
-    <div class="footer">
-      <p><strong>Powered by SneakerMeta</strong> | <a href="https://apify.com">Apify Actor</a></p>
-      <p>
-        <a href="#">Manage Alert Settings</a> | 
-        <a href="{{unsubscribeUrl}}">Unsubscribe</a>
-      </p>
-      <p style="font-size: 11px; color: #adb5bd; margin-top: 20px;">
-        You received this email because you subscribed to SneakerMeta alerts.
-        <br>This is an automated message, please do not reply.
-      </p>
-    </div>
-  </div>
-</body>
+  </body>
 </html>
 ```
 
 **Plain Text Template (Fallback):**
+
 ```
 =============================================================================
 🔥 {{totalCount}} NEW SNEAKER{{totalCount > 1 ? 'S' : ''}} FOUND!
@@ -1912,15 +1936,15 @@ SEARCH SUMMARY
 {{#each listings}}
 {{loop.index}}. {{product.name}}
    {{#if dealScore.isBelowMarket}}[SAVE {{dealScore.savingsPercentage}}%]{{/if}}
-   
+
    Price: ${{listing.price}}{{#if dealScore.marketValue}} (Market: ${{dealScore.marketValue}}){{/if}}
    Size: {{listing.size_us_mens}} US Men's
    Condition: {{listing.condition}}
    Platform: {{source.platform}}{{#if source.is_authenticated}} [AUTHENTICATED]{{/if}}
    {{#if seller.name}}Seller: {{seller.name}}{{#if seller.verified}} ✓{{/if}}{{/if}}
-   
+
    {{#if listing.description}}Description: {{listing.description}}{{/if}}
-   
+
    VIEW LISTING: {{source.url}}
 
 -----------------------------------------------------------------------------
@@ -1936,29 +1960,30 @@ This is an automated message, please do not reply.
 #### 3.1.2 Dynamic Fields and Personalization
 
 **Personalization Variables:**
+
 ```javascript
 {
   // User information
   userEmail: String,               // Recipient email
   userName: String | null,         // User's name (if available)
-  
+
   // Search context
   searchTerms: Array<String>,      // What they searched for
   platforms: Array<String>,        // Where we searched
-  
+
   // Listing aggregation
   totalCount: Number,              // Total new listings
   byPlatform: Object,              // Count per platform
   // Example: { "GOAT": 5, "Grailed": 8, "eBay": 12 }
-  
+
   // Deal highlights
   bestDeal: Listing | null,        // Highest savings %
   averagePrice: Number,            // Average price of all listings
   priceRange: {min: Number, max: Number},
-  
+
   // Timestamp
   timestamp: String,               // Human-readable (e.g., "November 10, 2025 at 2:30 PM")
-  
+
   // Utility links
   unsubscribeUrl: String,          // Unsubscribe from alerts
   manageSettingsUrl: String,       // Update alert preferences
@@ -1969,6 +1994,7 @@ This is an automated message, please do not reply.
 **Dynamic Content Blocks:**
 
 1. **Best Deal Callout** (only if `dealScore.savingsPercentage >= 20%`):
+
 ```html
 {{#if bestDeal}}
 <div class="best-deal-banner">
@@ -1979,6 +2005,7 @@ This is an automated message, please do not reply.
 ```
 
 2. **Authentication Badge** (only for authenticated platforms):
+
 ```html
 {{#if source.is_authenticated}}
 <span class="authenticated-badge">✓ AUTHENTICATED</span>
@@ -1986,6 +2013,7 @@ This is an automated message, please do not reply.
 ```
 
 3. **Price Comparison** (only if market value is known):
+
 ```html
 {{#if dealScore.marketValue}}
 <span class="old-price">${{dealScore.marketValue}}</span>
@@ -1993,14 +2021,14 @@ This is an automated message, please do not reply.
 ```
 
 4. **Seller Information** (only if available):
+
 ```html
 {{#if seller.name}}
 <div class="detail-row">
   <span class="detail-label">Seller:</span>
   <span class="detail-value">
-    {{seller.name}}
-    {{#if seller.verified}}✓{{/if}}
-    {{#if seller.rating}}({{seller.rating}}/5){{/if}}
+    {{seller.name}} {{#if seller.verified}}✓{{/if}} {{#if
+    seller.rating}}({{seller.rating}}/5){{/if}}
   </span>
 </div>
 {{/if}}
@@ -2016,29 +2044,30 @@ This is an automated message, please do not reply.
  */
 function generateEmailSubject(listings, bestDeal) {
   const count = listings.length;
-  
+
   // If best deal exists and is significant (>20% savings)
   if (bestDeal && bestDeal.dealScore?.savingsPercentage >= 20) {
     return `🔥 ${bestDeal.product.colorway} ${bestDeal.product.model} - ${bestDeal.dealScore.savingsPercentage}% OFF ($${bestDeal.listing.price})`;
   }
-  
+
   // If single listing
   if (count === 1) {
     const listing = listings[0];
     return `🔔 New: ${listing.product.name} - $${listing.listing.price}`;
   }
-  
+
   // Multiple listings
   if (count <= 5) {
     return `🔔 ${count} New Sneaker Deals Found`;
   }
-  
+
   // Many listings
-  return `🔥 ${count} New Sneaker Deals - Starting at $${Math.min(...listings.map(l => l.listing.price))}`;
+  return `🔥 ${count} New Sneaker Deals - Starting at $${Math.min(...listings.map((l) => l.listing.price))}`;
 }
 ```
 
 **Subject Line Examples:**
+
 - `🔥 Bred Air Jordan 1 - 25% OFF ($750)`
 - `🔔 New: Yeezy 350 Zebra - $280`
 - `🔔 3 New Sneaker Deals Found`
@@ -2049,6 +2078,7 @@ function generateEmailSubject(listings, bestDeal) {
 **Service: SendGrid (Recommended)**
 
 **Installation:**
+
 ```bash
 npm install @sendgrid/mail
 ```
@@ -2067,7 +2097,7 @@ class EmailNotifier {
     this.fromEmail = fromEmail || 'alerts@sneakermeta.com';
     sgMail.setApiKey(apiKey);
   }
-  
+
   /**
    * Send email alert
    * @param {Array} listings - New listings to alert about
@@ -2081,14 +2111,14 @@ class EmailNotifier {
         Actor.log.info('No listings to send, skipping email');
         return { success: true, skipped: true };
       }
-      
+
       // Load and compile template
       const htmlTemplate = await fs.readFile('./src/templates/email-alert.html', 'utf-8');
       const textTemplate = await fs.readFile('./src/templates/email-alert.txt', 'utf-8');
-      
+
       const compiledHtml = Handlebars.compile(htmlTemplate);
       const compiledText = Handlebars.compile(textTemplate);
-      
+
       // Prepare template data
       const templateData = {
         listings: listings.slice(0, 10), // Limit to 10 listings per email
@@ -2099,108 +2129,108 @@ class EmailNotifier {
         timestamp: this.formatTimestamp(new Date()),
         unsubscribeUrl: this.generateUnsubscribeUrl(toEmail),
         manageSettingsUrl: 'https://sneakermeta.com/settings',
-        viewAllUrl: context.datasetUrl || '#'
+        viewAllUrl: context.datasetUrl || '#',
       };
-      
+
       // Generate HTML and text content
       const html = compiledHtml(templateData);
       const text = compiledText(templateData);
-      
+
       // Generate subject
       const subject = this.generateSubject(listings, templateData.bestDeal);
-      
+
       // Send email
       const msg = {
         to: toEmail,
         from: {
           email: this.fromEmail,
-          name: 'SneakerMeta Alerts'
+          name: 'SneakerMeta Alerts',
         },
         subject: subject,
         text: text,
         html: html,
         trackingSettings: {
           clickTracking: {
-            enable: true
+            enable: true,
           },
           openTracking: {
-            enable: true
-          }
-        }
+            enable: true,
+          },
+        },
       };
-      
+
       Actor.log.info(`Sending email to ${toEmail} with ${listings.length} listing(s)`);
-      
+
       const [response] = await sgMail.send(msg);
-      
+
       Actor.log.info('Email sent successfully', {
         statusCode: response.statusCode,
         to: toEmail,
-        listingCount: listings.length
+        listingCount: listings.length,
       });
-      
+
       return {
         success: true,
         messageId: response.headers['x-message-id'],
         to: toEmail,
-        listingCount: listings.length
+        listingCount: listings.length,
       };
-      
     } catch (error) {
       Actor.log.error('Failed to send email', {
         error: error.message,
         to: toEmail,
         code: error.code,
-        response: error.response?.body
+        response: error.response?.body,
       });
-      
+
       throw error;
     }
   }
-  
+
   /**
    * Send batch email (daily digest)
    */
   async sendDigest(listings, toEmail, context) {
     // Group listings by search term or platform
     const grouped = this.groupListings(listings);
-    
+
     // Use digest template (simplified version)
     // ...similar to sendAlert but with different template
   }
-  
+
   /**
    * Find best deal (highest savings percentage)
    */
   findBestDeal(listings) {
-    return listings
-      .filter(l => l.dealScore?.isBelowMarket)
-      .sort((a, b) => b.dealScore.savingsPercentage - a.dealScore.savingsPercentage)
-      [0] || null;
+    return (
+      listings
+        .filter((l) => l.dealScore?.isBelowMarket)
+        .sort((a, b) => b.dealScore.savingsPercentage - a.dealScore.savingsPercentage)[0] || null
+    );
   }
-  
+
   /**
    * Generate email subject line
    */
   generateSubject(listings, bestDeal) {
     const count = listings.length;
-    
+
     if (bestDeal && bestDeal.dealScore?.savingsPercentage >= 20) {
       return `🔥 ${bestDeal.product.colorway} ${bestDeal.product.model} - ${bestDeal.dealScore.savingsPercentage}% OFF ($${bestDeal.listing.price})`;
     }
-    
+
     if (count === 1) {
       const listing = listings[0];
       return `🔔 New: ${listing.product.name} - $${listing.listing.price}`;
     }
-    
+
     if (count <= 5) {
       return `🔔 ${count} New Sneaker Deals Found`;
     }
-    
-    return `🔥 ${count} New Sneaker Deals - Starting at $${Math.min(...listings.map(l => l.listing.price))}`;
+
+    return `🔥 ${count} New Sneaker Deals - Starting at $${Math.min(...listings.map((l) => l.listing.price))}`;
   }
-  
+
   /**
    * Format timestamp for display
    */
@@ -2211,10 +2241,10 @@ class EmailNotifier {
       day: 'numeric',
       hour: 'numeric',
       minute: '2-digit',
-      timeZoneName: 'short'
+      timeZoneName: 'short',
     });
   }
-  
+
   /**
    * Generate unsubscribe URL
    */
@@ -2222,7 +2252,7 @@ class EmailNotifier {
     // TODO: Implement unsubscribe mechanism
     return `https://sneakermeta.com/unsubscribe?email=${encodeURIComponent(email)}`;
   }
-  
+
   /**
    * Retry logic with exponential backoff
    */
@@ -2232,10 +2262,10 @@ class EmailNotifier {
         return await sgMail.send(msg);
       } catch (error) {
         if (attempt === maxRetries) throw error;
-        
+
         const delay = Math.pow(2, attempt) * 1000; // 2s, 4s, 8s
         Actor.log.warning(`Email send attempt ${attempt} failed, retrying in ${delay}ms...`);
-        await new Promise(resolve => setTimeout(resolve, delay));
+        await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
   }
@@ -2245,9 +2275,10 @@ module.exports = EmailNotifier;
 ```
 
 **SendGrid Configuration:**
+
 ```javascript
 // Get API key from Apify Key-Value Store or environment variable
-const SENDGRID_API_KEY = await Actor.getValue('SENDGRID_API_KEY') || process.env.SENDGRID_API_KEY;
+const SENDGRID_API_KEY = (await Actor.getValue('SENDGRID_API_KEY')) || process.env.SENDGRID_API_KEY;
 const FROM_EMAIL = 'alerts@sneakermeta.com'; // Must be verified in SendGrid
 
 const emailNotifier = new EmailNotifier(SENDGRID_API_KEY, FROM_EMAIL);
@@ -2256,11 +2287,12 @@ const emailNotifier = new EmailNotifier(SENDGRID_API_KEY, FROM_EMAIL);
 await emailNotifier.sendAlert(newListings, userEmail, {
   searchTerms: input.searchTerms,
   platforms: input.targetPlatforms,
-  datasetUrl: `https://console.apify.com/storage/datasets/${datasetId}`
+  datasetUrl: `https://console.apify.com/storage/datasets/${datasetId}`,
 });
 ```
 
 **Rate Limiting:**
+
 ```javascript
 // SendGrid free tier: 100 emails/day
 // Track usage
@@ -2292,6 +2324,7 @@ await Actor.setValue('emails_sent_today', emailsSentToday + 1);
 **Service: Twilio**
 
 **Implementation Sketch:**
+
 ```javascript
 const twilio = require('twilio');
 
@@ -2300,19 +2333,20 @@ class SMSNotifier {
     this.client = twilio(accountSid, authToken);
     this.fromNumber = fromNumber;
   }
-  
+
   async sendAlert(listings, toPhoneNumber) {
     const count = listings.length;
     const bestDeal = listings[0]; // Assume sorted by deal quality
-    
-    const message = count === 1
-      ? `🔔 New: ${bestDeal.product.name} - $${bestDeal.listing.price} on ${bestDeal.source.platform}`
-      : `🔥 ${count} new sneaker deals found! Best: ${bestDeal.product.name} - $${bestDeal.listing.price}`;
-    
+
+    const message =
+      count === 1
+        ? `🔔 New: ${bestDeal.product.name} - $${bestDeal.listing.price} on ${bestDeal.source.platform}`
+        : `🔥 ${count} new sneaker deals found! Best: ${bestDeal.product.name} - $${bestDeal.listing.price}`;
+
     await this.client.messages.create({
       body: message,
       from: this.fromNumber,
-      to: toPhoneNumber
+      to: toPhoneNumber,
     });
   }
 }
@@ -2329,6 +2363,7 @@ class SMSNotifier {
 **Content-Type:** `application/json`
 
 **Payload Structure:**
+
 ```json
 {
   "event": "new_listings_found",
@@ -2341,15 +2376,15 @@ class SMSNotifier {
       "Grailed": 5,
       "eBay": 4
     },
-    "averagePrice": 625.50,
+    "averagePrice": 625.5,
     "priceRange": {
-      "min": 150.00,
-      "max": 1850.00
+      "min": 150.0,
+      "max": 1850.0
     },
     "bestDeal": {
       "productName": "Air Jordan 1 Bred",
-      "price": 750.00,
-      "marketValue": 950.00,
+      "price": 750.0,
+      "marketValue": 950.0,
       "savingsPercentage": 21.1,
       "url": "https://grailed.com/listings/12345678",
       "platform": "Grailed"
@@ -2366,7 +2401,7 @@ class SMSNotifier {
         "sku": "555088-001"
       },
       "listing": {
-        "price": 750.00,
+        "price": 750.0,
         "currency": "USD",
         "size_us_mens": "10.5",
         "condition": "used_like_new",
@@ -2400,6 +2435,7 @@ class SMSNotifier {
 **Security:** Use HMAC-SHA256 signature to verify webhook authenticity.
 
 **Headers:**
+
 ```
 X-SneakerMeta-Signature: sha256=abc123...
 X-SneakerMeta-Event: new_listings_found
@@ -2408,6 +2444,7 @@ X-SneakerMeta-ID: webhook_abc123xyz
 ```
 
 **Signature Generation (Sender):**
+
 ```javascript
 const crypto = require('crypto');
 
@@ -2436,6 +2473,7 @@ await fetch(webhookUrl, {
 ```
 
 **Signature Verification (Receiver):**
+
 ```javascript
 // Example: Node.js webhook receiver
 const crypto = require('crypto');
@@ -2443,20 +2481,21 @@ const crypto = require('crypto');
 function verifyWebhookSignature(req, secret) {
   const signature = req.headers['x-sneakermeta-signature'];
   const timestamp = req.headers['x-sneakermeta-timestamp'];
-  
+
   // Check timestamp (prevent replay attacks)
   const now = Math.floor(Date.now() / 1000);
-  if (Math.abs(now - parseInt(timestamp)) > 300) { // 5 minutes
+  if (Math.abs(now - parseInt(timestamp)) > 300) {
+    // 5 minutes
     throw new Error('Webhook timestamp too old');
   }
-  
+
   // Verify signature
   const expectedSignature = generateWebhookSignature(req.body, secret);
-  
+
   if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))) {
     throw new Error('Invalid webhook signature');
   }
-  
+
   return true;
 }
 ```
@@ -2470,56 +2509,55 @@ async function sendWebhookWithRetry(url, payload, secret, maxRetries = 3) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const signature = generateWebhookSignature(payload, secret);
-      
+
       const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-SneakerMeta-Signature': signature,
           'X-SneakerMeta-Event': payload.event,
-          'X-SneakerMeta-Timestamp': Math.floor(Date.now() / 1000).toString()
+          'X-SneakerMeta-Timestamp': Math.floor(Date.now() / 1000).toString(),
         },
         body: JSON.stringify(payload),
-        timeout: 30000 // 30 second timeout
+        timeout: 30000, // 30 second timeout
       });
-      
+
       if (!response.ok) {
         throw new Error(`Webhook returned ${response.status}: ${response.statusText}`);
       }
-      
+
       Actor.log.info('Webhook delivered successfully', {
         url,
         attempt,
-        status: response.status
+        status: response.status,
       });
-      
+
       return { success: true, attempt, status: response.status };
-      
     } catch (error) {
       Actor.log.warning(`Webhook attempt ${attempt} failed`, {
         url,
         error: error.message,
-        attempt
+        attempt,
       });
-      
+
       if (attempt === maxRetries) {
         // Final attempt failed, log and move on
         Actor.log.error('Webhook delivery failed after all retries', {
           url,
           error: error.message,
-          attempts: maxRetries
+          attempts: maxRetries,
         });
-        
+
         // Optionally: Send fallback email notification
         await sendFallbackEmailNotification(error);
-        
+
         return { success: false, error: error.message, attempts: maxRetries };
       }
-      
+
       // Wait before retry (exponential backoff: 2s, 4s, 8s)
       const delay = Math.pow(2, attempt) * 1000;
       Actor.log.info(`Retrying webhook in ${delay}ms...`);
-      await new Promise(resolve => setTimeout(resolve, delay));
+      await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
 }
@@ -2531,55 +2569,57 @@ async function sendWebhookWithRetry(url, payload, secret, maxRetries = 3) {
 ### 3.4 Slack/Discord Integration
 
 #### Slack Webhook Format
+
 ```javascript
 async function sendSlackNotification(listings, webhookUrl) {
   const bestDeal = listings[0]; // Assume sorted
-  
+
   const message = {
     text: `🔥 *${listings.length} New Sneaker Deal${listings.length > 1 ? 's' : ''} Found!*`,
-    attachments: listings.slice(0, 5).map(listing => ({
+    attachments: listings.slice(0, 5).map((listing) => ({
       color: listing.dealScore?.isBelowMarket ? '#36a64f' : '#999999',
       author_name: listing.source.platform,
       author_icon: getPlatformIcon(listing.source.platform),
       title: listing.product.name,
       title_link: listing.source.url,
-      text: listing.dealScore?.isBelowMarket 
+      text: listing.dealScore?.isBelowMarket
         ? `💰 *Save ${listing.dealScore.savingsPercentage}%* - Was $${listing.dealScore.marketValue}, now $${listing.listing.price}`
         : `$${listing.listing.price}`,
       fields: [
         {
           title: 'Size',
           value: listing.listing.size_us_mens || 'N/A',
-          short: true
+          short: true,
         },
         {
           title: 'Condition',
           value: listing.listing.condition.replace(/_/g, ' '),
-          short: true
-        }
+          short: true,
+        },
       ],
       image_url: listing.source.imageUrl,
       footer: 'SneakerMeta',
       footer_icon: 'https://fabrikbrands.com/wp-content/uploads/Sneaker-Brand-Logos-7-1200x750.png',
-      ts: Math.floor(Date.now() / 1000)
-    }))
+      ts: Math.floor(Date.now() / 1000),
+    })),
   };
-  
+
   await fetch(webhookUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(message)
+    body: JSON.stringify(message),
   });
 }
 ```
 
 #### Discord Webhook Format
+
 ```javascript
 async function sendDiscordNotification(listings, webhookUrl) {
-  const embeds = listings.slice(0, 10).map(listing => ({
+  const embeds = listings.slice(0, 10).map((listing) => ({
     title: listing.product.name,
     url: listing.source.url,
-    description: listing.dealScore?.isBelowMarket 
+    description: listing.dealScore?.isBelowMarket
       ? `💰 **Save ${listing.dealScore.savingsPercentage}%** | Was $${listing.dealScore.marketValue}`
       : null,
     color: listing.dealScore?.isBelowMarket ? 0x00ff00 : 0x999999,
@@ -2587,41 +2627,41 @@ async function sendDiscordNotification(listings, webhookUrl) {
       {
         name: 'Price',
         value: `$${listing.listing.price}`,
-        inline: true
+        inline: true,
       },
       {
         name: 'Size',
         value: listing.listing.size_us_mens || 'N/A',
-        inline: true
+        inline: true,
       },
       {
         name: 'Condition',
         value: listing.listing.condition.replace(/_/g, ' '),
-        inline: true
+        inline: true,
       },
       {
         name: 'Platform',
         value: listing.source.platform + (listing.source.is_authenticated ? ' ✓' : ''),
-        inline: true
-      }
+        inline: true,
+      },
     ],
     image: {
-      url: listing.source.imageUrl
+      url: listing.source.imageUrl,
     },
     footer: {
       text: 'SneakerMeta',
-      icon_url: 'https://i.pinimg.com/736x/5f/fe/67/5ffe672fa1e6d014ddb71a15d44d7c9a.jpg'
+      icon_url: 'https://i.pinimg.com/736x/5f/fe/67/5ffe672fa1e6d014ddb71a15d44d7c9a.jpg',
     },
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   }));
-  
+
   await fetch(webhookUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       content: `🔥 **${listings.length} New Sneaker Deal${listings.length > 1 ? 's' : ''}!**`,
-      embeds: embeds
-    })
+      embeds: embeds,
+    }),
   });
 }
 ```
@@ -2629,47 +2669,48 @@ async function sendDiscordNotification(listings, webhookUrl) {
 ### 3.5 Notification Preferences and Filtering
 
 **Preference Schema:**
+
 ```javascript
 const notificationPreferences = {
   email: {
     enabled: true,
     frequency: 'immediate', // 'immediate', 'hourly', 'daily'
-    minListings: 1,          // Only send if >= X new listings
-    includeSummary: true,    // Include summary statistics
-    includeImages: true,     // Include product images
-    maxListingsPerEmail: 10  // Limit email length
+    minListings: 1, // Only send if >= X new listings
+    includeSummary: true, // Include summary statistics
+    includeImages: true, // Include product images
+    maxListingsPerEmail: 10, // Limit email length
   },
-  
+
   webhook: {
     enabled: true,
     url: 'https://...',
     secret: 'xxx',
     includeFullPayload: true, // vs. summary only
-    batchNotifications: false // Send immediately vs. batch
+    batchNotifications: false, // Send immediately vs. batch
   },
-  
+
   slack: {
     enabled: true,
     webhookUrl: 'https://hooks.slack.com/...',
     channel: '#sneaker-deals',
-    mentionUsers: [],        // User IDs to @mention
-    onlyBestDeals: false     // Only notify if savingsPercentage > 20%
+    mentionUsers: [], // User IDs to @mention
+    onlyBestDeals: false, // Only notify if savingsPercentage > 20%
   },
-  
+
   discord: {
     enabled: true,
     webhookUrl: 'https://discord.com/api/webhooks/...',
-    embedStyle: 'rich',      // 'rich', 'minimal'
-    pingRole: null           // Role ID to @mention
+    embedStyle: 'rich', // 'rich', 'minimal'
+    pingRole: null, // Role ID to @mention
   },
-  
+
   // Filters
   filters: {
-    minSavingsPercentage: 0,  // Only alert if deal is X% below market
-    authenticatedOnly: false,  // Only alert for authenticated platforms
-    excludePlatforms: [],      // Don't notify for these platforms
-    sizesOnly: []              // Only alert for specific sizes
-  }
+    minSavingsPercentage: 0, // Only alert if deal is X% below market
+    authenticatedOnly: false, // Only alert for authenticated platforms
+    excludePlatforms: [], // Don't notify for these platforms
+    sizesOnly: [], // Only alert for specific sizes
+  },
 };
 ```
 
@@ -2682,43 +2723,43 @@ class NotificationRateLimiter {
   constructor(kvStore) {
     this.kvStore = kvStore;
   }
-  
+
   async checkLimit(userEmail, notificationType = 'email') {
     const limits = {
       email: { hourly: 10, daily: 50 },
       webhook: { hourly: 100, daily: 500 },
       slack: { hourly: 20, daily: 100 }
     };
-    
+
     const limit = limits[notificationType];
     const now = Date.now();
     const oneHourAgo = now - 3600000;
     const oneDayAgo = now - 86400000;
-    
+
     // Get notification history
     const key = `notification_history_${userEmail}_${notificationType}`;
     const history = await this.kvStore.getValue(key) || [];
-    
+
     // Filter to recent notifications
     const recentHour = history.filter(ts => ts > oneHourAgo);
     const recentDay = history.filter(ts => ts > oneDayAgo);
-    
+
     // Check limits
     if (recentHour.length >= limit.hourly) {
       throw new Error(`Hourly notification limit (${limit.hourly}) exceeded for ${notificationType}`);
     }
-    
+
     if (recentDay.length >= limit.daily) {
       throw new Error(`Daily notification limit (${limit.daily}) exceeded for ${notificationType}`);
     }
-    
+
     // Add current timestamp
     history.push(now);
-    
+
     // Keep only last 24 hours
     const recentHistory = history.filter(ts => ts > oneDayAgo);
     await this.kvStore.setValue(key, recentHistory);
-    
+
     return {
       allowed: true,
       remaining: {
@@ -2735,10 +2776,10 @@ const rateLimiter = new NotificationRateLimiter(kvStore);
 try {
   const status = await rateLimiter.checkLimit(userEmail, 'email');
   Actor.log.info('Rate limit check passed', status.remaining);
-  
+
   // Send notification
   await emailNotifier.sendAlert(...);
-  
+
 } catch (error) {
   Actor.log.warning('Rate limit exceeded', { error: error.message });
   // Skip notification, don't fail actor
@@ -2754,14 +2795,14 @@ class NotificationTracker {
   constructor(kvStore) {
     this.kvStore = kvStore;
   }
-  
+
   /**
    * Log notification delivery
    */
   async logDelivery(userEmail, notificationType, result) {
     const timestamp = new Date().toISOString();
     const key = `notification_log_${userEmail}`;
-    
+
     const logEntry = {
       timestamp,
       type: notificationType,
@@ -2769,44 +2810,44 @@ class NotificationTracker {
       messageId: result.messageId || null,
       listingCount: result.listingCount || 0,
       error: result.error || null,
-      attempt: result.attempt || 1
+      attempt: result.attempt || 1,
     };
-    
+
     // Get existing log
-    const log = await this.kvStore.getValue(key) || [];
+    const log = (await this.kvStore.getValue(key)) || [];
     log.push(logEntry);
-    
+
     // Keep only last 100 entries
     const recentLog = log.slice(-100);
     await this.kvStore.setValue(key, recentLog);
-    
+
     // Update delivery statistics
     await this.updateStatistics(userEmail, notificationType, result.success);
-    
+
     return logEntry;
   }
-  
+
   /**
    * Update delivery statistics
    */
   async updateStatistics(userEmail, notificationType, success) {
     const key = `notification_stats_${userEmail}`;
-    const stats = await this.kvStore.getValue(key) || {
+    const stats = (await this.kvStore.getValue(key)) || {
       email: { sent: 0, delivered: 0, failed: 0 },
       webhook: { sent: 0, delivered: 0, failed: 0 },
-      slack: { sent: 0, delivered: 0, failed: 0 }
+      slack: { sent: 0, delivered: 0, failed: 0 },
     };
-    
+
     stats[notificationType].sent++;
     if (success) {
       stats[notificationType].delivered++;
     } else {
       stats[notificationType].failed++;
     }
-    
+
     await this.kvStore.setValue(key, stats);
   }
-  
+
   /**
    * Get delivery statistics
    */
@@ -2823,7 +2864,7 @@ const tracker = new NotificationTracker(kvStore);
 await tracker.logDelivery(userEmail, 'email', {
   success: true,
   messageId: 'sg_abc123',
-  listingCount: 5
+  listingCount: 5,
 });
 
 // Get statistics
@@ -2834,23 +2875,25 @@ Actor.log.info('Notification statistics', stats);
 
 ---
 
-*This is Part 1 of the Component Specification Document. The document continues with sections 4-8 (Price Tracking, Deduplication Logic, Error Handling, Platform Scrapers, and Testing Specifications).*
+_This is Part 1 of the Component Specification Document. The document continues with sections 4-8
+(Price Tracking, Deduplication Logic, Error Handling, Platform Scrapers, and Testing
+Specifications)._
 
 **Current Progress: ~40% Complete**
 
 Would you like me to continue with the remaining sections?
-
 
 ## 4. Price Tracking Specification
 
 ### 4.1 Price Data Model
 
 **Price History Schema:**
+
 ```javascript
 {
   // Composite key
   listingKey: String,  // {platform}:{listing_id}
-  
+
   // Current price data
   current: {
     price: Number,           // Current price in USD
@@ -2859,7 +2902,7 @@ Would you like me to continue with the remaining sections?
     source: String,          // Platform name
     url: String              // Listing URL
   },
-  
+
   // Historical prices
   history: [
     {
@@ -2869,7 +2912,7 @@ Would you like me to continue with the remaining sections?
       changePercentage: Number  // Percentage change (-5.5 = 5.5% drop)
     }
   ],
-  
+
   // Price statistics
   statistics: {
     firstSeenPrice: Number,     // Price when first discovered
@@ -2882,7 +2925,7 @@ Would you like me to continue with the remaining sections?
     priceVolatility: Number,    // Standard deviation
     totalObservations: Number   // How many times we've checked
   },
-  
+
   // Market comparison (if available)
   market: {
     goatPrice: Number | null,
@@ -2890,7 +2933,7 @@ Would you like me to continue with the remaining sections?
     averageMarketValue: Number | null,
     lastUpdated: String | null
   },
-  
+
   // Metadata
   metadata: {
     lastChecked: String,        // Last time we checked this listing
@@ -2902,6 +2945,7 @@ Would you like me to continue with the remaining sections?
 ```
 
 **Storage:** Apify Key-Value Store
+
 - **Key Format:** `price_history_{platform}_{listing_id}`
 - **Example:** `price_history_grailed_12345678`
 - **Retention:** 90 days
@@ -2928,82 +2972,79 @@ class CrossPlatformMatcher {
    */
   calculateSimilarity(listing1, listing2) {
     let score = 0;
-    
+
     // SKU match (highest weight, 40 points)
     if (listing1.product.sku && listing2.product.sku) {
       if (listing1.product.sku === listing2.product.sku) {
         score += 40;
       }
     }
-    
+
     // Product name similarity (30 points)
-    const nameScore = this.compareStrings(
-      listing1.product.name,
-      listing2.product.name
-    );
+    const nameScore = this.compareStrings(listing1.product.name, listing2.product.name);
     score += nameScore * 0.3;
-    
+
     // Size match (20 points)
     if (listing1.listing.size_us_mens && listing2.listing.size_us_mens) {
       if (listing1.listing.size_us_mens === listing2.listing.size_us_mens) {
         score += 20;
       }
     }
-    
+
     // Condition similarity (10 points)
     const conditionScore = this.compareConditions(
       listing1.listing.condition,
       listing2.listing.condition
     );
     score += conditionScore * 0.1;
-    
+
     return Math.min(score, 100);
   }
-  
+
   /**
    * String similarity using Levenshtein distance
    */
   compareStrings(str1, str2) {
     const normalized1 = str1.toLowerCase().replace(/[^a-z0-9]/g, '');
     const normalized2 = str2.toLowerCase().replace(/[^a-z0-9]/g, '');
-    
+
     const distance = this.levenshteinDistance(normalized1, normalized2);
     const maxLength = Math.max(normalized1.length, normalized2.length);
-    
+
     return (1 - distance / maxLength) * 100;
   }
-  
+
   /**
    * Levenshtein distance algorithm
    */
   levenshteinDistance(str1, str2) {
     const matrix = [];
-    
+
     for (let i = 0; i <= str2.length; i++) {
       matrix[i] = [i];
     }
-    
+
     for (let j = 0; j <= str1.length; j++) {
       matrix[0][j] = j;
     }
-    
+
     for (let i = 1; i <= str2.length; i++) {
       for (let j = 1; j <= str1.length; j++) {
         if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
           matrix[i][j] = matrix[i - 1][j - 1];
         } else {
           matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1,  // substitution
-            matrix[i][j - 1] + 1,      // insertion
-            matrix[i - 1][j] + 1       // deletion
+            matrix[i - 1][j - 1] + 1, // substitution
+            matrix[i][j - 1] + 1, // insertion
+            matrix[i - 1][j] + 1 // deletion
           );
         }
       }
     }
-    
+
     return matrix[str2.length][str1.length];
   }
-  
+
   /**
    * Compare conditions
    */
@@ -3014,43 +3055,43 @@ class CrossPlatformMatcher {
       'used_good',
       'used_fair',
       'used_poor',
-      'unspecified'
+      'unspecified',
     ];
-    
+
     const index1 = conditionOrder.indexOf(condition1);
     const index2 = conditionOrder.indexOf(condition2);
-    
+
     if (index1 === index2) return 100;
     if (Math.abs(index1 - index2) === 1) return 70;
     if (Math.abs(index1 - index2) === 2) return 40;
     return 0;
   }
-  
+
   /**
    * Find matching listings across platforms
    */
   findMatches(listing, allListings, threshold = 75) {
     const matches = [];
-    
+
     for (const candidate of allListings) {
       // Skip same platform
       if (candidate.source.platform === listing.source.platform) {
         continue;
       }
-      
+
       const similarity = this.calculateSimilarity(listing, candidate);
-      
+
       if (similarity >= threshold) {
         matches.push({
           listing: candidate,
           similarity,
           priceDifference: candidate.listing.price - listing.listing.price,
-          priceDifferencePercentage: 
-            ((candidate.listing.price - listing.listing.price) / listing.listing.price) * 100
+          priceDifferencePercentage:
+            ((candidate.listing.price - listing.listing.price) / listing.listing.price) * 100,
         });
       }
     }
-    
+
     // Sort by price (cheapest first)
     return matches.sort((a, b) => a.listing.listing.price - b.listing.listing.price);
   }
@@ -3060,6 +3101,7 @@ class CrossPlatformMatcher {
 #### 4.2.2 Price Drop Detection Logic
 
 **Trigger Conditions:**
+
 1. Absolute drop: Price decreases by $X or more
 2. Percentage drop: Price decreases by Y% or more
 3. Below market: Price drops below authenticated platform average
@@ -3072,62 +3114,62 @@ class PriceDropDetector {
   constructor(kvStore) {
     this.kvStore = kvStore;
     this.thresholds = {
-      absoluteDrop: 50,        // $50
-      percentageDrop: 10,      // 10%
-      belowMarketPercent: 15   // 15% below market
+      absoluteDrop: 50, // $50
+      percentageDrop: 10, // 10%
+      belowMarketPercent: 15, // 15% below market
     };
   }
-  
+
   /**
    * Check if listing has price drop
    */
   async detectPriceDrop(listing) {
     const key = `price_history_${listing.source.platform}_${listing.source.id}`;
     const priceHistory = await this.kvStore.getValue(key);
-    
+
     // First time seeing this listing
     if (!priceHistory) {
       await this.initializePriceHistory(listing);
       return { hasDrop: false, reason: 'first_observation' };
     }
-    
+
     const currentPrice = listing.listing.price;
     const previousPrice = priceHistory.current.price;
-    
+
     // No change
     if (currentPrice === previousPrice) {
       return { hasDrop: false, reason: 'no_change' };
     }
-    
+
     // Price increased (not a drop)
     if (currentPrice > previousPrice) {
       await this.updatePriceHistory(listing, priceHistory);
       return { hasDrop: false, reason: 'price_increased' };
     }
-    
+
     // Calculate drop metrics
     const absoluteDrop = previousPrice - currentPrice;
     const percentageDrop = (absoluteDrop / previousPrice) * 100;
-    
+
     // Check thresholds
     const drops = [];
-    
+
     if (absoluteDrop >= this.thresholds.absoluteDrop) {
       drops.push({
         type: 'absolute',
         value: absoluteDrop,
-        message: `Price dropped by $${absoluteDrop.toFixed(2)}`
+        message: `Price dropped by $${absoluteDrop.toFixed(2)}`,
       });
     }
-    
+
     if (percentageDrop >= this.thresholds.percentageDrop) {
       drops.push({
         type: 'percentage',
         value: percentageDrop,
-        message: `Price dropped by ${percentageDrop.toFixed(1)}%`
+        message: `Price dropped by ${percentageDrop.toFixed(1)}%`,
       });
     }
-    
+
     // Check if below market value
     if (listing.dealScore?.isBelowMarket) {
       const belowMarketPercent = listing.dealScore.savingsPercentage;
@@ -3135,14 +3177,14 @@ class PriceDropDetector {
         drops.push({
           type: 'below_market',
           value: belowMarketPercent,
-          message: `Now ${belowMarketPercent.toFixed(1)}% below market value`
+          message: `Now ${belowMarketPercent.toFixed(1)}% below market value`,
         });
       }
     }
-    
+
     // Update price history
     await this.updatePriceHistory(listing, priceHistory);
-    
+
     if (drops.length > 0) {
       return {
         hasDrop: true,
@@ -3150,19 +3192,19 @@ class PriceDropDetector {
         previousPrice,
         currentPrice,
         absoluteDrop,
-        percentageDrop
+        percentageDrop,
       };
     }
-    
+
     return { hasDrop: false, reason: 'below_threshold' };
   }
-  
+
   /**
    * Initialize price history for new listing
    */
   async initializePriceHistory(listing) {
     const key = `price_history_${listing.source.platform}_${listing.source.id}`;
-    
+
     const priceHistory = {
       listingKey: `${listing.source.platform}:${listing.source.id}`,
       current: {
@@ -3170,15 +3212,15 @@ class PriceDropDetector {
         currency: listing.listing.currency,
         timestamp: new Date().toISOString(),
         source: listing.source.platform,
-        url: listing.source.url
+        url: listing.source.url,
       },
       history: [
         {
           price: listing.listing.price,
           timestamp: new Date().toISOString(),
           change: 0,
-          changePercentage: 0
-        }
+          changePercentage: 0,
+        },
       ],
       statistics: {
         firstSeenPrice: listing.listing.price,
@@ -3189,25 +3231,25 @@ class PriceDropDetector {
         highestPriceDate: new Date().toISOString(),
         averagePrice: listing.listing.price,
         priceVolatility: 0,
-        totalObservations: 1
+        totalObservations: 1,
       },
       market: {
         goatPrice: listing.dealScore?.marketValue || null,
         stockxPrice: null,
         averageMarketValue: listing.dealScore?.marketValue || null,
-        lastUpdated: new Date().toISOString()
+        lastUpdated: new Date().toISOString(),
       },
       metadata: {
         lastChecked: new Date().toISOString(),
         checkCount: 1,
         isActive: true,
-        deactivatedDate: null
-      }
+        deactivatedDate: null,
+      },
     };
-    
+
     await this.kvStore.setValue(key, priceHistory);
   }
-  
+
   /**
    * Update price history
    */
@@ -3215,61 +3257,60 @@ class PriceDropDetector {
     const key = `price_history_${listing.source.platform}_${listing.source.id}`;
     const currentPrice = listing.listing.price;
     const previousPrice = priceHistory.current.price;
-    
+
     // Add to history
     priceHistory.history.push({
       price: currentPrice,
       timestamp: new Date().toISOString(),
       change: currentPrice - previousPrice,
-      changePercentage: ((currentPrice - previousPrice) / previousPrice) * 100
+      changePercentage: ((currentPrice - previousPrice) / previousPrice) * 100,
     });
-    
+
     // Keep only last 100 observations
     if (priceHistory.history.length > 100) {
       priceHistory.history = priceHistory.history.slice(-100);
     }
-    
+
     // Update current
     priceHistory.current = {
       price: currentPrice,
       currency: listing.listing.currency,
       timestamp: new Date().toISOString(),
       source: listing.source.platform,
-      url: listing.source.url
+      url: listing.source.url,
     };
-    
+
     // Update statistics
-    const prices = priceHistory.history.map(h => h.price);
-    
+    const prices = priceHistory.history.map((h) => h.price);
+
     if (currentPrice < priceHistory.statistics.lowestPrice) {
       priceHistory.statistics.lowestPrice = currentPrice;
       priceHistory.statistics.lowestPriceDate = new Date().toISOString();
     }
-    
+
     if (currentPrice > priceHistory.statistics.highestPrice) {
       priceHistory.statistics.highestPrice = currentPrice;
       priceHistory.statistics.highestPriceDate = new Date().toISOString();
     }
-    
-    priceHistory.statistics.averagePrice = 
-      prices.reduce((sum, p) => sum + p, 0) / prices.length;
-    
+
+    priceHistory.statistics.averagePrice = prices.reduce((sum, p) => sum + p, 0) / prices.length;
+
     priceHistory.statistics.priceVolatility = this.calculateStandardDeviation(prices);
     priceHistory.statistics.totalObservations = prices.length;
-    
+
     // Update metadata
     priceHistory.metadata.lastChecked = new Date().toISOString();
     priceHistory.metadata.checkCount++;
-    
+
     await this.kvStore.setValue(key, priceHistory);
   }
-  
+
   /**
    * Calculate standard deviation (price volatility)
    */
   calculateStandardDeviation(values) {
     const avg = values.reduce((sum, val) => sum + val, 0) / values.length;
-    const squareDiffs = values.map(val => Math.pow(val - avg, 2));
+    const squareDiffs = values.map((val) => Math.pow(val - avg, 2));
     const avgSquareDiff = squareDiffs.reduce((sum, val) => sum + val, 0) / values.length;
     return Math.sqrt(avgSquareDiff);
   }
@@ -3279,6 +3320,7 @@ class PriceDropDetector {
 #### 4.2.3 Alert Threshold Calculation
 
 **User-Configurable Thresholds:**
+
 ```javascript
 {
   // From input.advancedOptions
@@ -3292,53 +3334,58 @@ class PriceDropDetector {
 ```
 
 **Alert Generation:**
+
 ```javascript
 async function generatePriceDropAlerts(listings, input) {
   const detector = new PriceDropDetector(kvStore);
   const alerts = [];
-  
+
   for (const listing of listings) {
     const dropResult = await detector.detectPriceDrop(listing);
-    
+
     if (dropResult.hasDrop) {
       alerts.push({
         type: 'price_drop',
         listing: listing,
         dropInfo: dropResult,
         priority: calculateAlertPriority(dropResult),
-        message: generatePriceDropMessage(listing, dropResult)
+        message: generatePriceDropMessage(listing, dropResult),
       });
     }
   }
-  
+
   return alerts;
 }
 
 function calculateAlertPriority(dropResult) {
   const { percentageDrop, drops } = dropResult;
-  
+
   if (percentageDrop >= 30) return 'high';
   if (percentageDrop >= 20) return 'medium';
-  if (drops.some(d => d.type === 'below_market')) return 'medium';
+  if (drops.some((d) => d.type === 'below_market')) return 'medium';
   return 'low';
 }
 
 function generatePriceDropMessage(listing, dropResult) {
   const { absoluteDrop, percentageDrop } = dropResult;
-  
-  return `🔻 PRICE DROP: ${listing.product.name} is now $${listing.listing.price} ` +
-         `(was $${dropResult.previousPrice}) - Save $${absoluteDrop.toFixed(2)} ` +
-         `(${percentageDrop.toFixed(1)}% off)`;
+
+  return (
+    `🔻 PRICE DROP: ${listing.product.name} is now $${listing.listing.price} ` +
+    `(was $${dropResult.previousPrice}) - Save $${absoluteDrop.toFixed(2)} ` +
+    `(${percentageDrop.toFixed(1)}% off)`
+  );
 }
 ```
 
 ### 4.3 Historical Data Storage Strategy
 
 **Storage Architecture:**
+
 - **Short-term:** Apify Key-Value Store (90 days)
 - **Long-term:** Optional export to external database (PostgreSQL, MongoDB)
 
 **Key-Value Store Structure:**
+
 ```
 Key Pattern: price_history_{platform}_{listing_id}
 Expiration: 90 days (configurable)
@@ -3347,18 +3394,19 @@ Total: ~50-100 MB for 10,000 tracked listings
 ```
 
 **Data Retention Policy:**
+
 ```javascript
 async function cleanupOldPriceHistory(kvStore) {
   const allKeys = await kvStore.listKeys();
   const now = Date.now();
   const retentionPeriod = 90 * 24 * 60 * 60 * 1000; // 90 days
-  
+
   for (const key of allKeys.items) {
     if (!key.key.startsWith('price_history_')) continue;
-    
+
     const priceHistory = await kvStore.getValue(key.key);
     const lastChecked = new Date(priceHistory.metadata.lastChecked).getTime();
-    
+
     if (now - lastChecked > retentionPeriod) {
       Actor.log.info(`Deleting old price history: ${key.key}`);
       await kvStore.delete(key.key);
@@ -3370,6 +3418,7 @@ async function cleanupOldPriceHistory(kvStore) {
 ### 4.4 Price Trend Analysis
 
 **Trend Detection:**
+
 ```javascript
 class PriceTrendAnalyzer {
   /**
@@ -3379,17 +3428,17 @@ class PriceTrendAnalyzer {
     if (priceHistory.history.length < 5) {
       return { trend: 'insufficient_data', confidence: 0 };
     }
-    
+
     // Use last 10 observations
-    const recentPrices = priceHistory.history.slice(-10).map(h => h.price);
-    
+    const recentPrices = priceHistory.history.slice(-10).map((h) => h.price);
+
     // Calculate linear regression
     const regression = this.linearRegression(recentPrices);
-    
+
     // Determine trend
     let trend;
     let confidence;
-    
+
     if (Math.abs(regression.slope) < 1) {
       trend = 'stable';
       confidence = 1 - Math.abs(regression.slope);
@@ -3400,45 +3449,45 @@ class PriceTrendAnalyzer {
       trend = 'decreasing';
       confidence = Math.min(Math.abs(regression.slope) / 10, 1);
     }
-    
+
     return {
       trend,
       confidence,
       slope: regression.slope,
-      prediction: regression.predict(recentPrices.length + 1)
+      prediction: regression.predict(recentPrices.length + 1),
     };
   }
-  
+
   /**
    * Simple linear regression
    */
   linearRegression(values) {
     const n = values.length;
     const xValues = Array.from({ length: n }, (_, i) => i);
-    
+
     const sumX = xValues.reduce((sum, x) => sum + x, 0);
     const sumY = values.reduce((sum, y) => sum + y, 0);
     const sumXY = xValues.reduce((sum, x, i) => sum + x * values[i], 0);
     const sumX2 = xValues.reduce((sum, x) => sum + x * x, 0);
-    
+
     const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
     const intercept = (sumY - slope * sumX) / n;
-    
+
     return {
       slope,
       intercept,
-      predict: (x) => slope * x + intercept
+      predict: (x) => slope * x + intercept,
     };
   }
-  
+
   /**
    * Detect anomalous prices (outliers)
    */
   detectAnomalies(priceHistory) {
-    const prices = priceHistory.history.map(h => h.price);
+    const prices = priceHistory.history.map((h) => h.price);
     const mean = priceHistory.statistics.averagePrice;
     const stdDev = priceHistory.statistics.priceVolatility;
-    
+
     return priceHistory.history.filter((h, i) => {
       const zScore = Math.abs((h.price - mean) / stdDev);
       return zScore > 2; // 2 standard deviations from mean
@@ -3457,38 +3506,37 @@ const ALERT_CONDITIONS = {
   PRICE_DROP_ABSOLUTE: {
     type: 'price_drop',
     condition: (current, previous, threshold) => previous - current >= threshold,
-    defaultThreshold: 50,  // $50
+    defaultThreshold: 50, // $50
     priority: 'medium',
-    message: (data) => `Price dropped by $${data.absoluteDrop.toFixed(2)}`
+    message: (data) => `Price dropped by $${data.absoluteDrop.toFixed(2)}`,
   },
-  
+
   PRICE_DROP_PERCENTAGE: {
     type: 'price_drop',
-    condition: (current, previous, threshold) => 
+    condition: (current, previous, threshold) =>
       ((previous - current) / previous) * 100 >= threshold,
-    defaultThreshold: 10,  // 10%
+    defaultThreshold: 10, // 10%
     priority: 'medium',
-    message: (data) => `Price dropped by ${data.percentageDrop.toFixed(1)}%`
+    message: (data) => `Price dropped by ${data.percentageDrop.toFixed(1)}%`,
   },
-  
+
   // Deal alerts
   BELOW_MARKET_VALUE: {
     type: 'deal',
-    condition: (listing, threshold) => 
-      listing.dealScore?.savingsPercentage >= threshold,
-    defaultThreshold: 15,  // 15% below market
+    condition: (listing, threshold) => listing.dealScore?.savingsPercentage >= threshold,
+    defaultThreshold: 15, // 15% below market
     priority: 'high',
-    message: (data) => `${data.dealScore.savingsPercentage}% below market value`
+    message: (data) => `${data.dealScore.savingsPercentage}% below market value`,
   },
-  
+
   // New listing alerts
   NEW_LISTING_MATCHES_CRITERIA: {
     type: 'new_listing',
     condition: (listing, filters) => matchesAllFilters(listing, filters),
     priority: 'medium',
-    message: (data) => `New listing matches your search criteria`
+    message: (data) => `New listing matches your search criteria`,
   },
-  
+
   // Rare listing alerts
   RARE_SIZE_AVAILABLE: {
     type: 'rare',
@@ -3499,45 +3547,46 @@ const ALERT_CONDITIONS = {
     },
     defaultThreshold: { small: 7, large: 14 },
     priority: 'high',
-    message: (data) => `Rare size ${data.listing.size_us_mens} available`
+    message: (data) => `Rare size ${data.listing.size_us_mens} available`,
   },
-  
+
   // Authenticated platform alerts
   AUTHENTICATED_PLATFORM_NEW_LISTING: {
     type: 'authenticated',
     condition: (listing) => listing.source.is_authenticated,
     priority: 'high',
-    message: (data) => `New listing on authenticated platform: ${data.source.platform}`
-  }
+    message: (data) => `New listing on authenticated platform: ${data.source.platform}`,
+  },
 };
 ```
 
 ### 4.6 Performance Requirements
 
 **Latency Targets:**
+
 - Price history lookup: < 50ms
 - Cross-platform matching: < 500ms per listing
 - Trend analysis: < 200ms per listing
 - Alert generation: < 1 second for 100 listings
 
 **Throughput:**
+
 - Track up to 10,000 listings simultaneously
 - Process 1,000 price updates per minute
 - Generate alerts within 5 minutes of price change detection
 
 **Optimization Strategies:**
+
 ```javascript
 // 1. Batch price history updates
 async function batchUpdatePriceHistory(listings) {
-  const updates = listings.map(listing => ({
+  const updates = listings.map((listing) => ({
     key: `price_history_${listing.source.platform}_${listing.source.id}`,
-    value: generatePriceHistoryUpdate(listing)
+    value: generatePriceHistoryUpdate(listing),
   }));
-  
+
   // Batch write to KV Store (more efficient)
-  await Promise.all(
-    updates.map(update => kvStore.setValue(update.key, update.value))
-  );
+  await Promise.all(updates.map((update) => kvStore.setValue(update.key, update.value)));
 }
 
 // 2. Cache frequently accessed price histories in memory
@@ -3547,31 +3596,31 @@ async function getCachedPriceHistory(key) {
   if (priceHistoryCache.has(key)) {
     return priceHistoryCache.get(key);
   }
-  
+
   const priceHistory = await kvStore.getValue(key);
   priceHistoryCache.set(key, priceHistory);
-  
+
   // Expire cache after 5 minutes
   setTimeout(() => priceHistoryCache.delete(key), 5 * 60 * 1000);
-  
+
   return priceHistory;
 }
 
 // 3. Parallel processing of price comparisons
 async function compareAllPrices(listings) {
   const matcher = new CrossPlatformMatcher();
-  
+
   // Process in chunks of 10
   const chunks = chunkArray(listings, 10);
-  
+
   const results = [];
   for (const chunk of chunks) {
     const chunkResults = await Promise.all(
-      chunk.map(listing => matcher.findMatches(listing, listings))
+      chunk.map((listing) => matcher.findMatches(listing, listings))
     );
     results.push(...chunkResults);
   }
-  
+
   return results;
 }
 ```
@@ -3583,6 +3632,7 @@ async function compareAllPrices(listings) {
 ### 5.1 Duplicate Detection Algorithm
 
 **Problem:** Listings may appear multiple times due to:
+
 1. Same listing scraped in consecutive runs
 2. Same sneaker listed by multiple sellers (not truly duplicate)
 3. Seller relisting after sale
@@ -3591,6 +3641,7 @@ async function compareAllPrices(listings) {
 **Solution:** Multi-level deduplication strategy
 
 #### Level 1: Exact ID Matching
+
 ```javascript
 /**
  * Level 1: Exact platform ID matching
@@ -3607,6 +3658,7 @@ function isExactDuplicate(listing, seenKeys) {
 ```
 
 #### Level 2: Hash-Based Deduplication
+
 ```javascript
 /**
  * Level 2: Content-based hashing
@@ -3622,9 +3674,9 @@ function generateContentHash(listing) {
     listing.listing.price,
     listing.listing.size_us_mens || 'no_size',
     listing.listing.condition,
-    listing.seller?.name || 'no_seller'
+    listing.seller?.name || 'no_seller',
   ].join('|');
-  
+
   return crypto.createHash('md5').update(hashString).digest('hex');
 }
 
@@ -3635,6 +3687,7 @@ function isContentDuplicate(listing, seenHashes) {
 ```
 
 #### Level 3: Fuzzy Matching
+
 ```javascript
 /**
  * Level 3: Fuzzy matching for near-duplicates
@@ -3644,7 +3697,7 @@ class FuzzyDuplicateDetector {
   constructor(similarityThreshold = 90) {
     this.threshold = similarityThreshold;
   }
-  
+
   /**
    * Check if listing is fuzzy duplicate
    */
@@ -3654,46 +3707,40 @@ class FuzzyDuplicateDetector {
       if (existing.source.platform !== listing.source.platform) {
         continue;
       }
-      
+
       // Calculate similarity score
       const similarity = this.calculateListingSimilarity(listing, existing);
-      
+
       if (similarity >= this.threshold) {
         return {
           isDuplicate: true,
           match: existing,
           similarity,
-          reason: this.identifyDifferenceReason(listing, existing)
+          reason: this.identifyDifferenceReason(listing, existing),
         };
       }
     }
-    
+
     return { isDuplicate: false };
   }
-  
+
   /**
    * Calculate overall similarity between listings
    */
   calculateListingSimilarity(listing1, listing2) {
     let score = 0;
     let weights = 0;
-    
+
     // Product name (weight: 0.3)
-    const nameScore = this.stringSimilarity(
-      listing1.product.name,
-      listing2.product.name
-    );
+    const nameScore = this.stringSimilarity(listing1.product.name, listing2.product.name);
     score += nameScore * 0.3;
     weights += 0.3;
-    
+
     // Price similarity (weight: 0.2)
-    const priceScore = this.priceSimilarity(
-      listing1.listing.price,
-      listing2.listing.price
-    );
+    const priceScore = this.priceSimilarity(listing1.listing.price, listing2.listing.price);
     score += priceScore * 0.2;
     weights += 0.2;
-    
+
     // Size (weight: 0.2)
     if (listing1.listing.size_us_mens && listing2.listing.size_us_mens) {
       if (listing1.listing.size_us_mens === listing2.listing.size_us_mens) {
@@ -3701,7 +3748,7 @@ class FuzzyDuplicateDetector {
       }
       weights += 0.2;
     }
-    
+
     // Seller (weight: 0.2)
     if (listing1.seller?.name && listing2.seller?.name) {
       if (listing1.seller.name === listing2.seller.name) {
@@ -3709,7 +3756,7 @@ class FuzzyDuplicateDetector {
       }
       weights += 0.2;
     }
-    
+
     // Image similarity (weight: 0.1)
     if (listing1.source.imageUrl && listing2.source.imageUrl) {
       if (listing1.source.imageUrl === listing2.source.imageUrl) {
@@ -3717,29 +3764,29 @@ class FuzzyDuplicateDetector {
       }
       weights += 0.1;
     }
-    
+
     return (score / weights) * 100;
   }
-  
+
   /**
    * String similarity (Jaro-Winkler distance)
    */
   stringSimilarity(str1, str2) {
     const normalized1 = str1.toLowerCase().replace(/[^a-z0-9]/g, '');
     const normalized2 = str2.toLowerCase().replace(/[^a-z0-9]/g, '');
-    
+
     // Simple implementation (use library like 'natural' for production)
     if (normalized1 === normalized2) return 100;
-    
+
     const longer = normalized1.length > normalized2.length ? normalized1 : normalized2;
     const shorter = normalized1.length > normalized2.length ? normalized2 : normalized1;
-    
+
     if (longer.length === 0) return 100;
-    
+
     const editDistance = this.levenshteinDistance(longer, shorter);
     return ((longer.length - editDistance) / longer.length) * 100;
   }
-  
+
   /**
    * Price similarity (within 5% tolerance)
    */
@@ -3747,46 +3794,48 @@ class FuzzyDuplicateDetector {
     const difference = Math.abs(price1 - price2);
     const average = (price1 + price2) / 2;
     const percentDifference = (difference / average) * 100;
-    
+
     if (percentDifference <= 5) return 100;
     if (percentDifference <= 10) return 80;
     if (percentDifference <= 15) return 60;
     return 0;
   }
-  
+
   /**
    * Identify why listings are different
    */
   identifyDifferenceReason(listing1, listing2) {
     const reasons = [];
-    
+
     if (listing1.listing.price !== listing2.listing.price) {
       const diff = listing1.listing.price - listing2.listing.price;
       reasons.push(`price_changed_by_${diff > 0 ? '+' : ''}${diff.toFixed(2)}`);
     }
-    
+
     if (listing1.listing.condition !== listing2.listing.condition) {
-      reasons.push(`condition_changed_from_${listing2.listing.condition}_to_${listing1.listing.condition}`);
+      reasons.push(
+        `condition_changed_from_${listing2.listing.condition}_to_${listing1.listing.condition}`
+      );
     }
-    
+
     if (listing1.listing.description !== listing2.listing.description) {
       reasons.push('description_updated');
     }
-    
+
     return reasons.length > 0 ? reasons : ['minor_changes'];
   }
-  
+
   levenshteinDistance(str1, str2) {
     const matrix = [];
-    
+
     for (let i = 0; i <= str2.length; i++) {
       matrix[i] = [i];
     }
-    
+
     for (let j = 0; j <= str1.length; j++) {
       matrix[0][j] = j;
     }
-    
+
     for (let i = 1; i <= str2.length; i++) {
       for (let j = 1; j <= str1.length; j++) {
         if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
@@ -3800,7 +3849,7 @@ class FuzzyDuplicateDetector {
         }
       }
     }
-    
+
     return matrix[str2.length][str1.length];
   }
 }
@@ -3808,7 +3857,8 @@ class FuzzyDuplicateDetector {
 
 ### 5.2 Cross-Platform Deduplication Strategy
 
-**Challenge:** Same sneaker listed on multiple platforms by aggregators (e.g., GOAT scrapes other sites)
+**Challenge:** Same sneaker listed on multiple platforms by aggregators (e.g., GOAT scrapes other
+sites)
 
 **Solution:** Mark as cross-platform duplicate but don't filter out
 
@@ -3822,31 +3872,31 @@ class CrossPlatformDeduplicator {
     const matcher = new CrossPlatformMatcher();
     const grouped = [];
     const processed = new Set();
-    
+
     for (const listing of listings) {
       if (processed.has(listing.id)) continue;
-      
+
       // Find matches across platforms
       const matches = matcher.findMatches(listing, listings, 85);
-      
+
       if (matches.length > 0) {
         // Create group
         const group = {
           primaryListing: listing,
           alternatives: matches,
-          platforms: [listing.source.platform, ...matches.map(m => m.listing.source.platform)],
+          platforms: [listing.source.platform, ...matches.map((m) => m.listing.source.platform)],
           priceRange: {
-            min: Math.min(listing.listing.price, ...matches.map(m => m.listing.listing.price)),
-            max: Math.max(listing.listing.price, ...matches.map(m => m.listing.listing.price))
+            min: Math.min(listing.listing.price, ...matches.map((m) => m.listing.listing.price)),
+            max: Math.max(listing.listing.price, ...matches.map((m) => m.listing.listing.price)),
           },
-          bestDeal: this.findBestDeal([listing, ...matches.map(m => m.listing)])
+          bestDeal: this.findBestDeal([listing, ...matches.map((m) => m.listing)]),
         };
-        
+
         grouped.push(group);
-        
+
         // Mark as processed
         processed.add(listing.id);
-        matches.forEach(m => processed.add(m.listing.id));
+        matches.forEach((m) => processed.add(m.listing.id));
       } else {
         // No matches, standalone listing
         grouped.push({
@@ -3854,23 +3904,23 @@ class CrossPlatformDeduplicator {
           alternatives: [],
           platforms: [listing.source.platform],
           priceRange: { min: listing.listing.price, max: listing.listing.price },
-          bestDeal: listing
+          bestDeal: listing,
         });
-        
+
         processed.add(listing.id);
       }
     }
-    
+
     return grouped;
   }
-  
+
   findBestDeal(listings) {
     // Consider price and platform authenticity
     return listings.sort((a, b) => {
       // Prioritize authenticated platforms
       if (a.source.is_authenticated && !b.source.is_authenticated) return -1;
       if (!a.source.is_authenticated && b.source.is_authenticated) return 1;
-      
+
       // Then by price
       return a.listing.price - b.listing.price;
     })[0];
@@ -3883,44 +3933,45 @@ class CrossPlatformDeduplicator {
 **Scenario:** Seller removes listing after sale, then relists same sneaker
 
 **Detection:**
+
 1. Same seller + same product + disappeared and reappeared
 2. New listing with same characteristics but different ID
 
 **Strategy:**
+
 ```javascript
 class RelistingDetector {
   constructor(kvStore) {
     this.kvStore = kvStore;
   }
-  
+
   /**
    * Detect if listing is a relist
    */
   async detectRelisting(listing) {
     const key = `seller_history_${listing.seller?.name || 'unknown'}`;
-    const sellerHistory = await this.kvStore.getValue(key) || [];
-    
+    const sellerHistory = (await this.kvStore.getValue(key)) || [];
+
     // Check if seller previously listed similar item
     for (const pastListing of sellerHistory) {
       if (this.isSimilarProduct(listing, pastListing)) {
         // Check if past listing disappeared
         if (pastListing.status === 'inactive') {
-          const timeSinceInactive = 
-            Date.now() - new Date(pastListing.deactivatedAt).getTime();
-          
+          const timeSinceInactive = Date.now() - new Date(pastListing.deactivatedAt).getTime();
+
           // If relisted within 30 days, mark as relist
           if (timeSinceInactive < 30 * 24 * 60 * 60 * 1000) {
             return {
               isRelist: true,
               originalListing: pastListing,
               daysSinceRemoval: Math.floor(timeSinceInactive / (24 * 60 * 60 * 1000)),
-              priceChange: listing.listing.price - pastListing.price
+              priceChange: listing.listing.price - pastListing.price,
             };
           }
         }
       }
     }
-    
+
     // Add to seller history
     sellerHistory.push({
       listingId: listing.id,
@@ -3928,35 +3979,34 @@ class RelistingDetector {
       price: listing.listing.price,
       size: listing.listing.size_us_mens,
       listedAt: new Date().toISOString(),
-      status: 'active'
+      status: 'active',
     });
-    
+
     // Keep only last 50 listings per seller
     if (sellerHistory.length > 50) {
       sellerHistory.shift();
     }
-    
+
     await this.kvStore.setValue(key, sellerHistory);
-    
+
     return { isRelist: false };
   }
-  
+
   isSimilarProduct(listing1, listing2) {
     // Similar if same model and size
     return (
-      listing1.product.model === listing2.product &&
-      listing1.listing.size_us_mens === listing2.size
+      listing1.product.model === listing2.product && listing1.listing.size_us_mens === listing2.size
     );
   }
-  
+
   /**
    * Mark listing as inactive (sold/removed)
    */
   async markAsInactive(listing) {
     const key = `seller_history_${listing.seller?.name || 'unknown'}`;
-    const sellerHistory = await this.kvStore.getValue(key) || [];
-    
-    const index = sellerHistory.findIndex(l => l.listingId === listing.id);
+    const sellerHistory = (await this.kvStore.getValue(key)) || [];
+
+    const index = sellerHistory.findIndex((l) => l.listingId === listing.id);
     if (index !== -1) {
       sellerHistory[index].status = 'inactive';
       sellerHistory[index].deactivatedAt = new Date().toISOString();
@@ -3969,6 +4019,7 @@ class RelistingDetector {
 ### 5.4 Data Structures for Tracking Seen Listings
 
 **Primary Data Structure: Seen Hashes Set**
+
 ```javascript
 // Stored in Key-Value Store
 {
@@ -3991,6 +4042,7 @@ class RelistingDetector {
 ```
 
 **Secondary Data Structure: Listing Metadata**
+
 ```javascript
 // Stored separately for each listing
 {
@@ -4001,17 +4053,17 @@ class RelistingDetector {
     platform: 'Grailed',
     product: 'Air Jordan 1 Bred',
     size: '10.5',
-    
+
     // Tracking info
     firstSeen: '2025-11-05T10:00:00Z',
     lastSeen: '2025-11-10T14:30:00Z',
     seenCount: 12,
-    
+
     // Price tracking
     initialPrice: 800.00,
     currentPrice: 750.00,
     lowestPrice: 720.00,
-    
+
     // Status
     isActive: true,
     soldAt: null
@@ -4024,42 +4076,43 @@ class RelistingDetector {
 **Optimization Strategies:**
 
 #### 1. In-Memory Hash Set (Fast Lookups)
+
 ```javascript
 class InMemoryDeduplicator {
   constructor() {
     this.seenHashes = new Set();
     this.loaded = false;
   }
-  
+
   /**
    * Load hashes from KV Store into memory
    */
   async initialize(kvStore) {
     if (this.loaded) return;
-    
+
     const data = await kvStore.getValue('seen_listing_hashes');
     if (data && data.hashes) {
       this.seenHashes = new Set(data.hashes);
       Actor.log.info(`Loaded ${this.seenHashes.size} hashes into memory`);
     }
-    
+
     this.loaded = true;
   }
-  
+
   /**
    * Check if hash exists (O(1) lookup)
    */
   has(hash) {
     return this.seenHashes.has(hash);
   }
-  
+
   /**
    * Add hash (O(1) insertion)
    */
   add(hash) {
     this.seenHashes.add(hash);
   }
-  
+
   /**
    * Persist back to KV Store
    */
@@ -4070,11 +4123,11 @@ class InMemoryDeduplicator {
       hashes: Array.from(this.seenHashes),
       statistics: {
         totalHashes: this.seenHashes.size,
-        oldestHash: null,  // TODO: Track timestamps
-        newestHash: new Date().toISOString()
-      }
+        oldestHash: null, // TODO: Track timestamps
+        newestHash: new Date().toISOString(),
+      },
     };
-    
+
     await kvStore.setValue('seen_listing_hashes', data);
     Actor.log.info(`Persisted ${this.seenHashes.size} hashes to KV Store`);
   }
@@ -4082,6 +4135,7 @@ class InMemoryDeduplicator {
 ```
 
 #### 2. Bloom Filter (Memory-Efficient Probabilistic Check)
+
 ```javascript
 /**
  * Bloom Filter for memory-efficient duplicate checking
@@ -4093,7 +4147,7 @@ class BloomFilter {
     this.hashCount = hashCount;
     this.bits = new Uint8Array(Math.ceil(size / 8));
   }
-  
+
   /**
    * Add element to bloom filter
    */
@@ -4103,10 +4157,10 @@ class BloomFilter {
       const index = hash % this.size;
       const byteIndex = Math.floor(index / 8);
       const bitIndex = index % 8;
-      this.bits[byteIndex] |= (1 << bitIndex);
+      this.bits[byteIndex] |= 1 << bitIndex;
     }
   }
-  
+
   /**
    * Check if element might exist
    * False positives possible, false negatives impossible
@@ -4123,21 +4177,22 @@ class BloomFilter {
     }
     return true; // Might be in set
   }
-  
+
   /**
    * Generate multiple hash values
    */
   getHashes(item) {
     const crypto = require('crypto');
     const hashes = [];
-    
+
     for (let i = 0; i < this.hashCount; i++) {
-      const hash = crypto.createHash('md5')
+      const hash = crypto
+        .createHash('md5')
         .update(item + i.toString())
         .digest();
       hashes.push(hash.readUInt32BE(0));
     }
-    
+
     return hashes;
   }
 }
@@ -4160,6 +4215,7 @@ if (bloomFilter.mightContain(newListing.id)) {
 ```
 
 #### 3. Batch Processing
+
 ```javascript
 /**
  * Process listings in batches for better performance
@@ -4167,15 +4223,13 @@ if (bloomFilter.mightContain(newListing.id)) {
 async function deduplicateBatch(listings, deduplicator) {
   const BATCH_SIZE = 100;
   const newListings = [];
-  
+
   for (let i = 0; i < listings.length; i += BATCH_SIZE) {
     const batch = listings.slice(i, i + BATCH_SIZE);
-    
+
     // Process batch in parallel
-    const results = await Promise.all(
-      batch.map(listing => deduplicator.checkDuplicate(listing))
-    );
-    
+    const results = await Promise.all(batch.map((listing) => deduplicator.checkDuplicate(listing)));
+
     // Filter new listings
     batch.forEach((listing, idx) => {
       if (!results[idx].isDuplicate) {
@@ -4183,7 +4237,7 @@ async function deduplicateBatch(listings, deduplicator) {
       }
     });
   }
-  
+
   return newListings;
 }
 ```
@@ -4191,9 +4245,11 @@ async function deduplicateBatch(listings, deduplicator) {
 ### 5.6 Edge Cases
 
 #### Edge Case 1: Same Shoe, Different Conditions
+
 **Problem:** Same model, size, seller, but different condition (VNDS vs. Worn)
 
 **Solution:** Include condition in hash
+
 ```javascript
 function generateContentHash(listing) {
   const hashString = [
@@ -4201,10 +4257,10 @@ function generateContentHash(listing) {
     listing.product.name,
     listing.listing.price,
     listing.listing.size_us_mens,
-    listing.listing.condition,  // Include condition
-    listing.seller?.name
+    listing.listing.condition, // Include condition
+    listing.seller?.name,
   ].join('|');
-  
+
   return crypto.createHash('md5').update(hashString).digest('hex');
 }
 ```
@@ -4212,9 +4268,11 @@ function generateContentHash(listing) {
 **Result:** Two listings with different conditions are treated as unique
 
 #### Edge Case 2: Price Changes on Same Listing
+
 **Problem:** Same listing ID but price changed
 
 **Solution:** Update existing listing instead of creating duplicate
+
 ```javascript
 async function handlePriceChange(newListing, existingListing) {
   // Same listing, different price
@@ -4222,29 +4280,31 @@ async function handlePriceChange(newListing, existingListing) {
     // Trigger price drop alert if applicable
     const dropDetector = new PriceDropDetector(kvStore);
     const dropResult = await dropDetector.detectPriceDrop(newListing);
-    
+
     if (dropResult.hasDrop) {
       await sendPriceDropAlert(newListing, dropResult);
     }
-    
+
     // Update price in database
     await updateListingPrice(newListing);
   }
-  
+
   // Don't add as new listing
   return { isDuplicate: true, reason: 'price_change_detected' };
 }
 ```
 
 #### Edge Case 3: Seller Relisting
+
 **Problem:** Seller removes listing (sold), then relists same sneaker
 
 **Solution:** Treat as new listing but flag as "relist"
+
 ```javascript
 async function handleRelisting(newListing) {
   const relistDetector = new RelistingDetector(kvStore);
   const relistResult = await relistDetector.detectRelisting(newListing);
-  
+
   if (relistResult.isRelist) {
     // Add flag to listing
     newListing.metadata = {
@@ -4252,18 +4312,19 @@ async function handleRelisting(newListing) {
       isRelist: true,
       originalListingId: relistResult.originalListing.listingId,
       daysSinceRemoval: relistResult.daysSinceRemoval,
-      priceChange: relistResult.priceChange
+      priceChange: relistResult.priceChange,
     };
-    
+
     // Send notification with relist context
-    const message = relistResult.priceChange !== 0
-      ? `Relisted ${relistResult.daysSinceRemoval} days later with ` +
-        `${relistResult.priceChange > 0 ? '+' : ''}$${Math.abs(relistResult.priceChange)} price change`
-      : `Relisted ${relistResult.daysSinceRemoval} days later at same price`;
-    
+    const message =
+      relistResult.priceChange !== 0
+        ? `Relisted ${relistResult.daysSinceRemoval} days later with ` +
+          `${relistResult.priceChange > 0 ? '+' : ''}$${Math.abs(relistResult.priceChange)} price change`
+        : `Relisted ${relistResult.daysSinceRemoval} days later at same price`;
+
     Actor.log.info(message, { listingId: newListing.id });
   }
-  
+
   // Still add as new listing (not a duplicate)
   return { isDuplicate: false };
 }
@@ -4271,4 +4332,5 @@ async function handleRelisting(newListing) {
 
 ---
 
-*This completes sections 4-5. The document will continue with sections 6-8 (Error Handling, Platform Scrapers, and Testing). Would you like me to continue?*
+_This completes sections 4-5. The document will continue with sections 6-8 (Error Handling, Platform
+Scrapers, and Testing). Would you like me to continue?_

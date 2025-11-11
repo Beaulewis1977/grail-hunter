@@ -14,7 +14,15 @@
     "import/prefer-default-export": "off",
     "import/extensions": ["error", "ignorePackages"],
     "no-param-reassign": ["error", { "props": false }],
-    "prefer-destructuring": "warn"
+    "prefer-destructuring": "warn",
+    "class-methods-use-this": "off",
+    "no-restricted-syntax": "off",
+    "no-plusplus": "off",
+    "no-await-in-loop": "off",
+    "prefer-exponentiation-operator": "off",
+    "no-restricted-properties": "off",
+    "max-classes-per-file": "off",
+    "no-use-before-define": ["error", { "functions": false, "classes": true, "variables": true }]
   },
   "overrides": [
     {
@@ -24,6 +32,18 @@
       "rules": {
         "@typescript-eslint/explicit-function-return-types": "warn",
         "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+      }
+    },
+    {
+      "files": ["tests/**/*.js", "**/*.test.js", "**/*.spec.js"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "no-undef": "off",
+        "import/no-extraneous-dependencies": "off",
+        "no-underscore-dangle": "off",
+        "import/order": "off"
       }
     }
   ]

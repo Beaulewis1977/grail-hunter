@@ -38,11 +38,7 @@
           "example": 2016
         }
       },
-      "required": [
-        "name",
-        "brand",
-        "model"
-      ]
+      "required": ["name", "brand", "model"]
     },
     "listing": {
       "title": "Listing Information",
@@ -83,19 +79,12 @@
           "items": {
             "type": "string"
           },
-          "example": [
-            "og_all",
-            "authentic"
-          ]
+          "example": ["og_all", "authentic"]
         },
         "type": {
           "type": "string",
           "description": "Listing type",
-          "enum": [
-            "sell",
-            "buy",
-            "auction"
-          ],
+          "enum": ["sell", "buy", "auction"],
           "example": "sell"
         },
         "shippingPrice": {
@@ -109,11 +98,7 @@
           "example": 1200
         }
       },
-      "required": [
-        "price",
-        "condition",
-        "type"
-      ]
+      "required": ["price", "condition", "type"]
     },
     "source": {
       "title": "Source Information",
@@ -152,12 +137,7 @@
           "example": false
         }
       },
-      "required": [
-        "platform",
-        "url",
-        "platformId",
-        "isAuthenticated"
-      ]
+      "required": ["platform", "url", "platformId", "isAuthenticated"]
     },
     "seller": {
       "title": "Seller Information",
@@ -224,10 +204,7 @@
           }
         }
       },
-      "required": [
-        "timestamp",
-        "isNew"
-      ]
+      "required": ["timestamp", "isNew"]
     },
     "metadata": {
       "title": "Additional Metadata",
@@ -264,10 +241,5 @@
       }
     }
   },
-  "required": [
-    "product",
-    "listing",
-    "source",
-    "scrape"
-  ]
+  "required": ["product", "listing", "source", "scrape"]
 }

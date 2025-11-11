@@ -1,16 +1,19 @@
 # SneakerMeta Component Specification Document - Summary
+
 ## Comprehensive Technical Specifications for Apify Actor Development
 
 **Date:** November 10, 2025  
 **Project:** SneakerMeta Multi-Platform Sneaker Scraper & Alert System  
 **Target:** Apify Actor Challenge Submission  
-**Business Model:** $2.99-$9.99/month subscription  
+**Business Model:** $2.99-$9.99/month subscription
 
 ---
 
 ## 📋 Document Overview
 
-I have created a **comprehensive component specification document** that provides detailed technical specifications for all major components of the SneakerMeta Apify actor. The document is ready for development teams to implement the project without ambiguity.
+I have created a **comprehensive component specification document** that provides detailed technical
+specifications for all major components of the SneakerMeta Apify actor. The document is ready for
+development teams to implement the project without ambiguity.
 
 ### 📊 Document Statistics
 
@@ -26,22 +29,27 @@ I have created a **comprehensive component specification document** that provide
 ## 📁 Files Created
 
 ### 1. Main Document (Combined)
+
 **File:** `component_specifications_complete.md` (6,325 lines)
+
 - Complete specification covering all 8 sections
 - Ready for development handoff
 
 ### 2. Sectional Files
-**Part 1:** `component_specifications.md` (Sections 1-5)
-**Part 2:** `component_specifications_part2.md` (Sections 6-8)
+
+**Part 1:** `component_specifications.md` (Sections 1-5) **Part 2:**
+`component_specifications_part2.md` (Sections 6-8)
 
 ---
 
 ## 📖 Section Breakdown
 
 ### Section 1: Input Schema Specification
+
 **Lines:** ~900 | **Completeness:** ✅ 100%
 
 **Deliverables:**
+
 - ✅ Complete JSON schema with 20+ fields
 - ✅ Validation rules and error messages
 - ✅ Default values and constraints
@@ -51,6 +59,7 @@ I have created a **comprehensive component specification document** that provide
 - ✅ UI hints for Apify Console
 
 **Key Highlights:**
+
 - Supports 12 platforms with conditional requirements
 - Comprehensive validation with 15+ error types
 - Tiered pricing enforcement (free/hobby/pro/business)
@@ -59,9 +68,11 @@ I have created a **comprehensive component specification document** that provide
 ---
 
 ### Section 2: Output Dataset Specification
+
 **Lines:** ~800 | **Completeness:** ✅ 100%
 
 **Deliverables:**
+
 - ✅ Standardized output schema (40+ fields)
 - ✅ Field definitions with data types
 - ✅ Timestamp and enum specifications
@@ -70,6 +81,7 @@ I have created a **comprehensive component specification document** that provide
 - ✅ Export format specifications (JSON, CSV, XML, RSS)
 
 **Key Highlights:**
+
 - Unified schema for all 12 platforms
 - Metadata enrichment (seller, deal scoring, scraping details)
 - Support for authenticated vs. P2P platforms
@@ -78,9 +90,11 @@ I have created a **comprehensive component specification document** that provide
 ---
 
 ### Section 3: Notification System Specification
+
 **Lines:** ~1,100 | **Completeness:** ✅ 100%
 
 **Deliverables:**
+
 - ✅ Email notification system (HTML + plain text templates)
 - ✅ SMS notification specification (Twilio)
 - ✅ Webhook specification with HMAC authentication
@@ -90,6 +104,7 @@ I have created a **comprehensive component specification document** that provide
 - ✅ Delivery tracking and confirmation
 
 **Key Highlights:**
+
 - Beautiful responsive HTML email template
 - Dynamic subject line generation
 - Multi-channel fallback strategy
@@ -99,9 +114,11 @@ I have created a **comprehensive component specification document** that provide
 ---
 
 ### Section 4: Price Tracking Specification
+
 **Lines:** ~800 | **Completeness:** ✅ 100%
 
 **Deliverables:**
+
 - ✅ Price data model (7 fields)
 - ✅ Cross-platform price matching algorithm
 - ✅ Price drop detection logic (3 trigger types)
@@ -111,6 +128,7 @@ I have created a **comprehensive component specification document** that provide
 - ✅ Performance optimization strategies
 
 **Key Highlights:**
+
 - Fuzzy matching across platforms (75%+ similarity)
 - Exponential backoff retry logic
 - 90-day price history retention
@@ -120,9 +138,11 @@ I have created a **comprehensive component specification document** that provide
 ---
 
 ### Section 5: Deduplication Logic Specification
+
 **Lines:** ~700 | **Completeness:** ✅ 100%
 
 **Deliverables:**
+
 - ✅ Multi-level duplicate detection (3 levels)
 - ✅ Cross-platform deduplication strategy
 - ✅ Relisted item handling
@@ -131,6 +151,7 @@ I have created a **comprehensive component specification document** that provide
 - ✅ Edge case handling (3 scenarios)
 
 **Key Highlights:**
+
 - Level 1: Exact ID matching (O(1) lookup)
 - Level 2: Hash-based deduplication
 - Level 3: Fuzzy matching (90%+ similarity)
@@ -140,9 +161,11 @@ I have created a **comprehensive component specification document** that provide
 ---
 
 ### Section 6: Error Handling & Monitoring Specification
+
 **Lines:** ~900 | **Completeness:** ✅ 100%
 
 **Deliverables:**
+
 - ✅ Error taxonomy (15+ error types)
 - ✅ Retry logic with exponential backoff
 - ✅ Structured logging specification
@@ -152,6 +175,7 @@ I have created a **comprehensive component specification document** that provide
 - ✅ Graceful degradation strategies
 
 **Key Highlights:**
+
 - Categorized errors (platform, network, data, system)
 - Retry strategies per error type
 - Structured logging with contextual data
@@ -161,9 +185,11 @@ I have created a **comprehensive component specification document** that provide
 ---
 
 ### Section 7: Platform Scraper Specification
+
 **Lines:** ~1,200 | **Completeness:** ✅ 100%
 
 **Deliverables:**
+
 - ✅ Base scraper interface/contract
 - ✅ 3 complete platform implementations:
   - eBay (API-based) - ⭐ Easy
@@ -175,6 +201,7 @@ I have created a **comprehensive component specification document** that provide
 - ✅ Authentication strategies
 
 **Key Highlights:**
+
 - Unified scraper interface for all platforms
 - API, orchestrated, and custom scraping methods
 - Platform-specific normalization logic
@@ -184,9 +211,11 @@ I have created a **comprehensive component specification document** that provide
 ---
 
 ### Section 8: Testing Specifications
+
 **Lines:** ~600 | **Completeness:** ✅ 100%
 
 **Deliverables:**
+
 - ✅ Unit test requirements (80%+ coverage)
 - ✅ 15+ unit test examples
 - ✅ Integration test scenarios
@@ -195,6 +224,7 @@ I have created a **comprehensive component specification document** that provide
 - ✅ Mock data structures (fixtures)
 
 **Key Highlights:**
+
 - Jest test framework
 - Comprehensive test suite (unit, integration, E2E)
 - Performance benchmarks (5 listings/sec)
@@ -206,17 +236,20 @@ I have created a **comprehensive component specification document** that provide
 ## 🎯 Key Technical Decisions
 
 ### Architecture
+
 - **Pattern:** Strategy Pattern + Factory Pattern for scrapers
 - **State Management:** Apify Key-Value Store (persistent across runs)
 - **Data Pipeline:** Raw → Normalize → Parse → Filter → Deduplicate
 
 ### Performance
+
 - **Target:** < 5 minutes for 50 listings per platform
 - **Concurrency:** 5-10 parallel scrapers
 - **Memory:** < 4GB RAM
 - **Throughput:** 5+ listings per second
 
 ### Scalability
+
 - **Listings:** Track up to 10,000 listings simultaneously
 - **Platforms:** 12 platforms in MVP, extensible architecture
 - **Users:** Support 500+ concurrent users
@@ -227,12 +260,14 @@ I have created a **comprehensive component specification document** that provide
 ## 🔧 Implementation Guidance
 
 ### Development Phases
+
 1. **Phase 1 (Weeks 1-4):** MVP with 3 platforms (eBay, Grailed, Kixify)
 2. **Phase 2 (Weeks 5-6):** Expand to 6 platforms
 3. **Phase 3 (Weeks 7-10):** Advanced features (AI parsing, deduplication, price tracking)
 4. **Phase 4 (Weeks 11-12):** Polish, testing, launch
 
 ### Critical Path
+
 1. Core architecture & orchestration
 2. Data normalization engine
 3. Notification system
@@ -240,6 +275,7 @@ I have created a **comprehensive component specification document** that provide
 5. Platform scrapers (incremental)
 
 ### Testing Strategy
+
 1. **Unit tests:** Per component (normalizer, parser, deduplicator)
 2. **Integration tests:** Per platform scraper
 3. **E2E tests:** Full actor run
@@ -249,23 +285,24 @@ I have created a **comprehensive component specification document** that provide
 
 ## 📊 Technical Stack
 
-| Layer | Technology | Purpose |
-|-------|------------|---------|
-| **Runtime** | Node.js 18+ | Execution environment |
-| **Framework** | Apify SDK 3.x | Actor development |
-| **Crawling** | Crawlee 3.x | Web scraping (Puppeteer, Cheerio) |
-| **HTTP** | Axios 1.x | API calls |
-| **Parsing** | Cheerio 1.x | HTML parsing |
-| **Browser** | Playwright 1.x | Complex JS rendering |
-| **Email** | SendGrid 7.x | Transactional emails |
-| **Storage** | Apify Dataset/KV | Persistent data |
-| **Testing** | Jest | Test framework |
+| Layer         | Technology       | Purpose                           |
+| ------------- | ---------------- | --------------------------------- |
+| **Runtime**   | Node.js 18+      | Execution environment             |
+| **Framework** | Apify SDK 3.x    | Actor development                 |
+| **Crawling**  | Crawlee 3.x      | Web scraping (Puppeteer, Cheerio) |
+| **HTTP**      | Axios 1.x        | API calls                         |
+| **Parsing**   | Cheerio 1.x      | HTML parsing                      |
+| **Browser**   | Playwright 1.x   | Complex JS rendering              |
+| **Email**     | SendGrid 7.x     | Transactional emails              |
+| **Storage**   | Apify Dataset/KV | Persistent data                   |
+| **Testing**   | Jest             | Test framework                    |
 
 ---
 
 ## 🎨 Unique Features
 
 ### Innovation Points
+
 1. **Multi-Level Deduplication:** Exact ID → Hash-based → Fuzzy matching
 2. **AI-Powered Parsing:** OpenAI integration for ambiguous listings
 3. **Cross-Platform Price Matching:** Fuzzy algorithm (SKU + name + size)
@@ -274,6 +311,7 @@ I have created a **comprehensive component specification document** that provide
 6. **Price Drop Detection:** 3 trigger conditions with linear regression trends
 
 ### Competitive Advantages
+
 - **All-in-One:** 12 platforms vs. single-platform competitors
 - **Smart Alerts:** Deduplication + deal scoring reduces noise
 - **Price Intelligence:** Historical tracking + trend analysis
@@ -285,18 +323,21 @@ I have created a **comprehensive component specification document** that provide
 ## ✅ Quality Assurance
 
 ### Code Quality
+
 - **Coverage:** 80%+ unit test coverage target
 - **Standards:** ESLint + Prettier configured
 - **Documentation:** JSDoc comments for all functions
 - **Error Handling:** Comprehensive try-catch with graceful degradation
 
 ### Performance Metrics
+
 - **Latency:** < 50ms for deduplication lookups
 - **Throughput:** 5+ listings/sec processing
 - **Success Rate:** 85%+ across all platforms
 - **Uptime:** 95%+ actor reliability
 
 ### Apify Challenge Compliance
+
 - ✅ Quality Score target: 65+
 - ✅ No Facebook/Instagram scraping (disqualification risk)
 - ✅ Comprehensive README with video demo
@@ -309,6 +350,7 @@ I have created a **comprehensive component specification document** that provide
 ## 📦 Deliverables Summary
 
 ### Documentation
+
 - ✅ **Component Specification:** 6,325 lines of detailed specs
 - ✅ **Input Schema:** Complete JSON schema with validation
 - ✅ **Output Schema:** Standardized data structure
@@ -316,12 +358,14 @@ I have created a **comprehensive component specification document** that provide
 - ✅ **Test Specifications:** Unit, integration, E2E tests
 
 ### Code Examples
+
 - ✅ **100+ Code Snippets:** Production-ready pseudocode
 - ✅ **20+ Algorithms:** Deduplication, price matching, parsing
 - ✅ **30+ Test Cases:** Comprehensive test suite
 - ✅ **3 Full Platform Implementations:** eBay, Grailed, Flight Club
 
 ### Ready for Development
+
 - ✅ **Clear Interfaces:** Base scraper contract, normalizer interface
 - ✅ **Data Models:** Input schema, output schema, price history
 - ✅ **Error Handling:** Error taxonomy, retry logic, graceful degradation
@@ -332,6 +376,7 @@ I have created a **comprehensive component specification document** that provide
 ## 🚀 Next Steps
 
 ### For Development Team
+
 1. **Review Specification:** Read complete document (6,325 lines)
 2. **Setup Environment:** Node.js 18+, Apify CLI, test accounts
 3. **Implement Core:** Start with Phase 1 (MVP with 3 platforms)
@@ -339,6 +384,7 @@ I have created a **comprehensive component specification document** that provide
 5. **Deploy MVP:** Week 4 target for Apify Challenge submission
 
 ### For Product Owner
+
 1. **Review Architecture:** Validate technical decisions
 2. **Prioritize Features:** Confirm MVP scope (3 platforms)
 3. **Setup Monitoring:** Configure alerts and dashboards
@@ -346,6 +392,7 @@ I have created a **comprehensive component specification document** that provide
 5. **User Acquisition:** Beta testers from sneaker communities
 
 ### For Stakeholders
+
 1. **Technical Feasibility:** ✅ Confirmed (all components specified)
 2. **Development Timeline:** 12 weeks (3 months)
 3. **Resource Requirements:** 1-2 developers, $0-500 infrastructure
@@ -357,6 +404,7 @@ I have created a **comprehensive component specification document** that provide
 ## 📞 Support & Clarifications
 
 For questions or clarifications on any section:
+
 - **Input Schema:** See Section 1 (lines 1-900)
 - **Output Schema:** See Section 2 (lines 901-1,700)
 - **Notifications:** See Section 3 (lines 1,701-2,800)
@@ -370,7 +418,8 @@ For questions or clarifications on any section:
 
 ## 🎉 Conclusion
 
-This comprehensive specification provides **everything needed** to implement the SneakerMeta Apify actor:
+This comprehensive specification provides **everything needed** to implement the SneakerMeta Apify
+actor:
 
 ✅ **Complete Technical Specifications:** All 8 sections detailed  
 ✅ **Production-Ready Code:** 100+ examples and algorithms  
@@ -379,13 +428,13 @@ This comprehensive specification provides **everything needed** to implement the
 ✅ **Testing Strategy:** Unit, integration, E2E, and performance tests  
 ✅ **Platform Coverage:** All 12 marketplaces specified  
 ✅ **Notification System:** Multi-channel alerts with templates  
-✅ **Performance Targets:** Latency, throughput, and scalability metrics  
+✅ **Performance Targets:** Latency, throughput, and scalability metrics
 
 **The specification is ready for development handoff. Implementation can begin immediately.**
 
 ---
 
-*Document Created:** November 10, 2025  
+_Document Created:** November 10, 2025  
 **Total Specification Length:** 6,325 lines  
 **Estimated Reading Time:** 3-4 hours  
-**Implementation Timeline:** 12 weeks (3 months)*
+**Implementation Timeline:\*\* 12 weeks (3 months)_

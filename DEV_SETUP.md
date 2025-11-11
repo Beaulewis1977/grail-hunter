@@ -1,7 +1,7 @@
 # Development Setup Guide
 
-Complete guide for setting up the grail-hunter development environment with linting,
-code review, and git hooks.
+Complete guide for setting up the grail-hunter development environment with linting, code review,
+and git hooks.
 
 ## Prerequisites
 
@@ -11,8 +11,7 @@ code review, and git hooks.
 
 ## Initial Setup
 
-The project has been pre-configured with all necessary tools. To activate git
-hooks after cloning:
+The project has been pre-configured with all necessary tools. To activate git hooks after cloning:
 
 ```bash
 npm install
@@ -48,8 +47,8 @@ git commit -m "your message"
 
 ### Commit Message Hook
 
-Validates commit messages follow
-[Conventional Commits](https://www.conventionalcommits.org/) standard.
+Validates commit messages follow [Conventional Commits](https://www.conventionalcommits.org/)
+standard.
 
 **Format:** `<type>(<scope>): <subject>`
 
@@ -242,8 +241,7 @@ git commit -m "message" -n
 git commit -m "message" --no-verify
 ```
 
-⚠️ **Note:** Only use `--no-verify` for emergency fixes. Hooks exist to
-maintain code quality.
+⚠️ **Note:** Only use `--no-verify` for emergency fixes. Hooks exist to maintain code quality.
 
 ## Troubleshooting
 

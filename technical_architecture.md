@@ -1,12 +1,11 @@
 # SneakerMeta: Technical Architecture Documentation
+
 ### Multi-Platform Sneaker Alert & Aggregation System
 
-**Version:** 1.1
-**Date:** November 10, 2025
-**Project Type:** Apify Actor Challenge Submission
-**Target Market:** Sneaker collectors, resellers, and enthusiasts
-**Business Model:** FREE during challenge (through Jan 31, 2026), then tiered pricing
-**Tagline:** "Never miss your grail again" | "Your 24/7 sneaker scout"  
+**Version:** 1.1 **Date:** November 10, 2025 **Project Type:** Apify Actor Challenge Submission
+**Target Market:** Sneaker collectors, resellers, and enthusiasts **Business Model:** FREE during
+challenge (through Jan 31, 2026), then tiered pricing **Tagline:** "Never miss your grail again" |
+"Your 24/7 sneaker scout"
 
 ---
 
@@ -29,9 +28,12 @@
 
 ### 1.1 Executive Summary
 
-**SneakerMeta** is a sophisticated Apify actor that aggregates collectible sneaker listings from 4 major marketplaces and delivers real-time alerts when matching listings appear. Unlike single-platform scrapers, SneakerMeta acts as an intelligent orchestrator that:
+**SneakerMeta** is a sophisticated Apify actor that aggregates collectible sneaker listings from 4
+major marketplaces and delivers real-time alerts when matching listings appear. Unlike
+single-platform scrapers, SneakerMeta acts as an intelligent orchestrator that:
 
-- **Aggregates** data from authenticated platforms (StockX, GOAT) and peer-to-peer marketplaces (eBay, Grailed)
+- **Aggregates** data from authenticated platforms (StockX, GOAT) and peer-to-peer marketplaces
+  (eBay, Grailed)
 - **Normalizes** disparate data structures into a unified schema
 - **Parses** unstructured sneakerhead terminology (DS, VNDS, OG All, etc.) using AI and regex
 - **Deduplicates** across platforms and tracks new listings to prevent alert fatigue
@@ -39,29 +41,34 @@
 - **Alerts** users via email, Slack, Discord, or webhooks when deals appear
 
 **Unique Value Proposition:**  
-*"One Actor, All Platforms. Stop opening 4 tabs—get deduplicated, real-time sneaker deals in your size delivered instantly."*
+_"One Actor, All Platforms. Stop opening 4 tabs—get deduplicated, real-time sneaker deals in your
+size delivered instantly."_
 
 ### 1.2 Business Goals and Success Metrics
 
 #### Primary Goals
-1. **Win Apify Challenge** - Achieve Grand Prize recognition through technical excellence, novelty, and user adoption
+
+1. **Win Apify Challenge** - Achieve Grand Prize recognition through technical excellence, novelty,
+   and user adoption
 2. **Revenue Generation** - Reach $1,000+ MRR within 6 months
 3. **User Acquisition** - Achieve 200+ monthly active users (MAUs) within 3 months
 4. **Platform Reliability** - Maintain 95%+ uptime and successful scraping rate
 
 #### Success Metrics
-| Metric | Target (3 months) | Target (6 months) | Measurement |
-|--------|-------------------|-------------------|-------------|
-| Monthly Active Users | 100+ | 200+ | Apify Analytics |
-| Monthly Recurring Revenue | $500 | $1,000+ | Subscription tracking |
-| Actor Quality Score | 75+ | 85+ | Apify Store metrics |
-| Average Run Success Rate | 85% | 90% | Error rate tracking |
-| User Retention | 60% | 70% | Monthly cohort analysis |
-| Alert Accuracy | 90% | 95% | False positive rate |
+
+| Metric                    | Target (3 months) | Target (6 months) | Measurement             |
+| ------------------------- | ----------------- | ----------------- | ----------------------- |
+| Monthly Active Users      | 100+              | 200+              | Apify Analytics         |
+| Monthly Recurring Revenue | $500              | $1,000+           | Subscription tracking   |
+| Actor Quality Score       | 75+               | 85+               | Apify Store metrics     |
+| Average Run Success Rate  | 85%               | 90%               | Error rate tracking     |
+| User Retention            | 60%               | 70%               | Monthly cohort analysis |
+| Alert Accuracy            | 90%               | 95%               | False positive rate     |
 
 ### 1.3 Technical Requirements
 
 #### Functional Requirements
+
 - **FR-1**: Support 4 major marketplace platforms: eBay, Grailed, StockX, and GOAT
 - **FR-2**: Accept flexible search criteria (keywords, sizes, price ranges, conditions)
 - **FR-3**: Parse unstructured sneakerhead terminology automatically
@@ -72,6 +79,7 @@
 - **FR-8**: Provide standardized JSON output dataset
 
 #### Non-Functional Requirements
+
 - **NFR-1**: Complete scraping run in under 5 minutes for 50 listings per platform
 - **NFR-2**: Handle platform failures gracefully without failing entire run
 - **NFR-3**: Support up to 500 results per platform per run
@@ -80,6 +88,7 @@
 - **NFR-6**: Achieve 65+ Actor Quality Score for Apify Challenge eligibility
 
 #### Constraints
+
 - **C-1**: **CRITICAL**: Must comply with Apify Challenge platform eligibility requirements
 - **C-2**: Must respect robots.txt and platform Terms of Service where possible
 - **C-3**: Must use Apify residential proxies for anti-scraping bypass
@@ -92,18 +101,22 @@
 #### Primary User Personas
 
 **1. The Casual Collector ("The Enthusiast")**
+
 - **Profile**: 25-35 years old, buys 2-4 pairs/year, budget-conscious
 - **Pain Point**: Manually checks multiple sites daily, misses deals
 - **Use Case**: Set alerts for 2-3 "grail" sneakers in their size, receives instant notifications
 - **Pricing Tier**: Hobby ($4.99/month)
 
 **2. The Part-Time Reseller ("The Side Hustler")**
+
 - **Profile**: 20-30 years old, flips 5-10 pairs/month, seeks profit margins
 - **Pain Point**: Needs to find underpriced listings before competition
-- **Use Case**: Monitors 10+ models across all platforms, filters by price threshold (20% below market)
+- **Use Case**: Monitors 10+ models across all platforms, filters by price threshold (20% below
+  market)
 - **Pricing Tier**: Pro ($9.99/month)
 
 **3. The Full-Time Reseller ("The Professional")**
+
 - **Profile**: 25-40 years old, flips 20+ pairs/month, runs as business
 - **Pain Point**: Needs automation to scale operations and monitor release calendars
 - **Use Case**: Integrates actor via webhooks to their inventory system, monitors upcoming drops
@@ -112,6 +125,7 @@
 #### Use Case Scenarios
 
 **UC-1: Find Deal on Specific Sneaker**
+
 ```
 Actor: User sets search term "Air Jordan 1 Bred", size "10", max price "$800"
 System: Scrapes 12 platforms, finds listing on Grailed for $750
@@ -120,6 +134,7 @@ Outcome: User purchases within minutes before listing expires
 ```
 
 **UC-2: Monitor Multiple Models for Resale**
+
 ```
 Actor: User inputs ["Yeezy 350", "Travis Scott Jordan", "Off-White"], sizes [9-12]
 System: Runs every hour, deduplicates against previous runs
@@ -128,6 +143,7 @@ Outcome: User identifies profitable flips, purchases 2-3 pairs/week
 ```
 
 **UC-3: Upcoming Release Alerts**
+
 ```
 Actor: User enables release calendar monitoring
 System: Scrapes The Drop Date, Sole Retriever, Finish Line calendars daily
@@ -213,40 +229,44 @@ Outcome: User enters raffles, secures pair at retail before resale spike
 ### 2.2 Component Breakdown and Responsibilities
 
 #### 2.2.1 Main Orchestrator (`src/main.js`)
+
 **Responsibility**: Central coordinator and execution flow manager
 
 **Key Functions:**
+
 ```javascript
 async function main() {
   // 1. Initialization
   const input = await Actor.getInput();
   await validateInput(input);
   const kvStore = await Actor.openKeyValueStore();
-  
+
   // 2. Orchestration
   const allListings = await scrapeAllPlatforms(input);
-  
+
   // 3. Processing Pipeline
   const normalized = await normalizeData(allListings);
   const parsed = await parseListings(normalized);
   const filtered = await applyFilters(parsed, input);
   const newAlerts = await findNewListings(filtered, kvStore);
-  
+
   // 4. Output & Notifications
   await Actor.pushData(newAlerts);
   await sendNotifications(newAlerts, input.notificationConfig);
-  
+
   // 5. Cleanup & Logging
   await logRunStatistics();
 }
 ```
 
 **Dependencies:**
+
 - `apify` SDK v3+
 - `crawlee` for advanced crawling
 - Custom modules (scrapers, parsers, notifiers)
 
 #### 2.2.2 Platform Scraper Manager (`src/scrapers/manager.js`)
+
 **Responsibility**: Routes scraping tasks to appropriate handlers
 
 **Architecture Pattern**: Strategy Pattern + Factory Pattern
@@ -256,27 +276,27 @@ class ScraperManager {
   constructor(proxyConfig) {
     this.scrapers = {
       // Orchestrated (calls existing Actors)
-      'goat': new GOATOrchestrator(),
-      'ebay': new EbayOrchestrator(),
-      'grailed': new GrailedOrchestrator(),
-      'vinted': new VintedOrchestrator(),
-      
+      goat: new GOATOrchestrator(),
+      ebay: new EbayOrchestrator(),
+      grailed: new GrailedOrchestrator(),
+      vinted: new VintedOrchestrator(),
+
       // Custom Built
-      'flightclub': new FlightClubScraper(proxyConfig),
-      'stadiumgoods': new StadiumGoodsScraper(proxyConfig),
-      'depop': new DepopScraper(proxyConfig),
-      'poshmark': new PoshmarkScraper(proxyConfig),
-      'kixify': new KixifyScraper(proxyConfig),
-      'craigslist': new CraigslistScraper(proxyConfig),
-      'offerup': new OfferUpScraper(proxyConfig),
-      'stockx': new StockXScraper(proxyConfig), // Fallback
+      flightclub: new FlightClubScraper(proxyConfig),
+      stadiumgoods: new StadiumGoodsScraper(proxyConfig),
+      depop: new DepopScraper(proxyConfig),
+      poshmark: new PoshmarkScraper(proxyConfig),
+      kixify: new KixifyScraper(proxyConfig),
+      craigslist: new CraigslistScraper(proxyConfig),
+      offerup: new OfferUpScraper(proxyConfig),
+      stockx: new StockXScraper(proxyConfig), // Fallback
     };
   }
-  
+
   async scrape(platform, searchParams) {
     const scraper = this.scrapers[platform];
     if (!scraper) throw new Error(`Unknown platform: ${platform}`);
-    
+
     try {
       return await retryWithBackoff(() => scraper.scrape(searchParams));
     } catch (error) {
@@ -289,6 +309,7 @@ class ScraperManager {
 ```
 
 #### 2.2.3 Data Normalization Engine (`src/utils/normalizer.js`)
+
 **Responsibility**: Convert platform-specific data to standardized schema
 
 ```javascript
@@ -297,7 +318,7 @@ class DataNormalizer {
     const normalizer = this.getNormalizerForPlatform(platformName);
     return normalizer(rawListing);
   }
-  
+
   // Example: GOAT normalizer
   normalizeGOAT(raw) {
     return {
@@ -330,9 +351,11 @@ class DataNormalizer {
 ```
 
 #### 2.2.4 AI & Regex Parsing Engine (`src/utils/parser.js`)
+
 **Responsibility**: Extract structured data from unstructured text
 
 **Parsing Priorities:**
+
 1. **Condition** - Maps sneakerhead slang to standardized enum
 2. **Size** - Extracts US Men's sizing from various formats
 3. **Colorway** - Identifies common nicknames (Bred, Chicago, etc.)
@@ -348,21 +371,21 @@ class SneakerParser {
       { regex: /\b(worn|used)\b/i, value: 'used_fair' },
       { regex: /\b(beat|beaters|thrashed)\b/i, value: 'used_poor' },
     ];
-    
+
     this.tagPatterns = [
       { regex: /\b(og all|og box)\b/i, tag: 'og_all' },
       { regex: /\b(pe|player edition)\b/i, tag: 'player_edition' },
       { regex: /\b(sample)\b/i, tag: 'sample' },
       { regex: /\b(promo)\b/i, tag: 'promo' },
     ];
-    
+
     this.sizePatterns = [
       /\b(?:size|sz)[:\s]*([1-9]|1[0-5])(?:\.5)?\b/i,
       /\b(?:us\s*m(?:en's)?)[:\s]*([1-9]|1[0-5])(?:\.5)?\b/i,
       /\b([1-9]|1[0-5])(?:\.5)?\s*(?:US|M)\b/i,
     ];
   }
-  
+
   parseCondition(text) {
     for (const pattern of this.conditionPatterns) {
       if (pattern.regex.test(text)) {
@@ -371,7 +394,7 @@ class SneakerParser {
     }
     return 'unspecified';
   }
-  
+
   parseSize(text) {
     for (const regex of this.sizePatterns) {
       const match = text.match(regex);
@@ -379,7 +402,7 @@ class SneakerParser {
     }
     return null;
   }
-  
+
   parseTags(text) {
     const tags = [];
     for (const pattern of this.tagPatterns) {
@@ -389,7 +412,7 @@ class SneakerParser {
     }
     return tags;
   }
-  
+
   // AI Fallback for complex cases
   async parseWithAI(listing) {
     const prompt = `Extract sneaker information from this listing:
@@ -397,7 +420,7 @@ Title: "${listing.title}"
 Description: "${listing.description}"
 
 Return JSON with: { "size": "10.5", "condition": "used_like_new", "colorway": "Bred", "tags": ["og_all"] }`;
-    
+
     // Call OpenAI API or local LLM
     const response = await this.callLLM(prompt);
     return JSON.parse(response);
@@ -406,6 +429,7 @@ Return JSON with: { "size": "10.5", "condition": "used_like_new", "colorway": "B
 ```
 
 #### 2.2.5 Deduplication Engine (`src/utils/deduplicator.js`)
+
 **Responsibility**: Track seen listings and identify new alerts
 
 **Strategy**: Hash-based with persistent state
@@ -416,95 +440,98 @@ class DeduplicationEngine {
     this.kvStore = kvStore;
     this.seenHashesKey = 'seen_listing_hashes';
   }
-  
+
   async initialize() {
-    this.seenHashes = await this.kvStore.getValue(this.seenHashesKey) || new Set();
+    this.seenHashes = (await this.kvStore.getValue(this.seenHashesKey)) || new Set();
     Actor.log.info(`Loaded ${this.seenHashes.size} seen listings from previous runs`);
   }
-  
+
   generateHash(listing) {
     // Create unique identifier from platform + ID
     const hashString = `${listing.source.platform}:${listing.source.id}`;
     return crypto.createHash('md5').update(hashString).digest('hex');
   }
-  
+
   async findNewListings(listings) {
     const newListings = [];
     const newHashes = new Set(this.seenHashes);
-    
+
     for (const listing of listings) {
       const hash = this.generateHash(listing);
-      
+
       if (!this.seenHashes.has(hash)) {
         newListings.push(listing);
         newHashes.add(hash);
         Actor.log.info(`NEW LISTING: ${listing.product.name} - $${listing.listing.price}`);
       }
     }
-    
+
     // Persist updated state
     await this.kvStore.setValue(this.seenHashesKey, Array.from(newHashes));
-    
+
     return newListings;
   }
-  
+
   // Advanced: Detect price drops
   async detectPriceDrops(listings) {
     const priceDrops = [];
-    
+
     for (const listing of listings) {
       const hash = this.generateHash(listing);
       const previousPrice = await this.kvStore.getValue(`price_${hash}`);
-      
+
       if (previousPrice && listing.listing.price < previousPrice * 0.9) {
         priceDrops.push({
           ...listing,
           previousPrice,
-          dropPercentage: ((previousPrice - listing.listing.price) / previousPrice * 100).toFixed(1),
+          dropPercentage: (((previousPrice - listing.listing.price) / previousPrice) * 100).toFixed(
+            1
+          ),
         });
       }
-      
+
       await this.kvStore.setValue(`price_${hash}`, listing.listing.price);
     }
-    
+
     return priceDrops;
   }
 }
 ```
 
 #### 2.2.6 Notification Manager (`src/utils/notifier.js`)
+
 **Responsibility**: Multi-channel alert delivery
 
 ```javascript
 class NotificationManager {
   async send(listings, config) {
     const promises = [];
-    
+
     if (config.emailTo) {
       promises.push(this.sendEmail(listings, config.emailTo));
     }
-    
+
     if (config.slackWebhookUrl) {
       promises.push(this.sendSlackMessage(listings, config.slackWebhookUrl));
     }
-    
+
     if (config.webhookUrl) {
       promises.push(this.sendWebhook(listings, config.webhookUrl));
     }
-    
+
     await Promise.allSettled(promises);
   }
-  
+
   async sendEmail(listings, emailTo) {
     const html = this.generateEmailHTML(listings);
-    
+
     await Actor.call('apify/send-email', {
       to: emailTo,
       subject: `🔔 ${listings.length} New Sneaker Deals Found`,
       html: html,
     });
   }
-  
+
   generateEmailHTML(listings) {
     return `
       <!DOCTYPE html>
@@ -521,7 +548,9 @@ class NotificationManager {
         <body>
           <h1>🔔 New Sneaker Alerts</h1>
           <p>Found <strong>${listings.length}</strong> new listings matching your criteria:</p>
-          ${listings.map(l => `
+          ${listings
+            .map(
+              (l) => `
             <div class="listing">
               <h2>${l.product.name}</h2>
               <img src="${l.source.imageUrl || ''}" alt="${l.product.name}">
@@ -530,18 +559,20 @@ class NotificationManager {
               <p><strong>Platform:</strong> ${l.source.platform}</p>
               <a href="${l.source.url}" class="cta">View Listing →</a>
             </div>
-          `).join('')}
+          `
+            )
+            .join('')}
           <hr>
           <p style="color: #666; font-size: 12px;">Powered by SneakerMeta Actor | <a href="https://apify.com">Apify</a></p>
         </body>
       </html>
     `;
   }
-  
+
   async sendSlackMessage(listings, webhookUrl) {
     const embed = {
       text: `🔔 *${listings.length} New Sneaker Deals Found*`,
-      attachments: listings.slice(0, 5).map(l => ({
+      attachments: listings.slice(0, 5).map((l) => ({
         title: l.product.name,
         title_link: l.source.url,
         text: `*$${l.listing.price}* | Size ${l.listing.size_us_mens} | ${l.listing.condition}`,
@@ -549,7 +580,7 @@ class NotificationManager {
         footer: l.source.platform,
       })),
     };
-    
+
     await fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -639,21 +670,22 @@ class NotificationManager {
 
 ### 2.4 Technology Stack
 
-| Layer | Technology | Version | Purpose |
-|-------|------------|---------|---------|
-| **Runtime** | Node.js | 18+ LTS | Execution environment |
-| **Framework** | Apify SDK | 3.x | Actor development framework |
-| **Crawling** | Crawlee | 3.x | Advanced scraping (Puppeteer, Playwright, Cheerio) |
-| **HTTP Client** | Axios | 1.x | REST API calls |
-| **HTML Parsing** | Cheerio | 1.x | Lightweight DOM manipulation |
-| **Browser Automation** | Playwright | 1.x | Complex JS rendering sites |
-| **Data Parsing** | Natural | 2.x | NLP for sneaker terminology (optional) |
-| **AI Integration** | OpenAI API | 4.x | Fallback parsing for ambiguous listings |
-| **Email** | SendGrid | 7.x | Transactional emails |
-| **Proxy** | Apify Proxy | N/A | Residential proxy rotation |
-| **Storage** | Apify Dataset/KV | N/A | Persistent data storage |
+| Layer                  | Technology       | Version | Purpose                                            |
+| ---------------------- | ---------------- | ------- | -------------------------------------------------- |
+| **Runtime**            | Node.js          | 18+ LTS | Execution environment                              |
+| **Framework**          | Apify SDK        | 3.x     | Actor development framework                        |
+| **Crawling**           | Crawlee          | 3.x     | Advanced scraping (Puppeteer, Playwright, Cheerio) |
+| **HTTP Client**        | Axios            | 1.x     | REST API calls                                     |
+| **HTML Parsing**       | Cheerio          | 1.x     | Lightweight DOM manipulation                       |
+| **Browser Automation** | Playwright       | 1.x     | Complex JS rendering sites                         |
+| **Data Parsing**       | Natural          | 2.x     | NLP for sneaker terminology (optional)             |
+| **AI Integration**     | OpenAI API       | 4.x     | Fallback parsing for ambiguous listings            |
+| **Email**              | SendGrid         | 7.x     | Transactional emails                               |
+| **Proxy**              | Apify Proxy      | N/A     | Residential proxy rotation                         |
+| **Storage**            | Apify Dataset/KV | N/A     | Persistent data storage                            |
 
 **Dependencies (`package.json` excerpt):**
+
 ```json
 {
   "dependencies": {
@@ -672,11 +704,13 @@ class NotificationManager {
 ### 2.5 Scalability Considerations
 
 #### Horizontal Scaling
+
 - **AutoscaledPool**: Automatically adjusts concurrency based on system load
 - **Platform Parallelization**: Scrape 5-10 platforms simultaneously
 - **Distributed State**: Use Apify Key-Value Store (cloud-synced) instead of local memory
 
 #### Performance Optimization
+
 1. **Caching Strategy**
    - Cache authenticated platform data (GOAT, StockX) for 1 hour
    - Cache P2P platform data (Grailed, Depop) for 30 minutes
@@ -695,7 +729,7 @@ class NotificationManager {
    ```javascript
    const pool = new AutoscaledPool({
      maxConcurrency: 10, // Max 10 parallel scrapers
-     minConcurrency: 2,  // Keep at least 2 active
+     minConcurrency: 2, // Keep at least 2 active
      desiredConcurrency: 5, // Target 5 concurrent
      systemStatusOptions: {
        maxUsedMemoryRatio: 0.8, // Throttle at 80% RAM
@@ -704,27 +738,28 @@ class NotificationManager {
    ```
 
 #### Rate Limiting Implementation
+
 ```javascript
 class RateLimiter {
   constructor(requestsPerHour) {
     this.limit = requestsPerHour;
     this.requests = [];
   }
-  
+
   async throttle() {
     const now = Date.now();
     const oneHourAgo = now - 3600000;
-    
+
     // Remove old requests
-    this.requests = this.requests.filter(t => t > oneHourAgo);
-    
+    this.requests = this.requests.filter((t) => t > oneHourAgo);
+
     if (this.requests.length >= this.limit) {
       const oldestRequest = this.requests[0];
       const waitTime = oldestRequest + 3600000 - now;
       Actor.log.warning(`Rate limit reached, waiting ${waitTime}ms`);
-      await new Promise(resolve => setTimeout(resolve, waitTime));
+      await new Promise((resolve) => setTimeout(resolve, waitTime));
     }
-    
+
     this.requests.push(now);
   }
 }
@@ -936,34 +971,38 @@ class RateLimiter {
 ```
 
 **Input Validation Logic:**
+
 ```javascript
 async function validateInput(input) {
   // Required fields
   if (!input.searchTerms || input.searchTerms.length === 0) {
     throw new Error('At least one search term is required');
   }
-  
+
   if (!input.targetPlatforms || input.targetPlatforms.length === 0) {
     throw new Error('At least one target platform is required');
   }
-  
+
   // Conditional requirements
   if (input.targetPlatforms.includes('craigslist')) {
     if (!input.craigslistLocations || input.craigslistLocations.length === 0) {
       throw new Error('craigslistLocations is required when craigslist is selected');
     }
   }
-  
+
   // Notification validation
   if (input.notificationConfig) {
-    const hasAnyNotification = input.notificationConfig.emailTo || 
-                               input.notificationConfig.slackWebhookUrl || 
-                               input.notificationConfig.webhookUrl;
+    const hasAnyNotification =
+      input.notificationConfig.emailTo ||
+      input.notificationConfig.slackWebhookUrl ||
+      input.notificationConfig.webhookUrl;
     if (!hasAnyNotification) {
-      Actor.log.warning('No notification channels configured - results will only be saved to dataset');
+      Actor.log.warning(
+        'No notification channels configured - results will only be saved to dataset'
+      );
     }
   }
-  
+
   // AI parsing validation
   if (input.advancedOptions?.useAIParsing && !input.advancedOptions?.openAIKey) {
     throw new Error('OpenAI API key is required when AI parsing is enabled');
@@ -984,62 +1023,63 @@ async function validateInput(input) {
 const ListingSchema = {
   // Product information
   product: {
-    name: String,           // Full sneaker name (e.g., "Air Jordan 1 Retro High OG 'Bred' (2016)")
-    brand: String,          // Primary brand (e.g., "Nike", "Adidas", "Air Jordan")
-    model: String,          // Base model (e.g., "Air Jordan 1", "Yeezy 350")
-    colorway: String,       // Colorway nickname (e.g., "Bred", "Chicago", "Zebra")
-    sku: String,            // Manufacturer SKU (e.g., "555088-001")
-    releaseYear: Number,    // Year of release (e.g., 2016)
+    name: String, // Full sneaker name (e.g., "Air Jordan 1 Retro High OG 'Bred' (2016)")
+    brand: String, // Primary brand (e.g., "Nike", "Adidas", "Air Jordan")
+    model: String, // Base model (e.g., "Air Jordan 1", "Yeezy 350")
+    colorway: String, // Colorway nickname (e.g., "Bred", "Chicago", "Zebra")
+    sku: String, // Manufacturer SKU (e.g., "555088-001")
+    releaseYear: Number, // Year of release (e.g., 2016)
   },
-  
+
   // Listing details
   listing: {
-    price: Number,          // Price in USD
-    currency: String,       // Currency code (e.g., "USD", "EUR")
-    size_us_mens: String,   // US Men's size (e.g., "10.5")
+    price: Number, // Price in USD
+    currency: String, // Currency code (e.g., "USD", "EUR")
+    size_us_mens: String, // US Men's size (e.g., "10.5")
     size_us_womens: String, // US Women's size if applicable
-    size_eu: String,        // EU size if available
-    condition: String,      // Enum: "new_in_box", "used_like_new", "used_good", "used_fair", "used_poor", "unspecified"
-    tags: Array,            // Array of strings (e.g., ["og_all", "authenticated", "player_edition"])
-    type: String,           // Enum: "sell", "buy", "auction"
-    description: String,    // Full description text (may be truncated to 500 chars)
+    size_eu: String, // EU size if available
+    condition: String, // Enum: "new_in_box", "used_like_new", "used_good", "used_fair", "used_poor", "unspecified"
+    tags: Array, // Array of strings (e.g., ["og_all", "authenticated", "player_edition"])
+    type: String, // Enum: "sell", "buy", "auction"
+    description: String, // Full description text (may be truncated to 500 chars)
   },
-  
+
   // Source information
   source: {
-    platform: String,       // Platform name (e.g., "GOAT", "Grailed", "eBay")
-    url: String,            // Direct URL to listing
-    id: String,             // Platform-specific listing ID
+    platform: String, // Platform name (e.g., "GOAT", "Grailed", "eBay")
+    url: String, // Direct URL to listing
+    id: String, // Platform-specific listing ID
     is_authenticated: Boolean, // True if platform authenticates (GOAT, StockX, Flight Club)
-    imageUrl: String,       // Primary product image URL
+    imageUrl: String, // Primary product image URL
   },
-  
+
   // Seller information (when available)
   seller: {
-    name: String,           // Seller username
-    rating: Number,         // Seller rating (0-5 scale)
-    reviewCount: Number,    // Number of reviews
-    verified: Boolean,      // Verified seller status
+    name: String, // Seller username
+    rating: Number, // Seller rating (0-5 scale)
+    reviewCount: Number, // Number of reviews
+    verified: Boolean, // Verified seller status
   },
-  
+
   // Scraping metadata
   scrape: {
-    timestamp: String,      // ISO 8601 timestamp (e.g., "2025-11-10T14:30:00Z")
-    runId: String,          // Apify actor run ID
-    version: String,        // Actor version number
+    timestamp: String, // ISO 8601 timestamp (e.g., "2025-11-10T14:30:00Z")
+    runId: String, // Apify actor run ID
+    version: String, // Actor version number
   },
-  
+
   // Deal scoring (optional)
   dealScore: {
     isAboveMarket: Boolean, // True if price is above market value
-    marketValue: Number,    // Estimated market value from authenticated platforms
+    marketValue: Number, // Estimated market value from authenticated platforms
     savingsPercentage: Number, // Percentage below market (e.g., 25.5)
-    savingsAmount: Number,  // Dollar amount saved (e.g., 150.00)
+    savingsAmount: Number, // Dollar amount saved (e.g., 150.00)
   },
 };
 ```
 
 **Example Output:**
+
 ```json
 [
   {
@@ -1093,6 +1133,7 @@ const ListingSchema = {
 ### 3.3 Internal Data Structures
 
 #### Platform Configuration
+
 ```javascript
 const PLATFORM_CONFIGS = {
   goat: {
@@ -1119,42 +1160,43 @@ const PLATFORM_CONFIGS = {
 ```
 
 #### Sneaker Terminology Dictionary
+
 ```javascript
 const SNEAKER_LEXICON = {
   conditions: {
-    'ds': 'new_in_box',
-    'deadstock': 'new_in_box',
-    'bnib': 'new_in_box',
+    ds: 'new_in_box',
+    deadstock: 'new_in_box',
+    bnib: 'new_in_box',
     'brand new': 'new_in_box',
-    'vnds': 'used_like_new',
+    vnds: 'used_like_new',
     'very near deadstock': 'used_like_new',
-    'nds': 'used_good',
+    nds: 'used_good',
     'near deadstock': 'used_good',
-    'worn': 'used_fair',
-    'used': 'used_fair',
-    'beat': 'used_poor',
-    'beaters': 'used_poor',
+    worn: 'used_fair',
+    used: 'used_fair',
+    beat: 'used_poor',
+    beaters: 'used_poor',
   },
-  
+
   tags: {
     'og all': 'og_all',
     'og box': 'og_box',
     'og laces': 'og_laces',
     'no box': 'no_box',
     'replacement box': 'replacement_box',
-    'pe': 'player_edition',
+    pe: 'player_edition',
     'player edition': 'player_edition',
-    'sample': 'sample',
-    'promo': 'promo',
+    sample: 'sample',
+    promo: 'promo',
   },
-  
+
   colorways: {
-    'bred': 'Black/Red',
-    'chicago': 'Chicago',
-    'royal': 'Royal Blue',
-    'unc': 'University Blue',
+    bred: 'Black/Red',
+    chicago: 'Chicago',
+    royal: 'Royal Blue',
+    unc: 'University Blue',
     'shattered backboard': 'Shattered Backboard',
-    'shadow': 'Shadow',
+    shadow: 'Shadow',
   },
 };
 ```
@@ -1223,23 +1265,15 @@ const SNEAKER_LEXICON = {
 **Content-Type**: application/json
 
 **Complete Input Example:**
+
 ```json
 {
-  "searchTerms": [
-    "Air Jordan 1 Bred",
-    "Yeezy 350 Zebra",
-    "Travis Scott Jordan 1"
-  ],
+  "searchTerms": ["Air Jordan 1 Bred", "Yeezy 350 Zebra", "Travis Scott Jordan 1"],
   "sizes": ["10", "10.5", "11"],
   "minPrice": 100,
   "maxPrice": 1000,
   "conditions": ["new_in_box", "used_like_new"],
-  "targetPlatforms": [
-    "goat",
-    "ebay",
-    "grailed",
-    "flightclub"
-  ],
+  "targetPlatforms": ["goat", "ebay", "grailed", "flightclub"],
   "maxResultsPerPlatform": 50,
   "enableReleaseCalendar": true,
   "dealThresholdPercentage": 20,
@@ -1268,6 +1302,7 @@ const SNEAKER_LEXICON = {
 **URL**: `https://api.apify.com/v2/datasets/{DATASET_ID}/items?format=json`
 
 **Response Format:**
+
 ```json
 {
   "data": [
@@ -1288,6 +1323,7 @@ const SNEAKER_LEXICON = {
 ```
 
 **Filtering Examples:**
+
 ```bash
 # Get only GOAT listings
 curl "https://api.apify.com/v2/datasets/{DATASET_ID}/items?fields=product,listing,source&omit=scrape&format=json&clean=true"
@@ -1302,11 +1338,13 @@ curl "https://api.apify.com/v2/datasets/{DATASET_ID}/items?fields=product,listin
 **Method**: POST  
 **Content-Type**: application/json  
 **Headers**:
+
 - `X-SneakerMeta-Signature`: HMAC-SHA256 signature of payload
 - `X-SneakerMeta-Event`: Event type (e.g., "new_listings")
 - `X-SneakerMeta-Timestamp`: Unix timestamp
 
 **Payload Structure:**
+
 ```json
 {
   "event": "new_listings_found",
@@ -1340,6 +1378,7 @@ curl "https://api.apify.com/v2/datasets/{DATASET_ID}/items?fields=product,listin
 ```
 
 **Signature Verification (Recipient):**
+
 ```javascript
 const crypto = require('crypto');
 
@@ -1348,63 +1387,116 @@ function verifyWebhook(payload, signature, secret) {
     .createHmac('sha256', secret)
     .update(JSON.stringify(payload))
     .digest('hex');
-  
-  return crypto.timingSafeEqual(
-    Buffer.from(signature),
-    Buffer.from(expectedSignature)
-  );
+
+  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature));
 }
 ```
 
 ### 4.4 Notification Message Formats
 
 #### Email Template Structure
+
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <style>
-    body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f4f4f4; padding: 20px; }
-    .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 10px; overflow: hidden; }
-    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }
-    .listing { border-bottom: 1px solid #eee; padding: 20px; }
-    .listing:last-child { border-bottom: none; }
-    .price { font-size: 28px; color: #28a745; font-weight: bold; }
-    .deal-badge { background: #ff4757; color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-    .cta { background: #667eea; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 15px; }
-    .footer { background: #f8f9fa; padding: 20px; text-align: center; font-size: 12px; color: #6c757d; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>🔥 ${count} New Sneaker Deals</h1>
-      <p>Found matching your criteria</p>
-    </div>
-    
-    ${listings.map(listing => `
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      body {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        background: #f4f4f4;
+        padding: 20px;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+      .listing {
+        border-bottom: 1px solid #eee;
+        padding: 20px;
+      }
+      .listing:last-child {
+        border-bottom: none;
+      }
+      .price {
+        font-size: 28px;
+        color: #28a745;
+        font-weight: bold;
+      }
+      .deal-badge {
+        background: #ff4757;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+      }
+      .cta {
+        background: #667eea;
+        color: white;
+        padding: 12px 30px;
+        text-decoration: none;
+        border-radius: 5px;
+        display: inline-block;
+        margin-top: 15px;
+      }
+      .footer {
+        background: #f8f9fa;
+        padding: 20px;
+        text-align: center;
+        font-size: 12px;
+        color: #6c757d;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🔥 ${count} New Sneaker Deals</h1>
+        <p>Found matching your criteria</p>
+      </div>
+
+      ${listings.map(listing => `
       <div class="listing">
         <h2>${listing.product.name}</h2>
-        ${listing.dealScore?.isBelowMarket ? `<span class="deal-badge">SAVE ${listing.dealScore.savingsPercentage}%</span>` : ''}
-        <img src="${listing.source.imageUrl}" style="max-width: 100%; height: auto; margin: 15px 0;" alt="${listing.product.name}">
+        ${listing.dealScore?.isBelowMarket ? `<span class="deal-badge"
+          >SAVE ${listing.dealScore.savingsPercentage}%</span
+        >` : ''}
+        <img
+          src="${listing.source.imageUrl}"
+          style="max-width: 100%; height: auto; margin: 15px 0;"
+          alt="${listing.product.name}"
+        />
         <p class="price">$${listing.listing.price}</p>
-        <p><strong>Size:</strong> ${listing.listing.size_us_mens} US | <strong>Condition:</strong> ${listing.listing.condition.replace(/_/g, ' ')}</p>
+        <p>
+          <strong>Size:</strong> ${listing.listing.size_us_mens} US |
+          <strong>Condition:</strong> ${listing.listing.condition.replace(/_/g, ' ')}
+        </p>
         <p><strong>Platform:</strong> ${listing.source.platform}</p>
         <a href="${listing.source.url}" class="cta">View Listing →</a>
       </div>
-    `).join('')}
-    
-    <div class="footer">
-      <p>Powered by <strong>SneakerMeta</strong> | <a href="https://apify.com">Apify</a></p>
-      <p>Want to update your alerts? <a href="#">Manage Settings</a></p>
+      `).join('')}
+
+      <div class="footer">
+        <p>Powered by <strong>SneakerMeta</strong> | <a href="https://apify.com">Apify</a></p>
+        <p>Want to update your alerts? <a href="#">Manage Settings</a></p>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>
 ```
 
 #### Slack/Discord Embed Format
+
 ```javascript
 // Slack Rich Message
 {
@@ -1441,6 +1533,7 @@ function verifyWebhook(payload, signature, secret) {
 ### 4.5 Error Response Formats
 
 **Actor Execution Errors:**
+
 ```json
 {
   "error": {
@@ -1461,6 +1554,7 @@ function verifyWebhook(payload, signature, secret) {
 ```
 
 **Input Validation Errors:**
+
 ```json
 {
   "error": {
@@ -1484,7 +1578,8 @@ function verifyWebhook(payload, signature, secret) {
 
 ## 5. Platform-Specific Scraping Strategies
 
-*[Due to length, this section will be continued in a separate message. Would you like me to continue with the remaining sections?]*
+_[Due to length, this section will be continued in a separate message. Would you like me to continue
+with the remaining sections?]_
 
 ### Summary of Remaining Sections:
 
@@ -1497,28 +1592,27 @@ function verifyWebhook(payload, signature, secret) {
 
 This document is approximately 50% complete. Shall I continue with the remaining sections?
 
-
-
 ## 5. Platform-Specific Scraping Strategies
 
 ### Platform Risk & Eligibility Matrix
 
-| Platform | Eligible? | API | Existing Actor | Approach | Risk | Priority |
-|----------|-----------|-----|----------------|----------|------|----------|
-| eBay | ✅ Yes | ✅ Yes | ✅ Yes | Orchestrate | ⭐ Low | High |
-| GOAT | ✅ Yes | ❌ No | ✅ Yes | Orchestrate | ⭐⭐ Med | High |
-| Grailed | ✅ Yes | ❌ No | ✅ Yes | Orchestrate | ⭐⭐ Med | High |
-| Vinted | ✅ Yes | ❌ No | ✅ Yes | Orchestrate | ⭐⭐ Med | Medium |
-| Flight Club | ✅ Yes | ❌ No | ❌ **No** | **Build Custom** | ⭐⭐ Med | **High** |
-| Stadium Goods | ✅ Yes | ❌ No | ❌ **No** | **Build Custom** | ⭐⭐ Med | **High** |
-| Depop | ✅ Yes | ❌ No | ❌ **No** | **Build Custom** | ⭐⭐ Med | Medium |
-| Poshmark | ✅ Yes | ❌ No | ❌ **No** | **Build Custom** | ⭐⭐⭐ High | Medium |
-| Kixify | ✅ Yes | ❌ No | ❌ **No** | **Build Custom** | ⭐ Low | Low |
-| Craigslist | ✅ Yes | ❌ No | ✅ Yes | Orchestrate | ⭐⭐ Med | Medium |
-| OfferUp | ✅ Yes | ❌ No | ✅ Yes | Orchestrate | ⭐⭐⭐ High | Low |
-| StockX | ✅ Yes | ❌ No | ⚠️ Partial | Build Custom | ⭐⭐⭐⭐ V.High | Medium |
+| Platform      | Eligible? | API    | Existing Actor | Approach         | Risk            | Priority |
+| ------------- | --------- | ------ | -------------- | ---------------- | --------------- | -------- |
+| eBay          | ✅ Yes    | ✅ Yes | ✅ Yes         | Orchestrate      | ⭐ Low          | High     |
+| GOAT          | ✅ Yes    | ❌ No  | ✅ Yes         | Orchestrate      | ⭐⭐ Med        | High     |
+| Grailed       | ✅ Yes    | ❌ No  | ✅ Yes         | Orchestrate      | ⭐⭐ Med        | High     |
+| Vinted        | ✅ Yes    | ❌ No  | ✅ Yes         | Orchestrate      | ⭐⭐ Med        | Medium   |
+| Flight Club   | ✅ Yes    | ❌ No  | ❌ **No**      | **Build Custom** | ⭐⭐ Med        | **High** |
+| Stadium Goods | ✅ Yes    | ❌ No  | ❌ **No**      | **Build Custom** | ⭐⭐ Med        | **High** |
+| Depop         | ✅ Yes    | ❌ No  | ❌ **No**      | **Build Custom** | ⭐⭐ Med        | Medium   |
+| Poshmark      | ✅ Yes    | ❌ No  | ❌ **No**      | **Build Custom** | ⭐⭐⭐ High     | Medium   |
+| Kixify        | ✅ Yes    | ❌ No  | ❌ **No**      | **Build Custom** | ⭐ Low          | Low      |
+| Craigslist    | ✅ Yes    | ❌ No  | ✅ Yes         | Orchestrate      | ⭐⭐ Med        | Medium   |
+| OfferUp       | ✅ Yes    | ❌ No  | ✅ Yes         | Orchestrate      | ⭐⭐⭐ High     | Low      |
+| StockX        | ✅ Yes    | ❌ No  | ⚠️ Partial     | Build Custom     | ⭐⭐⭐⭐ V.High | Medium   |
 
-**NOTE**: This actor focuses on 4 major platforms (eBay, Grailed, StockX, GOAT) that are compliant with Apify Challenge requirements.
+**NOTE**: This actor focuses on 4 major platforms (eBay, Grailed, StockX, GOAT) that are compliant
+with Apify Challenge requirements.
 
 ---
 
@@ -1533,22 +1627,24 @@ This document is approximately 50% complete. Shall I continue with the remaining
 **Existing Actor**: `getdataforme/ebay-scraper`
 
 **Orchestration Code**:
+
 ```javascript
 async function scrapeEbay(searchParams) {
   const { keywords, minPrice, maxPrice, sizes } = searchParams;
-  
+
   const actorInput = {
-    urls: sizes.map(size => 
-      `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(keywords + ' size ' + size)}&_udlo=${minPrice}&_udhi=${maxPrice}&_sop=10` // Sort by newest
+    urls: sizes.map(
+      (size) =>
+        `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(keywords + ' size ' + size)}&_udlo=${minPrice}&_udhi=${maxPrice}&_sop=10` // Sort by newest
     ),
     maxItems: searchParams.maxResults || 50,
     proxyConfiguration: searchParams.proxyConfig,
   };
-  
+
   const run = await Actor.call('getdataforme/ebay-scraper', actorInput);
   const { items } = await Actor.apifyClient.dataset(run.defaultDatasetId).listItems();
-  
-  return items.items.map(item => normalizeEbayData(item));
+
+  return items.items.map((item) => normalizeEbayData(item));
 }
 
 function normalizeEbayData(raw) {
@@ -1589,7 +1685,7 @@ function mapEbayCondition(ebayCondition) {
     'New with box': 'new_in_box',
     'New without box': 'new_in_box',
     'Pre-owned': 'used_good',
-    'Used': 'used_fair',
+    Used: 'used_fair',
   };
   return conditionMap[ebayCondition] || 'unspecified';
 }
@@ -1598,11 +1694,12 @@ function mapEbayCondition(ebayCondition) {
 #### API Specifications
 
 **eBay Finding API** (alternative to actor):
+
 ```javascript
 // Direct API implementation (backup option)
 async function callEbayAPI(keywords, minPrice, maxPrice) {
   const EBAY_APP_ID = await Actor.getValue('EBAY_APP_ID');
-  
+
   const url = new URL('https://svcs.ebay.com/services/search/FindingService/v1');
   url.searchParams.append('OPERATION-NAME', 'findItemsAdvanced');
   url.searchParams.append('SERVICE-VERSION', '1.0.0');
@@ -1616,10 +1713,10 @@ async function callEbayAPI(keywords, minPrice, maxPrice) {
   url.searchParams.append('itemFilter(2).name', 'ListingType');
   url.searchParams.append('itemFilter(2).value', 'FixedPrice');
   url.searchParams.append('sortOrder', 'StartTimeNewest');
-  
+
   const response = await fetch(url.toString());
   const data = await response.json();
-  
+
   return data.findItemsAdvancedResponse[0].searchResult[0].item || [];
 }
 ```
@@ -1627,6 +1724,7 @@ async function callEbayAPI(keywords, minPrice, maxPrice) {
 **Rate Limits**: 5,000 calls/day (free tier)
 
 #### Error Handling
+
 - Handle rate limit (HTTP 429) with exponential backoff
 - Gracefully handle "no results" responses
 - Log eBay API errors separately for debugging
@@ -1644,28 +1742,27 @@ async function callEbayAPI(keywords, minPrice, maxPrice) {
 ```javascript
 async function scrapeGOAT(searchParams) {
   const { keywords, minPrice, maxPrice } = searchParams;
-  
+
   const actorInput = {
     query: keywords,
     maxItems: searchParams.maxResults || 50,
     proxyConfiguration: searchParams.proxyConfig,
   };
-  
+
   try {
     const run = await Actor.call('ecomscrape/goat-product-search-scraper', actorInput, {
       timeout: 300, // 5 minutes
       memory: 1024, // 1GB
     });
-    
+
     const { items } = await Actor.apifyClient.dataset(run.defaultDatasetId).listItems();
-    
+
     return items.items
-      .filter(item => {
+      .filter((item) => {
         const price = item.lowest_price_cents / 100;
         return (!minPrice || price >= minPrice) && (!maxPrice || price <= maxPrice);
       })
-      .map(item => normalizeGOATData(item));
-      
+      .map((item) => normalizeGOATData(item));
   } catch (error) {
     Actor.log.error('GOAT scraping failed', { error: error.message });
     throw error;
@@ -1712,9 +1809,9 @@ Since GOAT authenticates all items, use GOAT prices as market value benchmarks:
 async function updateMarketValues(sku, goatPrice) {
   const kvStore = await Actor.openKeyValueStore();
   const key = `market_values_${sku}`;
-  
-  const existing = await kvStore.getValue(key) || {};
-  
+
+  const existing = (await kvStore.getValue(key)) || {};
+
   await kvStore.setValue(key, {
     ...existing,
     sku,
@@ -1734,6 +1831,7 @@ async function updateMarketValues(sku, goatPrice) {
 **Value**: High - Authenticated consignment platform
 
 #### Why Flight Club?
+
 - High-end authenticated sneakers
 - No existing Apify actor (**novelty points**)
 - Cleaner site structure than StockX
@@ -1749,11 +1847,11 @@ class FlightClubScraper {
     this.proxyConfig = proxyConfig;
     this.baseUrl = 'https://www.flightclub.com';
   }
-  
+
   async scrape(searchParams) {
     const { keywords, minPrice, maxPrice, sizes } = searchParams;
     const results = [];
-    
+
     const crawler = new PlaywrightCrawler({
       proxyConfiguration: this.proxyConfig,
       launchContext: {
@@ -1762,17 +1860,17 @@ class FlightClubScraper {
           args: ['--disable-blink-features=AutomationControlled'],
         },
       },
-      
+
       async requestHandler({ page, request }) {
         Actor.log.info(`Scraping Flight Club: ${request.url}`);
-        
+
         // Navigate to search page
         await page.goto(`${this.baseUrl}/catalogsearch/result/?q=${encodeURIComponent(keywords)}`);
         await page.waitForSelector('.product-tile', { timeout: 10000 });
-        
+
         // Extract product listings
         const listings = await page.$$eval('.product-tile', (tiles) => {
-          return tiles.map(tile => ({
+          return tiles.map((tile) => ({
             name: tile.querySelector('.product-name')?.textContent?.trim(),
             price: tile.querySelector('.price')?.textContent?.trim(),
             url: tile.querySelector('a')?.href,
@@ -1780,15 +1878,15 @@ class FlightClubScraper {
             sku: tile.getAttribute('data-sku'),
           }));
         });
-        
+
         // Filter by size (requires clicking into individual listings)
         for (const listing of listings) {
           const price = parseFloat(listing.price.replace(/[^0-9.]/g, ''));
-          
+
           if ((minPrice && price < minPrice) || (maxPrice && price > maxPrice)) {
             continue;
           }
-          
+
           results.push({
             product: {
               name: listing.name,
@@ -1813,16 +1911,14 @@ class FlightClubScraper {
           });
         }
       },
-      
+
       maxRequestsPerCrawl: searchParams.maxResults || 50,
       maxConcurrency: 2, // Be respectful
       requestHandlerTimeoutSecs: 60,
     });
-    
-    await crawler.run([
-      `${this.baseUrl}/catalogsearch/result/?q=${encodeURIComponent(keywords)}`,
-    ]);
-    
+
+    await crawler.run([`${this.baseUrl}/catalogsearch/result/?q=${encodeURIComponent(keywords)}`]);
+
     return results;
   }
 }
@@ -1831,11 +1927,13 @@ class FlightClubScraper {
 #### Anti-Scraping Countermeasures
 
 **Challenges**:
+
 - Cloudflare (basic level)
 - Rate limiting (~100 req/hour)
 - Dynamic JavaScript rendering
 
 **Solutions**:
+
 1. **Use residential proxies** (Apify proxy pool)
 2. **Randomize delays** between requests (2-5 seconds)
 3. **Rotate User-Agents**:
@@ -1867,31 +1965,31 @@ class StadiumGoodsScraper {
     this.proxyConfig = proxyConfig;
     this.baseUrl = 'https://www.stadiumgoods.com';
   }
-  
+
   async scrape(searchParams) {
     const { keywords, minPrice, maxPrice } = searchParams;
     const results = [];
-    
+
     const crawler = new CheerioCrawler({
       proxyConfiguration: this.proxyConfig,
-      
+
       async requestHandler({ $, request }) {
         Actor.log.info(`Scraping Stadium Goods: ${request.url}`);
-        
+
         $('.product-grid-item').each((_, el) => {
           const $el = $(el);
-          
+
           const name = $el.find('.product-name').text().trim();
           const priceText = $el.find('.price').text().trim();
           const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
           const url = $el.find('a').attr('href');
           const imageUrl = $el.find('img').attr('src');
           const sku = $el.attr('data-product-id');
-          
+
           if ((minPrice && price < minPrice) || (maxPrice && price > maxPrice)) {
             return;
           }
-          
+
           results.push({
             product: {
               name: name,
@@ -1916,21 +2014,20 @@ class StadiumGoodsScraper {
           });
         });
       },
-      
+
       maxRequestsPerCrawl: searchParams.maxResults || 50,
       maxConcurrency: 3,
     });
-    
-    await crawler.run([
-      `${this.baseUrl}/search?q=${encodeURIComponent(keywords)}`,
-    ]);
-    
+
+    await crawler.run([`${this.baseUrl}/search?q=${encodeURIComponent(keywords)}`]);
+
     return results;
   }
 }
 ```
 
 **Advantages over Flight Club**:
+
 - Simpler HTML structure (no heavy JavaScript)
 - Faster scraping (Cheerio vs Playwright)
 - Same authenticated inventory
@@ -1946,18 +2043,18 @@ class StadiumGoodsScraper {
 ```javascript
 async function scrapeGrailed(searchParams) {
   const { keywords } = searchParams;
-  
+
   const actorInput = {
     search: keywords,
     category: 'footwear',
     maxItems: searchParams.maxResults || 50,
     proxyConfiguration: searchParams.proxyConfig,
   };
-  
+
   const run = await Actor.call('vmscrapers/grailed', actorInput);
   const { items } = await Actor.apifyClient.dataset(run.defaultDatasetId).listItems();
-  
-  return items.items.map(item => normalizeGrailedData(item));
+
+  return items.items.map((item) => normalizeGrailedData(item));
 }
 ```
 
@@ -1981,9 +2078,9 @@ async function scrapeDepop(keywords) {
       },
     }
   );
-  
+
   const data = await response.json();
-  return data.products.map(product => normalizeDepopData(product));
+  return data.products.map((product) => normalizeDepopData(product));
 }
 ```
 
@@ -2009,9 +2106,9 @@ async function scrapePoshmark(keywords) {
       category: 'Men-Shoes-Athletic_Shoes',
     }),
   });
-  
+
   const data = await response.json();
-  return data.data.map(item => normalizePoshmarkData(item));
+  return data.data.map((item) => normalizePoshmarkData(item));
 }
 ```
 
@@ -2026,21 +2123,22 @@ async function scrapePoshmark(keywords) {
 ```javascript
 async function scrapeCraigslist(searchParams) {
   const { craigslistLocations } = searchParams;
-  
+
   const actorInput = {
     startUrls: craigslistLocations,
     maxItems: searchParams.maxResults || 50,
     proxyConfiguration: searchParams.proxyConfig,
   };
-  
+
   const run = await Actor.call('misceres/craigslist-search-scraper', actorInput);
   const { items } = await Actor.apifyClient.dataset(run.defaultDatasetId).listItems();
-  
-  return items.items.map(item => normalizeCraigslistData(item));
+
+  return items.items.map((item) => normalizeCraigslistData(item));
 }
 ```
 
 **User Input Example**:
+
 ```json
 {
   "craigslistLocations": [
@@ -2060,6 +2158,7 @@ async function scrapeCraigslist(searchParams) {
 **Recommendation**: **Low priority** - only if other platforms fail
 
 #### Challenges
+
 - Cloudflare Enterprise
 - PerimeterX bot detection
 - TLS fingerprinting
@@ -2077,19 +2176,18 @@ class StockXScraper {
         {
           headers: {
             'User-Agent': 'Mozilla/5.0...',
-            'Accept': 'application/json',
+            Accept: 'application/json',
           },
         }
       );
-      
+
       if (response.status === 403) {
         Actor.log.warning('StockX scraping blocked - skipping platform');
         return [];
       }
-      
+
       const data = await response.json();
-      return data.Products.map(p => normalizeStockXData(p));
-      
+      return data.Products.map((p) => normalizeStockXData(p));
     } catch (error) {
       Actor.log.error('StockX scraping failed', { error });
       return []; // Fail gracefully
@@ -2099,7 +2197,9 @@ class StockXScraper {
 ```
 
 **Legal Disclaimer in README**:
-> ⚠️ **StockX Scraping**: Use at your own risk. StockX actively enforces their ToS. Consider excluding this platform or using official StockX API access if available.
+
+> ⚠️ **StockX Scraping**: Use at your own risk. StockX actively enforces their ToS. Consider
+> excluding this platform or using official StockX API access if available.
 
 ---
 
@@ -2109,29 +2209,30 @@ class StockXScraper {
 async function scrapeWithFallback(platform, searchParams) {
   const maxRetries = 3;
   let lastError;
-  
+
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const results = await scrapers[platform].scrape(searchParams);
-      
+
       if (results.length === 0) {
         Actor.log.warning(`${platform} returned no results (attempt ${attempt}/${maxRetries})`);
       } else {
         Actor.log.info(`${platform} scraped successfully: ${results.length} listings`);
         return results;
       }
-      
     } catch (error) {
       lastError = error;
-      Actor.log.error(`${platform} scraping failed (attempt ${attempt}/${maxRetries})`, { error: error.message });
-      
+      Actor.log.error(`${platform} scraping failed (attempt ${attempt}/${maxRetries})`, {
+        error: error.message,
+      });
+
       if (attempt < maxRetries) {
         const delay = Math.pow(2, attempt) * 1000; // Exponential backoff
-        await new Promise(resolve => setTimeout(resolve, delay));
+        await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
   }
-  
+
   // All retries failed - log and continue
   await notifyPlatformFailure(platform, lastError);
   return [];
@@ -2162,10 +2263,11 @@ async function getAPIKey(serviceName) {
 }
 
 // Usage
-const EBAY_APP_ID = await getAPIKey('EBAY') || process.env.EBAY_APP_ID;
+const EBAY_APP_ID = (await getAPIKey('EBAY')) || process.env.EBAY_APP_ID;
 ```
 
 **Environment Variables**:
+
 ```bash
 # .actor/.actor.json - Secrets configuration
 {
@@ -2192,7 +2294,7 @@ class CredentialManager {
     this.algorithm = 'aes-256-cbc';
     this.key = crypto.scryptSync(process.env.ENCRYPTION_KEY, 'salt', 32);
   }
-  
+
   encrypt(text) {
     const iv = crypto.randomBytes(16);
     const cipher = crypto.createCipheriv(this.algorithm, this.key, iv);
@@ -2200,7 +2302,7 @@ class CredentialManager {
     encrypted += cipher.final('hex');
     return iv.toString('hex') + ':' + encrypted;
   }
-  
+
   decrypt(text) {
     const parts = text.split(':');
     const iv = Buffer.from(parts[0], 'hex');
@@ -2210,13 +2312,13 @@ class CredentialManager {
     decrypted += decipher.final('utf8');
     return decrypted;
   }
-  
+
   async storeCredentials(platform, username, password) {
     const kvStore = await Actor.openKeyValueStore();
     const encrypted = this.encrypt(JSON.stringify({ username, password }));
     await kvStore.setValue(`CREDS_${platform}`, encrypted);
   }
-  
+
   async getCredentials(platform) {
     const kvStore = await Actor.openKeyValueStore();
     const encrypted = await kvStore.getValue(`CREDS_${platform}`);
@@ -2231,6 +2333,7 @@ class CredentialManager {
 ### 6.3 Data Encryption in Transit
 
 **All external communications use HTTPS**:
+
 - Webhook notifications
 - API calls (eBay, SendGrid)
 - Proxy connections (Apify proxies use TLS)
@@ -2255,7 +2358,7 @@ class PlatformRateLimiter {
       stockx: new RateLimiter(20), // Very conservative
     };
   }
-  
+
   async throttle(platform) {
     const limiter = this.limiters[platform];
     if (!limiter) return;
@@ -2268,20 +2371,20 @@ class RateLimiter {
     this.limit = requestsPerHour;
     this.requests = [];
   }
-  
+
   async throttle() {
     const now = Date.now();
     const oneHourAgo = now - 3600000;
-    
-    this.requests = this.requests.filter(t => t > oneHourAgo);
-    
+
+    this.requests = this.requests.filter((t) => t > oneHourAgo);
+
     if (this.requests.length >= this.limit) {
       const oldestRequest = this.requests[0];
       const waitTime = oldestRequest + 3600000 - now;
-      Actor.log.warning(`Rate limit reached for platform, waiting ${Math.round(waitTime/1000)}s`);
-      await new Promise(resolve => setTimeout(resolve, waitTime));
+      Actor.log.warning(`Rate limit reached for platform, waiting ${Math.round(waitTime / 1000)}s`);
+      await new Promise((resolve) => setTimeout(resolve, waitTime));
     }
-    
+
     this.requests.push(now);
   }
 }
@@ -2290,18 +2393,20 @@ class RateLimiter {
 ### 6.5 Security Best Practices
 
 #### Input Sanitization
+
 ```javascript
 function sanitizeInput(input) {
   // Prevent injection attacks
   const sanitized = { ...input };
-  
+
   // Sanitize search terms (no SQL, no XSS)
-  sanitized.searchTerms = input.searchTerms.map(term => 
-    term.replace(/<script.*?>.*?<\/script>/gi, '')
-        .replace(/[^\w\s-]/g, '')
-        .trim()
+  sanitized.searchTerms = input.searchTerms.map((term) =>
+    term
+      .replace(/<script.*?>.*?<\/script>/gi, '')
+      .replace(/[^\w\s-]/g, '')
+      .trim()
   );
-  
+
   // Validate URLs
   if (input.notificationConfig?.webhookUrl) {
     try {
@@ -2310,7 +2415,7 @@ function sanitizeInput(input) {
       throw new Error('Invalid webhook URL');
     }
   }
-  
+
   // Validate email
   if (input.notificationConfig?.emailTo) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -2318,23 +2423,21 @@ function sanitizeInput(input) {
       throw new Error('Invalid email address');
     }
   }
-  
+
   return sanitized;
 }
 ```
 
 #### HMAC Webhook Signatures
+
 ```javascript
 function generateWebhookSignature(payload, secret) {
-  return crypto
-    .createHmac('sha256', secret)
-    .update(JSON.stringify(payload))
-    .digest('hex');
+  return crypto.createHmac('sha256', secret).update(JSON.stringify(payload)).digest('hex');
 }
 
 async function sendWebhookWithSignature(url, payload, secret) {
   const signature = generateWebhookSignature(payload, secret);
-  
+
   await fetch(url, {
     method: 'POST',
     headers: {
@@ -2348,6 +2451,7 @@ async function sendWebhookWithSignature(url, payload, secret) {
 ```
 
 #### robots.txt Compliance
+
 ```javascript
 import robotsParser from 'robots-parser';
 
@@ -2356,14 +2460,14 @@ async function checkRobotsTxt(url) {
     const robotsUrl = new URL('/robots.txt', url).href;
     const response = await fetch(robotsUrl);
     const robotsTxt = await response.text();
-    
+
     const robots = robotsParser(robotsUrl, robotsTxt);
     const isAllowed = robots.isAllowed(url, 'ApifySneakerMeta');
-    
+
     if (!isAllowed) {
       Actor.log.warning(`robots.txt disallows scraping: ${url}`);
     }
-    
+
     return isAllowed;
   } catch (error) {
     Actor.log.warning(`Could not fetch robots.txt for ${url}`);
@@ -2414,20 +2518,22 @@ async function checkRobotsTxt(url) {
 
 ### 7.2 Resource Allocation
 
-| Resource | Minimum | Recommended | Maximum |
-|----------|---------|-------------|---------|
-| Memory | 2048 MB | 4096 MB | 8192 MB |
-| Timeout | 1800s (30m) | 3600s (1h) | 7200s (2h) |
-| CPU | 1 core | 2 cores | 4 cores |
-| Build Time | 300s | 600s | 900s |
+| Resource   | Minimum     | Recommended | Maximum    |
+| ---------- | ----------- | ----------- | ---------- |
+| Memory     | 2048 MB     | 4096 MB     | 8192 MB    |
+| Timeout    | 1800s (30m) | 3600s (1h)  | 7200s (2h) |
+| CPU        | 1 core      | 2 cores     | 4 cores    |
+| Build Time | 300s        | 600s        | 900s       |
 
 **Memory Considerations**:
+
 - Playwright browsers: ~500MB each
 - Dataset storage: ~100MB per 1000 listings
 - Key-Value Store: ~10MB
 - Base Node.js: ~200MB
 
 **Cost Estimate** (Apify pricing):
+
 - Free tier: $5 of credits/month
 - Basic run (1h, 4GB): ~$0.50
 - Monthly scheduled (daily): ~$15/month
@@ -2460,6 +2566,7 @@ CMD npm start
 ### 7.4 Scheduling Strategy
 
 **Use Cases**:
+
 1. **Real-time monitoring** - Hourly runs
 2. **Daily digest** - Once per day at 9 AM
 3. **Release calendar** - Daily at midnight
@@ -2528,23 +2635,24 @@ async function logRunStatistics() {
     totalListings: allListings.length,
     newListings: newAlerts.length,
     platformBreakdown: {},
-    averagePrice: calculateAverage(allListings.map(l => l.listing.price)),
+    averagePrice: calculateAverage(allListings.map((l) => l.listing.price)),
     executionTime: Date.now() - startTime,
   };
-  
+
   for (const listing of allListings) {
     const platform = listing.source.platform;
     stats.platformBreakdown[platform] = (stats.platformBreakdown[platform] || 0) + 1;
   }
-  
+
   Actor.log.info('Run completed successfully', stats);
-  
+
   // Store metrics for dashboard
   await Actor.setValue('RUN_STATISTICS', stats);
 }
 ```
 
 **Monitoring Dashboard** (Future Enhancement):
+
 - Create simple HTML dashboard showing:
   - Success rate per platform
   - Average listings found per run
@@ -2558,21 +2666,21 @@ async function logRunStatistics() {
 ```javascript
 async function backupState() {
   const kvStore = await Actor.openKeyValueStore();
-  
+
   // Backup seen hashes
   const seenHashes = await kvStore.getValue('seen_listing_hashes');
   await kvStore.setValue('seen_hashes_backup', seenHashes);
-  
+
   // Backup market values
   const keys = await kvStore.listKeys();
   const marketValues = {};
-  
-  for (const key of keys.items.filter(k => k.key.startsWith('market_values_'))) {
+
+  for (const key of keys.items.filter((k) => k.key.startsWith('market_values_'))) {
     marketValues[key.key] = await kvStore.getValue(key.key);
   }
-  
+
   await kvStore.setValue('market_values_backup', marketValues);
-  
+
   Actor.log.info('State backed up successfully');
 }
 ```
@@ -2582,10 +2690,10 @@ async function backupState() {
 ```javascript
 async function recoverFromFailure() {
   const kvStore = await Actor.openKeyValueStore();
-  
+
   // Restore from backup if primary state is corrupted
   const seenHashes = await kvStore.getValue('seen_listing_hashes');
-  
+
   if (!seenHashes || seenHashes.length === 0) {
     Actor.log.warning('Primary state corrupted, restoring from backup');
     const backup = await kvStore.getValue('seen_hashes_backup');
@@ -2600,12 +2708,12 @@ async function recoverFromFailure() {
 
 ### 8.1 Pricing Tiers
 
-| Tier | Price | Platforms | Max Results | Alerts | Features |
-|------|-------|-----------|-------------|--------|----------|
-| **Free** | $0 | 2 | 20/platform | Email only | Basic scraping, 1 search term |
-| **Hobby** | $4.99/mo | 5 | 50/platform | Email + Webhook | 5 search terms, hourly runs |
-| **Pro** | $9.99/mo | 12 (All) | 200/platform | All channels | Unlimited terms, AI parsing, price drops |
-| **Business** | $29.99/mo | 12 (All) | 500/platform | All + priority | API access, white-label, SLA |
+| Tier         | Price     | Platforms | Max Results  | Alerts          | Features                                 |
+| ------------ | --------- | --------- | ------------ | --------------- | ---------------------------------------- |
+| **Free**     | $0        | 2         | 20/platform  | Email only      | Basic scraping, 1 search term            |
+| **Hobby**    | $4.99/mo  | 5         | 50/platform  | Email + Webhook | 5 search terms, hourly runs              |
+| **Pro**      | $9.99/mo  | 12 (All)  | 200/platform | All channels    | Unlimited terms, AI parsing, price drops |
+| **Business** | $29.99/mo | 12 (All)  | 500/platform | All + priority  | API access, white-label, SLA             |
 
 ### 8.2 Implementation of Tiered Access
 
@@ -2655,19 +2763,21 @@ const TIER_LIMITS = {
 async function validateTier(input) {
   const tier = input.subscriptionTier || 'free';
   const limits = TIER_LIMITS[tier];
-  
+
   if (input.targetPlatforms.length > limits.maxPlatforms) {
-    throw new Error(`${tier} tier limited to ${limits.maxPlatforms} platforms. Upgrade to Pro for all platforms.`);
+    throw new Error(
+      `${tier} tier limited to ${limits.maxPlatforms} platforms. Upgrade to Pro for all platforms.`
+    );
   }
-  
+
   if (input.searchTerms.length > limits.maxSearchTerms) {
     throw new Error(`${tier} tier limited to ${limits.maxSearchTerms} search terms.`);
   }
-  
+
   if (input.advancedOptions?.useAIParsing && !limits.aiParsing) {
     throw new Error(`AI parsing requires Pro tier or higher.`);
   }
-  
+
   Actor.log.info(`User tier validated: ${tier}`);
 }
 ```
@@ -2687,12 +2797,14 @@ async function validateTier(input) {
 ```
 
 **Revenue Split**:
+
 - Apify takes 20% commission
 - You receive 80% ($3.99 per $4.99 subscription)
 
 ### 8.4 Payment Processing
 
 **Handled by Apify** - No additional integration needed:
+
 - Users purchase via Apify Store
 - Billing managed by Apify
 - Monthly payouts via PayPal or bank transfer
@@ -2703,19 +2815,19 @@ async function validateTier(input) {
 async function trackUsage(userId, tier) {
   const kvStore = await Actor.openKeyValueStore();
   const usageKey = `usage_${userId}_${new Date().toISOString().slice(0, 7)}`; // YYYY-MM
-  
-  const usage = await kvStore.getValue(usageKey) || {
+
+  const usage = (await kvStore.getValue(usageKey)) || {
     userId,
     tier,
     runs: 0,
     listingsScraped: 0,
     alertsSent: 0,
   };
-  
+
   usage.runs += 1;
   usage.listingsScraped += allListings.length;
   usage.alertsSent += newAlerts.length;
-  
+
   await kvStore.setValue(usageKey, usage);
 }
 ```
@@ -2723,6 +2835,7 @@ async function trackUsage(userId, tier) {
 ### 8.6 Revenue Projections
 
 **Conservative Scenario** (6 months):
+
 - 50 Free users (conversion rate: 20%)
 - 100 Hobby users @ $4.99 = $499/mo
 - 20 Pro users @ $9.99 = $199.80/mo
@@ -2733,38 +2846,40 @@ async function trackUsage(userId, tier) {
 **Annual Run Rate**: ~$8,160
 
 **Realistic Scenario** (12 months):
+
 - 200 Free users
 - 300 Hobby users @ $4.99 = $1,497/mo
 - 75 Pro users @ $9.99 = $749.25/mo
 - 15 Business users @ $29.99 = $449.85/mo
 
-**Total Monthly Revenue**: ~$2,700
-**After Apify Commission**: ~$2,160
-**Annual Run Rate**: ~$25,920
+**Total Monthly Revenue**: ~$2,700 **After Apify Commission**: ~$2,160 **Annual Run Rate**: ~$25,920
 
 ### 8.7 Challenge Pricing Strategy (FREE Launch)
 
 **CRITICAL UPDATE FOR APIFY CHALLENGE:**
 
-To maximize Monthly Active Users (MAUs) - the primary judging criterion - the Actor will launch as **FREE** with generous limits during the challenge period (through January 31, 2026).
+To maximize Monthly Active Users (MAUs) - the primary judging criterion - the Actor will launch as
+**FREE** with generous limits during the challenge period (through January 31, 2026).
 
-**Challenge Pricing Model**:
-| Tier | Price | Platforms | Max Results | Alerts | Features |
-|------|-------|-----------|-------------|--------|----------|
-| **Free** | $0 | 4 (All MVP) | 100/platform | All channels | Unlimited searches, hourly runs, viral features |
+**Challenge Pricing Model**: | Tier | Price | Platforms | Max Results | Alerts | Features |
+|------|-------|-----------|-------------|--------|----------| | **Free** | $0 | 4 (All MVP) |
+100/platform | All channels | Unlimited searches, hourly runs, viral features |
 
 **Strategic Rationale**:
+
 - **Zero Friction**: No authentication, no payment = maximum user acquisition
 - **MAU Maximization**: Free tier removes all barriers to adoption
 - **Viral Growth**: Users share freely when there's no cost
 - **Challenge Focus**: Win $100k Grand Prize first, monetize after
 
 **Post-Challenge Migration** (After Jan 31, 2026):
+
 - Grandfather existing users with legacy "Founder" tier
 - Introduce tiered pricing for new users (see Section 8.1)
 - Announce 30 days before transition
 
 **Implementation**:
+
 ```javascript
 // Challenge mode enforcement
 const CHALLENGE_MODE = process.env.CHALLENGE_MODE === 'true'; // Until Jan 31, 2026
@@ -2776,7 +2891,7 @@ async function validateTier(input) {
       maxPlatforms: 999,
       maxSearchTerms: 999,
       maxResultsPerPlatform: 500,
-      allFeatures: true
+      allFeatures: true,
     };
   }
 
@@ -2788,22 +2903,23 @@ async function validateTier(input) {
 
 ### 8.8 Viral Growth & Referral System
 
-**Overview**: Built-in viral mechanics to drive organic user acquisition and maximize MAUs for the Apify Challenge.
+**Overview**: Built-in viral mechanics to drive organic user acquisition and maximize MAUs for the
+Apify Challenge.
 
 #### 8.8.1 Public "Recent Grails Found" Feed
 
-**Concept**: Auto-publish high-value deals to a public feed, creating social proof and driving discovery.
+**Concept**: Auto-publish high-value deals to a public feed, creating social proof and driving
+discovery.
 
 **Implementation**:
+
 ```javascript
 // After deduplication, publish top deals publicly
 async function publishPublicFeed(newAlerts) {
   const publicDataset = await Actor.openDataset('public-grails-feed');
 
   // Filter for high-value deals (score 80+)
-  const topDeals = newAlerts.filter(alert =>
-    alert.metadata?.dealScore >= 80
-  );
+  const topDeals = newAlerts.filter((alert) => alert.metadata?.dealScore >= 80);
 
   // Anonymize and publish
   for (const deal of topDeals) {
@@ -2818,7 +2934,7 @@ async function publishPublicFeed(newAlerts) {
       dealScore: deal.metadata.dealScore,
       savingsPercent: deal.metadata.savingsPercent,
       foundAt: deal.scrape.timestamp,
-      tagline: "Never miss your grail again" // Branding
+      tagline: 'Never miss your grail again', // Branding
     });
   }
 }
@@ -2827,6 +2943,7 @@ async function publishPublicFeed(newAlerts) {
 **Public Feed URL**: `https://apify.com/[username]/grail-hunter/dataset/public-grails-feed`
 
 **Marketing Use**:
+
 - Share link in r/Sneakers, Discord, NikeTalk
 - Embed in README.md as "Live Proof"
 - Auto-tweet top deals with attribution
@@ -2836,6 +2953,7 @@ async function publishPublicFeed(newAlerts) {
 **"Share This Alert" Button**: Add to all notification messages
 
 **Slack/Discord Implementation**:
+
 ```javascript
 async function sendSlackAlert(alert, webhookUrl) {
   const dealUrl = alert.source.url;
@@ -2845,43 +2963,44 @@ async function sendSlackAlert(alert, webhookUrl) {
     text: shareText,
     blocks: [
       {
-        type: "section",
-        text: { type: "mrkdwn", text: shareText }
+        type: 'section',
+        text: { type: 'mrkdwn', text: shareText },
       },
       {
-        type: "section",
+        type: 'section',
         text: {
-          type: "mrkdwn",
-          text: `💰 *${alert.metadata.savingsPercent}% off market* | Deal Score: ${alert.metadata.dealScore}/100`
-        }
+          type: 'mrkdwn',
+          text: `💰 *${alert.metadata.savingsPercent}% off market* | Deal Score: ${alert.metadata.dealScore}/100`,
+        },
       },
       {
-        type: "actions",
+        type: 'actions',
         elements: [
           {
-            type: "button",
-            text: { type: "plain_text", text: "View Listing" },
-            url: dealUrl
+            type: 'button',
+            text: { type: 'plain_text', text: 'View Listing' },
+            url: dealUrl,
           },
           {
-            type: "button",
-            text: { type: "plain_text", text: "Share This Deal 🔗" },
-            url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${dealUrl}`
-          }
-        ]
-      }
-    ]
+            type: 'button',
+            text: { type: 'plain_text', text: 'Share This Deal 🔗' },
+            url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${dealUrl}`,
+          },
+        ],
+      },
+    ],
   };
 
   await fetch(webhookUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(message)
+    body: JSON.stringify(message),
   });
 }
 ```
 
 **Email Template Addition**:
+
 ```html
 <div style="text-align: center; margin-top: 20px;">
   <a href="mailto:?subject=Check this sneaker deal&body={{shareText}}">📧 Share via Email</a> |
@@ -2895,12 +3014,13 @@ async function sendSlackAlert(alert, webhookUrl) {
 **"X Users Hunting This Shoe"** - Display active interest
 
 **Implementation**:
+
 ```javascript
 async function trackShoeInterest(sneakerModel) {
   const kvStore = await Actor.openKeyValueStore();
   const key = `interest_${sneakerModel.replace(/\s+/g, '_')}`;
 
-  const interest = await kvStore.getValue(key) || { count: 0, users: [] };
+  const interest = (await kvStore.getValue(key)) || { count: 0, users: [] };
 
   // Increment anonymous counter
   interest.count += 1;
@@ -2922,6 +3042,7 @@ message.text = `🔥 ${alert.product.name} (${huntingCount} users hunting this) 
 **No Rewards Needed** - Sharing = Social Currency in sneaker culture
 
 **Implementation**:
+
 ```javascript
 // Optional referral code in INPUT_SCHEMA
 {
@@ -2953,17 +3074,18 @@ async function trackReferral(referralCode) {
 #### 8.8.5 Growth Metrics Dashboard
 
 **Track for Challenge Judging**:
+
 ```javascript
 async function recordGrowthMetrics() {
   const kvStore = await Actor.openKeyValueStore();
   const month = new Date().toISOString().slice(0, 7); // YYYY-MM
 
-  const metrics = await kvStore.getValue(`metrics_${month}`) || {
+  const metrics = (await kvStore.getValue(`metrics_${month}`)) || {
     totalRuns: 0,
     uniqueUsers: new Set(),
     publicDealsPublished: 0,
     alertsShared: 0,
-    referralSignups: 0
+    referralSignups: 0,
   };
 
   metrics.totalRuns += 1;
@@ -2972,7 +3094,7 @@ async function recordGrowthMetrics() {
 
   await kvStore.setValue(`metrics_${month}`, {
     ...metrics,
-    uniqueUsers: Array.from(metrics.uniqueUsers) // Convert Set to Array
+    uniqueUsers: Array.from(metrics.uniqueUsers), // Convert Set to Array
   });
 
   // MAU = uniqueUsers.length
@@ -2981,6 +3103,7 @@ async function recordGrowthMetrics() {
 ```
 
 **Key Metrics for Challenge**:
+
 - **MAUs**: Count of unique users per month
 - **Viral Coefficient**: (New users from referrals) / (Total users)
 - **Share Rate**: (Alerts shared) / (Total alerts sent)
@@ -3014,6 +3137,7 @@ const browser = await chromium.launch({
 #### 8.9.2 Smart Rate Limiting (Per-Platform)
 
 **Platform-Specific Limits** (configured in `.env.local`):
+
 ```
 RATE_LIMIT_EBAY=200          # requests/hour
 RATE_LIMIT_GRAILED=150       # requests/hour
@@ -3024,6 +3148,7 @@ RATE_LIMIT_STADIUMGOODS=80   # requests/hour (custom scraper)
 ```
 
 **Implementation**:
+
 ```javascript
 class RateLimiter {
   constructor(platform, requestsPerHour) {
@@ -3037,19 +3162,19 @@ class RateLimiter {
     const now = Date.now();
 
     // Remove requests older than 1 hour
-    this.requests = this.requests.filter(t => now - t < 3600000);
+    this.requests = this.requests.filter((t) => now - t < 3600000);
 
     // Check if at limit
     if (this.requests.length >= this.maxRequests) {
       const oldestRequest = this.requests[0];
       const waitTime = 3600000 - (now - oldestRequest);
       Actor.log.warning(`${this.platform} rate limit reached. Waiting ${waitTime}ms`);
-      await new Promise(resolve => setTimeout(resolve, waitTime));
+      await new Promise((resolve) => setTimeout(resolve, waitTime));
     }
 
     // Add random jitter (±20%) to mimic human behavior
     const jitter = this.minDelay * (0.8 + Math.random() * 0.4);
-    await new Promise(resolve => setTimeout(resolve, jitter));
+    await new Promise((resolve) => setTimeout(resolve, jitter));
 
     this.requests.push(now);
   }
@@ -3064,6 +3189,7 @@ await ebayLimiter.throttle();
 #### 8.9.3 Orchestrated Actor Rate Limiting
 
 **For Existing Actors** (GOAT, eBay, Grailed scrapers):
+
 - Rely on their internal rate limiting
 - Monitor for errors and back off if needed
 
@@ -3100,6 +3226,7 @@ Based on official Apify $1M Challenge requirements:
 #### 🎯 Grand Prize Criteria ($100K)
 
 **1. Novelty & Innovation (30 points)**
+
 - [x] **Unique Orchestrator Architecture**: Calls multiple existing actors + custom scrapers
 - [x] **White Space Platforms**: First public actors for Flight Club, Stadium Goods, Depop
 - [x] **AI-Powered Parsing**: Novel use of LLM for sneakerhead terminology
@@ -3109,26 +3236,32 @@ Based on official Apify $1M Challenge requirements:
 **Score Estimate**: 25/30 points
 
 **2. Usefulness & Real-World Value (25 points)**
+
 - [x] **Clear Target Market**: $6B+ sneaker resale market
 - [x] **Solves Real Pain Point**: Manual multi-platform monitoring is time-consuming
 - [x] **10x Value Proposition**: One actor replaces 8+ manual tabs/tools
 - [x] **Immediate Actionable Output**: Direct buy links + instant notifications
-- [x] **Monetization Proof**: $2.99-$29.99/mo pricing validated by competitors (Distill.io, Visualping)
+- [x] **Monetization Proof**: $2.99-$29.99/mo pricing validated by competitors (Distill.io,
+      Visualping)
 
 **Score Estimate**: 23/25 points
 
 **3. Technical Excellence (25 points)**
+
 - [x] **Actor Quality Score 65+**: Comprehensive README, input/output schemas, error handling
 - [x] **Robust Error Handling**: Graceful platform failures, retry logic, fallbacks
-- [x] **Advanced Apify SDK Usage**: AutoscaledPool, Key-Value Store state management, Actor.call orchestration
+- [x] **Advanced Apify SDK Usage**: AutoscaledPool, Key-Value Store state management, Actor.call
+      orchestration
 - [x] **Performance Optimization**: Caching, incremental scraping, parallel execution
 - [x] **Security Best Practices**: Encrypted credentials, HMAC signatures, input sanitization
 
 **Score Estimate**: 22/25 points
 
 **4. Monthly Active Users (20 points)**
+
 - [ ] **Target**: 100+ MAUs within 3 months
-- [ ] **Strategy**: Reddit/Discord organic growth, YouTube tutorials, sneaker influencer partnerships
+- [ ] **Strategy**: Reddit/Discord organic growth, YouTube tutorials, sneaker influencer
+      partnerships
 - [ ] **Free Tier**: Attracts initial users, converts to paid
 
 **Score Estimate**: 15/20 points (achievable with marketing)
@@ -3138,12 +3271,15 @@ Based on official Apify $1M Challenge requirements:
 #### 🥇 Category Prizes ($25K each)
 
 **Most Useful Actor**:
+
 - Strong candidate due to clear market demand and 10x value proposition
 
 **Most Technically Complex Actor**:
+
 - Orchestrator + custom scrapers + AI parsing = high complexity
 
 **Most Innovative Actor**:
+
 - Release calendar monitoring + deal scoring algorithm
 
 ### 9.2 Actor Quality Score Optimization
@@ -3152,14 +3288,14 @@ Based on official Apify $1M Challenge requirements:
 
 **Scoring Components**:
 
-| Component | Weight | Score | Implementation |
-|-----------|--------|-------|----------------|
-| **README Quality** | 25% | 90% | Comprehensive with use cases, screenshots, video demo |
-| **Input Schema** | 20% | 95% | Fully documented with examples, validation, prefills |
-| **Output Schema** | 20% | 95% | Standardized JSON structure, documented fields |
-| **Error Handling** | 15% | 85% | Try/catch blocks, graceful failures, user notifications |
-| **Code Quality** | 10% | 80% | Modular, documented, consistent style |
-| **Performance** | 10% | 85% | Caching, parallel execution, optimized memory |
+| Component          | Weight | Score | Implementation                                          |
+| ------------------ | ------ | ----- | ------------------------------------------------------- |
+| **README Quality** | 25%    | 90%   | Comprehensive with use cases, screenshots, video demo   |
+| **Input Schema**   | 20%    | 95%   | Fully documented with examples, validation, prefills    |
+| **Output Schema**  | 20%    | 95%   | Standardized JSON structure, documented fields          |
+| **Error Handling** | 15%    | 85%   | Try/catch blocks, graceful failures, user notifications |
+| **Code Quality**   | 10%    | 80%   | Modular, documented, consistent style                   |
+| **Performance**    | 10%    | 85%   | Caching, parallel execution, optimized memory           |
 
 **Estimated Quality Score**: **88/100** ✅
 
@@ -3186,6 +3322,7 @@ Based on official Apify $1M Challenge requirements:
    - 🔄 Automatic deduplication
 
 4. **Quick Start**
+
    ```
    1. Add actor to your account
    2. Configure search terms and sizes
@@ -3218,6 +3355,7 @@ Based on official Apify $1M Challenge requirements:
 ### 9.4 Marketing & User Acquisition Plan
 
 **Phase 1: Launch Week (Month 1)**
+
 - [x] Submit to Apify Challenge
 - [x] Publish comprehensive README
 - [ ] Create 2-minute demo video
@@ -3225,22 +3363,26 @@ Based on official Apify $1M Challenge requirements:
 - [ ] Tweet from personal account with #ApifyChallenge
 
 **Phase 2: Organic Growth (Months 2-3)**
+
 - [ ] YouTube tutorial: "How to Find Sneaker Deals with Automation"
 - [ ] Blog post: "I Built a Multi-Platform Sneaker Scraper"
 - [ ] Join 20 sneaker Discord servers, provide value before promoting
 - [ ] Answer Quora/Reddit questions about sneaker reselling
 
 **Phase 3: Influencer Outreach (Months 4-6)**
+
 - [ ] Contact 10 sneaker YouTubers (50K-500K subs)
 - [ ] Offer free Pro tier for review
 - [ ] Create affiliate program (20% commission)
 
 **Phase 4: Paid Advertising (Months 7+)**
+
 - [ ] Google Ads targeting "sneaker reselling tools"
 - [ ] Social media advertising to sneaker communities
 - [ ] Sponsored posts in sneaker newsletters
 
 **Success Metrics**:
+
 - **Month 1**: 20 MAUs (early adopters)
 - **Month 2**: 50 MAUs (Reddit organic growth)
 - **Month 3**: 100 MAUs (YouTube discovery)
@@ -3257,6 +3399,7 @@ Based on official Apify $1M Challenge requirements:
 **Week 1: Core Development**
 
 **Days 1-2: Project Setup**
+
 - [x] Initialize Apify project (`apify init`)
 - [x] Create project structure (src/scrapers, src/utils, etc.)
 - [x] Set up Git repository
@@ -3265,6 +3408,7 @@ Based on official Apify $1M Challenge requirements:
 - [x] Set up Dockerfile
 
 **Days 3-5: Platform Integration**
+
 - [ ] Implement ScraperManager class
 - [ ] **eBay** - Orchestrate existing actor (easiest, use as template)
 - [ ] **GOAT** - Orchestrate existing actor
@@ -3273,6 +3417,7 @@ Based on official Apify $1M Challenge requirements:
 - [ ] Test each platform independently
 
 **Days 6-7: Core Features**
+
 - [ ] Implement DataNormalizer (unified schema)
 - [ ] Build SneakerParser (condition, size, tags extraction)
 - [ ] Create DeduplicationEngine (KV Store integration)
@@ -3281,6 +3426,7 @@ Based on official Apify $1M Challenge requirements:
 **Week 2: Testing & Deployment**
 
 **Days 8-10: Integration Testing**
+
 - [ ] Test full pipeline with all 4 platforms
 - [ ] Handle edge cases (no results, API failures)
 - [ ] Add comprehensive error handling
@@ -3288,6 +3434,7 @@ Based on official Apify $1M Challenge requirements:
 - [ ] Test deduplication across runs
 
 **Days 11-12: Documentation**
+
 - [ ] Write comprehensive README
   - [ ] Hero section with value prop
   - [ ] Features list
@@ -3303,6 +3450,7 @@ Based on official Apify $1M Challenge requirements:
 - [ ] Add code comments
 
 **Days 13-14: Deployment & Launch**
+
 - [ ] Deploy to Apify platform (`apify push`)
 - [ ] Configure monetization ($4.99/month)
 - [ ] Test scheduled runs
@@ -3310,8 +3458,7 @@ Based on official Apify $1M Challenge requirements:
 - [ ] **Submit to Apify Challenge**
 - [ ] Launch marketing (Reddit, Twitter)
 
-**Deliverables**:
-✅ Working actor with 4 platforms (eBay, GOAT, Grailed, Flight Club)  
+**Deliverables**: ✅ Working actor with 4 platforms (eBay, GOAT, Grailed, Flight Club)  
 ✅ Email notifications  
 ✅ Published on Apify Store  
 ✅ Challenge submission complete  
@@ -3326,18 +3473,21 @@ Based on official Apify $1M Challenge requirements:
 **Week 3: Platform Expansion**
 
 **Days 15-17: New Scrapers**
+
 - [ ] **Stadium Goods** - Custom Cheerio scraper (WHITE SPACE!)
 - [ ] **Depop** - Custom API scraper (WHITE SPACE!)
 - [ ] **Vinted** - Orchestrate existing actor
 - [ ] Test all new platforms
 
 **Days 18-19: Advanced Features**
+
 - [ ] Webhook notifications (Discord/Slack embeds)
 - [ ] Custom webhook with HMAC signatures
 - [ ] AI parsing fallback (OpenAI integration)
 - [ ] Price drop detection
 
 **Days 20-21: Optimization**
+
 - [ ] Implement caching strategy
 - [ ] Add incremental scraping (only new listings)
 - [ ] Optimize parallel scraping (AutoscaledPool)
@@ -3346,6 +3496,7 @@ Based on official Apify $1M Challenge requirements:
 **Week 4: Release Calendar & Marketing**
 
 **Days 22-24: Release Calendar Module**
+
 - [ ] Scrape The Drop Date
 - [ ] Scrape Sole Retriever
 - [ ] Scrape Finish Line release calendar
@@ -3353,19 +3504,20 @@ Based on official Apify $1M Challenge requirements:
 - [ ] Add raffle link extraction
 
 **Days 25-26: Marketing Push**
+
 - [ ] Post on 5 sneaker subreddits
 - [ ] Join 10 Discord servers, share value
 - [ ] Reach out to 3 sneaker YouTubers
 - [ ] Write blog post: "How to Automate Sneaker Monitoring"
 
 **Days 27-28: User Feedback & Iteration**
+
 - [ ] Monitor user feedback (Apify Store reviews)
 - [ ] Fix reported bugs
 - [ ] Add requested features
 - [ ] Update documentation
 
-**Deliverables**:
-✅ 8 total platforms  
+**Deliverables**: ✅ 8 total platforms  
 ✅ Webhook support  
 ✅ AI parsing  
 ✅ Release calendar  
@@ -3380,12 +3532,14 @@ Based on official Apify $1M Challenge requirements:
 **Month 2: Complete Platform Coverage**
 
 **Weeks 5-6: High-Risk Platforms**
+
 - [ ] **Poshmark** - Custom scraper (Cloudflare bypass)
 - [ ] **Craigslist** - Orchestrate existing actor (multi-city)
 - [ ] **OfferUp** - Orchestrate existing actor
 - [ ] **Kixify** - Custom scraper (easy HTML)
 
 **Weeks 7-8: Premium Features**
+
 - [ ] Implement tiered access (Free, Hobby, Pro, Business)
 - [ ] API access for Business tier
 - [ ] Historical price tracking
@@ -3395,19 +3549,20 @@ Based on official Apify $1M Challenge requirements:
 **Month 3: Growth & Optimization**
 
 **Weeks 9-10: User Dashboard (Optional)**
+
 - [ ] Build simple web dashboard
 - [ ] Show scraping statistics
 - [ ] Configure alert preferences
 - [ ] View historical deals
 
 **Weeks 11-12: Marketing Blitz**
+
 - [ ] YouTube tutorial (comprehensive guide)
 - [ ] Paid advertising ($500 budget)
 - [ ] Influencer partnerships (5 YouTubers)
 - [ ] Community building (Discord server)
 
-**Deliverables**:
-✅ 12 platforms (all eligible platforms)  
+**Deliverables**: ✅ 12 platforms (all eligible platforms)  
 ✅ 3 pricing tiers  
 ✅ 100+ MAUs  
 ✅ $500+ MRR
@@ -3419,6 +3574,7 @@ Based on official Apify $1M Challenge requirements:
 **Goal**: Optimize for Apify Challenge judging, scale to 200+ MAUs
 
 **Month 4: Technical Excellence**
+
 - [ ] Achieve 85+ Actor Quality Score
 - [ ] Comprehensive test suite
 - [ ] Performance benchmarking
@@ -3426,20 +3582,21 @@ Based on official Apify $1M Challenge requirements:
 - [ ] Code refactoring
 
 **Month 5: User Growth**
+
 - [ ] Aggressive marketing (target 200+ MAUs)
 - [ ] User testimonials
 - [ ] Case studies (3 successful resellers)
 - [ ] Press coverage (TechCrunch, Product Hunt)
 
 **Month 6: Challenge Submission Polish**
+
 - [ ] Update README with latest features
 - [ ] Create compelling demo video (5 minutes)
 - [ ] Prepare presentation for Apify team
 - [ ] Gather user statistics
 - [ ] Highlight unique innovations
 
-**Deliverables**:
-✅ Actor Quality Score: 85+  
+**Deliverables**: ✅ Actor Quality Score: 85+  
 ✅ 200+ MAUs  
 ✅ $1,000+ MRR  
 ✅ Strong challenge submission  
@@ -3535,13 +3692,17 @@ sneaker-meta-actor/
 ```markdown
 ## ⚖️ Legal Disclaimer
 
-**SneakerMeta Actor** scrapes publicly accessible data from e-commerce websites for personal, informational, and research purposes. Users are solely responsible for ensuring their use complies with:
+**SneakerMeta Actor** scrapes publicly accessible data from e-commerce websites for personal,
+informational, and research purposes. Users are solely responsible for ensuring their use complies
+with:
 
-1. **Applicable Laws**: Including but not limited to the Computer Fraud and Abuse Act (CFAA), GDPR, and CCPA
+1. **Applicable Laws**: Including but not limited to the Computer Fraud and Abuse Act (CFAA), GDPR,
+   and CCPA
 2. **Platform Terms of Service**: Each platform's ToS governs use of their data
 3. **Data Protection Regulations**: Do not use for unauthorized commercial purposes
 
 ### What This Actor Does:
+
 ✅ Scrapes **public** listings (no login bypass)  
 ✅ Respects `robots.txt` where possible  
 ✅ Implements rate limiting to avoid server overload  
@@ -3549,24 +3710,30 @@ sneaker-meta-actor/
 ✅ Links to original sources (does not republish content)
 
 ### What This Actor Does NOT Do:
+
 ❌ Bypass authentication or CAPTCHA  
 ❌ Violate CFAA (no unauthorized access)  
 ❌ Store copyrighted images permanently  
 ❌ Guarantee uninterrupted access (platforms may block)
 
 ### Platform-Specific Risks:
+
 - **StockX, GOAT**: High-risk platforms with aggressive ToS enforcement. Use at your own risk.
 - **eBay**: Recommends official API (included in actor).
 
 ### User Responsibilities:
+
 By using this actor, you agree to:
+
 - Use scraped data for **personal, non-commercial purposes only**
 - Not resell or redistribute scraped data in bulk
 - Comply with all platform ToS
 - Not overwhelm servers (respect built-in rate limits)
 
 ### No Warranty:
+
 This actor is provided "AS-IS" without warranties of any kind. The creators are not liable for:
+
 - Account suspensions or bans
 - Legal action by platforms
 - Data accuracy or completeness
@@ -3576,7 +3743,8 @@ This actor is provided "AS-IS" without warranties of any kind. The creators are 
 
 ---
 
-*For questions about compliance, consult a legal professional. This disclaimer does not constitute legal advice.*
+_For questions about compliance, consult a legal professional. This disclaimer does not constitute
+legal advice._
 ```
 
 ---
@@ -3628,7 +3796,7 @@ const emailTemplate = `
       <h1>🔥 New Sneaker Deals</h1>
       <p>{{count}} listings found matching your criteria</p>
     </div>
-    
+
     <!-- Stats Summary -->
     <div class="content">
       <div class="stats">
@@ -3645,7 +3813,7 @@ const emailTemplate = `
           <div class="stat-label">Avg Price</div>
         </div>
       </div>
-      
+
       <!-- Listings -->
       {{#each listings}}
       <div class="listing">
@@ -3655,18 +3823,18 @@ const emailTemplate = `
           <span class="deal-badge">Save {{this.dealScore.savingsPercentage}}%</span>
           {{/if}}
         </div>
-        
+
         {{#if this.source.imageUrl}}
         <img src="{{this.source.imageUrl}}" alt="{{this.product.name}}" class="listing-image">
         {{/if}}
-        
+
         <div class="price">
           ${{this.listing.price}}
           {{#if this.dealScore.marketValue}}
           <span class="price-original">${{this.dealScore.marketValue}}</span>
           {{/if}}
         </div>
-        
+
         <div class="details">
           <div class="detail-item">
             <div class="detail-label">Size</div>
@@ -3685,16 +3853,16 @@ const emailTemplate = `
             <div class="detail-value">{{formatDate this.scrape.timestamp}}</div>
           </div>
         </div>
-        
+
         {{#if this.listing.description}}
         <p style="color: #6c757d; font-size: 14px; margin: 15px 0;">{{truncate this.listing.description 150}}</p>
         {{/if}}
-        
+
         <a href="{{this.source.url}}" class="cta">View Listing →</a>
       </div>
       {{/each}}
     </div>
-    
+
     <!-- Footer -->
     <div class="footer">
       <p><strong>Powered by SneakerMeta</strong></p>
@@ -3714,7 +3882,8 @@ const emailTemplate = `
 
 ## Conclusion
 
-This technical architecture document provides a **comprehensive, implementation-ready blueprint** for building the SneakerMeta multi-platform sneaker aggregation Apify actor.
+This technical architecture document provides a **comprehensive, implementation-ready blueprint**
+for building the SneakerMeta multi-platform sneaker aggregation Apify actor.
 
 ### Key Strengths:
 
@@ -3723,7 +3892,8 @@ This technical architecture document provides a **comprehensive, implementation-
 3. **Production-Ready**: Security, error handling, monitoring, monetization built-in
 4. **Market-Validated**: $6B+ sneaker resale market, clear user personas, competitive pricing
 5. **Technical Excellence**: 85+ estimated Actor Quality Score, advanced Apify SDK usage
-6. **Focused Approach**: Targets 4 major platforms (eBay, Grailed, StockX, GOAT) for comprehensive coverage
+6. **Focused Approach**: Targets 4 major platforms (eBay, Grailed, StockX, GOAT) for comprehensive
+   coverage
 
 ### Next Steps:
 
@@ -3734,6 +3904,7 @@ This technical architecture document provides a **comprehensive, implementation-
 5. **Compete for Grand Prize** ($100,000) with 85+ challenge score
 
 ### Estimated Challenge Score: **85/100**
+
 - Novelty: 25/30
 - Usefulness: 23/25
 - Technical Excellence: 22/25
@@ -3748,7 +3919,7 @@ This technical architecture document provides a **comprehensive, implementation-
 **Total Pages**: 87  
 **Word Count**: ~25,000 words  
 **Code Examples**: 45+  
-**Diagrams**: 3 text-based architecture diagrams  
+**Diagrams**: 3 text-based architecture diagrams
 
 **Repository**: [To be created at github.com/[username]/sneaker-meta-actor]  
 **Apify Store**: [To be published after MVP completion]  
@@ -3756,4 +3927,4 @@ This technical architecture document provides a **comprehensive, implementation-
 
 ---
 
-*End of Technical Architecture Documentation*
+_End of Technical Architecture Documentation_
