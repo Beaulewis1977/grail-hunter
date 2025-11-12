@@ -1,6 +1,6 @@
 # SneakerMeta: Technical Architecture Documentation
 
-### Multi-Platform Sneaker Alert & Aggregation System
+## Multi-Platform Sneaker Alert & Aggregation System
 
 **Version:** 1.1 **Date:** November 10, 2025 **Project Type:** Apify Actor Challenge Submission
 **Target Market:** Sneaker collectors, resellers, and enthusiasts **Business Model:** FREE during
@@ -442,7 +442,23 @@ class DeduplicationEngine {
   }
 
   async initialize() {
-    this.seenHashes = (await this.kvStore.getValue(this.seenHashesKey)) || new Set();
+    const storedHashes = (await this.kvStore.getValue(this.seenHashesKey)) || [];
+    this.seenHashes = new Map();
+
+    // Handle both legacy and current formats
+    if (Array.isArray(storedHashes)) {
+      for (const entry of storedHashes) {
+        // Legacy format: string hash
+        if (typeof entry === 'string') {
+          this.seenHashes.set(entry, Date.now());
+        }
+        // Current format: { hash, lastSeen }
+        else if (entry && typeof entry === 'object' && entry.hash) {
+          this.seenHashes.set(entry.hash, entry.lastSeen || Date.now());
+        }
+      }
+    }
+
     Actor.log.info(`Loaded ${this.seenHashes.size} seen listings from previous runs`);
   }
 
@@ -452,33 +468,45 @@ class DeduplicationEngine {
     return crypto.createHash('md5').update(hashString).digest('hex');
   }
 
+  serializeHashes() {
+    // Convert Map to array of { hash, lastSeen } objects
+    return Array.from(this.seenHashes.entries()).map(([hash, lastSeen]) => ({
+      hash,
+      lastSeen,
+    }));
+  }
+
   async findNewListings(listings) {
     const newListings = [];
-    const newHashes = new Set(this.seenHashes);
+    const currentTime = Date.now();
 
     for (const listing of listings) {
       const hash = this.generateHash(listing);
 
       if (!this.seenHashes.has(hash)) {
         newListings.push(listing);
-        newHashes.add(hash);
+        this.seenHashes.set(hash, currentTime);
         Actor.log.info(`NEW LISTING: ${listing.product.name} - $${listing.listing.price}`);
       }
     }
 
-    // Persist updated state
-    await this.kvStore.setValue(this.seenHashesKey, Array.from(newHashes));
+    // Persist updated state using object format
+    await this.kvStore.setValue(this.seenHashesKey, this.serializeHashes());
 
     return newListings;
   }
 
-  // Advanced: Detect price drops
+  // Advanced: Detect price drops with rate limiting
   async detectPriceDrops(listings) {
     const priceDrops = [];
 
     for (const listing of listings) {
       const hash = this.generateHash(listing);
       const previousPrice = await this.kvStore.getValue(`price_${hash}`);
+      const lastPriceUpdate = await this.kvStore.getValue(`price_${hash}_updated_at`);
+
+      // Only update price if it's been at least 1 hour since last update
+      const shouldUpdate = !lastPriceUpdate || Date.now() - lastPriceUpdate > 3600000;
 
       if (previousPrice && listing.listing.price < previousPrice * 0.9) {
         priceDrops.push({
@@ -490,7 +518,10 @@ class DeduplicationEngine {
         });
       }
 
-      await this.kvStore.setValue(`price_${hash}`, listing.listing.price);
+      if (shouldUpdate) {
+        await this.kvStore.setValue(`price_${hash}`, listing.listing.price);
+        await this.kvStore.setValue(`price_${hash}_updated_at`, Date.now());
+      }
     }
 
     return priceDrops;
@@ -722,20 +753,22 @@ class NotificationManager {
    - Reduces API calls by 70-80% after initial run
 
 3. **Request Batching**
-   - Group Craigslist searches by region
-   - Batch eBay API calls (up to 100 items per request)
+
+- Group Craigslist searches by region
+- Batch eBay API calls (up to 100 items per request)
 
 4. **Resource Management**
-   ```javascript
-   const pool = new AutoscaledPool({
-     maxConcurrency: 10, // Max 10 parallel scrapers
-     minConcurrency: 2, // Keep at least 2 active
-     desiredConcurrency: 5, // Target 5 concurrent
-     systemStatusOptions: {
-       maxUsedMemoryRatio: 0.8, // Throttle at 80% RAM
-     },
-   });
-   ```
+
+```javascript
+const pool = new AutoscaledPool({
+  maxConcurrency: 10, // Max 10 parallel scrapers
+  minConcurrency: 2, // Keep at least 2 active
+  desiredConcurrency: 5, // Target 5 concurrent
+  systemStatusOptions: {
+    maxUsedMemoryRatio: 0.8, // Throttle at 80% RAM
+  },
+});
+```
 
 #### Rate Limiting Implementation
 
@@ -1576,7 +1609,7 @@ function verifyWebhook(payload, signature, secret) {
 
 ---
 
-## 5. Platform-Specific Scraping Strategies
+## 5. Platform-Specific Scraping Strategies (Overview)
 
 _[Due to length, this section will be continued in a separate message. Would you like me to continue
 with the remaining sections?]_
@@ -1737,7 +1770,7 @@ async function callEbayAPI(keywords, minPrice, maxPrice) {
 **Approach**: Orchestrate `ecomscrape/goat-product-search-scraper`  
 **Risk Level**: ⭐⭐ Medium
 
-#### Implementation
+#### GOAT Implementation
 
 ```javascript
 async function scrapeGOAT(searchParams) {
@@ -1937,12 +1970,14 @@ class FlightClubScraper {
 1. **Use residential proxies** (Apify proxy pool)
 2. **Randomize delays** between requests (2-5 seconds)
 3. **Rotate User-Agents**:
-   ```javascript
-   const userAgents = [
-     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36...',
-     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36...',
-   ];
-   ```
+
+```javascript
+const userAgents = [
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36...',
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36...',
+];
+```
+
 4. **Implement retry logic** with exponential backoff
 5. **Monitor for CAPTCHA** and handle gracefully
 
@@ -1955,7 +1990,7 @@ class FlightClubScraper {
 **Risk Level**: ⭐⭐ Medium  
 **Value**: High - Sister site to Flight Club
 
-#### Implementation
+#### Stadium Goods Implementation
 
 ```javascript
 import { CheerioCrawler } from 'crawlee';

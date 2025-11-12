@@ -8,7 +8,7 @@ offering specific, actionable insights for developers and product designers. The
 collectible models, pricing trends, authentication, popular marketplaces, user pain points,
 demographics, reseller strategies, and seasonal patterns.
 
-### Executive Summary
+## Executive Summary
 
 The global sneaker resale market is a dynamic, multi-billion-dollar industry projected to reach
 approximately **$11.5 billion by 2025**. While the market is experiencing some price corrections and
@@ -82,8 +82,8 @@ Collaborations are a primary driver of hype and high resale margins, often selli
 
 The sneaker resale market in 2024-2025 is characterized by a complex pricing environment. While the
 overall market value is projected to grow, individual resellers face margin compression and price
-volatility. A scraping tool must be ableto capture the nuances of these trends to provide users with
-a competitive edge.
+volatility. A scraping tool must be able to capture the nuances of these trends to provide users
+with a competitive edge.
 
 ### Market-Wide Pricing Dynamics
 

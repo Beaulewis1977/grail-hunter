@@ -448,15 +448,16 @@ apify push
 1. Navigate to Actor settings → Monetization
 2. Enable "Paid actor"
 3. Set pricing model:
-   ```json
-   {
-     "pricingModel": "MONTHLY_RENTAL",
-     "monthlyPrice": 2.99,
-     "annualPrice": 29.99, // Offer 17% discount
-     "freeTrial": 7, // Days
-     "freeTrialRuns": 5 // Or run limit
-   }
-   ```
+
+```json
+{
+  "pricingModel": "MONTHLY_RENTAL",
+  "monthlyPrice": 2.99,
+  "annualPrice": 29.99, // Offer 17% discount
+  "freeTrial": 7, // Days
+  "freeTrialRuns": 5 // Or run limit
+}
+```
 
 **Tiered Pricing Strategy (Recommended):**
 
@@ -1476,7 +1477,8 @@ function deduplicateListings(listings) {
 
 // Advanced: Track seen listings across runs
 async function getNewListings(currentListings) {
-  const previousHashes = (await Actor.getValue('seen_hashes')) || new Set();
+  const storedHashes = (await Actor.getValue('seen_hashes')) || [];
+  const previousHashes = new Set(Array.isArray(storedHashes) ? storedHashes : []);
   const newListings = [];
 
   for (const listing of currentListings) {

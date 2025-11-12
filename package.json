@@ -1,7 +1,7 @@
 {
   "name": "grail-hunter",
   "version": "0.1.0",
-  "description": "SneakerMeta Apify Actor - Multi-platform sneaker marketplace price tracking",
+  "description": "Grail Hunter Apify Actor - Multi-platform sneaker marketplace price tracking",
   "type": "module",
   "main": "src/index.js",
   "scripts": {
@@ -11,8 +11,8 @@
     "lint": "eslint . --ext .js,.ts,.jsx,.tsx && markdownlint '**/*.md' && prettier --check .",
     "lint:fix": "eslint . --ext .js,.ts,.jsx,.tsx --fix && markdownlint '**/*.md' --fix && prettier --write .",
     "format": "prettier --write .",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
-    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage --runInBand",
+    "test:watch": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --watch --runInBand",
     "pre-commit": "lint-staged",
     "build": "apify build",
     "push": "apify push",
@@ -42,6 +42,7 @@
     "@types/jest": "^29.5.8",
     "@typescript-eslint/eslint-plugin": "^6.13.2",
     "@typescript-eslint/parser": "^6.13.2",
+    "cross-env": "^10.1.0",
     "eslint": "^8.55.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^10.1.8",

@@ -22,6 +22,9 @@ export class GrailedScraper extends BaseScraper {
 
     const startUrls = this.buildSearchUrls(searchParams.keywords);
 
+    // Get actor ID from config with fallback
+    const actorId = this.config.actorId || 'vmscrapers/grailed';
+
     try {
       // Call the existing Grailed actor
       const input = {
@@ -33,30 +36,22 @@ export class GrailedScraper extends BaseScraper {
         },
       };
 
-      logger.debug('Calling vmscrapers/grailed actor', { input });
+      logger.debug(`Calling ${actorId} actor`, { input });
 
-      const run = await Actor.call('vmscrapers/grailed', input, {
-        waitSecs: 0, // Don't wait for completion, we'll check status
-      });
+      const run = await Actor.call(actorId, input);
 
       if (!run) {
-        throw new ActorCallError('vmscrapers/grailed', 'Actor call returned null');
+        throw new ActorCallError(actorId, 'Actor call returned null');
       }
 
-      logger.info('Grailed actor run started', { runId: run.id });
+      logger.info('Grailed actor run finished', { runId: run.id, status: run.status });
 
-      // Wait for the actor run to finish
-      const finishedRun = await Actor.apifyClient.run(run.id).waitForFinish();
-
-      if (finishedRun.status !== 'SUCCEEDED') {
-        throw new ActorCallError(
-          'vmscrapers/grailed',
-          `Actor run failed with status: ${finishedRun.status}`
-        );
+      if (run.status !== 'SUCCEEDED') {
+        throw new ActorCallError(actorId, `Actor run failed with status: ${run.status}`);
       }
 
       // Fetch results from the dataset
-      const dataset = await Actor.apifyClient.dataset(finishedRun.defaultDatasetId);
+      const dataset = await Actor.apifyClient.dataset(run.defaultDatasetId);
       const { items } = await dataset.listItems();
 
       logger.info(`Scraped ${items.length} listings from Grailed`);
@@ -64,7 +59,7 @@ export class GrailedScraper extends BaseScraper {
       return items;
     } catch (error) {
       logger.error('Grailed scraping failed', { error: error.message });
-      throw new ActorCallError('vmscrapers/grailed', error.message, error);
+      throw new ActorCallError(actorId, error.message, error);
     }
   }
 
