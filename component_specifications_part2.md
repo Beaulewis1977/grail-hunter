@@ -552,8 +552,14 @@ class PerformanceMetrics {
    */
   getSuccessRate() {
     const platforms = Object.values(this.metrics.platforms);
+    const totalPlatforms = platforms.length;
+
+    if (totalPlatforms === 0) {
+      return 0;
+    }
+
     const successful = platforms.filter((p) => p.success).length;
-    return (successful / platforms.length) * 100;
+    return (successful / totalPlatforms) * 100;
   }
 
   /**
@@ -561,20 +567,24 @@ class PerformanceMetrics {
    */
   getSummary() {
     const duration = Date.now() - this.metrics.startTime;
+    const platformEntries = Object.values(this.metrics.platforms);
+    const totalPlatforms = platformEntries.length;
+    const successfulPlatforms = platformEntries.filter((p) => p.success).length;
+    const failedPlatforms = platformEntries.filter((p) => !p.success).length;
 
     return {
       duration,
       platforms: {
-        total: Object.keys(this.metrics.platforms).length,
-        successful: Object.values(this.metrics.platforms).filter((p) => p.success).length,
-        failed: Object.values(this.metrics.platforms).filter((p) => !p.success).length,
+        total: totalPlatforms,
+        successful: successfulPlatforms,
+        failed: failedPlatforms,
         successRate: this.getSuccessRate(),
       },
       listings: this.metrics.listings,
       notifications: this.metrics.notifications,
       errors: this.metrics.errors.length,
       avgListingsPerPlatform:
-        this.metrics.listings.total / Object.keys(this.metrics.platforms).length,
+        totalPlatforms === 0 ? 0 : this.metrics.listings.total / totalPlatforms,
     };
   }
 
@@ -1203,7 +1213,7 @@ class EbayScraper extends BaseScraper {
   }
 
   extractSize(title) {
-    const sizeMatch = title.match(/\b(?:size|sz)\s*(\d{1,2}(?:\.\5)?)\b/i);
+    const sizeMatch = title.match(/\b(?:size|sz)\s*(\d{1,2}(?:\.5)?)\b/i);
     return sizeMatch ? sizeMatch[1] : null;
   }
 
@@ -1406,9 +1416,9 @@ class FlightClubScraper extends BaseScraper {
    * Initialize crawler
    */
   async initialize() {
-    const { CheerioCrawler, ProxyConfiguration } = require('crawlee');
+    const { CheerioCrawler, Actor } = require('crawlee');
 
-    const proxyConfiguration = await ProxyConfiguration.create({
+    const proxyConfiguration = Actor.newProxyConfiguration({
       ...this.proxyConfig,
     });
 
@@ -1543,7 +1553,7 @@ class FlightClubScraper extends BaseScraper {
   }
 
   parseSize(sizeString) {
-    const match = sizeString.match(/\d{1,2}(?:\.\5)?/);
+    const match = sizeString.match(/\d{1,2}(?:\.5)?/);
     return match ? match[0] : null;
   }
 }

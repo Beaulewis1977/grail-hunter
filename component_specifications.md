@@ -17,9 +17,9 @@
 3. [Notification System Specification](#3-notification-system-specification)
 4. [Price Tracking Specification](#4-price-tracking-specification)
 5. [Deduplication Logic Specification](#5-deduplication-logic-specification)
-6. [Error Handling & Monitoring Specification](#6-error-handling--monitoring-specification)
-7. [Platform Scraper Specification](#7-platform-scraper-specification)
-8. [Testing Specifications](#8-testing-specifications)
+6. [Error Handling & Monitoring Specification](component_specifications_complete.md#6-error-handling--monitoring-specification)
+7. [Platform Scraper Specification](component_specifications_complete.md#7-platform-scraper-specification)
+8. [Testing Specifications](component_specifications_complete.md#8-testing-specifications)
 
 ---
 

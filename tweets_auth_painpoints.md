@@ -1,4 +1,4 @@
-## Real-Time Search Results
+# Real-Time Search Results
 
 URL: https://x.com/anyuser/status/1986428176877187348
 

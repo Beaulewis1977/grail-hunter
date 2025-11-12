@@ -3,7 +3,8 @@
 **Date:** November 10, 2025  
 **Version:** 0.1.0  
 **Branch:** `feature/phase-1-grailed-mvp`  
-**Status:** ✅ **PRODUCTION READY** - All tests passing, 80%+ coverage achieved
+**Status:** ✅ **PRODUCTION READY** - All tests passing, 80%+ coverage plus mocked Grailed
+integration tests
 
 ---
 
@@ -11,7 +12,8 @@
 
 Phase 1 of the Grail Hunter actor is **complete and production-ready**. This implementation delivers
 a fully functional, well-tested sneaker monitoring actor for Grailed with comprehensive notification
-support, intelligent parsing, and deduplication.
+support, intelligent parsing, deduplication, and mocked API-keyed integration tests for the Grailed
+scraper.
 
 ### Key Achievements
 
@@ -152,7 +154,7 @@ grail-hunter/
 - Rate limiting support
 - Graceful error handling
 
-**Status:** Implemented but not tested (requires API calls)
+**Status:** Implemented and tested (mocked Apify API responses)
 
 #### Scraper Manager (`src/scrapers/manager.js`)
 
@@ -504,6 +506,7 @@ To test webhook notifications:
 1. Go to [webhook.site](https://webhook.site)
 2. Copy your unique URL
 3. Update `.actor/INPUT.json`:
+
    ```json
    {
      "notificationConfig": {
@@ -511,6 +514,7 @@ To test webhook notifications:
      }
    }
    ```
+
 4. Run the actor
 5. Check webhook.site to see the notification payload
 

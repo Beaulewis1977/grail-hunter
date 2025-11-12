@@ -4335,7 +4335,7 @@ async function handleRelisting(newListing) {
 _This completes sections 4-5. The document will continue with sections 6-8 (Error Handling, Platform
 Scrapers, and Testing). Would you like me to continue?_
 
-# Component Specifications - Part 2
+## Component Specifications - Part 2
 
 ## Sections 6-8: Error Handling, Platform Scrapers, and Testing
 

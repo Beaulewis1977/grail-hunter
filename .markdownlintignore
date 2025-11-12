@@ -1,0 +1,14 @@
+node_modules/
+coverage/
+dist/
+build/
+.nyc_output/
+tmp/
+reports/
+.cache/
+.out/
+.next/
+.vercel/
+.out-static/
+public/
+**/*.min.md
