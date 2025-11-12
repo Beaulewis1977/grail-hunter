@@ -443,8 +443,22 @@ class DeduplicationEngine {
 
   async initialize() {
     const storedHashes = (await this.kvStore.getValue(this.seenHashesKey)) || [];
-    // Map: hash -> timestamp for tracking when listings were first seen
-    this.seenHashes = new Map(Array.isArray(storedHashes) ? storedHashes : []);
+    this.seenHashes = new Map();
+
+    // Handle both legacy and current formats
+    if (Array.isArray(storedHashes)) {
+      for (const entry of storedHashes) {
+        // Legacy format: string hash
+        if (typeof entry === 'string') {
+          this.seenHashes.set(entry, Date.now());
+        }
+        // Current format: { hash, lastSeen }
+        else if (entry && typeof entry === 'object' && entry.hash) {
+          this.seenHashes.set(entry.hash, entry.lastSeen || Date.now());
+        }
+      }
+    }
+
     Actor.log.info(`Loaded ${this.seenHashes.size} seen listings from previous runs`);
   }
 
@@ -452,6 +466,14 @@ class DeduplicationEngine {
     // Create unique identifier from platform + ID
     const hashString = `${listing.source.platform}:${listing.source.id}`;
     return crypto.createHash('md5').update(hashString).digest('hex');
+  }
+
+  serializeHashes() {
+    // Convert Map to array of { hash, lastSeen } objects
+    return Array.from(this.seenHashes.entries()).map(([hash, lastSeen]) => ({
+      hash,
+      lastSeen,
+    }));
   }
 
   async findNewListings(listings) {
@@ -463,24 +485,28 @@ class DeduplicationEngine {
 
       if (!this.seenHashes.has(hash)) {
         newListings.push(listing);
-        this.seenHashes.set(hash, currentTime); // Store with timestamp
+        this.seenHashes.set(hash, currentTime);
         Actor.log.info(`NEW LISTING: ${listing.product.name} - $${listing.listing.price}`);
       }
     }
 
-    // Persist updated state (convert Map to array of [hash, timestamp] entries)
-    await this.kvStore.setValue(this.seenHashesKey, Array.from(this.seenHashes.entries()));
+    // Persist updated state using object format
+    await this.kvStore.setValue(this.seenHashesKey, this.serializeHashes());
 
     return newListings;
   }
 
-  // Advanced: Detect price drops
+  // Advanced: Detect price drops with rate limiting
   async detectPriceDrops(listings) {
     const priceDrops = [];
 
     for (const listing of listings) {
       const hash = this.generateHash(listing);
       const previousPrice = await this.kvStore.getValue(`price_${hash}`);
+      const lastPriceUpdate = await this.kvStore.getValue(`price_${hash}_updated_at`);
+
+      // Only update price if it's been at least 1 hour since last update
+      const shouldUpdate = !lastPriceUpdate || Date.now() - lastPriceUpdate > 3600000;
 
       if (previousPrice && listing.listing.price < previousPrice * 0.9) {
         priceDrops.push({
@@ -492,7 +518,10 @@ class DeduplicationEngine {
         });
       }
 
-      await this.kvStore.setValue(`price_${hash}`, listing.listing.price);
+      if (shouldUpdate) {
+        await this.kvStore.setValue(`price_${hash}`, listing.listing.price);
+        await this.kvStore.setValue(`price_${hash}_updated_at`, Date.now());
+      }
     }
 
     return priceDrops;

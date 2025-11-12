@@ -103,15 +103,8 @@ export class DataNormalizer {
    * Generic normalizer for unknown platforms
    */
   normalizeGeneric(raw, platform) {
-    let platformString = '';
-
-    if (typeof platform === 'string') {
-      platformString = platform.trim();
-    } else if (platform != null) {
-      platformString = String(platform).trim();
-    }
-
-    const safePlatform = platformString || '';
+    // Simplified platform sanitization while maintaining safety
+    const safePlatform = (typeof platform === 'string' ? platform : String(platform || '')).trim();
 
     return {
       product: {
