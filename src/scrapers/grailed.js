@@ -22,6 +22,9 @@ export class GrailedScraper extends BaseScraper {
 
     const startUrls = this.buildSearchUrls(searchParams.keywords);
 
+    // Get actor ID from config with fallback
+    const actorId = this.config.actorId || 'vmscrapers/grailed';
+
     try {
       // Call the existing Grailed actor
       const input = {
@@ -33,21 +36,18 @@ export class GrailedScraper extends BaseScraper {
         },
       };
 
-      logger.debug('Calling vmscrapers/grailed actor', { input });
+      logger.debug(`Calling ${actorId} actor`, { input });
 
-      const run = await Actor.call('vmscrapers/grailed', input);
+      const run = await Actor.call(actorId, input);
 
       if (!run) {
-        throw new ActorCallError('vmscrapers/grailed', 'Actor call returned null');
+        throw new ActorCallError(actorId, 'Actor call returned null');
       }
 
       logger.info('Grailed actor run finished', { runId: run.id, status: run.status });
 
       if (run.status !== 'SUCCEEDED') {
-        throw new ActorCallError(
-          'vmscrapers/grailed',
-          `Actor run failed with status: ${run.status}`
-        );
+        throw new ActorCallError(actorId, `Actor run failed with status: ${run.status}`);
       }
 
       // Fetch results from the dataset
@@ -59,7 +59,7 @@ export class GrailedScraper extends BaseScraper {
       return items;
     } catch (error) {
       logger.error('Grailed scraping failed', { error: error.message });
-      throw new ActorCallError('vmscrapers/grailed', error.message, error);
+      throw new ActorCallError(actorId, error.message, error);
     }
   }
 

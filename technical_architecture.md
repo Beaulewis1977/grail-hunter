@@ -442,7 +442,9 @@ class DeduplicationEngine {
   }
 
   async initialize() {
-    this.seenHashes = (await this.kvStore.getValue(this.seenHashesKey)) || new Set();
+    const storedHashes = (await this.kvStore.getValue(this.seenHashesKey)) || [];
+    // Map: hash -> timestamp for tracking when listings were first seen
+    this.seenHashes = new Map(Array.isArray(storedHashes) ? storedHashes : []);
     Actor.log.info(`Loaded ${this.seenHashes.size} seen listings from previous runs`);
   }
 
@@ -454,20 +456,20 @@ class DeduplicationEngine {
 
   async findNewListings(listings) {
     const newListings = [];
-    const newHashes = new Set(this.seenHashes);
+    const currentTime = Date.now();
 
     for (const listing of listings) {
       const hash = this.generateHash(listing);
 
       if (!this.seenHashes.has(hash)) {
         newListings.push(listing);
-        newHashes.add(hash);
+        this.seenHashes.set(hash, currentTime); // Store with timestamp
         Actor.log.info(`NEW LISTING: ${listing.product.name} - $${listing.listing.price}`);
       }
     }
 
-    // Persist updated state
-    await this.kvStore.setValue(this.seenHashesKey, Array.from(newHashes));
+    // Persist updated state (convert Map to array of [hash, timestamp] entries)
+    await this.kvStore.setValue(this.seenHashesKey, Array.from(this.seenHashes.entries()));
 
     return newListings;
   }

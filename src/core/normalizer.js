@@ -27,7 +27,7 @@ export class DataNormalizer {
         platform,
         type: typeof platform,
       });
-      return this.normalizeGeneric(rawListing, platform);
+      return this.normalizeGeneric(rawListing, '');
     }
 
     // Trim the platform value
@@ -38,7 +38,7 @@ export class DataNormalizer {
       logger.warn('Invalid platform parameter - empty string after trimming', {
         platform,
       });
-      return this.normalizeGeneric(rawListing, platform);
+      return this.normalizeGeneric(rawListing, '');
     }
 
     logger.debug(`Normalizing listing from ${platformTrimmed}`, { listingId: rawListing.id });
