@@ -1,4 +1,4 @@
-Technical Blueprint: The 'SneakerMeta' Orchestrator Actor
+# Technical Blueprint: The 'SneakerMeta' Orchestrator Actor
 
 I. Strategic Pivot: A Blueprint for an Eligible, Challenge-Winning Actor
 

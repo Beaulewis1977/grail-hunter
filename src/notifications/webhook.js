@@ -13,26 +13,35 @@ export class WebhookNotifier {
    * @param {Array} listings - New listings to notify about
    * @param {object} config - Webhook configuration
    */
-  async send(listings, config) {
-    const { webhookUrl, webhookSecret } = config;
+  async send(listings, config = {}) {
+    const { webhookUrl, webhookSecret, requestTimeoutMs = 10000 } = config || {};
+    const normalizedListings = Array.isArray(listings) ? listings : [];
 
     if (!webhookUrl) {
       logger.debug('No webhook URL configured, skipping webhook notification');
       return;
     }
 
+    const timestamp = new Date().toISOString();
+
+    const controller = new AbortController();
+    let timeoutId;
+
     try {
-      const payload = this.buildPayload(listings);
-      const headers = this.buildHeaders(payload, webhookSecret);
+      const payload = this.buildPayload(normalizedListings, timestamp);
+      const headers = this.buildHeaders(payload, webhookSecret, timestamp);
 
       logger.info(`Sending webhook notification to ${webhookUrl}`, {
-        listingCount: listings.length,
+        listingCount: normalizedListings.length,
       });
+
+      timeoutId = setTimeout(() => controller.abort(), requestTimeoutMs);
 
       const response = await fetch(webhookUrl, {
         method: 'POST',
         headers,
         body: JSON.stringify(payload),
+        signal: controller.signal,
       });
 
       if (!response.ok) {
@@ -43,37 +52,47 @@ export class WebhookNotifier {
         status: response.status,
       });
     } catch (error) {
-      logger.error('Webhook notification failed', { error: error.message });
-      throw new NotificationError('webhook', error.message, error);
+      const isTimeout = error.name === 'AbortError';
+      const message = isTimeout
+        ? `Webhook request timed out after ${requestTimeoutMs}ms`
+        : error.message;
+      logger.error('Webhook notification failed', { error: message });
+      throw new NotificationError('webhook', message, error);
+    } finally {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
     }
   }
 
   /**
    * Build webhook payload
    */
-  buildPayload(listings) {
+  buildPayload(listings, timestamp) {
+    const safeListings = Array.isArray(listings) ? listings : [];
+
     return {
       event: 'new_listings_found',
-      timestamp: new Date().toISOString(),
+      timestamp,
       runId: process.env.APIFY_ACT_RUN_ID || 'local',
       summary: {
-        totalNewListings: listings.length,
-        platformBreakdown: this.getPlatformBreakdown(listings),
-        averagePrice: this.calculateAveragePrice(listings),
-        bestDeal: this.findBestDeal(listings),
+        totalNewListings: safeListings.length,
+        platformBreakdown: this.getPlatformBreakdown(safeListings),
+        averagePrice: this.calculateAveragePrice(safeListings),
+        bestDeal: this.findBestDeal(safeListings),
       },
-      listings,
+      listings: safeListings,
     };
   }
 
   /**
    * Build HTTP headers with HMAC signature
    */
-  buildHeaders(payload, secret) {
+  buildHeaders(payload, secret, timestamp) {
     const headers = {
       'Content-Type': 'application/json',
       'X-Grail-Hunter-Event': 'new_listings_found',
-      'X-Grail-Hunter-Timestamp': Date.now().toString(),
+      'X-Grail-Hunter-Timestamp': timestamp,
     };
 
     if (secret) {
@@ -98,10 +117,16 @@ export class WebhookNotifier {
    */
   getPlatformBreakdown(listings) {
     const breakdown = {};
+    const safeListings = Array.isArray(listings) ? listings : [];
 
-    for (const listing of listings) {
-      const platform = listing.source.platform;
-      breakdown[platform] = (breakdown[platform] || 0) + 1;
+    for (const listing of safeListings) {
+      if (listing && typeof listing === 'object') {
+        const platform =
+          typeof listing?.source?.platform === 'string' && listing.source.platform.trim()
+            ? listing.source.platform
+            : 'unknown';
+        breakdown[platform] = (breakdown[platform] || 0) + 1;
+      }
     }
 
     return breakdown;
@@ -111,24 +136,43 @@ export class WebhookNotifier {
    * Calculate average price
    */
   calculateAveragePrice(listings) {
-    if (listings.length === 0) return 0;
+    const safeListings = Array.isArray(listings) ? listings : [];
+    const prices = safeListings
+      .map((listing) => Number(listing?.listing?.price))
+      .filter((price) => Number.isFinite(price));
 
-    const total = listings.reduce((sum, l) => sum + l.listing.price, 0);
-    return Math.round((total / listings.length) * 100) / 100;
+    if (prices.length === 0) return 0;
+
+    const total = prices.reduce((sum, price) => sum + price, 0);
+    return Math.round((total / prices.length) * 100) / 100;
   }
 
   /**
    * Find best deal (lowest price)
    */
   findBestDeal(listings) {
-    if (listings.length === 0) return null;
+    const safeListings = Array.isArray(listings) ? listings : [];
+    const candidates = safeListings.filter((listing) => {
+      if (!listing || typeof listing !== 'object') return false;
+      const price = Number(listing?.listing?.price);
+      return (
+        Number.isFinite(price) &&
+        listing.product?.name &&
+        listing.source?.url &&
+        listing.source?.platform
+      );
+    });
 
-    const sorted = [...listings].sort((a, b) => a.listing.price - b.listing.price);
+    if (candidates.length === 0) return null;
+
+    const sorted = [...candidates].sort(
+      (a, b) => Number(a.listing.price) - Number(b.listing.price)
+    );
     const best = sorted[0];
 
     return {
       productName: best.product.name,
-      price: best.listing.price,
+      price: Number(best.listing.price),
       url: best.source.url,
       platform: best.source.platform,
     };

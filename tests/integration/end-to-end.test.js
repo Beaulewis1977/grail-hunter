@@ -41,7 +41,7 @@ describe('End-to-End Integration', () => {
     filter = new ListingFilter();
     deduplicator = new DeduplicationEngine();
     deduplicator.kvStore = mockKvStore; // Manually set the mock
-    deduplicator.seenHashes = new Set();
+    deduplicator.seenHashes = new Map();
 
     // Load fixture data
     const fixturePath = join(__dirname, '../fixtures/grailed-listings.json');

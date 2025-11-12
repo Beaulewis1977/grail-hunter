@@ -127,9 +127,6 @@ Actor.main(async () => {
     });
 
     logger.info('✅ Grail Hunter actor completed successfully');
-
-    // Exit with success code
-    process.exit(0);
   } catch (error) {
     logger.error('❌ Actor execution failed', {
       error: error.message,

@@ -1,7 +1,7 @@
 export default {
   testEnvironment: 'node',
   testMatch: ['**/tests/**/*.test.js'],
-  collectCoverageFrom: ['src/**/*.js', '!src/**/*.js.map', '!src/**/index.js'],
+  collectCoverageFrom: ['src/**/*.js', '!src/**/*.js.map'],
   coveragePathIgnorePatterns: ['/node_modules/'],
   coverageThreshold: {
     global: {
