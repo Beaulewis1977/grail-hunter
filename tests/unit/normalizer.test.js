@@ -22,7 +22,7 @@ describe('DataNormalizer', () => {
         color: 'Black/Red',
         description: 'VNDS condition, OG all included',
         url: 'https://grailed.com/listings/12345',
-        image_url: 'https://i.ebayimg.com/images/g/pXgAAOSwqTdlSsaW/s-l1200.jpg',
+        image_url: 'tests/fixtures/images/placeholder.jpg',
         user: {
           username: 'sneaker_seller',
           feedback_score: 4.9,
@@ -93,9 +93,9 @@ describe('DataNormalizer', () => {
       expect(normalizer.parsePrice('$1,200.50')).toBe(1200.5);
     });
 
-    it('should return 0 for invalid price', () => {
-      expect(normalizer.parsePrice('invalid')).toBe(0);
-      expect(normalizer.parsePrice(null)).toBe(0);
+    it('should return null for invalid price', () => {
+      expect(normalizer.parsePrice('invalid')).toBeNull();
+      expect(normalizer.parsePrice(null)).toBeNull();
     });
   });
 

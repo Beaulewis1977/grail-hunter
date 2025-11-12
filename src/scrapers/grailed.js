@@ -35,28 +35,23 @@ export class GrailedScraper extends BaseScraper {
 
       logger.debug('Calling vmscrapers/grailed actor', { input });
 
-      const run = await Actor.call('vmscrapers/grailed', input, {
-        waitSecs: 0, // Don't wait for completion, we'll check status
-      });
+      const run = await Actor.call('vmscrapers/grailed', input);
 
       if (!run) {
         throw new ActorCallError('vmscrapers/grailed', 'Actor call returned null');
       }
 
-      logger.info('Grailed actor run started', { runId: run.id });
+      logger.info('Grailed actor run finished', { runId: run.id, status: run.status });
 
-      // Wait for the actor run to finish
-      const finishedRun = await Actor.apifyClient.run(run.id).waitForFinish();
-
-      if (finishedRun.status !== 'SUCCEEDED') {
+      if (run.status !== 'SUCCEEDED') {
         throw new ActorCallError(
           'vmscrapers/grailed',
-          `Actor run failed with status: ${finishedRun.status}`
+          `Actor run failed with status: ${run.status}`
         );
       }
 
       // Fetch results from the dataset
-      const dataset = await Actor.apifyClient.dataset(finishedRun.defaultDatasetId);
+      const dataset = await Actor.apifyClient.dataset(run.defaultDatasetId);
       const { items } = await dataset.listItems();
 
       logger.info(`Scraped ${items.length} listings from Grailed`);
