@@ -24,7 +24,7 @@
     "priceRange": {
       "title": "Price Range (USD)",
       "type": "object",
-      "description": "Filter listings by price range in US dollars",
+      "description": "Filter listings by price range in US dollars (max must be greater than or equal to min)",
       "editor": "json",
       "properties": {
         "min": {
