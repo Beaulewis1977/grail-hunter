@@ -16,22 +16,22 @@ fragmentation, outdated tools, and a lack of integrated, collector-centric featu
 
 **Key Findings:**
 
-1. **Fragmented and Niche Solutions:** The current offerings are divided between brand-specific
-   scrapers (e.g., Nike), resale marketplace scrapers (StockX, GOAT), and general C2C platform
-   scrapers (Facebook Marketplace, Craigslist). There is no single, unified actor that provides a
-   holistic view of the sneaker market.
-2. **Outdated and Unmaintained Actors:** A significant number of actors, particularly those
-   targeting specific retail sites like Nike.com, Sneaker Politics, and Shoe City, have not been
-   updated in over three years and are community-maintained. This suggests a high risk of
-   unreliability and functional decay.
-3. **Critical Feature Gap in Historical Data:** The most notable discovery is the deprecation of the
-   `avaritia/stockx-scraper`, which was the primary tool offering time-series sales history data.
-   This leaves a major void, as historical price tracking is essential for valuation, trend
-   analysis, and investment decisions by collectors and resellers.
-4. **Rudimentary Alerting Capabilities:** While Apify offers generic tools like `Content Checker`
-   for monitoring webpage changes, there is no specialized actor providing advanced, user-friendly
-   alerts tailored to the sneaker market (e.g., notifications for specific sizes, price drops below
-   a user-defined threshold, or restocks across multiple platforms).
+1.  **Fragmented and Niche Solutions:** The current offerings are divided between brand-specific
+    scrapers (e.g., Nike), resale marketplace scrapers (StockX, GOAT), and general C2C platform
+    scrapers (Facebook Marketplace, Craigslist). There is no single, unified actor that provides a
+    holistic view of the sneaker market.
+2.  **Outdated and Unmaintained Actors:** A significant number of actors, particularly those
+    targeting specific retail sites like Nike.com, Sneaker Politics, and Shoe City, have not been
+    updated in over three years and are community-maintained. This suggests a high risk of
+    unreliability and functional decay.
+3.  **Critical Feature Gap in Historical Data:** The most notable discovery is the deprecation of
+    the `avaritia/stockx-scraper`, which was the primary tool offering time-series sales history
+    data. This leaves a major void, as historical price tracking is essential for valuation, trend
+    analysis, and investment decisions by collectors and resellers.
+4.  **Rudimentary Alerting Capabilities:** While Apify offers generic tools like `Content Checker`
+    for monitoring webpage changes, there is no specialized actor providing advanced, user-friendly
+    alerts tailored to the sneaker market (e.g., notifications for specific sizes, price drops below
+    a user-defined threshold, or restocks across multiple platforms).
 
 **Strategic Recommendations for a New Actor:**
 
@@ -189,9 +189,9 @@ more than just one-time data extraction; it demands ongoing tracking and automat
 **Conclusion on Gaps:** The current Apify ecosystem forces a potential user to cobble together a
 workflow using multiple, often outdated, generic tools. There is no single, reliable actor that:
 
-1. Scrapes multiple key sneaker marketplaces (StockX, GOAT).
-2. Provides historical sales and price data.
-3. Offers a simple, integrated alerting system for specific sneakers, sizes, and price points.
+1.  Scrapes multiple key sneaker marketplaces (StockX, GOAT).
+2.  Provides historical sales and price data.
+3.  Offers a simple, integrated alerting system for specific sneakers, sizes, and price points.
 
 ## 4. Strategic Recommendations for a Competitive New Actor
 

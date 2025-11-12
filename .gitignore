@@ -15,6 +15,7 @@ pnpm-lock.yaml
 *.swp
 *.swo
 *~
+.DS_Store
 *.sublime-workspace
 
 # Build & dist outputs
@@ -54,6 +55,7 @@ temp/
 # OS-specific
 .DS_Store
 Thumbs.db
+*:Zone.Identifier
 
 # Local development
 .cache/

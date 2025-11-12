@@ -1,6 +1,6 @@
 # SneakerMeta: Technical Architecture Documentation
 
-## Multi-Platform Sneaker Alert & Aggregation System
+### Multi-Platform Sneaker Alert & Aggregation System
 
 **Version:** 1.1 **Date:** November 10, 2025 **Project Type:** Apify Actor Challenge Submission
 **Target Market:** Sneaker collectors, resellers, and enthusiasts **Business Model:** FREE during
@@ -722,22 +722,20 @@ class NotificationManager {
    - Reduces API calls by 70-80% after initial run
 
 3. **Request Batching**
-
-- Group Craigslist searches by region
-- Batch eBay API calls (up to 100 items per request)
+   - Group Craigslist searches by region
+   - Batch eBay API calls (up to 100 items per request)
 
 4. **Resource Management**
-
-```javascript
-const pool = new AutoscaledPool({
-  maxConcurrency: 10, // Max 10 parallel scrapers
-  minConcurrency: 2, // Keep at least 2 active
-  desiredConcurrency: 5, // Target 5 concurrent
-  systemStatusOptions: {
-    maxUsedMemoryRatio: 0.8, // Throttle at 80% RAM
-  },
-});
-```
+   ```javascript
+   const pool = new AutoscaledPool({
+     maxConcurrency: 10, // Max 10 parallel scrapers
+     minConcurrency: 2, // Keep at least 2 active
+     desiredConcurrency: 5, // Target 5 concurrent
+     systemStatusOptions: {
+       maxUsedMemoryRatio: 0.8, // Throttle at 80% RAM
+     },
+   });
+   ```
 
 #### Rate Limiting Implementation
 
@@ -1578,7 +1576,7 @@ function verifyWebhook(payload, signature, secret) {
 
 ---
 
-## 5. Platform-Specific Scraping Strategies (Overview)
+## 5. Platform-Specific Scraping Strategies
 
 _[Due to length, this section will be continued in a separate message. Would you like me to continue
 with the remaining sections?]_
@@ -1739,7 +1737,7 @@ async function callEbayAPI(keywords, minPrice, maxPrice) {
 **Approach**: Orchestrate `ecomscrape/goat-product-search-scraper`  
 **Risk Level**: ⭐⭐ Medium
 
-#### GOAT Implementation
+#### Implementation
 
 ```javascript
 async function scrapeGOAT(searchParams) {
@@ -1939,14 +1937,12 @@ class FlightClubScraper {
 1. **Use residential proxies** (Apify proxy pool)
 2. **Randomize delays** between requests (2-5 seconds)
 3. **Rotate User-Agents**:
-
-```javascript
-const userAgents = [
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36...',
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36...',
-];
-```
-
+   ```javascript
+   const userAgents = [
+     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36...',
+     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36...',
+   ];
+   ```
 4. **Implement retry logic** with exponential backoff
 5. **Monitor for CAPTCHA** and handle gracefully
 
@@ -1959,7 +1955,7 @@ const userAgents = [
 **Risk Level**: ⭐⭐ Medium  
 **Value**: High - Sister site to Flight Club
 
-#### Stadium Goods Implementation
+#### Implementation
 
 ```javascript
 import { CheerioCrawler } from 'crawlee';

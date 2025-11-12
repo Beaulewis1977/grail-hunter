@@ -5,8 +5,6 @@
 
 import { logger } from '../utils/logger.js';
 
-const MAX_DESCRIPTION_LENGTH = 500;
-
 export class DataNormalizer {
   /**
    * Normalize a listing from any platform
@@ -103,16 +101,6 @@ export class DataNormalizer {
    * Generic normalizer for unknown platforms
    */
   normalizeGeneric(raw, platform) {
-    let platformString = '';
-
-    if (typeof platform === 'string') {
-      platformString = platform.trim();
-    } else if (platform != null) {
-      platformString = String(platform).trim();
-    }
-
-    const safePlatform = platformString || '';
-
     return {
       product: {
         name: raw.title || raw.name || 'Unknown',
@@ -134,7 +122,7 @@ export class DataNormalizer {
         description: raw.description || '',
       },
       source: {
-        platform: safePlatform,
+        platform,
         url: raw.url || raw.link || '',
         id: String(raw.id || ''),
         is_authenticated: false,
@@ -242,10 +230,6 @@ export class DataNormalizer {
    * Extract tags from description
    */
   extractTags(description) {
-    if (typeof description !== 'string') {
-      return [];
-    }
-
     const tags = [];
     const desc = description.toLowerCase();
 
@@ -261,30 +245,12 @@ export class DataNormalizer {
    * Parse price to number
    */
   parsePrice(price) {
-    if (typeof price === 'number') {
-      return Number.isFinite(price) ? price : null;
-    }
-
+    if (typeof price === 'number') return price;
     if (typeof price === 'string') {
       const cleaned = price.replace(/[^0-9.]/g, '');
-      const parsed = parseFloat(cleaned);
-
-      if (!Number.isNaN(parsed)) {
-        return parsed;
-      }
-
-      logger.warn('Failed to parse price string', { price });
-      return null;
+      return parseFloat(cleaned) || 0;
     }
-
-    if (price !== undefined && price !== null) {
-      logger.warn('Unsupported price type received while parsing', {
-        price,
-        type: typeof price,
-      });
-    }
-
-    return null;
+    return 0;
   }
 
   /**
@@ -292,11 +258,6 @@ export class DataNormalizer {
    */
   truncateDescription(desc) {
     if (!desc) return '';
-    if (desc.length <= MAX_DESCRIPTION_LENGTH) {
-      return desc;
-    }
-
-    const truncatedLength = Math.max(0, MAX_DESCRIPTION_LENGTH - 3);
-    return `${desc.substring(0, truncatedLength)}...`;
+    return desc.length > 500 ? `${desc.substring(0, 497)}...` : desc;
   }
 }

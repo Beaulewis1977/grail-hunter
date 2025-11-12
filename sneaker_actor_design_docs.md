@@ -10,23 +10,21 @@
 
 ## Table of Contents
 
-- [1. Executive Summary](#1-executive-summary)
-- [2. Market Opportunity](#2-market-opportunity)
-- [3. Competitive Differentiation](#3-competitive-differentiation)
-- [4. Architecture Overview](#4-architecture-overview)
-- [5. Technical Specifications](#5-technical-specifications)
-- [6. Marketplace Integrations](#6-marketplace-integrations)
-- [7. Search Strategy](#7-search-strategy)
-- [8. Notification System](#8-notification-system)
-- [9. User Configuration Options](#9-user-configuration-options)
-- [10. Data Schema](#10-data-schema)
-- [11. Scheduling & Monitoring](#11-scheduling--monitoring)
-- [12. Quality Score Strategy](#12-quality-score-strategy)
-<!-- markdownlint-disable MD051 -->
-- [13. Implementation Roadmap](#implementation-roadmap)
-- [14. Pricing Strategy](#pricing-strategy)
-- [15. Success Metrics](#success-metrics)
-<!-- markdownlint-enable MD051 -->
+1. [Executive Summary](#1-executive-summary)
+2. [Market Opportunity](#2-market-opportunity)
+3. [Competitive Differentiation](#3-competitive-differentiation)
+4. [Architecture Overview](#4-architecture-overview)
+5. [Technical Specifications](#5-technical-specifications)
+6. [Marketplace Integrations](#6-marketplace-integrations)
+7. [Search Strategy](#7-search-strategy)
+8. [Notification System](#8-notification-system)
+9. [User Configuration Options](#9-user-configuration-options)
+10. [Data Schema](#10-data-schema)
+11. [Scheduling & Monitoring](#11-scheduling--monitoring)
+12. [Quality Score Strategy](#12-quality-score-strategy)
+13. [Implementation Roadmap](#13-implementation-roadmap)
+14. [Pricing Strategy](#14-pricing-strategy)
+15. [Success Metrics](#15-success-metrics)
 
 ---
 
@@ -1008,28 +1006,24 @@ async function scrapeStockX(searchQuery, sizes) {
 
   // Transform to our schema
   return items
-    .map((item) => {
-      const normalizedSize = item.size || item.sizeLabel || extractSizeFromTitle(item.title);
-      return {
-        id: generateHash('stockx', item.url),
-        platform: 'stockx',
-        url: item.url,
-        model: item.title,
-        sku: item.styleId,
-        colorway: item.colorway,
-        price: item.lowestAsk, // Use lowest ask as "price"
-        size: normalizedSize,
-        marketData: {
-          lowestAsk: item.lowestAsk,
-          highestBid: item.highestBid,
-          lastSale: item.lastSale,
-          salesLast72h: item.deadstockSold,
-        },
-        authenticityStatus: 'verified',
-        scrapedDate: new Date().toISOString(),
-      };
-    })
-    .filter((item) => sizes.includes('all') || (item.size && sizes.includes(item.size)));
+    .map((item) => ({
+      id: generateHash('stockx', item.url),
+      platform: 'stockx',
+      url: item.url,
+      model: item.title,
+      sku: item.styleId,
+      colorway: item.colorway,
+      price: item.lowestAsk, // Use lowest ask as "price"
+      marketData: {
+        lowestAsk: item.lowestAsk,
+        highestBid: item.highestBid,
+        lastSale: item.lastSale,
+        salesLast72h: item.deadstockSold,
+      },
+      authenticityStatus: 'verified',
+      scrapedDate: new Date().toISOString(),
+    }))
+    .filter((item) => sizes.includes('all') || sizes.includes(extractSize(item)));
 }
 ```
 
@@ -1081,22 +1075,18 @@ async function scrapeGOAT(searchQuery, sizes) {
   const { items } = await run.dataset().getData();
 
   return items
-    .map((item) => {
-      const normalizedSize = item.size || item.sizeLabel || item.sizeUS || null;
-      return {
-        id: generateHash('goat', item.url),
-        platform: 'goat',
-        url: item.url,
-        model: item.name,
-        sku: item.sku,
-        price: item.lowestPriceCents / 100, // Convert cents to dollars
-        condition: item.condition || 'new',
-        size: normalizedSize,
-        authenticityStatus: 'verified',
-        scrapedDate: new Date().toISOString(),
-      };
-    })
-    .filter((item) => sizes.includes('all') || (item.size && sizes.includes(item.size)));
+    .map((item) => ({
+      id: generateHash('goat', item.url),
+      platform: 'goat',
+      url: item.url,
+      model: item.name,
+      sku: item.sku,
+      price: item.lowestPriceCents / 100, // Convert cents to dollars
+      condition: item.condition || 'new',
+      authenticityStatus: 'verified',
+      scrapedDate: new Date().toISOString(),
+    }))
+    .filter((item) => sizes.includes('all') || sizes.includes(item.size));
 }
 ```
 
@@ -3364,8 +3354,6 @@ Built with ❤️ for sneakerheads by sneakerheads.
 
 ---
 
-<a id="implementation-roadmap"></a>
-
 ## 13. Implementation Roadmap
 
 ### Phase 1: MVP (Weeks 1-2) - Challenge Critical
@@ -3489,8 +3477,6 @@ Challenge Ends
 ```
 
 ---
-
-<a id="pricing-strategy"></a>
 
 ## 14. Pricing Strategy
 
@@ -3617,8 +3603,6 @@ Our estimated costs are **too high** for profitability. This is because we're ru
    - Ongoing Apify marketplace revenue: ~$2,000-$5,000/mo (if we maintain 1,000 active users)
 
 ---
-
-<a id="success-metrics"></a>
 
 ## 15. Success Metrics
 

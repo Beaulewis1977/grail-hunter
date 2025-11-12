@@ -8,7 +8,7 @@
     "color": "Black/Red",
     "description": "VNDS condition, worn once. Includes OG box, laces, and receipt. No flaws.",
     "url": "https://grailed.com/listings/12345",
-    "image_url": "tests/fixtures/images/placeholder.jpg",
+    "image_url": "https://i.ebayimg.com/images/g/jU8AAOSwxyNnv5Lb/s-l1200.jpg",
     "user": {
       "username": "sneakerhead_nyc",
       "feedback_score": 4.9,
@@ -25,7 +25,7 @@
     "color": "White/Black",
     "description": "Deadstock, brand new in box with tags",
     "url": "https://grailed.com/listings/67890",
-    "image_url": "tests/fixtures/images/placeholder.jpg",
+    "image_url": "https://i.ebayimg.com/images/g/dJ8AAOSwWlxmISI8/s-l400.jpg",
     "user": {
       "username": "yeezy_collector",
       "feedback_score": 5.0,
@@ -42,7 +42,7 @@
     "color": "Black/White",
     "description": "Worn a few times, 8/10 condition. No box.",
     "url": "https://grailed.com/listings/11111",
-    "image_url": "tests/fixtures/images/placeholder.jpg",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Theodore_Case_at_Casowasco.tif/lossy-page1-883px-Theodore_Case_at_Casowasco.tif.jpg",
     "user": {
       "username": "sneaker_flip",
       "feedback_score": 4.5,

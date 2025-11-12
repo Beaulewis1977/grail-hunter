@@ -6,7 +6,7 @@
   "version": "0.1.0",
   "author": {
     "name": "Beaulewis1977",
-    "email": "support@grailhunter.app"
+    "email": "contact@grailhunter.local"
   },
   "defaultDatasetId": "default",
   "defaultKeyValueStoreId": "default",
@@ -16,7 +16,7 @@
   "storageClient": "eyJzdG9yYWdlIjogImFwaWZ5In0=",
   "dockerfile": "./Dockerfile",
   "buildTag": "latest",
-  "dockerImage": "apify/actor-nodejs-20:1.0.0",
+  "dockerImage": "apify/actor-nodejs-20:latest",
   "memoryMbytes": 4096,
   "timeout": 3600,
   "reclaimInterval": 600,

@@ -1,14 +1,14 @@
 # SneakerMeta: Technical Architecture Documentation
 
-> **Note:** Refer to `/home/kngpnn/dev/grail-hunter/technical_architecture.md`; it is the up-to-date
-> version of this document.
-
-## Multi-Platform Sneaker Alert & Aggregation System
+### Multi-Platform Sneaker Alert & Aggregation System
 
 **Version:** 1.0  
 **Date:** November 10, 2025  
 **Project Type:** Apify Actor Challenge Submission  
-**Target Market:** Sneaker collectors, resellers, and enthusiasts
+**Target Market:** Sneaker collectors, resellers, and enthusiasts  
+**Business Model:** $2.99-$9.99/month subscription
+
+---
 
 ## Table of Contents
 
@@ -22,6 +22,8 @@
 8. [Monetization Strategy](#8-monetization-strategy)
 9. [Apify Challenge Compliance](#9-apify-challenge-compliance)
 10. [Implementation Roadmap](#10-implementation-roadmap)
+
+---
 
 ## 1. Project Overview & Requirements
 
@@ -149,6 +151,8 @@ System: Scrapes The Drop Date, Sole Retriever, Finish Line calendars daily
 Result: Discord notification 7 days before "Jordan 4 Military Blue" release with raffle links
 Outcome: User enters raffles, secures pair at retail before resale spike
 ```
+
+---
 
 ## 2. Technical Architecture & System Design
 
@@ -723,7 +727,6 @@ class NotificationManager {
    - Batch eBay API calls (up to 100 items per request)
 
 4. **Resource Management**
-
    ```javascript
    const pool = new AutoscaledPool({
      maxConcurrency: 10, // Max 10 parallel scrapers
@@ -935,7 +938,7 @@ class RateLimiter {
       "description": "Advanced scraping configuration",
       "editor": "json",
       "properties": {
-        "useAIParsing": {
+        "useAI Parsing": {
           "type": "boolean",
           "title": "Enable AI Parsing",
           "description": "Use OpenAI to parse ambiguous listings (requires API key)",
@@ -1590,7 +1593,7 @@ with the remaining sections?]_
 
 This document is approximately 50% complete. Shall I continue with the remaining sections?
 
-## 5. Platform-Specific Scraping Strategies (Overview)
+## 5. Platform-Specific Scraping Strategies
 
 ### Platform Risk & Eligibility Matrix
 
@@ -1735,7 +1738,7 @@ async function callEbayAPI(keywords, minPrice, maxPrice) {
 **Approach**: Orchestrate `ecomscrape/goat-product-search-scraper`  
 **Risk Level**: ⭐⭐ Medium
 
-#### GOAT Implementation
+#### Implementation
 
 ```javascript
 async function scrapeGOAT(searchParams) {
@@ -1935,14 +1938,12 @@ class FlightClubScraper {
 1. **Use residential proxies** (Apify proxy pool)
 2. **Randomize delays** between requests (2-5 seconds)
 3. **Rotate User-Agents**:
-
    ```javascript
    const userAgents = [
      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36...',
      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36...',
    ];
    ```
-
 4. **Implement retry logic** with exponential backoff
 5. **Monitor for CAPTCHA** and handle gracefully
 
@@ -2398,16 +2399,14 @@ class RateLimiter {
 function sanitizeInput(input) {
   // Prevent injection attacks
   const sanitized = { ...input };
-  const whitelistPattern = /[^a-z0-9\s\-"'(),.]/gi;
-  const terms = Array.isArray(input.searchTerms) ? input.searchTerms : [];
 
   // Sanitize search terms (no SQL, no XSS)
-  sanitized.searchTerms = terms.map((term) => {
-    const base = typeof term === 'string' ? term : String(term ?? '');
-    const withoutScripts = base.replace(/<script.*?>.*?<\/script>/gi, '');
-    const cleaned = withoutScripts.replace(whitelistPattern, '').trim();
-    return escapeHtml(cleaned); // HTML-escape before rendering
-  });
+  sanitized.searchTerms = input.searchTerms.map((term) =>
+    term
+      .replace(/<script.*?>.*?<\/script>/gi, '')
+      .replace(/[^\w\s-]/g, '')
+      .trim()
+  );
 
   // Validate URLs
   if (input.notificationConfig?.webhookUrl) {
@@ -2427,21 +2426,6 @@ function sanitizeInput(input) {
   }
 
   return sanitized;
-}
-
-function escapeHtml(str) {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-async function storeSanitizedTerms(db, terms) {
-  for (const term of terms) {
-    await db.execute('INSERT INTO searches(search_term) VALUES (?)', [term]);
-  }
 }
 ```
 

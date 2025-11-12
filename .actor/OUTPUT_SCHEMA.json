@@ -55,7 +55,7 @@
           "example": "USD",
           "default": "USD"
         },
-        "size_us_mens": {
+        "sizeUsMens": {
           "type": "string",
           "description": "US Men's size",
           "example": "10.5"

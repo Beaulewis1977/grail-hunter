@@ -61,8 +61,8 @@ export class ListingFilter {
   filterByPriceRange(listings, priceRange) {
     const { min, max } = priceRange;
 
-    return listings.filter(({ listing: listingData = {} }) => {
-      const { price } = listingData;
+    return listings.filter((listing) => {
+      const price = listing.listing.price;
 
       if (typeof price !== 'number' || price <= 0) {
         return false;
@@ -100,8 +100,8 @@ export class ListingFilter {
       return listings;
     }
 
-    return listings.filter(({ listing: listingData = {} }) => {
-      const { condition } = listingData;
+    return listings.filter((listing) => {
+      const condition = listing.listing.condition;
       const currentIndex = conditionOrder.indexOf(condition);
 
       // Keep listings that are same condition or better

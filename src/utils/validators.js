@@ -67,7 +67,7 @@ export function validateInput(input) {
     }
 
     if (min !== undefined && max !== undefined && min > max) {
-      throw new ValidationError('Price range minimum cannot exceed maximum');
+      throw new ValidationError('priceRange.min cannot be greater than priceRange.max');
     }
   }
 

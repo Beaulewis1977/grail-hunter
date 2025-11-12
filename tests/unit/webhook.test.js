@@ -6,25 +6,15 @@ import { jest } from '@jest/globals';
 import { WebhookNotifier } from '../../src/notifications/webhook.js';
 import { NotificationError } from '../../src/utils/errors.js';
 
-let fetchSpy;
+// Mock fetch
+global.fetch = jest.fn();
 
 describe('WebhookNotifier', () => {
   let notifier;
 
-  beforeAll(() => {
-    if (typeof global.fetch !== 'function') {
-      global.fetch = async () => ({ ok: true, status: 200 });
-    }
-    fetchSpy = jest.spyOn(global, 'fetch');
-  });
-
-  afterAll(() => {
-    fetchSpy.mockRestore();
-  });
-
   beforeEach(() => {
     notifier = new WebhookNotifier();
-    fetchSpy.mockReset();
+    fetch.mockClear();
   });
 
   describe('send', () => {
@@ -33,11 +23,11 @@ describe('WebhookNotifier', () => {
 
       await notifier.send(listings, {});
 
-      expect(fetchSpy).not.toHaveBeenCalled();
+      expect(fetch).not.toHaveBeenCalled();
     });
 
     it('should send webhook with correct payload', async () => {
-      fetchSpy.mockResolvedValue({
+      fetch.mockResolvedValue({
         ok: true,
         status: 200,
       });
@@ -54,8 +44,8 @@ describe('WebhookNotifier', () => {
         webhookUrl: 'https://webhook.site/test',
       });
 
-      expect(fetchSpy).toHaveBeenCalledTimes(1);
-      expect(fetchSpy).toHaveBeenCalledWith(
+      expect(fetch).toHaveBeenCalledTimes(1);
+      expect(fetch).toHaveBeenCalledWith(
         'https://webhook.site/test',
         expect.objectContaining({
           method: 'POST',
@@ -67,7 +57,7 @@ describe('WebhookNotifier', () => {
     });
 
     it('should include HMAC signature if secret provided', async () => {
-      fetchSpy.mockResolvedValue({ ok: true, status: 200 });
+      fetch.mockResolvedValue({ ok: true, status: 200 });
 
       const listings = [
         { product: { name: 'Test' }, listing: { price: 100 }, source: { platform: 'Grailed' } },
@@ -78,14 +68,15 @@ describe('WebhookNotifier', () => {
         webhookSecret: 'my-secret',
       });
 
-      const [, { headers }] = fetchSpy.mock.calls[0];
+      const call = fetch.mock.calls[0];
+      const headers = call[1].headers;
 
       expect(headers['X-Grail-Hunter-Signature']).toBeDefined();
       expect(typeof headers['X-Grail-Hunter-Signature']).toBe('string');
     });
 
     it('should throw NotificationError on failure', async () => {
-      fetchSpy.mockResolvedValue({
+      fetch.mockResolvedValue({
         ok: false,
         status: 500,
         statusText: 'Internal Server Error',

@@ -70,7 +70,7 @@ describe('Input Validators', () => {
         priceRange: { min: 500, max: 100 }, // min > max
       };
 
-      expect(() => validateInput(input)).toThrow('Price range minimum cannot exceed maximum');
+      expect(() => validateInput(input)).toThrow('min cannot be greater than');
     });
 
     it('should reject invalid condition', () => {

@@ -48,7 +48,7 @@ describe('DeduplicationEngine', () => {
   describe('findNewListings', () => {
     it('should identify new listings', async () => {
       deduplicator.kvStore = mockKvStore;
-      deduplicator.seenHashes = new Map();
+      deduplicator.seenHashes = new Set();
 
       const listings = [
         {
@@ -79,7 +79,7 @@ describe('DeduplicationEngine', () => {
       };
       const hash1 = deduplicator.generateHash(listing1);
 
-      deduplicator.seenHashes = new Map([[hash1, Date.now()]]);
+      deduplicator.seenHashes = new Set([hash1]);
 
       const listings = [
         listing1,
@@ -101,7 +101,7 @@ describe('DeduplicationEngine', () => {
       deduplicator = new DeduplicationEngine();
       deduplicator.maxStoredHashes = 5;
       deduplicator.kvStore = mockKvStore;
-      deduplicator.seenHashes = new Map();
+      deduplicator.seenHashes = new Set();
 
       // Create 7 listings (exceeding max of 5)
       const listings = Array.from({ length: 7 }, (_, i) => ({
@@ -119,11 +119,7 @@ describe('DeduplicationEngine', () => {
 
   describe('getStats', () => {
     it('should return statistics', () => {
-      deduplicator.seenHashes = new Map([
-        ['hash1', Date.now()],
-        ['hash2', Date.now()],
-        ['hash3', Date.now()],
-      ]);
+      deduplicator.seenHashes = new Set(['hash1', 'hash2', 'hash3']);
 
       const stats = deduplicator.getStats();
 

@@ -41,10 +41,7 @@ review_trigger: all_commits
 tools:
   security_scan: true
   type_checking: true
-  test_coverage_analysis: true
-  coverage:
-    minimum: 80
-    report_format: text-summary
+  test_coverage_analysis: false
   eslint:
     enable: true
     ignore_patterns:

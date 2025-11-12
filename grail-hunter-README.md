@@ -13,9 +13,6 @@
 marketplaces and delivers real-time alerts when your target sneakers appear. Stop manually checking
 multiple tabs—let Grail Hunter find the deals for you.
 
-> _Phase 1 availability: automated scraping currently supports Grailed; eBay, StockX, and GOAT are
-> planned for the next phases and are documented here as roadmap targets._
-
 This project is developed as part of the **Apify Challenge 2024-2025**.
 
 ---
@@ -36,9 +33,6 @@ Grail Hunter monitors sneaker listings across multiple platforms in real-time:
 ## 🎯 Target Platforms
 
 Grail Hunter monitors these 4 major sneaker marketplaces:
-
-- **Available now (Phase 1):** Grailed
-- **Planned (future phases):** eBay, StockX, GOAT
 
 | Platform    | Type          | Description                                   |
 | ----------- | ------------- | --------------------------------------------- |

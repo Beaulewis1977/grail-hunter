@@ -339,7 +339,6 @@ npm start
 1. Go to [webhook.site](https://webhook.site)
 2. Copy your unique webhook URL
 3. Add to `.actor/INPUT.json`:
-
    ```json
    {
      "notificationConfig": {
@@ -347,7 +346,6 @@ npm start
      }
    }
    ```
-
 4. Run the actor and check webhook.site for notifications
 
 ---
@@ -400,14 +398,12 @@ Set up recurring searches (e.g., hourly monitoring):
 2. Navigate to "Schedules" tab
 3. Click "Create new schedule"
 4. Configure:
-
    ```
    Name: Grail Hunter Hourly
    Cron: 0 * * * *  (every hour)
    Input: Your search criteria
    Notifications: Email on failure
    ```
-
 5. Save and activate
 
 ### Environment Variables
@@ -497,7 +493,7 @@ See [IMPLEMENTATION_STATUS.md](./IMPLEMENTATION_STATUS.md) for detailed status a
 
 ---
 
-## Troubleshooting
+## 🐛 Troubleshooting
 
 ### Common Issues
 
@@ -625,8 +621,8 @@ This project is developed for the **Apify $1M Challenge (2024-2025)**.
 
 - [Apify Platform](https://apify.com)
 - [Apify Challenge](https://apify.com/challenge)
-- [Actor on Apify Store](https://apify.com/actors)
-- [Project Repository](https://github.com/Beaulewis1977/grail-hunter)
+- [Actor on Apify Store](#) _(Coming soon)_
+- [Project Repository](#)
 
 ---
 

@@ -43,25 +43,9 @@ export class SneakerParser {
    * @returns {object} Enhanced listing with parsed data
    */
   parse(listing) {
-    if (!listing || typeof listing !== 'object') {
-      throw new Error('Listing payload is required for parsing');
-    }
+    logger.debug('Parsing listing', { listingId: listing.source.id });
 
-    const listingId = listing?.source?.id ?? 'unknown';
-    logger.debug('Parsing listing', { listingId });
-
-    if (!listing.listing || typeof listing.listing !== 'object') {
-      listing.listing = {};
-    }
-
-    if (!Array.isArray(listing.listing.tags)) {
-      listing.listing.tags = [];
-    }
-
-    const productName = listing?.product?.name ?? '';
-    const description =
-      typeof listing.listing.description === 'string' ? listing.listing.description : '';
-    const text = `${productName} ${description}`.trim();
+    const text = `${listing.product.name} ${listing.listing.description}`;
 
     // Parse condition if not already set
     if (!listing.listing.condition || listing.listing.condition === 'unspecified') {
@@ -75,7 +59,7 @@ export class SneakerParser {
 
     // Parse and enhance tags
     const parsedTags = this.parseTags(text);
-    listing.listing.tags = [...new Set([...(listing.listing.tags || []), ...parsedTags])];
+    listing.listing.tags = [...new Set([...listing.listing.tags, ...parsedTags])];
 
     return listing;
   }
