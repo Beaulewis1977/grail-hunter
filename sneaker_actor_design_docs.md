@@ -396,7 +396,7 @@ graph TB
 
 ### 5.2 Input Schema
 
-**File:** `INPUT_SCHEMA.json`
+**File:** `.actor/input_schema.json`
 
 ```json
 {
@@ -1145,27 +1145,24 @@ async function scrapeEbay(searchQuery, sizes) {
   const { items } = await run.dataset().getData();
 
   return items
-    .map((item) => {
-      const extractedSize = extractSizeFromTitle(item.title);
-      const extractedCondition = extractConditionFromTitle(item.title);
-
-      return {
-        id: generateHash('ebay', item.url),
-        platform: 'ebay',
-        url: item.url,
-        model: cleanTitle(item.title), // Remove size/condition clutter
-        size: extractedSize,
-        price: item.price.value,
-        condition: extractedCondition,
-        seller: {
-          name: item.seller.username,
-          rating: item.seller.feedbackScore,
-          location: item.location,
-        },
-        authenticityStatus: item.authenticityGuarantee ? 'verified' : 'unverified',
-        scrapedDate: new Date().toISOString(),
-      };
-    })
+    .map((item) => ({
+      id: generateHash('ebay', item.url),
+      platform: 'ebay',
+      url: item.url,
+      model: cleanTitle(item.title), // Remove size/condition clutter
+      size: extractSizeFromTitle(item.title + ' ' + item.description),
+      price: parseFloat(item.price.replace(/[^0-9.]/g, '')),
+      condition: extractConditionFromTitle(item.description || ''),
+      seller: {
+        name: item.seller.username,
+        rating: item.seller.feedbackScore,
+        location: item.location,
+      },
+      images: item.images,
+      postedDate: item.creationTime,
+      authenticityStatus: item.authenticityGuarantee ? 'verified' : 'unverified',
+      scrapedDate: new Date().toISOString(),
+    }))
     .filter((item) => item.size && (sizes.includes('all') || sizes.includes(item.size)));
 }
 
@@ -2295,7 +2292,7 @@ interface Listing {
     highestBid?: number; // Current highest bid
     lastSale?: number; // Most recent sale price
     salesLast72h?: number; // Sales volume
-    pricePremiumpercent?: number; // % above/below retail
+    pricePremiumPercent?: number; // % above/below retail
     averagePrice?: number; // 30-day average
   };
 

@@ -97,8 +97,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Determine base branch for commitlint
+        id: base_ref
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "base=origin/${{ github.event.pull_request.base.ref }}" >> "$GITHUB_OUTPUT"
+          else
+            # Fallback to current branch name on push/non-PR events
+            echo "base=origin/${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Validate commits
-        run: npx commitlint --from origin/main --to HEAD
+        run: |
+          BASE_REF="${{ steps.base_ref.outputs.base }}"
+          if [ -z "$BASE_REF" ]; then
+            BASE_REF="origin/main"
+          fi
+          echo "Running commitlint from $BASE_REF to HEAD"
+          npx commitlint --from "$BASE_REF" --to HEAD
         continue-on-error: true
 
   tests:

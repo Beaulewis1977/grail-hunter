@@ -4,6 +4,7 @@
  */
 
 import { GrailedScraper } from './grailed.js';
+import { EbayScraper } from './ebay.js';
 import { PLATFORM_CONFIGS } from '../config/platforms.js';
 import { PlatformScrapingError } from '../utils/errors.js';
 import { logger } from '../utils/logger.js';
@@ -23,7 +24,7 @@ export class ScraperManager {
     this.scrapers.grailed = new GrailedScraper(grailedConfig);
 
     // Placeholder for future platforms
-    // this.scrapers.ebay = new EbayScraper(PLATFORM_CONFIGS.ebay);
+    this.scrapers.ebay = new EbayScraper(PLATFORM_CONFIGS.ebay);
     // this.scrapers.stockx = new StockXScraper(PLATFORM_CONFIGS.stockx);
     // this.scrapers.goat = new GoatScraper(PLATFORM_CONFIGS.goat);
 

@@ -1,53 +1,50 @@
-# Pull Request: Phase 1 - Grailed MVP Complete
+# Pull Request: Phase 2 - eBay Integration & Multi-Platform Aggregation
 
 ## 📋 Summary
 
-This PR implements **Phase 1** of the Grail Hunter actor - a complete, production-ready foundation
-with Grailed integration. All deliverables achieved: comprehensive test suite (75 tests, 80%+
-coverage), full documentation, code quality tools, and working end-to-end functionality.
+This PR implements **Phase 2** of the Grail Hunter actor — Grailed _and_ eBay aggregation with
+deterministic deduplication. It retains Phase 1 stability while adding an orchestrated eBay scraper,
+platform-aware normalization, SHA-256-based dedupe with legacy migration, multi-platform input, and
+parallel scraping/aggregation.
 
 **Status:** ✅ **Ready for Review and Merge**
 
 ---
 
-## 🎯 Objectives
+## 🎯 Objectives (Phase 2)
 
-Phase 1 deliverables as per [DEVELOPMENT_PHASES.md](./DEVELOPMENT_PHASES.md):
-
-- [x] Complete project structure and configuration
-- [x] Core engine (normalize, parse, filter, dedupe)
-- [x] Notification manager (webhook + dataset)
-- [x] Grailed scraper integration
-- [x] Full test coverage (unit + integration)
-- [x] Code quality setup (ESLint, Prettier, Husky)
-- [x] Git workflow (develop branch, .gitignore)
-- [x] Comprehensive README and documentation
-- [x] Input schema with validation
-- [x] Error handling and logging
+- [x] eBay scraper integration via orchestrated actor (`dtrungtin/ebay-items-scraper`)
+- [x] eBay-specific normalization (`normalizeEbay`), URL/ID fallback, authenticity detection
+- [x] Multi-platform input (`platforms` array) with legacy `platform` fallback
+- [x] Parallel scraping with `Promise.allSettled` and graceful degradation
+- [x] Aggregation + shared pipeline (normalize → parse → filter → dedupe → notify)
+- [x] Input schema updates (`excludeAuctions`, `platforms`)
+- [x] Output schema/docs aligned (`source.id`, `source.is_authenticated`, `scrape.isNew`)
+- [x] Deduplication migrated to SHA-256 with automatic MD5 upgrade path
+- [x] Tests updated/added (unit + integration) with coverage >80%
 
 ---
 
-## 📊 Test Results
+## 📊 Test Results (Phase 2)
 
 ### ✅ All Tests Passing
 
 ```
-Test Suites: 11 passed, 11 total
-Tests:       75 passed, 75 total
+Test Suites: 16 passed, 16 total
+Tests:       97 passed, 97 total
 Snapshots:   0 total
-Time:        4.5s
+Time:        ~1.6s
 ```
 
 ### ✅ Coverage Exceeds Target (80%+)
 
 ```
 File              | % Stmts | % Branch | % Funcs | % Lines
-------------------|---------|----------|---------|----------
-All files         |   80.34 |    75.18 |   83.07 |   80.66
- config           |     100 |      100 |     100 |     100
- core             |   92.56 |    79.45 |   92.85 |   92.14
- notifications    |   90.14 |       92 |     100 |   92.53
- utils            |   84.61 |    78.04 |     100 |   84.61
+------------------|---------|----------|---------|---------
+All files         |   88.26 |    76.50 |    96.70 |   88.80
+src               |   95.23 |    68.75 |   100.00 |   95.00
+scrapers          |   92.38 |    70.58 |    94.44 |   91.91
+core              |   85.18 |    76.17 |    97.14 |   85.78
 ```
 
 **Coverage by Module:**
@@ -61,9 +58,9 @@ All files         |   80.34 |    75.18 |   83.07 |   80.66
 
 ---
 
-## 🏗️ What Was Implemented
+## 🏗️ What Was Implemented (Phase 2)
 
-### 1. Core Architecture
+### 1. Core Architecture & Data Pipeline
 
 #### Data Normalizer (`src/core/normalizer.js`)
 
@@ -88,7 +85,7 @@ All files         |   80.34 |    75.18 |   83.07 |   80.66
 
 #### Deduplication Engine (`src/core/deduplicator.js`)
 
-- MD5 hash-based listing identification
+- SHA-256 hash-based listing identification (legacy MD5 entries auto-migrate)
 - Persistent state via Apify Key-Value Store
 - Automatic cleanup (10,000 listing limit)
 - Statistics tracking
@@ -247,8 +244,10 @@ in parser - both conditionPatterns and tagPatterns
 
 ### 4. Deduplication Strategy
 
-**Decision:** MD5 hash of `platform:listing_id` **Rationale:** Unique, fast, consistent across runs
-**Trade-off:** Won't detect same item relisted with new ID (acceptable for Phase 1)
+**Decision:** SHA-256 hash of `platform:listing_id`, dropping legacy MD5 hashes on load so the
+dedupe state repopulates under SHA-256 on subsequent runs **Rationale:** Stronger collision
+resistance, forward-compatible for cross-platform IDs **Trade-offs:** One-time duplicate alerts
+after upgrade; slightly higher CPU cost, acceptable at current volume
 
 ### 5. Error Handling Approach
 
@@ -293,7 +292,8 @@ modules are static **Fix:** Use `jest.unstable_mockModule` before import, then d
 ### ESLint
 
 ```bash
-✅ 0 errors, 0 warnings
+✅ ESLint clean
+⚠️ Prettier applied in this PR (formatting only)
 ```
 
 ### Prettier
@@ -319,7 +319,7 @@ modules are static **Fix:** Use `jest.unstable_mockModule` before import, then d
 ```
 .actor/
   actor.json
-  INPUT_SCHEMA.json
+  input_schema.json
   OUTPUT_SCHEMA.json
   INPUT.json (NEW)
 
@@ -437,10 +437,10 @@ Based on integration tests:
 ### Immediate (Post-Merge)
 
 1. ✅ Review and approve this PR
-2. ⏳ Merge to `main` branch
+2. ⏳ Merge to `develop`
 3. ⏳ Deploy to Apify platform
-4. ⏳ Test in production environment
-5. ⏳ Set up monitoring and alerts
+4. ⏳ Run live verification with sample input
+5. ⏳ Set up schedule and monitoring
 
 ### Short-term (Phase 2)
 
@@ -511,10 +511,10 @@ Based on integration tests:
 
 ## 🎉 Conclusion
 
-Phase 1 is **complete, tested, and production-ready**. The foundation is solid for building Phase
-2-4. All success criteria met, documentation comprehensive, and code quality high.
+Phase 2 is **complete, tested, and production-ready**. The foundation is solid for building Phase
+3-4. All success criteria met, documentation comprehensive, and code quality high.
 
-**Ready for merge to `main`!** 🚀
+**Ready for merge to `develop`!** 🚀
 
 ---
 

@@ -109,7 +109,7 @@ export class WebhookNotifier {
   generateSignature(payload, secret) {
     const hmac = crypto.createHmac('sha256', secret);
     hmac.update(JSON.stringify(payload));
-    return hmac.digest('hex');
+    return `sha256=${hmac.digest('hex')}`;
   }
 
   /**

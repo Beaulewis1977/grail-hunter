@@ -459,9 +459,10 @@ logger.info('Deduplication completed', {
 });
 
 // Alert generation
+// Avoid logging PII like raw email addresses
 logger.info('Sending notifications', {
   newListings: 12,
-  emailRecipient: 'user@example.com',
+  recipientCount: 1, // or include a redacted/hash if needed
   notificationTypes: ['email', 'webhook'],
 });
 
@@ -894,7 +895,7 @@ class GracefulDegradation {
 
     if (Date.now() > disabledUntil) {
       // Disable period expired, re-enable platform
-      await kvStore.delete(key);
+      await kvStore.setValue(key, null);
       return false;
     }
 
@@ -1416,9 +1417,9 @@ class FlightClubScraper extends BaseScraper {
    * Initialize crawler
    */
   async initialize() {
-    const { CheerioCrawler, Actor } = require('crawlee');
+    const { CheerioCrawler, ProxyConfiguration } = require('crawlee');
 
-    const proxyConfiguration = Actor.newProxyConfiguration({
+    const proxyConfiguration = new ProxyConfiguration({
       ...this.proxyConfig,
     });
 

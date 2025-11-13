@@ -52,7 +52,7 @@ challenge rules and forms the foundation for the technical architecture outlined
 II. The Sneaker Data Universe: Market, Terminology, and Data Modeling
 
 To build an effective aggregator, the Actor must first understand the "language" of the market it
-scrapes. It must be ableto deconstruct what it is looking for and how that data is described by the
+scrapes. It must be able to deconstruct what it is looking for and how that data is described by the
 target audience. This section defines the data dictionary and parsing logic.
 
 A. Deconstructing the "Grails": Seed Data & Benchmarking
@@ -147,7 +147,7 @@ IV. Technical Architecture: The 'SneakerMeta' Aggregator Blueprint
 This section serves as the core "build document" detailing the Actor's structure, input/output
 contracts, and operational logic.
 
-A. Actor Input Schema (INPUT_SCHEMA.json)
+A. Actor Input Schema (input_schema.json)
 
 A robust, validated input schema is a mandatory technical criterion for achieving the 65+ Actor
 Quality Score.1 This schema is designed for maximum flexibility, user-friendliness, and power.

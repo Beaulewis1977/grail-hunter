@@ -730,7 +730,7 @@ class NotificationManager {
      minConcurrency: 2, // Keep at least 2 active
      desiredConcurrency: 5, // Target 5 concurrent
      systemStatusOptions: {
-       maxUsedMemoryRatio: 0.8, // Throttle at 80% RAM
+       maxMemoryOverloadedRatio: 0.8, // Throttle at 80% RAM
      },
    });
    ```
@@ -767,7 +767,7 @@ class RateLimiter {
 
 ## 3. Data Models & Schemas
 
-### 3.1 Input Schema (INPUT_SCHEMA.json)
+### 3.1 Input Schema (input_schema.json)
 
 **Complete specification for `.actor/input_schema.json`:**
 

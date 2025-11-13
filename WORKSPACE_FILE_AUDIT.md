@@ -108,7 +108,7 @@
 #### 3. `component_specifications_complete.md` ⭐ PRIMARY SPEC REFERENCE
 
 - Most comprehensive spec document (178 KB)
-- Complete INPUT_SCHEMA.json specification
+- Complete input_schema.json specification
 - Output dataset structure with examples
 - Notification system (email, webhook, Slack, Discord)
 - Price tracking and deduplication logic

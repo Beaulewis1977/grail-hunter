@@ -380,9 +380,9 @@ class SneakerParser {
     ];
 
     this.sizePatterns = [
-      /\b(?:size|sz)[:\s]*([1-9]|1[0-5])(?:\.5)?\b/i,
-      /\b(?:us\s*m(?:en's)?)[:\s]*([1-9]|1[0-5])(?:\.5)?\b/i,
-      /\b([1-9]|1[0-5])(?:\.5)?\s*(?:US|M)\b/i,
+      /\b(?:size|sz)[:\s]*((?:[1-9]|1[0-5])(?:\.5)?)\b/i,
+      /\b(?:us\s*m(?:en's)?)[:\s]*((?:[1-9]|1[0-5])(?:\.5)?)\b/i,
+      /\b((?:[1-9]|1[0-5])(?:\.5)?)\s*(?:US|M)\b/i,
     ];
   }
 
@@ -465,7 +465,7 @@ class DeduplicationEngine {
   generateHash(listing) {
     // Create unique identifier from platform + ID
     const hashString = `${listing.source.platform}:${listing.source.id}`;
-    return crypto.createHash('md5').update(hashString).digest('hex');
+    return crypto.createHash('sha256').update(hashString).digest('hex');
   }
 
   serializeHashes() {
@@ -765,7 +765,7 @@ const pool = new AutoscaledPool({
   minConcurrency: 2, // Keep at least 2 active
   desiredConcurrency: 5, // Target 5 concurrent
   systemStatusOptions: {
-    maxUsedMemoryRatio: 0.8, // Throttle at 80% RAM
+    maxMemoryOverloadRatio: 0.8, // Throttle at 80% memory usage
   },
 });
 ```
@@ -802,7 +802,7 @@ class RateLimiter {
 
 ## 3. Data Models & Schemas
 
-### 3.1 Input Schema (INPUT_SCHEMA.json)
+### 3.1 Input Schema (input_schema.json)
 
 **Complete specification for `.actor/input_schema.json`:**
 

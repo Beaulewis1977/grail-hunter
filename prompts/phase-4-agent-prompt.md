@@ -70,7 +70,7 @@ Document completion of the reading checklist before coding.
 
 ### Advanced Filters & Input Schema
 
-- Update `.actor/INPUT_SCHEMA.json` and sample input to include:
+- Update `.actor/input_schema.json` and sample input to include:
   - `authenticatedOnly`, `requireOGAll`, `excludeAuctions`, `minSellerRating`, and any additional
     advanced filters specified in Implementation Status.
   - Platform multi-select including new beta platforms; allow toggling StockX/GOAT if risk-averse

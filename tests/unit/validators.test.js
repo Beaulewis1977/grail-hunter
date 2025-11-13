@@ -18,6 +18,19 @@ describe('Input Validators', () => {
       expect(() => validateInput(input)).not.toThrow();
     });
 
+    it('should accept platforms array and preserve it', () => {
+      const input = {
+        keywords: ['Air Jordan 1'],
+        platforms: ['grailed', 'ebay'],
+        maxResults: 10,
+      };
+
+      expect(() => validateInput(input)).not.toThrow();
+      const normalized = normalizeInput(input);
+      expect(normalized.platforms).toEqual(['grailed', 'ebay']);
+      expect(normalized.maxResults).toBe(10);
+    });
+
     it('should reject missing keywords', () => {
       const input = {};
 
@@ -40,10 +53,10 @@ describe('Input Validators', () => {
     it('should reject unsupported platform', () => {
       const input = {
         keywords: ['test'],
-        platform: 'ebay',
+        platform: 'unknown_platform',
       };
 
-      expect(() => validateInput(input)).toThrow('not yet supported');
+      expect(() => validateInput(input)).toThrow('not supported');
     });
 
     it('should reject invalid size format', () => {

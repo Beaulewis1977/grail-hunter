@@ -52,7 +52,7 @@ Confirm you've reviewed these before making changes.
   auction filters).
 - **Deduplication:** Confirm `DeduplicationEngine` remains platform-agnostic; add tests to ensure
   cross-platform hashes stay unique (platform + ID).
-- **Input Schema:** Update `.actor/INPUT_SCHEMA.json` to allow multi-select platform array (see
+- **Input Schema:** Update `.actor/input_schema.json` to allow multi-select platform array (see
   Phase 2 note) and expose advanced filters (size, condition, price) if not already present. Keep
   schema docstrings consistent.
 - **Aggregation:** In `src/index.js`, adjust orchestration to iterate over selected platforms, merge

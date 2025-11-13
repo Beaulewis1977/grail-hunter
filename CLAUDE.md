@@ -84,7 +84,7 @@ The actor is designed as an **orchestrator** that:
 ```
 .actor/
 ├── actor.json                 # ✅ Apify metadata (4GB, 1hr timeout)
-├── INPUT_SCHEMA.json          # ✅ User input spec (search, sizes, platforms, notifications)
+├── input_schema.json          # ✅ User input spec (search, sizes, platforms, notifications)
 └── OUTPUT_SCHEMA.json         # ✅ Standardized listing schema
 
 src/
@@ -129,7 +129,7 @@ Existing Actors      Custom Scrapers
 
 1. **NEVER scrape Facebook or Instagram** - explicitly disqualified per challenge rules
 2. **Target Quality Score 65+** (aim for 75+):
-   - Define INPUT_SCHEMA.json with validation
+   - Define input_schema.json with validation
    - Define OUTPUT_SCHEMA.json with standardized fields
    - Implement comprehensive error handling
    - Use Apify Proxy for all requests
@@ -271,7 +271,7 @@ Use mock data from documentation examples to avoid live scraping during tests.
 ## Key Files to Know
 
 - **src/index.js** - Actor entry point (basic scaffold, add orchestrator here)
-- **.actor/INPUT_SCHEMA.json** - User input validation (includes viral features!)
+- **.actor/input_schema.json** - User input validation (includes viral features!)
 - **.actor/OUTPUT_SCHEMA.json** - Listing schema (complete, don't modify)
 - **.env.local** - Config (Apify token set, CHALLENGE_MODE=true)
 - **technical_architecture.md** - Reference for implementation (see sections 8.7-8.9)

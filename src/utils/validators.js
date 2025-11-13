@@ -32,12 +32,31 @@ export function validateInput(input) {
     }
   });
 
-  // Validate platform (Phase 1: only grailed)
-  if (input.platform && input.platform !== 'grailed') {
-    throw new ValidationError(
-      `Platform "${input.platform}" is not yet supported. Phase 1 only supports "grailed". ` +
-        `Supported platforms: ${SUPPORTED_PLATFORMS.join(', ')}`
-    );
+  // Validate platforms (Phase 2: multi-platform with legacy fallback)
+  const supported = SUPPORTED_PLATFORMS;
+  if (input.platforms !== undefined) {
+    if (!Array.isArray(input.platforms) || input.platforms.length === 0) {
+      throw new ValidationError('platforms must be a non-empty array');
+    }
+    for (const [idx, p] of input.platforms.entries()) {
+      if (typeof p !== 'string' || p.trim().length === 0) {
+        throw new ValidationError(`platforms[${idx}] must be a non-empty string`);
+      }
+      if (!supported.includes(p)) {
+        throw new ValidationError(
+          `Platform "${p}" is not supported. Supported platforms: ${supported.join(', ')}`
+        );
+      }
+    }
+  } else if (input.platform !== undefined) {
+    if (typeof input.platform !== 'string' || input.platform.trim().length === 0) {
+      throw new ValidationError('platform must be a non-empty string when provided');
+    }
+    if (!supported.includes(input.platform)) {
+      throw new ValidationError(
+        `Platform "${input.platform}" is not supported. Supported platforms: ${supported.join(', ')}`
+      );
+    }
   }
 
   // Validate size format (optional)
@@ -109,9 +128,13 @@ export function validateInput(input) {
   }
 
   // Validate maxResults
+  // Note: This upper bound aligns with Apify's actor output limit configuration (maxOutputDatasetItems).
+  // If .actor/actor.json sets a higher limit (e.g., 500000 for large runs), we allow it here to keep
+  // validation consistent with the runtime/output capabilities. Be mindful of resource usage when
+  // requesting very large result sets.
   if (input.maxResults !== undefined) {
-    if (typeof input.maxResults !== 'number' || input.maxResults < 1 || input.maxResults > 500) {
-      throw new ValidationError('maxResults must be a number between 1 and 500');
+    if (typeof input.maxResults !== 'number' || input.maxResults < 1 || input.maxResults > 500000) {
+      throw new ValidationError('maxResults must be a number between 1 and 500000');
     }
   }
 }
@@ -141,12 +164,16 @@ export function normalizeInput(input) {
     size: input.size || null,
     priceRange: input.priceRange || {},
     condition: input.condition || null,
+    // Keep legacy platform for logs/back-compat
     platform: input.platform || 'grailed',
+    // New: multi-platform selection
+    platforms: Array.isArray(input.platforms) ? input.platforms : [input.platform || 'grailed'],
     maxResults: input.maxResults || 50,
     notificationConfig: input.notificationConfig || {},
     proxyConfig: input.proxyConfig || {
       useApifyProxy: true,
       apifyProxyGroups: ['RESIDENTIAL'],
     },
+    excludeAuctions: Boolean(input.excludeAuctions) || false,
   };
 }

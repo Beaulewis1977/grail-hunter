@@ -12,7 +12,7 @@
   "defaultKeyValueStoreId": "default",
   "defaultRequestQueueId": "default",
   "categories": ["MONITORING", "SCRAPERS"],
-  "inputs": "INPUT_SCHEMA.json",
+  "input": "./input_schema.json",
   "storageClient": "eyJzdG9yYWdlIjogImFwaWZ5In0=",
   "dockerfile": "./Dockerfile",
   "buildTag": "latest",

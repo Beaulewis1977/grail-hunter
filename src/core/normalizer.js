@@ -3,6 +3,7 @@
  * Converts platform-specific data to standardized schema
  */
 
+import crypto from 'crypto';
 import { logger } from '../utils/logger.js';
 
 const MAX_DESCRIPTION_LENGTH = 500;
@@ -46,6 +47,8 @@ export class DataNormalizer {
     switch (platformTrimmed.toLowerCase()) {
       case 'grailed':
         return this.normalizeGrailed(rawListing);
+      case 'ebay':
+        return this.normalizeEbay(rawListing);
       default:
         logger.warn(`Unknown platform: ${platformTrimmed}, using generic normalizer`);
         return this.normalizeGeneric(rawListing, platformTrimmed);
@@ -97,6 +100,103 @@ export class DataNormalizer {
         version: '1.0.0',
       },
     };
+  }
+
+  normalizeEbay(raw) {
+    const title = raw.title || raw.name || '';
+    const fallbackIdSource = `${raw.url ?? ''}|${title}|${raw.price ?? ''}|${raw.itemNumber ?? ''}`;
+    const id = String(
+      raw.itemNumber ||
+        this.extractEbayIdFromUrl(raw.url) ||
+        this.generateDeterministicId(fallbackIdSource)
+    );
+
+    const tags = this.buildEbayTags(raw);
+    const isAuthenticated = tags.includes('authenticity_guarantee');
+
+    return {
+      product: {
+        name: title || 'Unknown',
+        brand: this.extractBrand(title || ''),
+        model: this.extractModel(title || ''),
+        colorway: null,
+        sku: null,
+        releaseYear: null,
+      },
+      listing: {
+        price: this.parsePrice(raw.price),
+        currency: 'USD',
+        size_us_mens: null,
+        size_us_womens: null,
+        size_eu: null,
+        condition: 'unspecified',
+        tags,
+        type: 'sell',
+        description: this.truncateDescription(raw.subTitle || ''),
+      },
+      source: {
+        platform: 'eBay',
+        url: raw.url || '',
+        id,
+        is_authenticated: isAuthenticated,
+        imageUrl: raw.image || null,
+      },
+      seller: {
+        name: raw.seller || null,
+        rating: null,
+        reviewCount: null,
+        verified: false,
+      },
+      scrape: {
+        timestamp: new Date().toISOString(),
+        runId: process.env.APIFY_ACT_RUN_ID || 'local',
+        version: '1.0.0',
+      },
+    };
+  }
+
+  extractEbayIdFromUrl(url) {
+    if (typeof url !== 'string') return null;
+    const match = url.match(/\/(?:itm|p)\/(\d+)/);
+    return match ? match[1] : null;
+  }
+
+  generateDeterministicId(source) {
+    if (!source) {
+      return crypto.randomBytes(8).toString('hex');
+    }
+
+    return crypto.createHash('sha256').update(source).digest('hex').slice(0, 16);
+  }
+
+  buildEbayTags(raw) {
+    const tags = new Set();
+
+    const subtitle = typeof raw.subTitle === 'string' ? raw.subTitle.toLowerCase() : '';
+    const title = typeof raw.title === 'string' ? raw.title.toLowerCase() : '';
+
+    if (subtitle.includes('authenticity guarantee') || title.includes('authenticity guarantee')) {
+      tags.add('authenticity_guarantee');
+    }
+
+    const subtitleHasBuyNow = subtitle.includes('buy it now') || subtitle.includes('buy-it-now');
+    const titleHasBuyNow = title.includes('buy it now') || title.includes('buy-it-now');
+    if (raw.buyItNow === true || subtitleHasBuyNow || titleHasBuyNow) {
+      tags.add('buy_it_now');
+    }
+
+    // Preserve auction awareness when excludeAuctions was false and listing notes auction type
+    if (raw.listingType && typeof raw.listingType === 'string') {
+      const lowerType = raw.listingType.toLowerCase();
+      if (lowerType.includes('auction')) {
+        tags.add('auction');
+      }
+      if (lowerType.includes('buy it now')) {
+        tags.add('buy_it_now');
+      }
+    }
+
+    return Array.from(tags);
   }
 
   /**

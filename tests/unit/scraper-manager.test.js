@@ -26,7 +26,7 @@ describe('ScraperManager', () => {
 
   describe('scrape', () => {
     it('should throw error for unsupported platform', async () => {
-      await expect(manager.scrape('ebay', {})).rejects.toThrow(PlatformScrapingError);
+      await expect(manager.scrape('unknown_platform', {})).rejects.toThrow(PlatformScrapingError);
     });
 
     it('should return empty array on graceful degradation', async () => {
@@ -45,6 +45,59 @@ describe('ScraperManager', () => {
 
       const result = await manager.scrape('grailed', {});
       expect(result).toEqual([]);
+    });
+
+    it('should throw on non-recoverable error', async () => {
+      manager.scrapers.grailed = {
+        validate: jest.fn(),
+        scrape: jest.fn(() => {
+          const error = new Error('Hard failure');
+          error.recoverable = false;
+          throw error;
+        }),
+      };
+
+      // Avoid retries to keep test fast
+      manager.retryWithBackoff = jest.fn((fn) => fn());
+
+      await expect(manager.scrape('grailed', {})).rejects.toThrow('Hard failure');
+    });
+
+    it('should retry with backoff and succeed on third attempt', async () => {
+      jest.useFakeTimers();
+
+      const scrapeMock = jest
+        .fn()
+        .mockImplementationOnce(() => {
+          const e = new Error('try1');
+          e.recoverable = true;
+          throw e;
+        })
+        .mockImplementationOnce(() => {
+          const e = new Error('try2');
+          e.recoverable = true;
+          throw e;
+        })
+        .mockResolvedValueOnce(['ok']);
+
+      manager.scrapers.grailed = {
+        validate: jest.fn(),
+        scrape: scrapeMock,
+      };
+
+      const promise = manager.scrape('grailed', {});
+
+      // Advance timers for 2 retries: 2s and 4s
+      await Promise.resolve();
+      jest.advanceTimersByTime(2000);
+      await Promise.resolve();
+      jest.advanceTimersByTime(4000);
+
+      const result = await promise;
+      expect(result).toEqual(['ok']);
+      expect(scrapeMock).toHaveBeenCalledTimes(3);
+
+      jest.useRealTimers();
     });
   });
 });

@@ -37,12 +37,12 @@ Grail Hunter monitors sneaker listings across multiple platforms in real-time:
 
 Grail Hunter monitors these 4 major sneaker marketplaces:
 
-| Platform    | Type          | Description                                   |
-| ----------- | ------------- | --------------------------------------------- |
-| **eBay**    | Marketplace   | World's largest P2P marketplace               |
-| **Grailed** | Marketplace   | Premium streetwear and sneaker marketplace    |
-| **StockX**  | Authenticated | Stock market for sneakers with authentication |
-| **GOAT**    | Authenticated | Premium authenticated sneaker platform        |
+| Platform                | Type          | Description                                   |
+| ----------------------- | ------------- | --------------------------------------------- |
+| **eBay (Available)**    | Marketplace   | World's largest P2P marketplace               |
+| **Grailed (Available)** | Marketplace   | Premium streetwear and sneaker marketplace    |
+| **StockX (Planned)**    | Authenticated | Stock market for sneakers with authentication |
+| **GOAT (Planned)**      | Authenticated | Premium authenticated sneaker platform        |
 
 ---
 
@@ -190,7 +190,8 @@ apify run
     "max": 300
   },
   "condition": "used_good",
-  "platform": "grailed",
+  "platforms": ["grailed", "ebay"],
+  "excludeAuctions": false,
   "maxResults": 50,
   "notificationConfig": {
     "webhookUrl": "https://webhook.site/your-unique-id",
@@ -430,7 +431,7 @@ export LOG_LEVEL="debug"
 grail-hunter/
 ├── .actor/                      # Apify actor configuration
 │   ├── actor.json              # Actor metadata
-│   ├── INPUT_SCHEMA.json       # Input validation schema
+│   ├── input_schema.json       # Input validation schema
 │   ├── OUTPUT_SCHEMA.json      # Output data schema
 │   └── INPUT.json              # Sample input
 ├── src/
@@ -488,7 +489,7 @@ grail-hunter/
 
 ### Coming in Future Phases
 
-- ⏳ **Phase 2:** eBay integration
+- ✅ **Phase 2:** eBay integration (Complete)
 - ⏳ **Phase 3:** StockX integration + market value benchmarking
 - ⏳ **Phase 4:** GOAT integration + advanced features
 
@@ -547,7 +548,7 @@ npm test
 ### For Users
 
 - [README.md](./README.md) - This file
-- [INPUT_SCHEMA.json](./.actor/INPUT_SCHEMA.json) - Input documentation
+- [input_schema.json](./.actor/input_schema.json) - Input documentation
 - [OUTPUT_SCHEMA.json](./.actor/OUTPUT_SCHEMA.json) - Output documentation
 
 ### For Developers
@@ -643,4 +644,4 @@ For technical issues or questions:
 
 **Made with ❤️ for the sneaker community**
 
-**Status:** ✅ Phase 1 Complete | ⏳ Phase 2-4 In Progress
+**Status:** ✅ Phase 2 Complete | ⏳ Phase 3-4 In Progress
