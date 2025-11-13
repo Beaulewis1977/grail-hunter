@@ -1,9 +1,9 @@
 {
   "actorSpecVersion": 1,
   "name": "grail-hunter",
-  "title": "Grail Hunter - Multi-Platform Sneaker Monitor",
-  "description": "Aggregates sneaker listings from eBay, Grailed, StockX, and GOAT. Delivers real-time alerts when target sneakers appear with intelligent parsing and deduplication.",
-  "version": "0.1.0",
+  "title": "Grail Hunter - Phase 2 Multi-Platform Monitor",
+  "description": "Aggregates sneaker listings from Grailed and eBay with intelligent parsing, deduplication, and real-time alerts. Future phases will add StockX and GOAT.",
+  "version": "0.2.0",
   "author": {
     "name": "Beaulewis1977",
     "email": "support@grailhunter.app"

@@ -1,6 +1,6 @@
 {
-  "title": "Grail Hunter - Phase 1: Grailed MVP",
-  "description": "Search Grailed for sneakers and get notified about new listings",
+  "title": "Grail Hunter - Phase 2: Grailed & eBay",
+  "description": "Monitor Grailed and eBay for new sneaker listings and get real-time alerts.",
   "type": "object",
   "schemaVersion": 1,
   "properties": {
@@ -62,18 +62,18 @@
       "default": "used_good"
     },
     "platform": {
-      "title": "Platform",
+      "title": "Legacy Single Platform",
       "type": "string",
-      "description": "⚠️ Phase 1 only supports Grailed. More platforms coming in future phases!",
+      "description": "Backward-compatible single-platform selector (defaults to Grailed). Use the Platforms list below for Phase 2 multi-platform runs.",
       "editor": "select",
       "enum": ["grailed"],
-      "enumTitles": ["Grailed (✅ Available)"],
+      "enumTitles": ["Grailed"],
       "default": "grailed"
     },
     "platforms": {
-      "title": "Platforms (Phase 2)",
+      "title": "Platforms",
       "type": "array",
-      "description": "Select one or more platforms to search (Phase 2). Leave empty to use the single 'platform' field.",
+      "description": "Select one or more platforms to search. Leave empty to fall back to the single 'Legacy Single Platform' field.",
       "editor": "select",
       "items": {
         "type": "string",
