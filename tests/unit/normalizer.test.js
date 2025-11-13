@@ -42,6 +42,36 @@ describe('DataNormalizer', () => {
       expect(out.listing.price).toBe(200);
       expect(out.product.name).toContain('Air Jordan 1');
     });
+
+    it('should generate deterministic fallback id when identifiers missing', () => {
+      const raw = {
+        title: 'Rare Sneaker Sample',
+        price: '$999',
+      };
+
+      const out1 = normalizer.normalize(raw, 'ebay');
+      const out2 = normalizer.normalize(raw, 'ebay');
+
+      expect(out1.source.id).toHaveLength(16);
+      expect(out1.source.id).toMatch(/^[a-f0-9]+$/);
+      expect(out1.source.id).toBe(out2.source.id);
+    });
+
+    it('should detect authenticity guarantee and buy it now indicators', () => {
+      const raw = {
+        title: 'Jordan 1 Authenticity Guarantee Exclusive',
+        price: '$450',
+        subTitle: 'Buy It Now with Authenticity Guarantee badges',
+        buyItNow: true,
+      };
+
+      const out = normalizer.normalize(raw, 'ebay');
+
+      expect(out.listing.tags).toEqual(
+        expect.arrayContaining(['authenticity_guarantee', 'buy_it_now'])
+      );
+      expect(out.source.is_authenticated).toBe(true);
+    });
   });
 
   describe('normalizeGrailed', () => {

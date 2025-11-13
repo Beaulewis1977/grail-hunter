@@ -18,7 +18,7 @@ describe('DeduplicationEngine', () => {
   });
 
   describe('generateHash', () => {
-    it('should generate consistent hash for same listing', () => {
+    it('should generate consistent SHA-256 hash for same listing', () => {
       const listing = {
         source: { platform: 'Grailed', id: '12345' },
       };
@@ -27,6 +27,8 @@ describe('DeduplicationEngine', () => {
       const hash2 = deduplicator.generateHash(listing);
 
       expect(hash1).toBe(hash2);
+      expect(hash1).toHaveLength(64);
+      expect(hash1).toMatch(/^[a-f0-9]+$/);
     });
 
     it('should generate different hashes for different listings', () => {
@@ -46,7 +48,7 @@ describe('DeduplicationEngine', () => {
   });
 
   describe('findNewListings', () => {
-    it('should identify new listings', async () => {
+    it('should identify new listings and mark them as new', async () => {
       deduplicator.kvStore = mockKvStore;
       deduplicator.seenHashes = new Map();
 
@@ -55,6 +57,7 @@ describe('DeduplicationEngine', () => {
           source: { platform: 'Grailed', id: '1' },
           product: { name: 'Test 1' },
           listing: { price: 100 },
+          scrape: { timestamp: '2024-01-01T00:00:00.000Z' },
         },
         {
           source: { platform: 'Grailed', id: '2' },
@@ -66,16 +69,18 @@ describe('DeduplicationEngine', () => {
       const newListings = await deduplicator.findNewListings(listings);
 
       expect(newListings).toHaveLength(2);
+      expect(newListings.every((listing) => listing.scrape.isNew === true)).toBe(true);
       expect(mockKvStore.setValue).toHaveBeenCalledWith('seen_listing_hashes', expect.any(Array));
     });
 
-    it('should filter out previously seen listings', async () => {
+    it('should filter out previously seen listings and mark duplicates as not new', async () => {
       deduplicator.kvStore = mockKvStore;
 
       const listing1 = {
         source: { platform: 'Grailed', id: '1' },
         product: { name: 'Test' },
         listing: { price: 100 },
+        scrape: { timestamp: '2024-01-01T00:00:00.000Z' },
       };
       const hash1 = deduplicator.generateHash(listing1);
 
@@ -94,6 +99,8 @@ describe('DeduplicationEngine', () => {
 
       expect(newListings).toHaveLength(1);
       expect(newListings[0].source.id).toBe('2');
+      expect(listing1.scrape.isNew).toBe(false);
+      expect(newListings[0].scrape.isNew).toBe(true);
     });
 
     it('should trim hashes when exceeding maxStoredHashes', async () => {
@@ -130,6 +137,24 @@ describe('DeduplicationEngine', () => {
       expect(stats.totalSeenListings).toBe(3);
       expect(stats.maxCapacity).toBe(10000);
       expect(stats.utilizationPercent).toBe('0.0');
+    });
+  });
+
+  describe('migration helpers', () => {
+    it('should skip legacy MD5 hashes during migration', () => {
+      const md5Hash = 'd41d8cd98f00b204e9800998ecf8427e';
+      const migrated = deduplicator.migrateHash(md5Hash);
+
+      expect(migrated).toBeNull();
+      expect(deduplicator.migratedHashCount).toBe(1);
+    });
+
+    it('should preserve SHA-256 hashes during migration', () => {
+      const shaHash = '1f40fc92da241694750979ee6cf582f2d5d7d28e18335de05abc54d0560e0f53';
+      const migrated = deduplicator.migrateHash(shaHash);
+
+      expect(migrated).toBe(shaHash);
+      expect(deduplicator.migratedHashCount).toBeUndefined();
     });
   });
 });

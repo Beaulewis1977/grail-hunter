@@ -72,7 +72,7 @@ describe('EbayScraper (mocked Apify integration)', () => {
           expect.objectContaining({ url: expect.stringContaining('ebay.com/sch/i.html') }),
         ]),
         maxItems: 25,
-        proxyConfig: defaultParams.proxyConfig,
+        proxyConfiguration: defaultParams.proxyConfig,
       })
     );
 

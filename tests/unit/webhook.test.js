@@ -82,6 +82,7 @@ describe('WebhookNotifier', () => {
 
       expect(headers['X-Grail-Hunter-Signature']).toBeDefined();
       expect(typeof headers['X-Grail-Hunter-Signature']).toBe('string');
+      expect(headers['X-Grail-Hunter-Signature']).toMatch(/^sha256=[a-f0-9]+$/);
     });
 
     it('should throw NotificationError on failure', async () => {

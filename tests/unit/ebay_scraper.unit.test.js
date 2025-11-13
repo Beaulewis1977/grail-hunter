@@ -5,9 +5,9 @@
 import { EbayScraper } from '../../src/scrapers/ebay.js';
 
 describe('EbayScraper (unit)', () => {
-  it('validate throws when actorId missing', () => {
+  it('validate does not throw when actorId missing (falls back in scrape)', () => {
     const scraper = new EbayScraper({ name: 'ebay' });
-    expect(() => scraper.validate()).toThrow('actorId is required for eBay scraper');
+    expect(() => scraper.validate()).not.toThrow();
   });
 
   it('buildSearchUrls includes price filters and sort order, with size and excludeAuctions', () => {

@@ -40,8 +40,7 @@ export class EbayScraper extends BaseScraper {
       const input = {
         startUrls,
         maxItems: searchParams.maxResults || 50,
-        // This actor expects proxyConfig (not proxyConfiguration)
-        proxyConfig: searchParams.proxyConfig || {
+        proxyConfiguration: searchParams.proxyConfig || {
           useApifyProxy: true,
         },
       };
@@ -109,8 +108,5 @@ export class EbayScraper extends BaseScraper {
    */
   validate() {
     super.validate();
-    if (!this.config.actorId) {
-      throw new Error('actorId is required for eBay scraper');
-    }
   }
 }
