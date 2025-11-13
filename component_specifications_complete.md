@@ -2490,12 +2490,18 @@ await fetch(webhookUrl, {
 const crypto = require('crypto');
 
 function verifyWebhookSignature(req, secret) {
-  const signatureHex = req.headers['x-sneakermeta-signature'];
+  const signatureHeader = req.headers['x-sneakermeta-signature'];
   const timestamp = req.headers['x-sneakermeta-timestamp'];
 
-  if (!signatureHex || !timestamp) {
+  if (!signatureHeader || !timestamp) {
     throw new Error('Missing signature or timestamp header');
   }
+
+  if (!signatureHeader.startsWith('sha256=')) {
+    throw new Error('Unsupported signature algorithm');
+  }
+
+  const signatureHex = signatureHeader.slice('sha256='.length);
 
   // Check timestamp (prevent replay attacks)
   const now = Math.floor(Date.now() / 1000);

@@ -9,12 +9,12 @@
 
 ## 🎯 Overview
 
-**Grail Hunter** is an Apify actor for monitoring sneaker listings. In Phase 1 it currently supports
-Grailed, with multi‑marketplace aggregation and real‑time alerts planned for future phases. Stop
-manually checking multiple tabs—Grail Hunter aims to find the deals for you.
+**Grail Hunter** is an Apify actor for monitoring sneaker listings. As of Phase 2 it supports
+Grailed _and_ eBay, delivering multi‑marketplace aggregation with real-time alerts so you can stop
+manually checking multiple tabs.
 
-> _Phase 1 availability: automated scraping currently supports Grailed; eBay, StockX, and GOAT are
-> planned for the next phases and are documented here as roadmap targets._
+> _Current availability: automated scraping supports Grailed and eBay. StockX and GOAT remain on the
+> roadmap for future phases._
 
 This project is developed as part of the **Apify Challenge 2024-2025**.
 
@@ -24,8 +24,8 @@ This project is developed as part of the **Apify Challenge 2024-2025**.
 
 Grail Hunter monitors sneaker listings across multiple platforms in real-time:
 
-- 🔍 **Searches** for your desired sneakers on Grailed (Planned: simultaneous searches across 4
-  major marketplaces)
+- 🔍 **Searches** for your desired sneakers on Grailed and eBay (with additional marketplaces
+  coming)
 - 📊 **Normalizes** disparate data into a unified, easy-to-use format
 - 🤖 **Parses** sneakerhead terminology (DS, VNDS, OG All, etc.) automatically
 - 🔔 **Alerts** you instantly via email, Slack, Discord, or webhooks when matches are found
@@ -38,8 +38,8 @@ Grail Hunter monitors sneaker listings across multiple platforms in real-time:
 
 Grail Hunter monitors these 4 major sneaker marketplaces:
 
-- **Available now (Phase 1):** Grailed
-- **Planned (future phases):** eBay, StockX, GOAT
+- **Available now (Phase 2):** Grailed, eBay
+- **Planned (future phases):** StockX, GOAT
 
 | Platform    | Type          | Description                                   |
 | ----------- | ------------- | --------------------------------------------- |

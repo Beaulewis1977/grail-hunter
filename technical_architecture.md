@@ -765,7 +765,7 @@ const pool = new AutoscaledPool({
   minConcurrency: 2, // Keep at least 2 active
   desiredConcurrency: 5, // Target 5 concurrent
   systemStatusOptions: {
-    maxMemoryOverloadedRatio: 0.8, // Throttle at 80% memory usage
+    maxMemoryOverloadRatio: 0.8, // Throttle at 80% memory usage
   },
 });
 ```

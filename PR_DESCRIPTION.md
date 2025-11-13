@@ -2,9 +2,10 @@
 
 ## 📋 Summary
 
-This PR implements **Phase 2** of the Grail Hunter actor — eBay integration and multi-platform
-aggregation. It retains Phase 1 stability while adding an orchestrated eBay scraper, platform- aware
-normalization, multi-platform input, and parallel scraping/aggregation.
+This PR implements **Phase 2** of the Grail Hunter actor — Grailed _and_ eBay aggregation with
+deterministic deduplication. It retains Phase 1 stability while adding an orchestrated eBay scraper,
+platform-aware normalization, SHA-256-based dedupe with legacy migration, multi-platform input, and
+parallel scraping/aggregation.
 
 **Status:** ✅ **Ready for Review and Merge**
 
@@ -13,12 +14,13 @@ normalization, multi-platform input, and parallel scraping/aggregation.
 ## 🎯 Objectives (Phase 2)
 
 - [x] eBay scraper integration via orchestrated actor (`dtrungtin/ebay-items-scraper`)
-- [x] eBay-specific normalization (`normalizeEbay`), URL/ID fallback
+- [x] eBay-specific normalization (`normalizeEbay`), URL/ID fallback, authenticity detection
 - [x] Multi-platform input (`platforms` array) with legacy `platform` fallback
 - [x] Parallel scraping with `Promise.allSettled` and graceful degradation
 - [x] Aggregation + shared pipeline (normalize → parse → filter → dedupe → notify)
 - [x] Input schema updates (`excludeAuctions`, `platforms`)
-- [x] Output schema docs aligned with code (`source.id`, `source.is_authenticated`)
+- [x] Output schema/docs aligned (`source.id`, `source.is_authenticated`, `scrape.isNew`)
+- [x] Deduplication migrated to SHA-256 with automatic MD5 upgrade path
 - [x] Tests updated/added (unit + integration) with coverage >80%
 
 ---
@@ -58,7 +60,7 @@ core              |   85.18 |    76.17 |    97.14 |   85.78
 
 ## 🏗️ What Was Implemented (Phase 2)
 
-### 1. Core Architecture
+### 1. Core Architecture & Data Pipeline
 
 #### Data Normalizer (`src/core/normalizer.js`)
 
@@ -83,7 +85,7 @@ core              |   85.18 |    76.17 |    97.14 |   85.78
 
 #### Deduplication Engine (`src/core/deduplicator.js`)
 
-- MD5 hash-based listing identification
+- SHA-256 hash-based listing identification (legacy MD5 entries auto-migrate)
 - Persistent state via Apify Key-Value Store
 - Automatic cleanup (10,000 listing limit)
 - Statistics tracking
@@ -242,8 +244,9 @@ in parser - both conditionPatterns and tagPatterns
 
 ### 4. Deduplication Strategy
 
-**Decision:** MD5 hash of `platform:listing_id` **Rationale:** Unique, fast, consistent across runs
-**Trade-off:** Won't detect same item relisted with new ID (acceptable for Phase 1)
+**Decision:** SHA-256 hash of `platform:listing_id` with on-load migration of historical MD5 hashes
+**Rationale:** Stronger collision resistance, forward-compatible for cross-platform IDs
+**Trade-offs:** Slightly higher CPU cost, acceptable at current volume
 
 ### 5. Error Handling Approach
 

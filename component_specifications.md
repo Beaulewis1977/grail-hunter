@@ -2479,20 +2479,31 @@ await fetch(webhookUrl, {
 const crypto = require('crypto');
 
 function verifyWebhookSignature(req, secret) {
-  const signature = req.headers['x-sneakermeta-signature'];
+  const signatureHeader = req.headers['x-sneakermeta-signature'];
   const timestamp = req.headers['x-sneakermeta-timestamp'];
+
+  if (!signatureHeader || !timestamp) {
+    throw new Error('Missing signature or timestamp header');
+  }
+
+  if (!signatureHeader.startsWith('sha256=')) {
+    throw new Error('Unsupported signature algorithm');
+  }
+
+  const signatureHex = signatureHeader.slice('sha256='.length);
 
   // Check timestamp (prevent replay attacks)
   const now = Math.floor(Date.now() / 1000);
-  if (Math.abs(now - parseInt(timestamp)) > 300) {
+  if (Math.abs(now - parseInt(timestamp, 10)) > 300) {
     // 5 minutes
     throw new Error('Webhook timestamp too old');
   }
 
-  // Verify signature
   const expectedSignature = generateWebhookSignature(req.body, secret);
+  const signatureBuffer = Buffer.from(signatureHex, 'hex');
+  const expectedBuffer = Buffer.from(expectedSignature, 'hex');
 
-  if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))) {
+  if (!crypto.timingSafeEqual(signatureBuffer, expectedBuffer)) {
     throw new Error('Invalid webhook signature');
   }
 
