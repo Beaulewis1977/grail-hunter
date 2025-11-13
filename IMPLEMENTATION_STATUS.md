@@ -132,9 +132,11 @@ grail-hunter/
 
 **Purpose:** Track seen listings to prevent duplicate alerts
 
-**Features:**
+**Decision:** SHA-256 hash of `platform:listing_id`, dropping legacy MD5 hashes on upgrade so the
+state repopulates under SHA-256 **Rationale:** Stronger collision resistance, forward-compatible for
+cross-platform IDs **Trade-offs:** One-time duplicate alerts after upgrade; slightly higher CPU
+cost, acceptable at current volume
 
-- SHA-256 hash-based identification (legacy MD5 entries automatically migrated on load)
 - Persistent state via Apify Key-Value Store
 - Configurable max storage (10,000 listings)
 - Automatic trimming of old entries

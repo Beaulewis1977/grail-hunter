@@ -244,9 +244,10 @@ in parser - both conditionPatterns and tagPatterns
 
 ### 4. Deduplication Strategy
 
-**Decision:** SHA-256 hash of `platform:listing_id` with on-load migration of historical MD5 hashes
-**Rationale:** Stronger collision resistance, forward-compatible for cross-platform IDs
-**Trade-offs:** Slightly higher CPU cost, acceptable at current volume
+**Decision:** SHA-256 hash of `platform:listing_id`, dropping legacy MD5 hashes on load so the
+dedupe state repopulates under SHA-256 on subsequent runs **Rationale:** Stronger collision
+resistance, forward-compatible for cross-platform IDs **Trade-offs:** One-time duplicate alerts
+after upgrade; slightly higher CPU cost, acceptable at current volume
 
 ### 5. Error Handling Approach
 

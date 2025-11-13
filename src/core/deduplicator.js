@@ -28,6 +28,8 @@ export class DeduplicationEngine {
       this.seenHashes = new Map();
 
       for (const entry of storedHashes) {
+        // Legacy 32-char MD5 digests are intentionally ignored inside upsertMigratedHash so the
+        // SHA-256 set repopulates naturally on subsequent runs.
         if (typeof entry === 'string') {
           this.upsertMigratedHash(entry, Date.now());
         } else if (entry && typeof entry === 'object' && entry.hash) {
@@ -39,7 +41,7 @@ export class DeduplicationEngine {
 
       if (this.migratedHashCount) {
         logger.info(
-          `Migrated ${this.migratedHashCount} legacy MD5 hashes to SHA-256 for deduplication consistency`
+          `Dropped ${this.migratedHashCount} legacy MD5 hashes; dedupe history will repopulate under SHA-256 on subsequent runs`
         );
         await this.persistHashes(new Map(this.seenHashes));
       }
@@ -115,6 +117,7 @@ export class DeduplicationEngine {
     }
 
     if (normalized.length === 32 && /^[a-f0-9]+$/.test(normalized)) {
+      // Legacy MD5 digests are intentionally skipped so the KV store is rebuilt with SHA-256 values
       this.migratedHashCount = (this.migratedHashCount || 0) + 1;
       return null;
     }
