@@ -9,9 +9,9 @@
 
 ## 🎯 Overview
 
-**Grail Hunter** is a sophisticated Apify actor that aggregates sneaker listings from 4 major
-marketplaces and delivers real-time alerts when your target sneakers appear. Stop manually checking
-multiple tabs—let Grail Hunter find the deals for you.
+**Grail Hunter** is an Apify actor for monitoring sneaker listings. In Phase 1 it currently supports
+Grailed, with multi‑marketplace aggregation and real‑time alerts planned for future phases. Stop
+manually checking multiple tabs—Grail Hunter aims to find the deals for you.
 
 > _Phase 1 availability: automated scraping currently supports Grailed; eBay, StockX, and GOAT are
 > planned for the next phases and are documented here as roadmap targets._
@@ -24,7 +24,8 @@ This project is developed as part of the **Apify Challenge 2024-2025**.
 
 Grail Hunter monitors sneaker listings across multiple platforms in real-time:
 
-- 🔍 **Searches** for your desired sneakers across 4 major marketplaces simultaneously
+- 🔍 **Searches** for your desired sneakers on Grailed (Planned: simultaneous searches across 4
+  major marketplaces)
 - 📊 **Normalizes** disparate data into a unified, easy-to-use format
 - 🤖 **Parses** sneakerhead terminology (DS, VNDS, OG All, etc.) automatically
 - 🔔 **Alerts** you instantly via email, Slack, Discord, or webhooks when matches are found

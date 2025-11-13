@@ -1744,7 +1744,7 @@ async function sendWebhook(listings, webhookUrl) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Webhook-Signature': generateSignature(payload),
+        'X-Webhook-Signature': await generateSignature(payload),
       },
       body: JSON.stringify(payload),
     });
@@ -1760,8 +1760,11 @@ async function sendWebhook(listings, webhookUrl) {
   }
 }
 
-function generateSignature(payload) {
-  const secret = Actor.getValue('WEBHOOK_SECRET');
+async function generateSignature(payload) {
+  const secret = await Actor.getValue('WEBHOOK_SECRET');
+  if (!secret || typeof secret !== 'string') {
+    throw new Error('WEBHOOK_SECRET is missing or invalid');
+  }
   return crypto.createHmac('sha256', secret).update(JSON.stringify(payload)).digest('hex');
 }
 ```
@@ -1787,7 +1790,7 @@ async function sendDiscordNotification(listings, webhookUrl) {
       value: `**$${l.price}** | Size ${l.size} | [View](${l.url})`,
       inline: false,
     })),
-    timestamp: new Date(),
+    timestamp: new Date().toISOString(),
   };
 
   await fetch(webhookUrl, {

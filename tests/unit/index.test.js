@@ -125,6 +125,41 @@ describe('Actor main entrypoint', () => {
     mockSendNotifications.mockResolvedValue(notificationResult);
   });
 
+  it('runs multi-platform and ignores failed platform results', async () => {
+    mockGetInput.mockResolvedValueOnce(rawInput);
+
+    // Provide multi-platform in normalized input
+    const multi = { ...normalizedInput, platforms: ['grailed', 'ebay'], excludeAuctions: true };
+    mockNormalizeInput.mockReturnValueOnce(multi);
+
+    // First platform resolves, second rejects
+    mockScrape.mockResolvedValueOnce(rawListings).mockRejectedValueOnce(new Error('ebay failed'));
+
+    await actorMainHandler();
+
+    // Called twice for two platforms
+    expect(mockScrape).toHaveBeenCalledTimes(2);
+    expect(mockScrape).toHaveBeenNthCalledWith(
+      1,
+      'grailed',
+      expect.objectContaining({ keywords: multi.keywords, excludeAuctions: true })
+    );
+    expect(mockScrape).toHaveBeenNthCalledWith(
+      2,
+      'ebay',
+      expect.objectContaining({ keywords: multi.keywords, excludeAuctions: true })
+    );
+
+    // Stats should include platforms and count only fulfilled raw listings
+    expect(mockStoreSetValue).toHaveBeenCalledWith(
+      'last_run_stats',
+      expect.objectContaining({
+        platforms: multi.platforms,
+        totalScraped: rawListings.length,
+      })
+    );
+  });
+
   it('runs the happy path and stores run stats', async () => {
     mockGetInput.mockResolvedValueOnce(rawInput);
 
@@ -154,7 +189,7 @@ describe('Actor main entrypoint', () => {
     expect(mockStoreSetValue).toHaveBeenCalledWith(
       'last_run_stats',
       expect.objectContaining({
-        platform: normalizedInput.platform,
+        platforms: [normalizedInput.platform],
         totalScraped: rawListings.length,
         afterFiltering: filteredListings.length,
         newListings: newListings.length,

@@ -6,7 +6,8 @@
     "max": 300
   },
   "condition": "used_good",
-  "platform": "grailed",
+  "platforms": ["grailed", "ebay"],
+  "excludeAuctions": false,
   "maxResults": 20,
   "notificationConfig": {
     "webhookUrl": "https://webhook.site/unique-webhook-id",

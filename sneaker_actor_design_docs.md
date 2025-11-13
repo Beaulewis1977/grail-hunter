@@ -396,7 +396,7 @@ graph TB
 
 ### 5.2 Input Schema
 
-**File:** `INPUT_SCHEMA.json`
+**File:** `input_schema.json`
 
 ```json
 {
@@ -2295,7 +2295,7 @@ interface Listing {
     highestBid?: number; // Current highest bid
     lastSale?: number; // Most recent sale price
     salesLast72h?: number; // Sales volume
-    pricePremiumpercent?: number; // % above/below retail
+    pricePremiumPercent?: number; // % above/below retail
     averagePrice?: number; // 30-day average
   };
 

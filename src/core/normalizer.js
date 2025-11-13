@@ -46,6 +46,8 @@ export class DataNormalizer {
     switch (platformTrimmed.toLowerCase()) {
       case 'grailed':
         return this.normalizeGrailed(rawListing);
+      case 'ebay':
+        return this.normalizeEbay(rawListing);
       default:
         logger.warn(`Unknown platform: ${platformTrimmed}, using generic normalizer`);
         return this.normalizeGeneric(rawListing, platformTrimmed);
@@ -97,6 +99,57 @@ export class DataNormalizer {
         version: '1.0.0',
       },
     };
+  }
+
+  normalizeEbay(raw) {
+    const title = raw.title || raw.name || '';
+    const id = String(raw.itemNumber || this.extractEbayIdFromUrl(raw.url) || '');
+
+    return {
+      product: {
+        name: title || 'Unknown',
+        brand: this.extractBrand(title || ''),
+        model: this.extractModel(title || ''),
+        colorway: null,
+        sku: null,
+        releaseYear: null,
+      },
+      listing: {
+        price: this.parsePrice(raw.price),
+        currency: 'USD',
+        size_us_mens: null,
+        size_us_womens: null,
+        size_eu: null,
+        condition: 'unspecified',
+        tags: [],
+        type: 'sell',
+        description: this.truncateDescription(raw.subTitle || ''),
+      },
+      source: {
+        platform: 'eBay',
+        url: raw.url || '',
+        id,
+        is_authenticated: false,
+        imageUrl: raw.image || null,
+      },
+      seller: {
+        name: raw.seller || null,
+        rating: null,
+        reviewCount: null,
+        verified: false,
+      },
+      scrape: {
+        timestamp: new Date().toISOString(),
+        runId: process.env.APIFY_ACT_RUN_ID || 'local',
+        version: '1.0.0',
+      },
+    };
+  }
+
+  extractEbayIdFromUrl(url) {
+    if (typeof url !== 'string') return null;
+    const match = url.match(/\/itm\/(\d+)/);
+    return match ? match[1] : null;
   }
 
   /**

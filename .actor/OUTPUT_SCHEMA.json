@@ -126,18 +126,18 @@
           "description": "Direct link to listing",
           "example": "https://grailed.com/listings/..."
         },
-        "platformId": {
+        "id": {
           "type": "string",
           "description": "Unique ID on platform",
           "example": "12345678"
         },
-        "isAuthenticated": {
+        "is_authenticated": {
           "type": "boolean",
           "description": "Whether platform authenticates items",
           "example": false
         }
       },
-      "required": ["platform", "url", "platformId", "isAuthenticated"]
+      "required": ["platform", "url", "id", "is_authenticated"]
     },
     "seller": {
       "title": "Seller Information",

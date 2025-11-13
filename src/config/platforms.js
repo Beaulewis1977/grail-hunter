@@ -29,7 +29,7 @@ export const PLATFORM_CONFIGS = {
     cacheTimeout: 60,
     isAuthenticated: false,
     requiresProxy: true,
-    enabled: false, // Phase 2
+    enabled: true, // Phase 2 enabled
   },
   stockx: {
     name: 'StockX',

@@ -50,13 +50,23 @@ export class GrailedScraper extends BaseScraper {
         throw new ActorCallError(actorId, `Actor run failed with status: ${run.status}`);
       }
 
-      // Fetch results from the dataset
+      // Fetch all results from the dataset with pagination to avoid truncation
       const dataset = await Actor.apifyClient.dataset(run.defaultDatasetId);
-      const { items } = await dataset.listItems();
+      const allItems = [];
+      let offset = 0;
+      const limit = 1000;
+      // Loop until fewer than limit items are returned
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const page = await dataset.listItems({ limit, offset });
+        if (page?.items?.length) allItems.push(...page.items);
+        if (!page?.items?.length || page.items.length < limit) break;
+        offset += limit;
+      }
 
-      logger.info(`Scraped ${items.length} listings from Grailed`);
+      logger.info(`Scraped ${allItems.length} listings from Grailed`);
 
-      return items;
+      return allItems;
     } catch (error) {
       logger.error('Grailed scraping failed', { error: error.message });
       throw new ActorCallError(actorId, error.message, error);
@@ -78,9 +88,6 @@ export class GrailedScraper extends BaseScraper {
    */
   validate() {
     super.validate();
-
-    if (!this.config.actorId) {
-      throw new Error('actorId is required for Grailed scraper');
-    }
+    // actorId is optional; scrape() falls back to 'vmscrapers/grailed' when not provided
   }
 }

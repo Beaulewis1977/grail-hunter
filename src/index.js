@@ -26,7 +26,7 @@ Actor.main(async () => {
     const rawInput = await Actor.getInput();
 
     if (!rawInput) {
-      throw new ValidationError('No input provided to actor. Check INPUT_SCHEMA.json');
+      throw new ValidationError('No input provided to actor. Check input_schema.json');
     }
 
     validateInput(rawInput);
@@ -52,24 +52,39 @@ Actor.main(async () => {
 
     logger.info('✅ Components initialized');
 
-    // 3. Scrape platform
-    logger.info(`🔍 Scraping ${input.platform}...`);
+    // 3. Scrape platforms
+    const platforms =
+      Array.isArray(input.platforms) && input.platforms.length ? input.platforms : [input.platform];
 
-    const rawListings = await scraperManager.scrape(input.platform, {
-      keywords: input.keywords,
-      maxResults: input.maxResults,
-      proxyConfig: input.proxyConfig,
+    logger.info(`🔍 Scraping platforms...`, { platforms });
+
+    const scrapeTasks = platforms.map((platform) =>
+      scraperManager
+        .scrape(platform, {
+          keywords: input.keywords,
+          maxResults: input.maxResults,
+          proxyConfig: input.proxyConfig,
+          excludeAuctions: input.excludeAuctions,
+        })
+        .then((items) => ({ platform, items }))
+    );
+
+    const settled = await Promise.allSettled(scrapeTasks);
+
+    const rawByPlatform = settled.filter((r) => r.status === 'fulfilled').map((r) => r.value);
+
+    const totalRaw = rawByPlatform.reduce((acc, cur) => acc + (cur.items?.length || 0), 0);
+    logger.info(`📦 Scraped ${totalRaw} raw listings total`, {
+      perPlatform: Object.fromEntries(rawByPlatform.map((x) => [x.platform, x.items.length])),
     });
-
-    logger.info(`📦 Scraped ${rawListings.length} raw listings from ${input.platform}`);
 
     // 4. Normalize data
     logger.info('🔄 Normalizing listings...');
-    const normalizedListings = rawListings
-      .map((raw) => normalizer.normalize(raw, input.platform))
+    const normalizedListings = rawByPlatform
+      .flatMap(({ platform, items }) => items.map((raw) => normalizer.normalize(raw, platform)))
       .filter((listing) => listing != null);
 
-    const droppedCount = rawListings.length - normalizedListings.length;
+    const droppedCount = totalRaw - normalizedListings.length;
     if (droppedCount > 0) {
       logger.info(`⚠️  Dropped ${droppedCount} invalid listing(s) during normalization`);
     }
@@ -108,8 +123,8 @@ Actor.main(async () => {
 
     // 9. Log final statistics
     const stats = {
-      platform: input.platform,
-      totalScraped: rawListings.length,
+      platforms,
+      totalScraped: totalRaw,
       afterFiltering: filteredListings.length,
       newListings: newListings.length,
       notifications: notificationResult,

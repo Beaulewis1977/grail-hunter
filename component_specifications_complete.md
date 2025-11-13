@@ -27,8 +27,8 @@
 
 ### 1.1 Complete JSON Schema Definition
 
-The input schema follows Apify's `INPUT_SCHEMA.json` format (schema version 1) and is located at
-`.actor/input_schema.json`.
+The input schema follows Apify's `input_schema.json` format (schema version 1) and is located at
+`.actor/input_schema.json` (sample input in `.actor/INPUT.json`).
 
 ```json
 {
@@ -2159,26 +2159,37 @@ class EmailNotifier {
         },
       };
 
-      Actor.log.info(`Sending email to ${toEmail} with ${listings.length} listing(s)`);
+      // Redact recipient email before logging to avoid PII in logs
+      const redactEmail = (email) => {
+        if (!email || typeof email !== 'string') return 'unknown';
+        const [local, domain] = email.split('@');
+        if (!domain) return 'unknown';
+        const first = local?.[0] ?? '';
+        const masked =
+          local && local.length > 1 ? `${first}${'*'.repeat(local.length - 1)}` : first;
+        return `${masked}@${domain}`;
+      };
+
+      Actor.log.info(`Sending email to ${redactEmail(toEmail)} with ${listings.length} listing(s)`);
 
       const [response] = await sgMail.send(msg);
 
       Actor.log.info('Email sent successfully', {
         statusCode: response.statusCode,
-        to: toEmail,
+        to: redactEmail(toEmail),
         listingCount: listings.length,
       });
 
       return {
         success: true,
         messageId: response.headers['x-message-id'],
-        to: toEmail,
+        to: redactEmail(toEmail),
         listingCount: listings.length,
       };
     } catch (error) {
       Actor.log.error('Failed to send email', {
         error: error.message,
-        to: toEmail,
+        to: redactEmail(toEmail),
         code: error.code,
         response: error.response?.body,
       });
@@ -2479,20 +2490,30 @@ await fetch(webhookUrl, {
 const crypto = require('crypto');
 
 function verifyWebhookSignature(req, secret) {
-  const signature = req.headers['x-sneakermeta-signature'];
+  const signatureHex = req.headers['x-sneakermeta-signature'];
   const timestamp = req.headers['x-sneakermeta-timestamp'];
+
+  if (!signatureHex || !timestamp) {
+    throw new Error('Missing signature or timestamp header');
+  }
 
   // Check timestamp (prevent replay attacks)
   const now = Math.floor(Date.now() / 1000);
-  if (Math.abs(now - parseInt(timestamp)) > 300) {
+  if (Math.abs(now - parseInt(timestamp, 10)) > 300) {
     // 5 minutes
     throw new Error('Webhook timestamp too old');
   }
 
   // Verify signature
-  const expectedSignature = generateWebhookSignature(req.body, secret);
+  const expectedHex = generateWebhookSignature(req.body, secret);
+  const provided = Buffer.from(signatureHex, 'hex');
+  const expected = Buffer.from(expectedHex, 'hex');
 
-  if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))) {
+  if (provided.length !== expected.length) {
+    throw new Error('Invalid webhook signature length');
+  }
+
+  if (!crypto.timingSafeEqual(provided, expected)) {
     throw new Error('Invalid webhook signature');
   }
 
@@ -5540,7 +5561,7 @@ class EbayScraper extends BaseScraper {
   }
 
   extractSize(title) {
-    const sizeMatch = title.match(/\b(?:size|sz)\s*(\d{1,2}(?:\.\5)?)\b/i);
+    const sizeMatch = title.match(/\b(?:size|sz)\s*(\d{1,2}(?:\.5)?)\b/i);
     return sizeMatch ? sizeMatch[1] : null;
   }
 

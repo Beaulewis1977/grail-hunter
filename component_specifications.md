@@ -27,8 +27,8 @@
 
 ### 1.1 Complete JSON Schema Definition
 
-The input schema follows Apify's `INPUT_SCHEMA.json` format (schema version 1) and is located at
-`.actor/input_schema.json`.
+The input schema follows Apify's `input_schema.json` format (schema version 1) and is located at
+`.actor/input_schema.json` (sample input in `.actor/INPUT.json`).
 
 ```json
 {

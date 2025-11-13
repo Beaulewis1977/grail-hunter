@@ -70,6 +70,18 @@
       "enumTitles": ["Grailed (✅ Available)"],
       "default": "grailed"
     },
+    "platforms": {
+      "title": "Platforms (Phase 2)",
+      "type": "array",
+      "description": "Select one or more platforms to search (Phase 2). Leave empty to use the single 'platform' field.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": ["grailed", "ebay"],
+        "enumTitles": ["Grailed", "eBay"]
+      },
+      "uniqueItems": true
+    },
     "maxResults": {
       "title": "Max Results to Scrape",
       "type": "number",
@@ -94,8 +106,7 @@
           "type": "string",
           "title": "Webhook Secret (Optional)",
           "description": "Secret key for HMAC-SHA256 signature verification (sent in X-Grail-Hunter-Signature header)",
-          "editor": "textfield",
-          "isSecret": true
+          "editor": "textfield"
         }
       }
     },
@@ -108,6 +119,12 @@
         "useApifyProxy": true,
         "apifyProxyGroups": ["RESIDENTIAL"]
       }
+    },
+    "excludeAuctions": {
+      "title": "Exclude Auction Listings",
+      "type": "boolean",
+      "description": "If enabled, filters eBay results to Buy It Now where possible and marks auctions distinctly.",
+      "default": false
     }
   },
   "required": ["keywords"]

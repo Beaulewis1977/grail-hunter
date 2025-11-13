@@ -1,10 +1,11 @@
-# Implementation Status - Phase 1 Complete
+# Implementation Status - Phase 2 Complete
 
 **Date:** November 10, 2025  
 **Version:** 0.1.0  
 **Branch:** `feature/phase-1-grailed-mvp`  
-**Status:** ✅ **PRODUCTION READY** - All tests passing, 80%+ coverage plus mocked Grailed
-integration tests
+Note: Phase 2 work was completed on and merged via the phase-1 branch during consolidation (see main
+branch history), hence the branch name remains phase-1. **Status:** ✅ **PRODUCTION READY** - All
+tests passing, 80%+ coverage plus mocked Grailed integration tests
 
 ---
 
@@ -35,7 +36,7 @@ scraper.
 grail-hunter/
 ├── .actor/                    # Apify actor configuration
 │   ├── actor.json            # Actor metadata
-│   ├── INPUT_SCHEMA.json     # Input validation schema
+│   ├── input_schema.json     # Input validation schema
 │   ├── OUTPUT_SCHEMA.json    # Output data schema
 │   └── INPUT.json            # Sample input for testing
 ├── src/
@@ -535,31 +536,28 @@ To test webhook notifications:
 
 ## What Remains for Phase 2-4
 
-### Phase 2: eBay Integration (Estimated 2.5 hours)
+### Phase 2: eBay Integration — COMPLETE
 
-**Features to Implement:**
+**Implemented:**
 
-- [ ] eBay scraper integration (use existing Apify actor)
-- [ ] eBay-specific normalizer
-- [ ] Handle auction vs buy-it-now listings
-- [ ] Multi-platform result aggregation
-- [ ] Cross-platform deduplication
-- [ ] Updated tests for eBay
-- [ ] Documentation updates
+- [x] eBay scraper integration (orchestrated `dtrungtin/ebay-items-scraper`)
+- [x] eBay-specific normalizer
+- [x] Multi-platform result aggregation (parallel with graceful degradation)
+- [x] Cross-platform deduplication
+- [x] Updated tests (unit + integration) and coverage > 80%
+- [x] Documentation updates (README, schema)
 
-**Input Schema Changes:**
+**Input Schema Changes (now implemented):**
 
 ```json
 {
-  "platform": ["grailed", "ebay"] // Support multiple platforms
+  "platforms": ["grailed", "ebay"],
+  "excludeAuctions": false
 }
 ```
 
-**Challenges:**
-
-- Auction listings have dynamic pricing
-- Shipping costs may need to be included
-- Different seller rating systems
+**Known caveat:** Auction type detection is partial; `excludeAuctions` supported, further heuristics
+planned.
 
 ### Phase 3: StockX Integration (Estimated 2.5 hours)
 
@@ -626,8 +624,8 @@ To test webhook notifications:
 ### Current Limitations
 
 1. **Platform Support**
-   - ❌ Only Grailed is supported in Phase 1
-   - ⏳ eBay, StockX, GOAT coming in Phase 2-4
+   - ✅ Grailed and eBay supported in Phase 2
+   - ⏳ StockX, GOAT planned for Phases 3-4
 
 2. **Search Capabilities**
    - ⚠️ Keyword-based search only
@@ -771,7 +769,7 @@ during Phase 1 development.
    - Extend `src/core/normalizer.js` with platform-specific logic
    - Add tests in `tests/unit/` and `tests/integration/`
    - Update the platform configuration in `src/config/platforms.js`
-   - Update the input schema in `INPUT_SCHEMA.json`
+   - Update the input schema in `input_schema.json`
 
 5. **Getting Help:**
    - Check inline JSDoc comments
@@ -782,15 +780,15 @@ during Phase 1 development.
 
 ## Conclusion
 
-Phase 1 is **complete, tested, and production-ready**. The foundation is solid for building Phase
-2-4. The code is well-documented, thoroughly tested, and follows industry best practices.
+Phase 2 is **complete, tested, and production-ready**. The foundation is solid for Phases 3-4. The
+code is well-documented, thoroughly tested, and follows industry best practices.
 
 **Next Steps:**
 
 1. ✅ User review and approval
-2. ⏳ Merge to `main` branch
+2. ⏳ Merge to `develop` via PR
 3. ⏳ Deploy to Apify platform
-4. ⏳ Begin Phase 2: eBay Integration
+4. ⏳ Begin Phase 3: StockX Integration
 
 **Questions?** Refer to:
 

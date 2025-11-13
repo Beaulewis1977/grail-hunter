@@ -11,6 +11,39 @@ describe('DataNormalizer', () => {
     normalizer = new DataNormalizer();
   });
 
+  describe('normalize (guards and routing)', () => {
+    it('should return null when rawListing is invalid', () => {
+      expect(normalizer.normalize(null, 'grailed')).toBeNull();
+      expect(normalizer.normalize(undefined, 'grailed')).toBeNull();
+    });
+
+    it('should use generic normalizer when platform is not a string', () => {
+      const out = normalizer.normalize({ title: 'Test' }, 123);
+      expect(out.source.platform).toBe('');
+      expect(out.product.name).toBe('Test');
+    });
+
+    it('should use generic normalizer when platform is empty after trim', () => {
+      const out = normalizer.normalize({ title: 'Test' }, '   ');
+      expect(out.source.platform).toBe('');
+    });
+
+    it('should normalize eBay listing with URL-based ID fallback', () => {
+      const raw = {
+        title: 'Air Jordan 1 Chicago',
+        price: '$200',
+        url: 'https://www.ebay.com/itm/9876543210',
+        image: 'https://i.ebayimg.com/images/foo.jpg',
+        seller: 'top_seller',
+      };
+      const out = normalizer.normalize(raw, 'ebay');
+      expect(out.source.platform).toBe('eBay');
+      expect(out.source.id).toBe('9876543210');
+      expect(out.listing.price).toBe(200);
+      expect(out.product.name).toContain('Air Jordan 1');
+    });
+  });
+
   describe('normalizeGrailed', () => {
     it('should normalize Grailed listing correctly', () => {
       const rawListing = {
