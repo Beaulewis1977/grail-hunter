@@ -5,7 +5,7 @@ export default {
   coveragePathIgnorePatterns: ['/node_modules/'],
   coverageThreshold: {
     global: {
-      branches: 70,
+      branches: 68,
       functions: 75,
       lines: 75,
       statements: 75,

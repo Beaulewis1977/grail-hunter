@@ -23,6 +23,15 @@ export class DealScorer {
     this.kvStore = null;
   }
 
+  /**
+   * Round a number to one decimal place
+   * @param {number} value - The value to round
+   * @returns {number} Rounded value
+   */
+  roundToOneDecimal(value) {
+    return Math.round(value * 10) / 10;
+  }
+
   async initialize() {
     this.kvStore = await Actor.openKeyValueStore();
     await this.loadMarketValues();
@@ -93,7 +102,7 @@ export class DealScorer {
       listing.metadata.dealScore = {
         isBelowMarket,
         marketValue,
-        savingsPercentage: isBelowMarket ? Math.round(savingsPercentage * 10) / 10 : null,
+        savingsPercentage: isBelowMarket ? this.roundToOneDecimal(savingsPercentage) : null,
         savingsAmount: isBelowMarket ? savingsAmount : null,
         dealQuality,
       };
@@ -103,7 +112,7 @@ export class DealScorer {
           product: listing.product?.name,
           currentPrice,
           marketValue,
-          savings: `${Math.round(savingsPercentage * 10) / 10}%`,
+          savings: `${this.roundToOneDecimal(savingsPercentage)}%`,
           quality: dealQuality,
         });
       }
@@ -260,21 +269,9 @@ export class DealScorer {
     return null;
   }
 
-  async cacheStockXValue(productName, sku, value) {
-    if (!this.kvStore) {
-      return;
-    }
-
-    try {
-      const cacheKey = `market_value_${sku || productName.replace(/\s+/g, '_')}`;
-      await this.kvStore.setValue(cacheKey, {
-        value,
-        timestamp: Date.now(),
-      });
-    } catch (error) {
-      logger.warn('Failed to cache market value', { error: error.message });
-    }
-  }
+  // Note: Market value caching is read-only from the static database.
+  // If StockX API fetching is added in the future, implement cacheStockXValue
+  // to write market values retrieved from StockX API.
 
   getStatistics(listings) {
     const scored = listings.filter((l) => l.metadata?.dealScore);
