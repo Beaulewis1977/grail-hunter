@@ -59,19 +59,40 @@ differentiate the actor.
   - Create a module (e.g., `src/modules/deal-scorer.js`) that compares each peer-to-peer listing
     against StockX market data (last sale, lowest ask). Cache StockX market values (KV store) for 1
     hour to control API usage.
-  - Extend normalized listing schema to store `dealScore` object (`isBelowMarket`, `marketValue`,
-    `savingsPercentage`, `savingsAmount`).
+  - Populate normalized listing schema `metadata.dealScore` object with real values:
+    - `isBelowMarket` (boolean): Set to true when listing price < marketValue
+    - `marketValue` (number|null): Estimated market price from StockX/GOAT last sale or lowest ask
+    - `savingsPercentage` (number|null): Calculate as
+      `((marketValue - currentPrice) / marketValue) * 100`
+    - `savingsAmount` (number|null): Calculate as `marketValue - currentPrice`
+    - `dealQuality` (string|null): Assign based on thresholds:
+      - `"excellent"`: savingsPercentage > 30%
+      - `"good"`: savingsPercentage 20-30%
+      - `"fair"`: savingsPercentage 10-20%
+      - `"market"`: savingsPercentage < 10%
+      - `null`: if marketValue unavailable
+  - NOTE: Phase 2.5 has scaffolded these fields with null/false defaults; Phase 3 must populate with
+    real data.
 
 - **Price Tracking & Alerts:**
   - Persist price history per listing hash (`price_<hash>` in KV store). Re-use
     `DeduplicationEngine` or create separate `PriceTracker` helper.
-  - Detect price drops (≥10% default) and surface in notifications + dataset metadata.
+  - Detect price drops (≥10% default) and populate `metadata.priceChange` object:
+    - `hasDrop` (boolean): Set to true when dropPercent >= threshold (e.g., 10%)
+    - `previousPrice` (number|null): Fetch from stored price history or KV store
+    - `currentPrice` (number): Current listing price (same as listing.price)
+    - `dropPercent` (number|null): Calculate as
+      `((previousPrice - currentPrice) / previousPrice) * 100`
   - Update dataset output and notification payloads to include price history snapshots or deal
     highlights.
+  - NOTE: Phase 2.5 has scaffolded priceChange with null/false defaults; Phase 3 must compute real
+    values.
 
 - **Notification Enhancements:**
   - Modify `NotificationManager` to add deal highlight sections (e.g., top savings, price drops).
-    Update webhook/email templates per design docs.
+  - Use `metadata.dealScore.dealQuality` for prioritization in notifications.
+  - Include `metadata.priceChange.hasDrop` in alert conditions.
+  - Update webhook/email templates per design docs.
 
 - **Release Calendar (if included in sprint):**
   - Build `release-calendar` module scraping sources like The Drop Date & Sole Retriever; integrate

@@ -25,6 +25,9 @@ export class DatasetNotifier {
     try {
       logger.info(`Pushing ${listings.length} listings to dataset`);
 
+      // TODO Phase 3: Use dealScore.dealQuality for notification prioritization
+      // TODO Phase 3: Include priceChange.hasDrop in alert conditions
+
       await Actor.pushData(listings);
 
       logger.info('Listings successfully saved to dataset');

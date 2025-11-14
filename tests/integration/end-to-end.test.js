@@ -56,6 +56,13 @@ describe('End-to-End Integration', () => {
     expect(normalizedListings[0].product.name).toContain('Air Jordan 1');
     expect(normalizedListings[0].listing.price).toBe(750);
 
+    // Verify metadata structures are present
+    expect(normalizedListings[0].metadata.dealScore).toBeDefined();
+    expect(normalizedListings[0].metadata.dealScore).toHaveProperty('isBelowMarket');
+    expect(normalizedListings[0].metadata.dealScore).toHaveProperty('savingsPercentage');
+    expect(normalizedListings[0].metadata.priceChange).toBeDefined();
+    expect(normalizedListings[0].metadata.priceChange.currentPrice).toBe(750);
+
     // 2. Parse
     const parsedListings = normalizedListings.map((listing) => parser.parse(listing));
 
@@ -86,6 +93,8 @@ describe('End-to-End Integration', () => {
     const newListings2 = await deduplicator.findNewListings(parsedListings);
 
     expect(newListings2).toHaveLength(0); // All already seen
+
+    // TODO Phase 3: Add tests for populated dealScore and priceChange
   });
 
   it('should handle complex filtering scenarios', async () => {

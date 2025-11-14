@@ -226,10 +226,45 @@ apify run
     "scrape": {
       "timestamp": "2025-11-10T19:45:00Z",
       "version": "0.1.0"
+    },
+    "metadata": {
+      "dealScore": {
+        "isBelowMarket": false,
+        "marketValue": null,
+        "savingsPercentage": null,
+        "savingsAmount": null,
+        "dealQuality": null
+      },
+      "priceChange": {
+        "hasDrop": false,
+        "previousPrice": null,
+        "currentPrice": 250,
+        "dropPercent": null
+      }
     }
   }
 ]
 ```
+
+### Phase 2.5: Schema Alignment
+
+**New Metadata Objects** (scaffolded for Phase 3):
+
+- **`metadata.dealScore`** - Deal quality analysis comparing listing price to market value:
+  - `isBelowMarket` (boolean): Indicates if price is below market
+  - `marketValue` (number|null): Estimated market price from StockX/GOAT
+  - `savingsPercentage` (number|null): Percentage savings (e.g., 21.1 for 21.1%)
+  - `savingsAmount` (number|null): Dollar amount saved
+  - `dealQuality` (string|null): Rating based on savings ('excellent', 'good', 'fair', 'market')
+
+- **`metadata.priceChange`** - Quick price drop detection (full history in `scrape.priceHistory`):
+  - `hasDrop` (boolean): True if price dropped since last check
+  - `previousPrice` (number|null): Price from previous observation
+  - `currentPrice` (number): Current listing price
+  - `dropPercent` (number|null): Percentage drop
+
+**Note:** These fields are currently populated with default/null values. Phase 3 will activate real
+market data comparison and price tracking.
 
 ### Advanced Examples
 
