@@ -287,7 +287,7 @@ export class DealScorer {
       excellent: excellent.length,
       good: good.length,
       fair: fair.length,
-      dealRate: scored.length > 0 ? ((deals.length / scored.length) * 100).toFixed(1) : 0,
+      dealRate: scored.length > 0 ? Number(((deals.length / scored.length) * 100).toFixed(1)) : 0,
     };
   }
 }
