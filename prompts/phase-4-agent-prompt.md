@@ -73,6 +73,11 @@ Document completion of the reading checklist before coding.
 - Update `.actor/input_schema.json` and sample input to include:
   - `authenticatedOnly`, `requireOGAll`, `excludeAuctions`, `minSellerRating`, and any additional
     advanced filters specified in Implementation Status.
+  - **Configurable Deal Score Thresholds**: `dealScoreThreshold` (default: 10%) and
+    `excellentDealThreshold` (default: 30%) to allow users to customize deal quality classifications
+    based on their flipping margins.
+  - **Enhanced Market Value Overrides**: Extend `input.marketValues` to support SKU-based overrides
+    in addition to name-based for more precise market value mapping (e.g., `{"SKU123": 950}`).
   - Platform multi-select including new beta platforms; allow toggling StockX/GOAT if risk-averse
     users opt out.
 - Extend filtering logic in `src/core/filter.js` (or new helpers) to respect all advanced filter
@@ -84,8 +89,13 @@ Document completion of the reading checklist before coding.
   platform).
 - Implement caching/incremental scraping strategies per technical architecture guidance (e.g., reuse
   last scrape timestamps, cache authenticated platform data for 1h).
+- **Price History Storage Management**: Ensure `src/core/deduplicator.js` implements automatic
+  cleanup of price history entries older than 30 days and enforces `maxHistoryEntriesPerItem`
+  (e.g., 50) to prevent KV store bloat for frequently updated listings.
 - Add health checks and failure notifications when a platform repeatedly fails; update dedupe and
   price trackers to handle expanded platform set.
+- **Platform Monitoring**: Track fallback rates for high-risk platforms (StockX, GOAT) and alert if
+  failure rate exceeds 50% over 24-hour periods.
 
 ### Quality Assurance & Testing
 

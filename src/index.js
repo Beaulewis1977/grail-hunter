@@ -15,14 +15,16 @@ import { SneakerParser } from './core/parser.js';
 import { ListingFilter } from './core/filter.js';
 import { DeduplicationEngine } from './core/deduplicator.js';
 import { NotificationManager } from './notifications/manager.js';
+import { DealScorer } from './modules/deal-scorer.js';
+import { PLATFORM_CONFIGS } from './config/platforms.js';
 import { ValidationError } from './utils/errors.js';
 
-// Main actor logic
 Actor.main(async () => {
-  logger.info('🚀 Grail Hunter actor started - Phase 1: Grailed MVP');
+  logger.info(
+    '🚀 Grail Hunter actor started - Phase 3: StockX Integration & Advanced Intelligence'
+  );
 
   try {
-    // 1. Get and validate input
     const rawInput = await Actor.getInput();
 
     if (!rawInput) {
@@ -32,27 +34,49 @@ Actor.main(async () => {
     validateInput(rawInput);
     const input = normalizeInput(rawInput);
 
+    const runtimePlatformConfigs = JSON.parse(JSON.stringify(PLATFORM_CONFIGS));
+    const stockxConfig = runtimePlatformConfigs.stockx;
+    const stockxExplicitlyDisabled = input.disableStockX === true;
+    const stockxEnabledByInput = input.enableStockX === true;
+    const shouldDisableStockX = stockxExplicitlyDisabled || !stockxEnabledByInput;
+
+    if (stockxConfig && shouldDisableStockX) {
+      stockxConfig.enabled = false;
+      logger.info(
+        stockxExplicitlyDisabled
+          ? 'StockX scraping disabled by user request'
+          : 'StockX scraping disabled (enableStockX not set)'
+      );
+    }
+
     logger.info('✅ Input validated', {
       keywords: input.keywords,
       platform: input.platform,
       size: input.size,
       priceRange: input.priceRange,
       condition: input.condition,
+      enableStockX: input.enableStockX,
     });
 
-    // 2. Initialize components
-    const scraperManager = new ScraperManager();
+    const scraperManager = new ScraperManager(runtimePlatformConfigs);
     const normalizer = new DataNormalizer();
     const parser = new SneakerParser();
     const filter = new ListingFilter();
-    const deduplicator = new DeduplicationEngine();
+    const deduplicator = new DeduplicationEngine({
+      priceDropThreshold: input.priceDropThreshold ?? 10,
+    });
     const notificationManager = new NotificationManager();
+    const dealScorer = new DealScorer({
+      dealScoreThreshold: input.dealScoreThreshold ?? 10,
+      excellentDealThreshold: input.excellentDealThreshold ?? 30,
+      marketValueOverrides: input.marketValueOverrides || {},
+    });
 
     await deduplicator.initialize();
+    await dealScorer.initialize();
 
     logger.info('✅ Components initialized');
 
-    // 3. Scrape platforms
     const platforms =
       Array.isArray(input.platforms) && input.platforms.length ? input.platforms : [input.platform];
 
@@ -78,7 +102,6 @@ Actor.main(async () => {
       perPlatform: Object.fromEntries(rawByPlatform.map((x) => [x.platform, x.items.length])),
     });
 
-    // 4. Normalize data
     logger.info('🔄 Normalizing listings...');
     const normalizedListings = rawByPlatform
       .flatMap(({ platform, items }) => items.map((raw) => normalizer.normalize(raw, platform)))
@@ -90,13 +113,16 @@ Actor.main(async () => {
     }
     logger.info(`✅ Successfully normalized ${normalizedListings.length} listings`);
 
-    // 5. Parse listings (extract size, condition, tags)
     logger.info('🧠 Parsing listings...');
     const parsedListings = normalizedListings.map((listing) => parser.parse(listing));
 
-    // 6. Apply filters
+    logger.info('💰 Scoring deals...');
+    const scoredListings = await dealScorer.scoreListings(parsedListings);
+    const dealStats = dealScorer.getStatistics(scoredListings);
+    logger.info('✅ Deal scoring complete', dealStats);
+
     logger.info('🔍 Applying filters...');
-    const filteredListings = filter.filter(parsedListings, {
+    const filteredListings = filter.filter(scoredListings, {
       size: input.size,
       priceRange: input.priceRange,
       condition: input.condition,
@@ -104,8 +130,7 @@ Actor.main(async () => {
 
     logger.info(`✅ ${filteredListings.length} listings passed filters`);
 
-    // 7. Deduplicate (find new listings only)
-    logger.info('🔎 Checking for new listings...');
+    logger.info('🔎 Checking for new listings and tracking prices...');
     const newListings = await deduplicator.findNewListings(filteredListings);
 
     if (newListings.length === 0) {
@@ -114,26 +139,24 @@ Actor.main(async () => {
       logger.info(`🎉 Found ${newListings.length} NEW listings!`);
     }
 
-    // 8. Send notifications
     logger.info('📬 Sending notifications...');
     const notificationResult = await notificationManager.send(
       newListings,
       input.notificationConfig
     );
 
-    // 9. Log final statistics
     const stats = {
       platforms,
       totalScraped: totalRaw,
       afterFiltering: filteredListings.length,
       newListings: newListings.length,
+      dealStatistics: dealStats,
       notifications: notificationResult,
       deduplication: deduplicator.getStats(),
     };
 
     logger.info('📊 Run statistics', stats);
 
-    // Save stats to KV store
     const kvStore = await Actor.openKeyValueStore();
     await kvStore.setValue('last_run_stats', {
       ...stats,
@@ -149,7 +172,6 @@ Actor.main(async () => {
       stack: error.stack,
     });
 
-    // Save error to KV store for debugging
     try {
       const kvStore = await Actor.openKeyValueStore();
       await kvStore.setValue('last_error', {
@@ -162,7 +184,6 @@ Actor.main(async () => {
       logger.error('Failed to save error to KV store', { kvError: kvError.message });
     }
 
-    // Rethrow to mark actor run as failed
     throw error;
   }
 });

@@ -35,14 +35,18 @@ Grail Hunter monitors sneaker listings across multiple platforms in real-time:
 
 ## 🎯 Target Platforms
 
-Grail Hunter monitors these 4 major sneaker marketplaces:
+Grail Hunter monitors these major sneaker marketplaces:
 
-| Platform                | Type          | Description                                   |
-| ----------------------- | ------------- | --------------------------------------------- |
-| **eBay (Available)**    | Marketplace   | World's largest P2P marketplace               |
-| **Grailed (Available)** | Marketplace   | Premium streetwear and sneaker marketplace    |
-| **StockX (Planned)**    | Authenticated | Stock market for sneakers with authentication |
-| **GOAT (Planned)**      | Authenticated | Premium authenticated sneaker platform        |
+| Platform                  | Type          | Status       | Description                                   |
+| ------------------------- | ------------- | ------------ | --------------------------------------------- |
+| **eBay**                  | Marketplace   | ✅ Available | World's largest P2P marketplace               |
+| **Grailed**               | Marketplace   | ✅ Available | Premium streetwear and sneaker marketplace    |
+| **StockX (⚠️ HIGH RISK)** | Authenticated | ⚠️ Optional  | Stock market for sneakers with authentication |
+| **GOAT (Planned)**        | Authenticated | 🚧 Phase 4   | Premium authenticated sneaker platform        |
+
+> **⚠️ StockX WARNING**: StockX actively enforces their Terms of Service and uses advanced anti-bot
+> protection. Scraping may result in IP blocks or legal action. Use at your own risk and consider
+> disabling StockX scraping (enabled via `enableStockX` configuration option).
 
 ---
 
@@ -85,11 +89,22 @@ Grail Hunter monitors these 4 major sneaker marketplaces:
 - Custom webhook integration for automation tools
 - Real-time alerts for new listings
 
-### 💰 Deal Scoring
+### 💰 Deal Scoring & Intelligence
 
-- Compares P2P prices against authenticated platform values
-- Identifies listings below market value
-- Calculates savings percentage and amount
+- **Market Value Benchmarking**: Compares peer-to-peer prices against market data from 152 sneakers
+- **Deal Quality Rating**: Automatically categorizes deals as excellent (30%+ savings), good
+  (20-30%), fair (10-20%), or market rate
+- **Price Drop Alerts**: Tracks price changes over time and alerts on significant drops
+  (configurable threshold, default 10%)
+- **Historical Tracking**: Maintains price history for up to 30 days per listing
+- **Custom Overrides**: Set your own market values for specific sneakers or SKUs
+
+### 🔔 Enhanced Notifications
+
+- **Deal Highlights**: Webhook payloads include top deals sorted by savings percentage
+- **Price Drop Summary**: Get notified about the biggest price drops
+- **Rich Analytics**: Detailed breakdown of deal quality distribution
+- **Multi-Channel Support**: Email, Slack, Discord webhooks with custom formatting
 
 ### 🎯 Deduplication
 
@@ -193,6 +208,13 @@ apify run
   "platforms": ["grailed", "ebay"],
   "excludeAuctions": false,
   "maxResults": 50,
+  "dealScoreThreshold": 10,
+  "excellentDealThreshold": 30,
+  "priceDropThreshold": 10,
+  "enableStockX": false,
+  "marketValueOverrides": {
+    "Air Jordan 1 Retro High OG Chicago": 2500
+  },
   "notificationConfig": {
     "webhookUrl": "https://webhook.site/your-unique-id",
     "saveToDataset": true
@@ -229,11 +251,11 @@ apify run
     },
     "metadata": {
       "dealScore": {
-        "isBelowMarket": false,
-        "marketValue": null,
-        "savingsPercentage": null,
-        "savingsAmount": null,
-        "dealQuality": null
+        "isBelowMarket": true,
+        "marketValue": 950,
+        "savingsPercentage": 21.1,
+        "savingsAmount": 200,
+        "dealQuality": "good"
       },
       "priceChange": {
         "hasDrop": false,
@@ -246,7 +268,63 @@ apify run
 ]
 ```
 
-### Phase 2.5: Schema Alignment
+### Phase 3: Advanced Intelligence Features
+
+**Deal Scoring & Market Value Comparison:**
+
+- **Static Market Value Database**: 152 popular sneakers with curated market values
+- **Deal Quality Ratings**:
+  - **Excellent**: 30%+ below market value
+  - **Good**: 20-30% below market
+  - **Fair**: 10-20% below market
+  - **Market**: Less than 10% discount
+- **Custom Overrides**: Set your own market values via `marketValueOverrides` configuration
+
+**Price Tracking:**
+
+- Automatically tracks price changes for all listings
+- Stores up to 50 price history entries per listing
+- Cleans up history older than 30 days
+- Triggers alerts when prices drop by 10% or more (configurable)
+
+**Enhanced Notifications:**
+
+Webhook payloads now include:
+
+```json
+{
+  "summary": {
+    "dealHighlights": {
+      "totalDeals": 5,
+      "excellentDeals": 2,
+      "goodDeals": 2,
+      "fairDeals": 1,
+      "topDeals": [...]
+    },
+    "priceDrops": {
+      "totalPriceDrops": 3,
+      "drops": [...]
+    }
+  }
+}
+```
+
+**Configuration Options:**
+
+```json
+{
+  "dealScoreThreshold": 10,
+  "excellentDealThreshold": 30,
+  "priceDropThreshold": 10,
+  "enableStockX": false,
+  "marketValueOverrides": {
+    "Air Jordan 1 Chicago": 2500,
+    "555088-101": 2200
+  }
+}
+```
+
+### Phase 2.5: Schema Alignment (DEPRECATED)
 
 **New Metadata Objects** (scaffolded for Phase 3):
 

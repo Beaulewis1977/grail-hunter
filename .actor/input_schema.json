@@ -1,6 +1,6 @@
 {
-  "title": "Grail Hunter - Phase 2: Grailed & eBay",
-  "description": "Monitor Grailed and eBay for new sneaker listings and get real-time alerts.",
+  "title": "Grail Hunter - Phase 3: Multi-Platform with Advanced Intelligence",
+  "description": "Monitor Grailed, eBay, and StockX for sneaker listings with deal scoring, price tracking, and real-time alerts.",
   "type": "object",
   "schemaVersion": 1,
   "properties": {
@@ -77,8 +77,8 @@
       "editor": "select",
       "items": {
         "type": "string",
-        "enum": ["grailed", "ebay"],
-        "enumTitles": ["Grailed", "eBay"]
+        "enum": ["grailed", "ebay", "stockx"],
+        "enumTitles": ["Grailed", "eBay", "StockX (⚠️  HIGH RISK)"]
       },
       "uniqueItems": true
     },
@@ -124,6 +124,43 @@
       "title": "Exclude Auction Listings",
       "type": "boolean",
       "description": "If enabled, filters eBay results to Buy It Now where possible and marks auctions distinctly.",
+      "default": false
+    },
+    "dealScoreThreshold": {
+      "title": "Deal Score Threshold (%)",
+      "type": "number",
+      "description": "Minimum savings percentage to consider a listing as a deal (default: 10%). The Excellent Deal Threshold must always be greater than or equal to this value—runs fail validation if misconfigured.",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 100
+    },
+    "excellentDealThreshold": {
+      "title": "Excellent Deal Threshold (%)",
+      "type": "number",
+      "description": "Savings percentage required for 'excellent' deal quality (default: 30%). Must be greater than or equal to the Deal Score Threshold or the actor input will be rejected.",
+      "default": 30,
+      "minimum": 0,
+      "maximum": 100
+    },
+    "priceDropThreshold": {
+      "title": "Price Drop Alert Threshold (%)",
+      "type": "number",
+      "description": "Minimum price drop percentage to trigger alerts (default: 10%)",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 100
+    },
+    "marketValueOverrides": {
+      "title": "Market Value Overrides",
+      "type": "object",
+      "description": "Override market values for specific sneakers (JSON object with sneaker name or SKU as key, market value as value)",
+      "editor": "json",
+      "prefill": {}
+    },
+    "enableStockX": {
+      "title": "Enable StockX Scraping (⚠️  HIGH RISK)",
+      "type": "boolean",
+      "description": "WARNING: StockX actively enforces ToS. Scraping may result in IP blocks or legal action. Use at your own risk.",
       "default": false
     }
   },

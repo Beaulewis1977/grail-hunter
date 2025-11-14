@@ -1,0 +1,1204 @@
+{
+  "sneakers": [
+    {
+      "name": "Air Jordan 1 Retro High OG Chicago",
+      "sku": "555088-101",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 1",
+      "colorway": "Chicago",
+      "marketValue": 2200
+    },
+    {
+      "name": "Air Jordan 1 Retro High OG Bred",
+      "sku": "555088-061",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 1",
+      "colorway": "Bred",
+      "marketValue": 1800
+    },
+    {
+      "name": "Air Jordan 1 Retro High OG Royal",
+      "sku": "555088-007",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 1",
+      "colorway": "Royal",
+      "marketValue": 1500
+    },
+    {
+      "name": "Air Jordan 1 Retro High OG Shadow",
+      "sku": "555088-013",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 1",
+      "colorway": "Shadow",
+      "marketValue": 900
+    },
+    {
+      "name": "Air Jordan 1 Retro High OG University Blue",
+      "sku": "555088-134",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 1",
+      "colorway": "University Blue",
+      "marketValue": 750
+    },
+    {
+      "name": "Air Jordan 1 Retro High OG Dark Mocha",
+      "sku": "555088-105",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 1",
+      "colorway": "Dark Mocha",
+      "marketValue": 650
+    },
+    {
+      "name": "Air Jordan 1 Retro High OG Obsidian",
+      "sku": "555088-140",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 1",
+      "colorway": "Obsidian",
+      "marketValue": 600
+    },
+    {
+      "name": "Air Jordan 1 Retro High OG Court Purple",
+      "sku": "555088-501",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 1",
+      "colorway": "Court Purple",
+      "marketValue": 500
+    },
+    {
+      "name": "Air Jordan 1 Retro High OG Pollen",
+      "sku": "555088-701",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 1",
+      "colorway": "Pollen",
+      "marketValue": 350
+    },
+    {
+      "name": "Air Jordan 1 Retro High OG Heritage",
+      "sku": "555088-161",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 1",
+      "colorway": "Heritage",
+      "marketValue": 300
+    },
+    {
+      "name": "Air Jordan 1 Mid Chicago Toe",
+      "sku": "554724-069",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 1 Mid",
+      "colorway": "Chicago Toe",
+      "marketValue": 200
+    },
+    {
+      "name": "Air Jordan 1 Mid Banned",
+      "sku": "554724-074",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 1 Mid",
+      "colorway": "Banned",
+      "marketValue": 180
+    },
+    {
+      "name": "Air Jordan 1 Retro Low OG Black Toe",
+      "sku": "CQ9446-001",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 1 Low",
+      "colorway": "Black Toe",
+      "marketValue": 350
+    },
+    {
+      "name": "Air Jordan 1 Retro Low OG Neutral Grey",
+      "sku": "CZ0790-100",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 1 Low",
+      "colorway": "Neutral Grey",
+      "marketValue": 300
+    },
+    {
+      "name": "Air Jordan 2 Retro Chicago",
+      "sku": "385475-102",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 2",
+      "colorway": "Chicago",
+      "marketValue": 350
+    },
+    {
+      "name": "Air Jordan 3 Retro White Cement",
+      "sku": "136064-111",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 3",
+      "colorway": "White Cement",
+      "marketValue": 450
+    },
+    {
+      "name": "Air Jordan 3 Retro Black Cement",
+      "sku": "854262-001",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 3",
+      "colorway": "Black Cement",
+      "marketValue": 450
+    },
+    {
+      "name": "Air Jordan 3 Retro Cardinal Red",
+      "sku": "DN3707-161",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 3",
+      "colorway": "Cardinal Red",
+      "marketValue": 380
+    },
+    {
+      "name": "Air Jordan 3 Retro Midnight Navy",
+      "sku": "CT8532-401",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 3",
+      "colorway": "Midnight Navy",
+      "marketValue": 400
+    },
+    {
+      "name": "Air Jordan 4 Retro Bred",
+      "sku": "308497-060",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 4",
+      "colorway": "Bred",
+      "marketValue": 850
+    },
+    {
+      "name": "Air Jordan 4 Retro White Cement",
+      "sku": "840606-192",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 4",
+      "colorway": "White Cement",
+      "marketValue": 650
+    },
+    {
+      "name": "Air Jordan 4 Retro Fire Red",
+      "sku": "DC7770-160",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 4",
+      "colorway": "Fire Red",
+      "marketValue": 550
+    },
+    {
+      "name": "Air Jordan 4 Retro Military Black",
+      "sku": "DH6927-111",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 4",
+      "colorway": "Military Black",
+      "marketValue": 400
+    },
+    {
+      "name": "Air Jordan 4 Retro Metallic Purple",
+      "sku": "CT8527-115",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 4",
+      "colorway": "Metallic Purple",
+      "marketValue": 550
+    },
+    {
+      "name": "Air Jordan 4 Retro University Blue",
+      "sku": "CT8527-400",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 4",
+      "colorway": "University Blue",
+      "marketValue": 650
+    },
+    {
+      "name": "Air Jordan 4 Retro Cool Grey",
+      "sku": "308497-007",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 4",
+      "colorway": "Cool Grey",
+      "marketValue": 500
+    },
+    {
+      "name": "Air Jordan 4 Retro Thunder",
+      "sku": "DH6927-017",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 4",
+      "colorway": "Thunder",
+      "marketValue": 420
+    },
+    {
+      "name": "Air Jordan 4 Retro Craft Olive",
+      "sku": "FD2456-001",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 4",
+      "colorway": "Craft Olive",
+      "marketValue": 450
+    },
+    {
+      "name": "Air Jordan 5 Retro Fire Red",
+      "sku": "136027-101",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 5",
+      "colorway": "Fire Red",
+      "marketValue": 400
+    },
+    {
+      "name": "Air Jordan 5 Retro Grape",
+      "sku": "136027-500",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 5",
+      "colorway": "Grape",
+      "marketValue": 400
+    },
+    {
+      "name": "Air Jordan 5 Retro Oreo",
+      "sku": "CT4838-011",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 5",
+      "colorway": "Oreo",
+      "marketValue": 380
+    },
+    {
+      "name": "Air Jordan 5 Retro Aqua",
+      "sku": "136027-401",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 5",
+      "colorway": "Aqua",
+      "marketValue": 320
+    },
+    {
+      "name": "Air Jordan 6 Retro Carmine",
+      "sku": "384664-106",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 6",
+      "colorway": "Carmine",
+      "marketValue": 450
+    },
+    {
+      "name": "Air Jordan 6 Retro Black Infrared",
+      "sku": "384664-060",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 6",
+      "colorway": "Black Infrared",
+      "marketValue": 500
+    },
+    {
+      "name": "Air Jordan 6 Retro Travis Scott British Khaki",
+      "sku": "DH0690-200",
+      "brand": "Travis Scott x Nike",
+      "model": "Air Jordan 6",
+      "colorway": "British Khaki",
+      "marketValue": 1200
+    },
+    {
+      "name": "Air Jordan 6 Retro Midnight Navy",
+      "sku": "CT8529-141",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 6",
+      "colorway": "Midnight Navy",
+      "marketValue": 400
+    },
+    {
+      "name": "Air Jordan 6 Retro UNC",
+      "sku": "DH9696-400",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 6",
+      "colorway": "UNC",
+      "marketValue": 450
+    },
+    {
+      "name": "Air Jordan 7 Retro Cardinal",
+      "sku": "304775-104",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 7",
+      "colorway": "Cardinal",
+      "marketValue": 350
+    },
+    {
+      "name": "Air Jordan 8 Retro Aqua",
+      "sku": "305381-100",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 8",
+      "colorway": "Aqua",
+      "marketValue": 300
+    },
+    {
+      "name": "Air Jordan 9 Retro Bred",
+      "sku": "302370-014",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 9",
+      "colorway": "Bred",
+      "marketValue": 300
+    },
+    {
+      "name": "Air Jordan 10 Retro Chicago",
+      "sku": "310805-100",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 10",
+      "colorway": "Chicago",
+      "marketValue": 250
+    },
+    {
+      "name": "Air Jordan 11 Retro Bred",
+      "sku": "378037-061",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 11",
+      "colorway": "Bred",
+      "marketValue": 700
+    },
+    {
+      "name": "Air Jordan 11 Retro Concord",
+      "sku": "378037-100",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 11",
+      "colorway": "Concord",
+      "marketValue": 650
+    },
+    {
+      "name": "Air Jordan 11 Retro Space Jam",
+      "sku": "378037-003",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 11",
+      "colorway": "Space Jam",
+      "marketValue": 650
+    },
+    {
+      "name": "Air Jordan 11 Retro Cool Grey",
+      "sku": "378037-001",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 11",
+      "colorway": "Cool Grey",
+      "marketValue": 550
+    },
+    {
+      "name": "Air Jordan 11 Cherry",
+      "sku": "378037-116",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 11",
+      "colorway": "Cherry",
+      "marketValue": 550
+    },
+    {
+      "name": "Air Jordan 11 Low White Bred",
+      "sku": "528895-101",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 11 Low",
+      "colorway": "White Bred",
+      "marketValue": 350
+    },
+    {
+      "name": "Air Jordan 11 Low Legend Blue",
+      "sku": "528895-117",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 11 Low",
+      "colorway": "Legend Blue",
+      "marketValue": 330
+    },
+    {
+      "name": "Air Jordan 12 Retro Flu Game",
+      "sku": "130690-002",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 12",
+      "colorway": "Flu Game",
+      "marketValue": 400
+    },
+    {
+      "name": "Air Jordan 12 Retro Playoffs",
+      "sku": "130690-001",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 12",
+      "colorway": "Playoffs",
+      "marketValue": 350
+    },
+    {
+      "name": "Air Jordan 12 Taxi",
+      "sku": "130690-125",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 12",
+      "colorway": "Taxi",
+      "marketValue": 380
+    },
+    {
+      "name": "Air Jordan 13 Retro He Got Game",
+      "sku": "414571-104",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 13",
+      "colorway": "He Got Game",
+      "marketValue": 350
+    },
+    {
+      "name": "Air Jordan 13 Retro Black Cat",
+      "sku": "414571-011",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 13",
+      "colorway": "Black Cat",
+      "marketValue": 400
+    },
+    {
+      "name": "Air Jordan 13 Cherry",
+      "sku": "414571-122",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 13",
+      "colorway": "Cherry",
+      "marketValue": 350
+    },
+    {
+      "name": "Air Jordan 13 Retro Flint",
+      "sku": "414571-404",
+      "brand": "Air Jordan",
+      "model": "Air Jordan 13",
+      "colorway": "Flint",
+      "marketValue": 400
+    },
+    {
+      "name": "Nike Dunk Low Panda",
+      "sku": "DD1391-100",
+      "brand": "Nike",
+      "model": "Dunk Low",
+      "colorway": "Panda",
+      "marketValue": 280
+    },
+    {
+      "name": "Nike Dunk Low Championship Red",
+      "sku": "DD1391-600",
+      "brand": "Nike",
+      "model": "Dunk Low",
+      "colorway": "Championship Red",
+      "marketValue": 250
+    },
+    {
+      "name": "Nike Dunk Low University Blue",
+      "sku": "DD1391-102",
+      "brand": "Nike",
+      "model": "Dunk Low",
+      "colorway": "University Blue",
+      "marketValue": 320
+    },
+    {
+      "name": "Nike Dunk Low Michigan",
+      "sku": "DD1391-700",
+      "brand": "Nike",
+      "model": "Dunk Low",
+      "colorway": "Michigan",
+      "marketValue": 400
+    },
+    {
+      "name": "Nike Dunk Low Kentucky",
+      "sku": "CU1726-100",
+      "brand": "Nike",
+      "model": "Dunk Low",
+      "colorway": "Kentucky",
+      "marketValue": 380
+    },
+    {
+      "name": "Nike Dunk Low Michigan State",
+      "sku": "DD1391-300",
+      "brand": "Nike",
+      "model": "Dunk Low",
+      "colorway": "Michigan State",
+      "marketValue": 320
+    },
+    {
+      "name": "Nike Dunk Low Retro Black White",
+      "sku": "DD1503-101",
+      "brand": "Nike",
+      "model": "Dunk Low",
+      "colorway": "Black White",
+      "marketValue": 280
+    },
+    {
+      "name": "Nike Dunk Low Retro Medium Curry",
+      "sku": "DD1390-100",
+      "brand": "Nike",
+      "model": "Dunk Low",
+      "colorway": "Medium Curry",
+      "marketValue": 320
+    },
+    {
+      "name": "Nike Dunk Low Retro Brazil",
+      "sku": "CU1727-700",
+      "brand": "Nike",
+      "model": "Dunk Low",
+      "colorway": "Brazil",
+      "marketValue": 350
+    },
+    {
+      "name": "Nike Dunk Low Valentine's Day 2021",
+      "sku": "DD1503-111",
+      "brand": "Nike",
+      "model": "Dunk Low",
+      "colorway": "Valentine's Day",
+      "marketValue": 400
+    },
+    {
+      "name": "Nike Dunk High Syracuse",
+      "sku": "DD1399-101",
+      "brand": "Nike",
+      "model": "Dunk High",
+      "colorway": "Syracuse",
+      "marketValue": 350
+    },
+    {
+      "name": "Nike Dunk High Michigan",
+      "sku": "DD1399-700",
+      "brand": "Nike",
+      "model": "Dunk High",
+      "colorway": "Michigan",
+      "marketValue": 400
+    },
+    {
+      "name": "Nike Dunk High Kentucky",
+      "sku": "DD1399-400",
+      "brand": "Nike",
+      "model": "Dunk High",
+      "colorway": "Kentucky",
+      "marketValue": 380
+    },
+    {
+      "name": "Nike SB Dunk Low Travis Scott",
+      "sku": "CT5053-001",
+      "brand": "Travis Scott x Nike SB",
+      "model": "Dunk Low",
+      "colorway": "Travis Scott",
+      "marketValue": 2500
+    },
+    {
+      "name": "Nike SB Dunk Low Ben & Jerry's Chunky Dunky",
+      "sku": "CU3244-100",
+      "brand": "Ben & Jerry's x Nike SB",
+      "model": "Dunk Low",
+      "colorway": "Chunky Dunky",
+      "marketValue": 2000
+    },
+    {
+      "name": "Nike SB Dunk Low Pro Kentucky",
+      "sku": "BQ6817-004",
+      "brand": "Nike SB",
+      "model": "Dunk Low Pro",
+      "colorway": "Kentucky",
+      "marketValue": 450
+    },
+    {
+      "name": "Nike SB Dunk Low Pro Syracuse",
+      "sku": "CU1726-101",
+      "brand": "Nike SB",
+      "model": "Dunk Low Pro",
+      "colorway": "Syracuse",
+      "marketValue": 500
+    },
+    {
+      "name": "Nike SB Dunk Low Pro Raygun White",
+      "sku": "BQ6832-101",
+      "brand": "Nike SB",
+      "model": "Dunk Low Pro",
+      "colorway": "Raygun White",
+      "marketValue": 450
+    },
+    {
+      "name": "adidas Yeezy Boost 350 V2 Zebra",
+      "sku": "CP9654",
+      "brand": "adidas",
+      "model": "Yeezy Boost 350 V2",
+      "colorway": "Zebra",
+      "marketValue": 450
+    },
+    {
+      "name": "adidas Yeezy Boost 350 V2 Bred",
+      "sku": "CP9652",
+      "brand": "adidas",
+      "model": "Yeezy Boost 350 V2",
+      "colorway": "Bred",
+      "marketValue": 550
+    },
+    {
+      "name": "adidas Yeezy Boost 350 V2 Cream White",
+      "sku": "CP9366",
+      "brand": "adidas",
+      "model": "Yeezy Boost 350 V2",
+      "colorway": "Cream White",
+      "marketValue": 380
+    },
+    {
+      "name": "adidas Yeezy Boost 350 V2 Beluga",
+      "sku": "BB1826",
+      "brand": "adidas",
+      "model": "Yeezy Boost 350 V2",
+      "colorway": "Beluga",
+      "marketValue": 700
+    },
+    {
+      "name": "adidas Yeezy Boost 350 V2 Tail Light",
+      "sku": "FX9017",
+      "brand": "adidas",
+      "model": "Yeezy Boost 350 V2",
+      "colorway": "Tail Light",
+      "marketValue": 320
+    },
+    {
+      "name": "adidas Yeezy Boost 350 V2 Cinder",
+      "sku": "FY2903",
+      "brand": "adidas",
+      "model": "Yeezy Boost 350 V2",
+      "colorway": "Cinder",
+      "marketValue": 380
+    },
+    {
+      "name": "adidas Yeezy Boost 350 V2 Sesame",
+      "sku": "F99710",
+      "brand": "adidas",
+      "model": "Yeezy Boost 350 V2",
+      "colorway": "Sesame",
+      "marketValue": 350
+    },
+    {
+      "name": "adidas Yeezy Boost 350 V2 Black Static",
+      "sku": "FU9006",
+      "brand": "adidas",
+      "model": "Yeezy Boost 350 V2",
+      "colorway": "Black Static",
+      "marketValue": 550
+    },
+    {
+      "name": "adidas Yeezy Boost 350 V2 Onyx",
+      "sku": "HP7601",
+      "brand": "adidas",
+      "model": "Yeezy Boost 350 V2",
+      "colorway": "Onyx",
+      "marketValue": 320
+    },
+    {
+      "name": "adidas Yeezy Boost 350 V2 Slate",
+      "sku": "GY7657",
+      "brand": "adidas",
+      "model": "Yeezy Boost 350 V2",
+      "colorway": "Slate",
+      "marketValue": 300
+    },
+    {
+      "name": "adidas Yeezy Boost 350 V2 Bone",
+      "sku": "HQ6316",
+      "brand": "adidas",
+      "model": "Yeezy Boost 350 V2",
+      "colorway": "Bone",
+      "marketValue": 310
+    },
+    {
+      "name": "adidas Yeezy Boost 700 Wave Runner",
+      "sku": "B75571",
+      "brand": "adidas",
+      "model": "Yeezy Boost 700",
+      "colorway": "Wave Runner",
+      "marketValue": 550
+    },
+    {
+      "name": "adidas Yeezy Boost 700 Utility Black",
+      "sku": "FV5304",
+      "brand": "adidas",
+      "model": "Yeezy Boost 700",
+      "colorway": "Utility Black",
+      "marketValue": 450
+    },
+    {
+      "name": "adidas Yeezy Boost 700 Mauve",
+      "sku": "EE9614",
+      "brand": "adidas",
+      "model": "Yeezy Boost 700",
+      "colorway": "Mauve",
+      "marketValue": 480
+    },
+    {
+      "name": "adidas Yeezy Boost 700 Analog",
+      "sku": "EG7596",
+      "brand": "adidas",
+      "model": "Yeezy Boost 700",
+      "colorway": "Analog",
+      "marketValue": 450
+    },
+    {
+      "name": "adidas Yeezy Boost 700 Inertia",
+      "sku": "EG7597",
+      "brand": "adidas",
+      "model": "Yeezy Boost 700",
+      "colorway": "Inertia",
+      "marketValue": 480
+    },
+    {
+      "name": "adidas Yeezy Boost 700 V2 Static",
+      "sku": "EF2829",
+      "brand": "adidas",
+      "model": "Yeezy Boost 700 V2",
+      "colorway": "Static",
+      "marketValue": 500
+    },
+    {
+      "name": "adidas Yeezy Boost 700 V2 Cream",
+      "sku": "FW2498",
+      "brand": "adidas",
+      "model": "Yeezy Boost 700 V2",
+      "colorway": "Cream",
+      "marketValue": 450
+    },
+    {
+      "name": "adidas Yeezy Boost 700 V3 Azael",
+      "sku": "FW4980",
+      "brand": "adidas",
+      "model": "Yeezy Boost 700 V3",
+      "colorway": "Azael",
+      "marketValue": 450
+    },
+    {
+      "name": "adidas Yeezy Boost 700 V3 Kyanite",
+      "sku": "GY0260",
+      "brand": "adidas",
+      "model": "Yeezy Boost 700 V3",
+      "colorway": "Kyanite",
+      "marketValue": 400
+    },
+    {
+      "name": "adidas Yeezy 500 Utility Black",
+      "sku": "F36640",
+      "brand": "adidas",
+      "model": "Yeezy 500",
+      "colorway": "Utility Black",
+      "marketValue": 350
+    },
+    {
+      "name": "adidas Yeezy 500 Soft Vision",
+      "sku": "FW2656",
+      "brand": "adidas",
+      "model": "Yeezy 500",
+      "colorway": "Soft Vision",
+      "marketValue": 380
+    },
+    {
+      "name": "adidas Yeezy Slide Bone",
+      "sku": "FW6345",
+      "brand": "adidas",
+      "model": "Yeezy Slide",
+      "colorway": "Bone",
+      "marketValue": 180
+    },
+    {
+      "name": "adidas Yeezy Slide Pure",
+      "sku": "GZ5554",
+      "brand": "adidas",
+      "model": "Yeezy Slide",
+      "colorway": "Pure",
+      "marketValue": 160
+    },
+    {
+      "name": "adidas Yeezy Foam Runner Sand",
+      "sku": "FY4567",
+      "brand": "adidas",
+      "model": "Yeezy Foam Runner",
+      "colorway": "Sand",
+      "marketValue": 220
+    },
+    {
+      "name": "Off-White x Nike Air Jordan 1 Chicago",
+      "sku": "AA3834-101",
+      "brand": "Off-White x Nike",
+      "model": "Air Jordan 1",
+      "colorway": "Chicago",
+      "marketValue": 6500
+    },
+    {
+      "name": "Off-White x Nike Air Jordan 1 UNC",
+      "sku": "AQ0818-148",
+      "brand": "Off-White x Nike",
+      "model": "Air Jordan 1",
+      "colorway": "UNC",
+      "marketValue": 5500
+    },
+    {
+      "name": "Travis Scott x Air Jordan 1 Low OG Mocha",
+      "sku": "DM7866-162",
+      "brand": "Travis Scott x Nike",
+      "model": "Air Jordan 1 Low",
+      "colorway": "Mocha",
+      "marketValue": 1800
+    },
+    {
+      "name": "Travis Scott x Air Jordan 1 Retro High OG",
+      "sku": "CD4487-100",
+      "brand": "Travis Scott x Nike",
+      "model": "Air Jordan 1",
+      "colorway": "Cactus Jack",
+      "marketValue": 3500
+    },
+    {
+      "name": "Fragment x Travis Scott x Air Jordan 1 Low OG",
+      "sku": "DM7866-140",
+      "brand": "Fragment x Travis Scott x Nike",
+      "model": "Air Jordan 1 Low",
+      "colorway": "Military Blue",
+      "marketValue": 2200
+    },
+    {
+      "name": "Union LA x Air Jordan 1 Retro High OG Storm Blue",
+      "sku": "BV1300-146",
+      "brand": "Union LA x Nike",
+      "model": "Air Jordan 1",
+      "colorway": "Storm Blue",
+      "marketValue": 2800
+    },
+    {
+      "name": "Union LA x Air Jordan 4 Retro Guava Ice",
+      "sku": "DJ5718-800",
+      "brand": "Union LA x Nike",
+      "model": "Air Jordan 4",
+      "colorway": "Guava Ice",
+      "marketValue": 1400
+    },
+    {
+      "name": "Nike Air Presto Off-White",
+      "sku": "AA3830-001",
+      "brand": "Off-White x Nike",
+      "model": "Air Presto",
+      "colorway": "Off-White",
+      "marketValue": 1200
+    },
+    {
+      "name": "Nike Air VaporMax Off-White",
+      "sku": "AA3831-001",
+      "brand": "Off-White x Nike",
+      "model": "Air VaporMax",
+      "colorway": "Off-White",
+      "marketValue": 1400
+    },
+    {
+      "name": "Nike Blazer Mid Off-White Grim Reapers",
+      "sku": "AA3832-001",
+      "brand": "Off-White x Nike",
+      "model": "Blazer Mid",
+      "colorway": "Grim Reapers",
+      "marketValue": 1600
+    },
+    {
+      "name": "Sacai x Nike LD Waffle Blue Multi",
+      "sku": "BV0073-400",
+      "brand": "Sacai x Nike",
+      "model": "LD Waffle",
+      "colorway": "Blue Multi",
+      "marketValue": 700
+    },
+    {
+      "name": "Sacai x Nike LD Waffle Black",
+      "sku": "BV0073-002",
+      "brand": "Sacai x Nike",
+      "model": "LD Waffle",
+      "colorway": "Black",
+      "marketValue": 750
+    },
+    {
+      "name": "Supreme x Nike SB Dunk Low Stars Barkroot Brown",
+      "sku": "DH3228-103",
+      "brand": "Supreme x Nike SB",
+      "model": "Dunk Low",
+      "colorway": "Stars Barkroot Brown",
+      "marketValue": 1200
+    },
+    {
+      "name": "New Balance 550 White Green",
+      "sku": "BB550WT1",
+      "brand": "New Balance",
+      "model": "550",
+      "colorway": "White Green",
+      "marketValue": 250
+    },
+    {
+      "name": "New Balance 550 White Navy",
+      "sku": "BB550SN1",
+      "brand": "New Balance",
+      "model": "550",
+      "colorway": "White Navy",
+      "marketValue": 220
+    },
+    {
+      "name": "New Balance 550 White Red",
+      "sku": "BB550SR1",
+      "brand": "New Balance",
+      "model": "550",
+      "colorway": "White Red",
+      "marketValue": 230
+    },
+    {
+      "name": "New Balance 550 Sea Salt",
+      "sku": "BB550HA1",
+      "brand": "New Balance",
+      "model": "550",
+      "colorway": "Sea Salt",
+      "marketValue": 200
+    },
+    {
+      "name": "New Balance 990v3 Grey",
+      "sku": "M990GL3",
+      "brand": "New Balance",
+      "model": "990v3",
+      "colorway": "Grey",
+      "marketValue": 220
+    },
+    {
+      "name": "New Balance 990v5 Grey",
+      "sku": "M990GL5",
+      "brand": "New Balance",
+      "model": "990v5",
+      "colorway": "Grey",
+      "marketValue": 200
+    },
+    {
+      "name": "New Balance 992 Grey",
+      "sku": "M992GR",
+      "brand": "New Balance",
+      "model": "992",
+      "colorway": "Grey",
+      "marketValue": 250
+    },
+    {
+      "name": "New Balance 993 Grey",
+      "sku": "MR993GL",
+      "brand": "New Balance",
+      "model": "993",
+      "colorway": "Grey",
+      "marketValue": 220
+    },
+    {
+      "name": "New Balance 2002R Protection Pack Phantom",
+      "sku": "M2002RDA",
+      "brand": "New Balance",
+      "model": "2002R",
+      "colorway": "Protection Pack Phantom",
+      "marketValue": 280
+    },
+    {
+      "name": "New Balance 327 Grey",
+      "sku": "MS327FE",
+      "brand": "New Balance",
+      "model": "327",
+      "colorway": "Grey",
+      "marketValue": 130
+    },
+    {
+      "name": "New Balance 530 White Silver Navy",
+      "sku": "MR530SG",
+      "brand": "New Balance",
+      "model": "530",
+      "colorway": "White Silver Navy",
+      "marketValue": 140
+    },
+    {
+      "name": "Nike Air Max 1 Parra",
+      "sku": "AT3057-100",
+      "brand": "Nike",
+      "model": "Air Max 1",
+      "colorway": "Parra",
+      "marketValue": 800
+    },
+    {
+      "name": "Nike Air Max 90 White",
+      "sku": "CN8490-100",
+      "brand": "Nike",
+      "model": "Air Max 90",
+      "colorway": "White",
+      "marketValue": 140
+    },
+    {
+      "name": "Nike Air Max 95 OG Neon",
+      "sku": "554970-071",
+      "brand": "Nike",
+      "model": "Air Max 95",
+      "colorway": "OG Neon",
+      "marketValue": 190
+    },
+    {
+      "name": "Nike Air Max 97 Silver Bullet",
+      "sku": "884421-001",
+      "brand": "Nike",
+      "model": "Air Max 97",
+      "colorway": "Silver Bullet",
+      "marketValue": 350
+    },
+    {
+      "name": "Nike Air Force 1 Low White",
+      "sku": "315122-111",
+      "brand": "Nike",
+      "model": "Air Force 1 Low",
+      "colorway": "White",
+      "marketValue": 120
+    },
+    {
+      "name": "Nike Blazer Mid 77 Vintage White",
+      "sku": "BQ6806-100",
+      "brand": "Nike",
+      "model": "Blazer Mid 77 Vintage",
+      "colorway": "White",
+      "marketValue": 110
+    },
+    {
+      "name": "Nike Cortez White Red",
+      "sku": "807471-103",
+      "brand": "Nike",
+      "model": "Cortez",
+      "colorway": "White Red",
+      "marketValue": 85
+    },
+    {
+      "name": "Nike SB Janoski OG+ White Black",
+      "sku": "DM8398-100",
+      "brand": "Nike SB",
+      "model": "Janoski OG+",
+      "colorway": "White Black",
+      "marketValue": 95
+    },
+    {
+      "name": "Asics Gel-Kayano 14 Cream",
+      "sku": "1201A019-020",
+      "brand": "Asics",
+      "model": "Gel-Kayano 14",
+      "colorway": "Cream",
+      "marketValue": 180
+    },
+    {
+      "name": "Asics Gel-Lyte III OG White Black",
+      "sku": "1201A257-100",
+      "brand": "Asics",
+      "model": "Gel-Lyte III OG",
+      "colorway": "White Black",
+      "marketValue": 130
+    },
+    {
+      "name": "Asics Gel-1130 Cream Pure Silver",
+      "sku": "1201A256-100",
+      "brand": "Asics",
+      "model": "Gel-1130",
+      "colorway": "Cream Pure Silver",
+      "marketValue": 150
+    },
+    {
+      "name": "Converse Chuck Taylor All Star High Top White",
+      "sku": "M7650C",
+      "brand": "Converse",
+      "model": "Chuck Taylor All Star High",
+      "colorway": "White",
+      "marketValue": 65
+    },
+    {
+      "name": "Vans Old Skool Black White",
+      "sku": "VN000D3HY28",
+      "brand": "Vans",
+      "model": "Old Skool",
+      "colorway": "Black White",
+      "marketValue": 70
+    },
+    {
+      "name": "Vans Sk8-Hi Black White",
+      "sku": "VN0D5IB8C",
+      "brand": "Vans",
+      "model": "Sk8-Hi",
+      "colorway": "Black White",
+      "marketValue": 75
+    },
+    {
+      "name": "Puma Suede Classic Black",
+      "sku": "352634-77",
+      "brand": "Puma",
+      "model": "Suede Classic",
+      "colorway": "Black",
+      "marketValue": 80
+    },
+    {
+      "name": "Reebok Club C 85 White Green",
+      "sku": "AR0456",
+      "brand": "Reebok",
+      "model": "Club C 85",
+      "colorway": "White Green",
+      "marketValue": 90
+    },
+    {
+      "name": "Salehe Bembury x Crocs Pollex Clog Menemsha",
+      "sku": "208685-4LB",
+      "brand": "Salehe Bembury x Crocs",
+      "model": "Pollex Clog",
+      "colorway": "Menemsha",
+      "marketValue": 250
+    },
+    {
+      "name": "Salehe Bembury x Crocs Pollex Clog Stratus",
+      "sku": "208685-103",
+      "brand": "Salehe Bembury x Crocs",
+      "model": "Pollex Clog",
+      "colorway": "Stratus",
+      "marketValue": 230
+    },
+    {
+      "name": "Salomon XT-6 Advanced Vanilla Ice",
+      "sku": "L41395600",
+      "brand": "Salomon",
+      "model": "XT-6 Advanced",
+      "colorway": "Vanilla Ice",
+      "marketValue": 220
+    },
+    {
+      "name": "Salomon ACS Pro Advanced Black",
+      "sku": "L41394500",
+      "brand": "Salomon",
+      "model": "ACS Pro Advanced",
+      "colorway": "Black",
+      "marketValue": 200
+    },
+    {
+      "name": "Hoka One One Clifton 8 White",
+      "sku": "1119393-WWH",
+      "brand": "Hoka One One",
+      "model": "Clifton 8",
+      "colorway": "White",
+      "marketValue": 150
+    },
+    {
+      "name": "On Running Cloud 5 All White",
+      "sku": "3MD10811615",
+      "brand": "On Running",
+      "model": "Cloud 5",
+      "colorway": "All White",
+      "marketValue": 140
+    },
+    {
+      "name": "Clarks Wallabee Maple Suede",
+      "sku": "26155514",
+      "brand": "Clarks",
+      "model": "Wallabee",
+      "colorway": "Maple Suede",
+      "marketValue": 160
+    },
+    {
+      "name": "Dr. Martens 1460 Black Smooth",
+      "sku": "11822006",
+      "brand": "Dr. Martens",
+      "model": "1460",
+      "colorway": "Black Smooth",
+      "marketValue": 170
+    },
+    {
+      "name": "Adidas Samba OG White Black",
+      "sku": "B75806",
+      "brand": "adidas",
+      "model": "Samba OG",
+      "colorway": "White Black",
+      "marketValue": 110
+    },
+    {
+      "name": "Adidas Gazelle Core Black",
+      "sku": "BB5476",
+      "brand": "adidas",
+      "model": "Gazelle",
+      "colorway": "Core Black",
+      "marketValue": 100
+    },
+    {
+      "name": "Adidas Stan Smith White Green",
+      "sku": "M20324",
+      "brand": "adidas",
+      "model": "Stan Smith",
+      "colorway": "White Green",
+      "marketValue": 90
+    },
+    {
+      "name": "Adidas Superstar White Black",
+      "sku": "EG4958",
+      "brand": "adidas",
+      "model": "Superstar",
+      "colorway": "White Black",
+      "marketValue": 90
+    }
+  ]
+}

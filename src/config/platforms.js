@@ -34,7 +34,13 @@ export const PLATFORM_CONFIGS = {
   stockx: {
     name: 'StockX',
     type: 'custom',
-    enabled: false, // Phase 3
+    enabled: true,
+    rateLimit: 50,
+    cacheTimeout: 60,
+    isAuthenticated: true,
+    requiresProxy: true,
+    riskLevel: 'very_high',
+    baseUrl: 'https://stockx.com',
   },
   goat: {
     name: 'GOAT',
