@@ -80,6 +80,8 @@ export class WebhookNotifier {
         platformBreakdown: this.getPlatformBreakdown(safeListings),
         averagePrice: this.calculateAveragePrice(safeListings),
         bestDeal: this.findBestDeal(safeListings),
+        dealHighlights: this.getDealHighlights(safeListings),
+        priceDrops: this.getPriceDrops(safeListings),
       },
       listings: safeListings,
     };
@@ -175,6 +177,86 @@ export class WebhookNotifier {
       price: Number(best.listing.price),
       url: best.source.url,
       platform: best.source.platform,
+    };
+  }
+
+  getDealHighlights(listings) {
+    const safeListings = Array.isArray(listings) ? listings : [];
+    const deals = safeListings.filter((listing) => listing.metadata?.dealScore?.isBelowMarket);
+
+    if (deals.length === 0) {
+      return {
+        totalDeals: 0,
+        excellentDeals: 0,
+        goodDeals: 0,
+        fairDeals: 0,
+        topDeals: [],
+      };
+    }
+
+    const excellentDeals = deals.filter(
+      (l) => l.metadata.dealScore.dealQuality === 'excellent'
+    ).length;
+    const goodDeals = deals.filter((l) => l.metadata.dealScore.dealQuality === 'good').length;
+    const fairDeals = deals.filter((l) => l.metadata.dealScore.dealQuality === 'fair').length;
+
+    const topDeals = deals
+      .sort((a, b) => {
+        const savingsA = a.metadata?.dealScore?.savingsPercentage || 0;
+        const savingsB = b.metadata?.dealScore?.savingsPercentage || 0;
+        return savingsB - savingsA;
+      })
+      .slice(0, 5)
+      .map((listing) => ({
+        productName: listing.product?.name,
+        currentPrice: listing.listing?.price,
+        marketValue: listing.metadata.dealScore.marketValue,
+        savingsPercentage: listing.metadata.dealScore.savingsPercentage,
+        savingsAmount: listing.metadata.dealScore.savingsAmount,
+        dealQuality: listing.metadata.dealScore.dealQuality,
+        url: listing.source?.url,
+        platform: listing.source?.platform,
+      }));
+
+    return {
+      totalDeals: deals.length,
+      excellentDeals,
+      goodDeals,
+      fairDeals,
+      topDeals,
+    };
+  }
+
+  getPriceDrops(listings) {
+    const safeListings = Array.isArray(listings) ? listings : [];
+    const priceDrops = safeListings.filter((listing) => listing.metadata?.priceChange?.hasDrop);
+
+    if (priceDrops.length === 0) {
+      return {
+        totalPriceDrops: 0,
+        drops: [],
+      };
+    }
+
+    const drops = priceDrops
+      .sort((a, b) => {
+        const dropA = a.metadata?.priceChange?.dropPercent || 0;
+        const dropB = b.metadata?.priceChange?.dropPercent || 0;
+        return dropB - dropA;
+      })
+      .slice(0, 5)
+      .map((listing) => ({
+        productName: listing.product?.name,
+        previousPrice: listing.metadata.priceChange.previousPrice,
+        currentPrice: listing.metadata.priceChange.currentPrice,
+        dropPercent: listing.metadata.priceChange.dropPercent,
+        url: listing.source?.url,
+        platform: listing.source?.platform,
+      }));
+
+    return {
+      totalPriceDrops: priceDrops.length,
+      drops,
     };
   }
 }

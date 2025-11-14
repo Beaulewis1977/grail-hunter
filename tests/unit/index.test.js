@@ -197,7 +197,9 @@ describe('Actor main entrypoint', () => {
         deduplication: dedupStats,
       })
     );
-    expect(mockOpenKeyValueStore).toHaveBeenCalledTimes(1);
+    // Phase 3: KV store opened twice - once for deduplicator, once for deal scorer
+    // (stats storage reuses the same instance)
+    expect(mockOpenKeyValueStore).toHaveBeenCalledTimes(2);
   });
 
   it('throws ValidationError when no input is provided and records last_error', async () => {

@@ -5,12 +5,14 @@
 
 import { GrailedScraper } from './grailed.js';
 import { EbayScraper } from './ebay.js';
+import { StockXScraper } from './stockx.js';
 import { PLATFORM_CONFIGS } from '../config/platforms.js';
 import { PlatformScrapingError } from '../utils/errors.js';
 import { logger } from '../utils/logger.js';
 
 export class ScraperManager {
-  constructor() {
+  constructor(platformConfigs = PLATFORM_CONFIGS) {
+    this.platformConfigs = platformConfigs;
     this.scrapers = {};
     this.initializeScrapers();
   }
@@ -19,14 +21,17 @@ export class ScraperManager {
    * Initialize platform scrapers
    */
   initializeScrapers() {
-    // Initialize Grailed scraper (Phase 1)
-    const grailedConfig = PLATFORM_CONFIGS.grailed;
+    const grailedConfig = this.platformConfigs.grailed;
     this.scrapers.grailed = new GrailedScraper(grailedConfig);
 
-    // Placeholder for future platforms
-    this.scrapers.ebay = new EbayScraper(PLATFORM_CONFIGS.ebay);
-    // this.scrapers.stockx = new StockXScraper(PLATFORM_CONFIGS.stockx);
-    // this.scrapers.goat = new GoatScraper(PLATFORM_CONFIGS.goat);
+    if (this.platformConfigs.ebay) {
+      this.scrapers.ebay = new EbayScraper(this.platformConfigs.ebay);
+    }
+
+    if (this.platformConfigs.stockx?.enabled) {
+      this.scrapers.stockx = new StockXScraper(this.platformConfigs.stockx);
+      logger.warn('⚠️  StockX scraper enabled - HIGH RISK: Use at your own discretion');
+    }
 
     logger.info('Initialized scrapers', { platforms: Object.keys(this.scrapers) });
   }

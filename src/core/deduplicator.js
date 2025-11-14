@@ -8,11 +8,14 @@ import { Actor } from 'apify';
 import { logger } from '../utils/logger.js';
 
 export class DeduplicationEngine {
-  constructor() {
+  constructor(config = {}) {
     this.kvStore = null;
     this.seenHashes = new Map();
     this.seenHashesKey = 'seen_listing_hashes';
-    this.maxStoredHashes = 10000; // Prevent unbounded growth
+    this.maxStoredHashes = 10000;
+    this.priceDropThreshold = config.priceDropThreshold || 10;
+    this.maxHistoryEntriesPerItem = config.maxHistoryEntriesPerItem || 50;
+    this.historyRetentionDays = config.historyRetentionDays || 30;
   }
 
   /**
@@ -21,15 +24,14 @@ export class DeduplicationEngine {
   async initialize() {
     this.kvStore = await Actor.openKeyValueStore();
 
-    // Load previously seen hashes
+    await this.cleanupOldHistory();
+
     const storedHashes = await this.kvStore.getValue(this.seenHashesKey);
 
     if (storedHashes && Array.isArray(storedHashes)) {
       this.seenHashes = new Map();
 
       for (const entry of storedHashes) {
-        // Legacy 32-char MD5 digests are intentionally ignored inside upsertMigratedHash so the
-        // SHA-256 set repopulates naturally on subsequent runs.
         if (typeof entry === 'string') {
           this.upsertMigratedHash(entry, Date.now());
         } else if (entry && typeof entry === 'object' && entry.hash) {
@@ -61,7 +63,7 @@ export class DeduplicationEngine {
   }
 
   /**
-   * Find new listings (not seen before)
+   * Find new listings (not seen before) and track price changes
    * @param {Array} listings - All listings
    * @returns {Array} New listings only
    */
@@ -81,6 +83,8 @@ export class DeduplicationEngine {
 
       listing.scrape.isNew = !seenBefore;
 
+      await this.trackPriceChange(listing, hash);
+
       if (!seenBefore) {
         newListings.push(listing);
         logger.debug(
@@ -97,7 +101,6 @@ export class DeduplicationEngine {
 
     this.seenHashes = this.enforceCapacity(updatedHashes);
 
-    // Persist updated state with retry and rollback on failure
     await this.persistHashes(previousState);
 
     logger.info(`Found ${newListings.length} new listings out of ${safeListings.length} total`);
@@ -186,6 +189,125 @@ export class DeduplicationEngine {
         error: finalError.message,
       });
       throw finalError;
+    }
+  }
+
+  async trackPriceChange(listing, hash) {
+    const currentPrice = listing.listing?.price || 0;
+    const priceHistoryKey = `price_history_${hash}`;
+
+    try {
+      const storedHistory = await this.kvStore.getValue(priceHistoryKey);
+      const priceHistory = storedHistory || [];
+
+      const previousPrice =
+        priceHistory.length > 0 ? priceHistory[priceHistory.length - 1].price : null;
+
+      if (!listing.metadata) {
+        listing.metadata = {};
+      }
+
+      if (previousPrice && previousPrice !== currentPrice) {
+        const dropAmount = previousPrice - currentPrice;
+        const dropPercent = ((dropAmount / previousPrice) * 100).toFixed(1);
+        const hasDrop = parseFloat(dropPercent) >= this.priceDropThreshold;
+
+        listing.metadata.priceChange = {
+          hasDrop,
+          previousPrice,
+          currentPrice,
+          dropPercent: parseFloat(dropPercent),
+        };
+
+        if (hasDrop) {
+          logger.info('Price drop detected', {
+            product: listing.product?.name,
+            previousPrice,
+            currentPrice,
+            dropPercent: `${dropPercent}%`,
+          });
+        }
+      } else {
+        listing.metadata.priceChange = {
+          hasDrop: false,
+          previousPrice,
+          currentPrice,
+          dropPercent: null,
+        };
+      }
+
+      if (!previousPrice || previousPrice !== currentPrice) {
+        priceHistory.push({
+          price: currentPrice,
+          date: new Date().toISOString(),
+          timestamp: Date.now(),
+        });
+
+        const trimmedHistory = priceHistory.slice(-this.maxHistoryEntriesPerItem);
+
+        await this.kvStore.setValue(priceHistoryKey, trimmedHistory);
+      }
+    } catch (error) {
+      logger.warn('Failed to track price change', {
+        error: error.message,
+        listing: listing.product?.name,
+      });
+
+      if (!listing.metadata) {
+        listing.metadata = {};
+      }
+
+      listing.metadata.priceChange = {
+        hasDrop: false,
+        previousPrice: null,
+        currentPrice,
+        dropPercent: null,
+      };
+    }
+  }
+
+  async cleanupOldHistory() {
+    try {
+      logger.info('Cleaning up old price history entries');
+
+      const cutoffDate = Date.now() - this.historyRetentionDays * 24 * 60 * 60 * 1000;
+      let cleanedCount = 0;
+
+      const keys = await this.kvStore.getKeys();
+
+      for (const key of keys) {
+        if (key.startsWith('price_history_')) {
+          const history = await this.kvStore.getValue(key);
+
+          if (Array.isArray(history) && history.length > 0) {
+            const lastEntry = history[history.length - 1];
+
+            if (lastEntry.timestamp < cutoffDate) {
+              await this.kvStore.delete(key);
+              cleanedCount++;
+            }
+          }
+        }
+      }
+
+      if (cleanedCount > 0) {
+        logger.info(`Cleaned up ${cleanedCount} old price history entries`);
+      }
+    } catch (error) {
+      logger.warn('Failed to cleanup old price history', {
+        error: error.message,
+      });
+    }
+  }
+
+  async getPriceHistory(hash) {
+    try {
+      const priceHistoryKey = `price_history_${hash}`;
+      const history = await this.kvStore.getValue(priceHistoryKey);
+      return history || [];
+    } catch (error) {
+      logger.warn('Failed to retrieve price history', { error: error.message });
+      return [];
     }
   }
 }

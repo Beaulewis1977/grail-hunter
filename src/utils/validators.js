@@ -137,6 +137,65 @@ export function validateInput(input) {
       throw new ValidationError('maxResults must be a number between 1 and 500000');
     }
   }
+
+  const ensurePercentage = (value, fieldName) => {
+    if (typeof value !== 'number' || Number.isNaN(value)) {
+      throw new ValidationError(`${fieldName} must be a number`);
+    }
+
+    if (value < 0 || value > 100) {
+      throw new ValidationError(`${fieldName} must be between 0 and 100`);
+    }
+  };
+
+  if (input.dealScoreThreshold !== undefined) {
+    ensurePercentage(input.dealScoreThreshold, 'dealScoreThreshold');
+  }
+
+  if (input.excellentDealThreshold !== undefined) {
+    ensurePercentage(input.excellentDealThreshold, 'excellentDealThreshold');
+  }
+
+  if (input.priceDropThreshold !== undefined) {
+    ensurePercentage(input.priceDropThreshold, 'priceDropThreshold');
+  }
+
+  const resolvedDealThreshold =
+    input.dealScoreThreshold !== undefined ? input.dealScoreThreshold : 10;
+  const resolvedExcellentThreshold =
+    input.excellentDealThreshold !== undefined ? input.excellentDealThreshold : 30;
+
+  if (resolvedExcellentThreshold < resolvedDealThreshold) {
+    throw new ValidationError(
+      `excellentDealThreshold (${resolvedExcellentThreshold}%) must be greater than or equal to dealScoreThreshold (${resolvedDealThreshold}%).`
+    );
+  }
+
+  if (input.marketValueOverrides !== undefined) {
+    if (
+      typeof input.marketValueOverrides !== 'object' ||
+      Array.isArray(input.marketValueOverrides) ||
+      input.marketValueOverrides === null
+    ) {
+      throw new ValidationError(
+        'marketValueOverrides must be an object keyed by sneaker name or SKU'
+      );
+    }
+
+    for (const [key, value] of Object.entries(input.marketValueOverrides)) {
+      if (typeof value !== 'number' || Number.isNaN(value) || value < 0) {
+        throw new ValidationError(`marketValueOverrides["${key}"] must be a non-negative number`);
+      }
+    }
+  }
+
+  if (input.enableStockX !== undefined && typeof input.enableStockX !== 'boolean') {
+    throw new ValidationError('enableStockX must be a boolean when provided');
+  }
+
+  if (input.disableStockX !== undefined && typeof input.disableStockX !== 'boolean') {
+    throw new ValidationError('disableStockX must be a boolean when provided');
+  }
 }
 
 /**
@@ -175,5 +234,16 @@ export function normalizeInput(input) {
       apifyProxyGroups: ['RESIDENTIAL'],
     },
     excludeAuctions: Boolean(input.excludeAuctions) || false,
+    dealScoreThreshold: input.dealScoreThreshold,
+    excellentDealThreshold: input.excellentDealThreshold,
+    priceDropThreshold: input.priceDropThreshold,
+    marketValueOverrides:
+      typeof input.marketValueOverrides === 'object' &&
+      !Array.isArray(input.marketValueOverrides) &&
+      input.marketValueOverrides !== null
+        ? input.marketValueOverrides
+        : {},
+    enableStockX: input.enableStockX === true,
+    disableStockX: input.disableStockX === true,
   };
 }

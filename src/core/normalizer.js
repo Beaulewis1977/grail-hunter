@@ -49,6 +49,8 @@ export class DataNormalizer {
         return this.normalizeGrailed(rawListing);
       case 'ebay':
         return this.normalizeEbay(rawListing);
+      case 'stockx':
+        return this.normalizeStockX(rawListing);
       default:
         logger.warn(`Unknown platform: ${platformTrimmed}, using generic normalizer`);
         return this.normalizeGeneric(rawListing, platformTrimmed);
@@ -185,6 +187,66 @@ export class DataNormalizer {
         priceChange: {
           hasDrop: false,
           previousPrice: null, // TODO: Fetch from storage or priceHistory
+          currentPrice,
+          dropPercent: null,
+        },
+      },
+    };
+  }
+
+  normalizeStockX(raw) {
+    const title = raw.title || raw.name || '';
+    const currentPrice = this.parsePrice(raw.price || raw.lowestAsk || raw.lastSale);
+
+    return {
+      product: {
+        name: title || 'Unknown',
+        brand: raw.brand || this.extractBrand(title || ''),
+        model: this.extractModel(title || ''),
+        colorway: raw.colorway || null,
+        sku: raw.styleId || raw.sku || null,
+        releaseYear: raw.releaseDate ? new Date(raw.releaseDate).getFullYear() : null,
+      },
+      listing: {
+        price: currentPrice,
+        currency: 'USD',
+        size_us_mens: null,
+        size_us_womens: null,
+        size_eu: null,
+        condition: raw.condition || 'new_in_box',
+        tags: ['authenticated', 'verified'],
+        type: 'sell',
+        description: this.truncateDescription(raw.description || ''),
+      },
+      source: {
+        platform: 'StockX',
+        url: raw.url || '',
+        id: String(raw.id || raw.uuid || ''),
+        is_authenticated: true,
+        imageUrl: raw.image_url || null,
+      },
+      seller: {
+        name: 'StockX',
+        rating: null,
+        reviewCount: null,
+        verified: true,
+      },
+      scrape: {
+        timestamp: new Date().toISOString(),
+        runId: process.env.APIFY_ACT_RUN_ID || 'local',
+        version: '1.0.0',
+      },
+      metadata: {
+        dealScore: {
+          isBelowMarket: false,
+          marketValue: raw.lastSale || raw.lowestAsk || null,
+          savingsPercentage: null,
+          savingsAmount: null,
+          dealQuality: null,
+        },
+        priceChange: {
+          hasDrop: false,
+          previousPrice: null,
           currentPrice,
           dropPercent: null,
         },
