@@ -212,25 +212,97 @@
       "description": "Extra data for analysis",
       "properties": {
         "dealScore": {
-          "type": "number",
-          "description": "Deal quality score (0-100, higher=better deal)",
-          "minimum": 0,
-          "maximum": 100,
-          "example": 85
+          "type": "object",
+          "description": "Deal quality analysis object comparing listing price to market value",
+          "properties": {
+            "isBelowMarket": {
+              "type": "boolean",
+              "description": "Indicates if the listing price is below estimated market value",
+              "default": false,
+              "example": true
+            },
+            "marketValue": {
+              "type": ["number", "null"],
+              "description": "Estimated market price from StockX/GOAT (null if unavailable)",
+              "default": null,
+              "example": 950.0
+            },
+            "savingsPercentage": {
+              "type": ["number", "null"],
+              "description": "Percentage savings calculated as ((marketValue - currentPrice) / marketValue) * 100 (null if unavailable)",
+              "default": null,
+              "example": 21.1
+            },
+            "savingsAmount": {
+              "type": ["number", "null"],
+              "description": "Dollar amount saved (marketValue - currentPrice) (null if unavailable)",
+              "default": null,
+              "example": 200.0
+            },
+            "dealQuality": {
+              "type": ["string", "null"],
+              "description": "Deal rating based on savings percentage thresholds",
+              "enum": ["excellent", "good", "fair", "market", null],
+              "default": null,
+              "example": "good"
+            }
+          },
+          "example": {
+            "isBelowMarket": true,
+            "marketValue": 950.0,
+            "savingsPercentage": 21.1,
+            "savingsAmount": 200.0,
+            "dealQuality": "good"
+          }
+        },
+        "priceChange": {
+          "type": "object",
+          "description": "Price change tracking for quick drop detection (full history in scrape.priceHistory)",
+          "properties": {
+            "hasDrop": {
+              "type": "boolean",
+              "description": "True if price dropped since last observation",
+              "default": false,
+              "example": true
+            },
+            "previousPrice": {
+              "type": ["number", "null"],
+              "description": "Price from previous observation (null if first observation)",
+              "default": null,
+              "example": 250.0
+            },
+            "currentPrice": {
+              "type": "number",
+              "description": "Current listing price (same as listing.price)",
+              "example": 200.0
+            },
+            "dropPercent": {
+              "type": ["number", "null"],
+              "description": "Percentage drop calculated as ((previousPrice - currentPrice) / previousPrice) * 100 (null if no previous price)",
+              "default": null,
+              "example": 20.0
+            }
+          },
+          "example": {
+            "hasDrop": true,
+            "previousPrice": 250.0,
+            "currentPrice": 200.0,
+            "dropPercent": 20.0
+          }
         },
         "estimatedMarketValue": {
           "type": "number",
-          "description": "Estimated retail/average resale value",
+          "description": "Estimated retail/average resale value (DEPRECATED: use dealScore.marketValue)",
           "example": 1500
         },
         "savingsAmount": {
           "type": "number",
-          "description": "Amount saved vs market value",
+          "description": "Amount saved vs market value (DEPRECATED: use dealScore.savingsAmount)",
           "example": 300
         },
         "savingsPercent": {
           "type": "number",
-          "description": "Savings percentage",
+          "description": "Savings percentage (DEPRECATED: use dealScore.savingsPercentage)",
           "example": 20
         },
         "sourceActorRun": {

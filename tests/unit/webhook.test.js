@@ -47,6 +47,21 @@ describe('WebhookNotifier', () => {
           product: { name: 'Air Jordan 1' },
           listing: { price: 750 },
           source: { platform: 'Grailed', url: 'https://example.com' },
+          metadata: {
+            dealScore: {
+              isBelowMarket: false,
+              marketValue: null,
+              savingsPercentage: null,
+              savingsAmount: null,
+              dealQuality: null,
+            },
+            priceChange: {
+              hasDrop: false,
+              previousPrice: null,
+              currentPrice: 750,
+              dropPercent: null,
+            },
+          },
         },
       ];
 
@@ -64,6 +79,12 @@ describe('WebhookNotifier', () => {
           }),
         })
       );
+
+      // Verify payload includes metadata structures
+      const [, { body }] = fetchSpy.mock.calls[0];
+      const payload = JSON.parse(body);
+      expect(payload.listings[0].metadata.dealScore).toHaveProperty('isBelowMarket');
+      expect(payload.listings[0].metadata.priceChange).toHaveProperty('hasDrop');
     });
 
     it('should include HMAC signature if secret provided', async () => {
@@ -109,11 +130,41 @@ describe('WebhookNotifier', () => {
           product: { name: 'Air Jordan 1' },
           listing: { price: 750 },
           source: { platform: 'Grailed', url: 'https://example.com/1' },
+          metadata: {
+            dealScore: {
+              isBelowMarket: false,
+              marketValue: null,
+              savingsPercentage: null,
+              savingsAmount: null,
+              dealQuality: null,
+            },
+            priceChange: {
+              hasDrop: false,
+              previousPrice: null,
+              currentPrice: 750,
+              dropPercent: null,
+            },
+          },
         },
         {
           product: { name: 'Yeezy 350' },
           listing: { price: 450 },
           source: { platform: 'Grailed', url: 'https://example.com/2' },
+          metadata: {
+            dealScore: {
+              isBelowMarket: false,
+              marketValue: null,
+              savingsPercentage: null,
+              savingsAmount: null,
+              dealQuality: null,
+            },
+            priceChange: {
+              hasDrop: false,
+              previousPrice: null,
+              currentPrice: 450,
+              dropPercent: null,
+            },
+          },
         },
       ];
 
@@ -124,6 +175,8 @@ describe('WebhookNotifier', () => {
       expect(payload.summary.averagePrice).toBe(600);
       expect(payload.summary.bestDeal.price).toBe(450);
       expect(payload.listings).toHaveLength(2);
+      expect(payload.listings[0].metadata.dealScore).toBeDefined();
+      expect(payload.listings[0].metadata.priceChange).toBeDefined();
     });
   });
 });

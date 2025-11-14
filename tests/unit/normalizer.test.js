@@ -41,6 +41,11 @@ describe('DataNormalizer', () => {
       expect(out.source.id).toBe('9876543210');
       expect(out.listing.price).toBe(200);
       expect(out.product.name).toContain('Air Jordan 1');
+
+      // Verify metadata structures
+      expect(out.metadata.dealScore).toBeDefined();
+      expect(out.metadata.priceChange).toBeDefined();
+      expect(out.metadata.priceChange.currentPrice).toBe(200);
     });
 
     it('should generate deterministic fallback id when identifiers missing', () => {
@@ -107,6 +112,22 @@ describe('DataNormalizer', () => {
       expect(normalized.source.id).toBe('12345');
       expect(normalized.seller.name).toBe('sneaker_seller');
       expect(normalized.seller.verified).toBe(true);
+
+      // Verify new metadata structures
+      expect(normalized.metadata.dealScore).toEqual({
+        isBelowMarket: false,
+        marketValue: null,
+        savingsPercentage: null,
+        savingsAmount: null,
+        dealQuality: null,
+      });
+
+      expect(normalized.metadata.priceChange).toEqual({
+        hasDrop: false,
+        previousPrice: null,
+        currentPrice: 400,
+        dropPercent: null,
+      });
     });
 
     it('should handle missing fields gracefully', () => {
@@ -122,6 +143,12 @@ describe('DataNormalizer', () => {
       expect(normalized.listing.price).toBe(100);
       expect(normalized.listing.size_us_mens).toBeNull();
       expect(normalized.seller.name).toBeNull();
+
+      // Verify metadata objects are present with defaults
+      expect(normalized.metadata.dealScore).toBeDefined();
+      expect(normalized.metadata.dealScore.isBelowMarket).toBe(false);
+      expect(normalized.metadata.priceChange).toBeDefined();
+      expect(normalized.metadata.priceChange.currentPrice).toBe(100);
     });
   });
 
@@ -174,6 +201,40 @@ describe('DataNormalizer', () => {
     it('should return unspecified for unknown condition', () => {
       expect(normalizer.mapGrailedCondition('Unknown')).toBe('unspecified');
       expect(normalizer.mapGrailedCondition(null)).toBe('unspecified');
+    });
+  });
+
+  describe('metadata structures', () => {
+    it('should include dealScore object with correct default structure', () => {
+      const raw = { title: 'Test Sneaker', price: 100, id: '123' };
+      const normalized = normalizer.normalize(raw, 'grailed');
+
+      expect(normalized.metadata.dealScore).toEqual({
+        isBelowMarket: false,
+        marketValue: null,
+        savingsPercentage: null,
+        savingsAmount: null,
+        dealQuality: null,
+      });
+    });
+
+    it('should include priceChange object with correct default structure', () => {
+      const raw = { title: 'Test Sneaker', price: '$250', id: '123' };
+      const normalized = normalizer.normalize(raw, 'grailed');
+
+      expect(normalized.metadata.priceChange).toEqual({
+        hasDrop: false,
+        previousPrice: null,
+        currentPrice: 250,
+        dropPercent: null,
+      });
+    });
+
+    it('should handle null price in priceChange', () => {
+      const raw = { title: 'Test Sneaker', price: null, id: '123' };
+      const normalized = normalizer.normalize(raw, 'grailed');
+
+      expect(normalized.metadata.priceChange.currentPrice).toBeNull();
     });
   });
 });

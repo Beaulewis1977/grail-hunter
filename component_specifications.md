@@ -1050,6 +1050,38 @@ const OutputSchema = {
      * Enum: "excellent" (>30%), "good" (20-30%), "fair" (10-20%), "market" (<10%)
      */
     dealQuality: String | null
+  },
+
+  /**
+   * Price change tracking (optional, for quick drop detection)
+   * Full history available in scrape.priceHistory
+   */
+  priceChange: {
+    /**
+     * Whether price dropped since last observation
+     * Example: true, false
+     */
+    hasDrop: Boolean,
+
+    /**
+     * Price from previous observation
+     * Example: 250.00
+     * Null if first observation
+     */
+    previousPrice: Number | null,
+
+    /**
+     * Current listing price (same as listing.price)
+     * Example: 200.00
+     */
+    currentPrice: Number,
+
+    /**
+     * Percentage drop calculated as ((previousPrice - currentPrice) / previousPrice) * 100
+     * Example: 20.0 (means 20% drop)
+     * Null if no previous price available
+     */
+    dropPercent: Number | null
   }
 };
 ```

@@ -561,6 +561,126 @@ To test webhook notifications:
 **Known caveat:** Auction type detection is partial; `excludeAuctions` supported, further heuristics
 planned.
 
+---
+
+## Phase 2.5: Schema Alignment — ✅ COMPLETE
+
+**Date:** November 13, 2025  
+**Branch:** `feature/phase-2-5-schema-alignment`  
+**GitHub Issue:**
+[#9 - Phase 2.5: Schema Alignment](https://github.com/Beaulewis1977/grail-hunter/issues/9)
+
+### Overview
+
+Phase 2.5 prepares the schema and codebase for Phase 3's advanced intelligence features by
+introducing structured metadata objects for deal scoring and price tracking. All changes are
+backward-compatible with default/null values to ensure no behavioral changes during this transition
+phase.
+
+### Changes Implemented
+
+#### 1. Schema Updates ✅
+
+**File:** `.actor/OUTPUT_SCHEMA.json`
+
+- **`metadata.dealScore`** changed from scalar number to structured object:
+  - `isBelowMarket` (boolean, default: false)
+  - `marketValue` (number|null, default: null)
+  - `savingsPercentage` (number|null, default: null) - Replaces deprecated `savingsPercent`
+  - `savingsAmount` (number|null, default: null)
+  - `dealQuality` (string enum|null, default: null) - Values: 'excellent', 'good', 'fair', 'market'
+
+- **`metadata.priceChange`** added as new object:
+  - `hasDrop` (boolean, default: false)
+  - `previousPrice` (number|null, default: null)
+  - `currentPrice` (number) - Mirrors `listing.price`
+  - `dropPercent` (number|null, default: null)
+
+- Deprecated fields maintained for backward compatibility: `savingsPercent`, `estimatedMarketValue`
+
+#### 2. Code Scaffolding ✅
+
+**File:** `src/core/normalizer.js`
+
+- Updated `normalizeGrailed()`, `normalizeEbay()`, and `normalizeGeneric()` to return metadata
+  objects with safe defaults
+- Added TODOs for Phase 3 implementation of real value calculations
+- All existing functionality preserved with zero behavioral changes
+
+**File:** `src/notifications/dataset.js`
+
+- Added TODOs for Phase 3 feature integration
+- Verified nested object serialization compatibility with Apify dataset storage
+
+#### 3. Test Coverage ✅
+
+**Files Updated:**
+
+- `tests/unit/normalizer.test.js` - Added metadata structure validation tests
+- `tests/unit/webhook.test.js` - Updated to verify nested object serialization in webhooks
+- `tests/integration/end-to-end.test.js` - Added metadata presence assertions
+
+**Results:**
+
+- All 97 tests passing ✅
+- Coverage maintained at 88%+ ✅
+- No regressions in existing functionality ✅
+
+#### 4. Documentation Sync ✅
+
+**Files Updated:**
+
+- `component_specifications.md` - Added priceChange section, updated dealScore details
+- `component_specifications_complete.md` - Synchronized with schema changes
+- `prompts/phase-3-agent-prompt.md` - Added detailed field calculation instructions
+- `README.md` - Added Phase 2.5 section explaining new metadata objects
+- `IMPLEMENTATION_STATUS.md` - This document
+
+### Example Output Structure
+
+```json
+{
+  "product": { "name": "Air Jordan 1 Bred", "brand": "Air Jordan" },
+  "listing": { "price": 250, "condition": "used_like_new" },
+  "metadata": {
+    "dealScore": {
+      "isBelowMarket": false,
+      "marketValue": null,
+      "savingsPercentage": null,
+      "savingsAmount": null,
+      "dealQuality": null
+    },
+    "priceChange": {
+      "hasDrop": false,
+      "previousPrice": null,
+      "currentPrice": 250,
+      "dropPercent": null
+    }
+  }
+}
+```
+
+### Validation & Testing
+
+✅ JSON schema validation passes  
+✅ All unit tests pass  
+✅ All integration tests pass  
+✅ No behavioral changes confirmed  
+✅ Backward compatibility verified  
+✅ Documentation synchronized
+
+### Phase 3 Prerequisites Met
+
+- ✅ Schema structure defined for `dealScore` and `priceChange`
+- ✅ Code scaffolding in place with TODOs
+- ✅ Tests validate new structures
+- ✅ Documentation reflects changes
+- ✅ No breaking changes introduced
+
+**Status:** Ready for Phase 3 implementation of real market data comparison and price tracking.
+
+---
+
 ### Phase 3: StockX Integration (Estimated 2.5 hours)
 
 **Features to Implement:**

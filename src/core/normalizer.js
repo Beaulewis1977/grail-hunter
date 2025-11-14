@@ -61,6 +61,8 @@ export class DataNormalizer {
    * @returns {object} Normalized listing
    */
   normalizeGrailed(raw) {
+    const currentPrice = this.parsePrice(raw.price);
+
     return {
       product: {
         name: raw.title || raw.name || 'Unknown',
@@ -71,7 +73,7 @@ export class DataNormalizer {
         releaseYear: null, // Not provided by Grailed
       },
       listing: {
-        price: this.parsePrice(raw.price),
+        price: currentPrice,
         currency: 'USD',
         size_us_mens: raw.size || null,
         size_us_womens: null,
@@ -99,6 +101,23 @@ export class DataNormalizer {
         runId: process.env.APIFY_ACT_RUN_ID || 'local',
         version: '1.0.0',
       },
+      metadata: {
+        // TODO Phase 3: Populate with real StockX/GOAT market data and calculate savings/dealQuality
+        dealScore: {
+          isBelowMarket: false,
+          marketValue: null,
+          savingsPercentage: null,
+          savingsAmount: null,
+          dealQuality: null,
+        },
+        // TODO Phase 3: Compare with stored previousPrice and set hasDrop/dropPercent accordingly
+        priceChange: {
+          hasDrop: false,
+          previousPrice: null, // TODO: Fetch from storage or priceHistory
+          currentPrice,
+          dropPercent: null,
+        },
+      },
     };
   }
 
@@ -113,6 +132,7 @@ export class DataNormalizer {
 
     const tags = this.buildEbayTags(raw);
     const isAuthenticated = tags.includes('authenticity_guarantee');
+    const currentPrice = this.parsePrice(raw.price);
 
     return {
       product: {
@@ -124,7 +144,7 @@ export class DataNormalizer {
         releaseYear: null,
       },
       listing: {
-        price: this.parsePrice(raw.price),
+        price: currentPrice,
         currency: 'USD',
         size_us_mens: null,
         size_us_womens: null,
@@ -151,6 +171,23 @@ export class DataNormalizer {
         timestamp: new Date().toISOString(),
         runId: process.env.APIFY_ACT_RUN_ID || 'local',
         version: '1.0.0',
+      },
+      metadata: {
+        // TODO Phase 3: Populate with real StockX/GOAT market data and calculate savings/dealQuality
+        dealScore: {
+          isBelowMarket: false,
+          marketValue: null,
+          savingsPercentage: null,
+          savingsAmount: null,
+          dealQuality: null,
+        },
+        // TODO Phase 3: Compare with stored previousPrice and set hasDrop/dropPercent accordingly
+        priceChange: {
+          hasDrop: false,
+          previousPrice: null, // TODO: Fetch from storage or priceHistory
+          currentPrice,
+          dropPercent: null,
+        },
       },
     };
   }
@@ -205,6 +242,7 @@ export class DataNormalizer {
   normalizeGeneric(raw, platform) {
     // Simplified platform sanitization while maintaining safety
     const safePlatform = (typeof platform === 'string' ? platform : String(platform || '')).trim();
+    const currentPrice = this.parsePrice(raw.price);
 
     return {
       product: {
@@ -216,7 +254,7 @@ export class DataNormalizer {
         releaseYear: null,
       },
       listing: {
-        price: this.parsePrice(raw.price),
+        price: currentPrice,
         currency: 'USD',
         size_us_mens: raw.size || null,
         size_us_womens: null,
@@ -243,6 +281,23 @@ export class DataNormalizer {
         timestamp: new Date().toISOString(),
         runId: process.env.APIFY_ACT_RUN_ID || 'local',
         version: '1.0.0',
+      },
+      metadata: {
+        // TODO Phase 3: Populate with real StockX/GOAT market data and calculate savings/dealQuality
+        dealScore: {
+          isBelowMarket: false,
+          marketValue: null,
+          savingsPercentage: null,
+          savingsAmount: null,
+          dealQuality: null,
+        },
+        // TODO Phase 3: Compare with stored previousPrice and set hasDrop/dropPercent accordingly
+        priceChange: {
+          hasDrop: false,
+          previousPrice: null, // TODO: Fetch from storage or priceHistory
+          currentPrice,
+          dropPercent: null,
+        },
       },
     };
   }
