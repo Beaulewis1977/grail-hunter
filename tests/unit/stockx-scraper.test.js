@@ -5,6 +5,7 @@
 import { jest } from '@jest/globals';
 import { StockXScraper } from '../../src/scrapers/stockx.js';
 
+const originalFetch = global.fetch;
 global.fetch = jest.fn();
 
 describe('StockXScraper', () => {
@@ -18,6 +19,10 @@ describe('StockXScraper', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     stockxScraper = new StockXScraper(mockConfig);
+  });
+
+  afterAll(() => {
+    global.fetch = originalFetch;
   });
 
   describe('scrape', () => {

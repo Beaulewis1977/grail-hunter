@@ -14,7 +14,6 @@ const dirname = path.dirname(filename);
 
 export class DealScorer {
   constructor(config = {}) {
-    this.dealScoreThreshold = config.dealScoreThreshold || 10;
     this.excellentDealThreshold = config.excellentDealThreshold || 30;
     this.goodDealThreshold = config.goodDealThreshold || 20;
     this.fairDealThreshold = config.fairDealThreshold || 10;
@@ -28,7 +27,9 @@ export class DealScorer {
     this.kvStore = await Actor.openKeyValueStore();
     await this.loadMarketValues();
     logger.info('Deal scorer initialized', {
-      threshold: this.dealScoreThreshold,
+      excellentThreshold: this.excellentDealThreshold,
+      goodThreshold: this.goodDealThreshold,
+      fairThreshold: this.fairDealThreshold,
       marketValuesLoaded: this.marketValues?.sneakers?.length || 0,
       userOverrides: Object.keys(this.userOverrides).length,
     });
@@ -81,11 +82,9 @@ export class DealScorer {
       const currentPrice = listing.listing?.price || 0;
       const isBelowMarket = currentPrice < marketValue;
       const savingsAmount = isBelowMarket ? marketValue - currentPrice : 0;
-      const savingsPercentage = isBelowMarket
-        ? ((savingsAmount / marketValue) * 100).toFixed(1)
-        : 0;
+      const savingsPercentage = isBelowMarket ? (savingsAmount / marketValue) * 100 : 0;
 
-      const dealQuality = this.calculateDealQuality(parseFloat(savingsPercentage));
+      const dealQuality = this.calculateDealQuality(savingsPercentage);
 
       if (!listing.metadata) {
         listing.metadata = {};
@@ -94,7 +93,7 @@ export class DealScorer {
       listing.metadata.dealScore = {
         isBelowMarket,
         marketValue,
-        savingsPercentage: isBelowMarket ? parseFloat(savingsPercentage) : null,
+        savingsPercentage: isBelowMarket ? Math.round(savingsPercentage * 10) / 10 : null,
         savingsAmount: isBelowMarket ? savingsAmount : null,
         dealQuality,
       };
@@ -104,7 +103,7 @@ export class DealScorer {
           product: listing.product?.name,
           currentPrice,
           marketValue,
-          savings: `${savingsPercentage}%`,
+          savings: `${Math.round(savingsPercentage * 10) / 10}%`,
           quality: dealQuality,
         });
       }

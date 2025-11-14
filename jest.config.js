@@ -15,4 +15,6 @@ export default {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
+  // Setup file to suppress expected console warnings in test environment
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
 };
