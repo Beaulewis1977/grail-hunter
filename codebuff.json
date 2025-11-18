@@ -1,0 +1,26 @@
+{
+  "description": "Template configuration for this project. See https://www.codebuff.com/config for all options.",
+  "startupProcesses": [
+    {
+      "name": "test-watch",
+      "command": "npm test -- --watch --coverage=false",
+      "enabled": false,
+      "stdoutFile": "logs/test-watch.log"
+    }
+  ],
+  "fileChangeHooks": [
+    {
+      "name": "lint",
+      "command": "npm run lint",
+      "filePattern": "**/*.{js,json,md}",
+      "enabled": true
+    },
+    {
+      "name": "test",
+      "command": "npm test -- --passWithNoTests",
+      "filePattern": "src/**/*.js",
+      "enabled": true
+    }
+  ],
+  "maxAgentSteps": 25
+}
