@@ -17,9 +17,23 @@ describe('ListingFilter', () => {
       price: 200,
       size_us_mens: '10',
       condition: 'used_good',
+      tags: [],
+      type: 'sell',
       ...overrides.listing,
     },
-    source: { url: 'https://example.com', ...overrides.source },
+    source: {
+      url: 'https://example.com',
+      id: '123',
+      is_authenticated: false,
+      ...overrides.source,
+    },
+    seller: {
+      name: 'test_seller',
+      rating: null,
+      reviewCount: null,
+      verified: false,
+      ...overrides.seller,
+    },
   });
 
   describe('filterBySize', () => {
@@ -176,6 +190,134 @@ describe('ListingFilter', () => {
       });
 
       expect(filtered).toHaveLength(2);
+    });
+  });
+
+  // Phase 3.x: Advanced Filter Tests
+  describe('filterByAuthentication', () => {
+    it('should filter authenticated listings', () => {
+      const listings = [
+        createListing({ source: { is_authenticated: true } }),
+        createListing({ source: { is_authenticated: false }, listing: { tags: ['authenticated'] } }),
+        createListing({ source: { is_authenticated: false }, listing: { tags: [] } }),
+      ];
+
+      const filtered = filter.filterByAuthentication(listings, true);
+
+      expect(filtered).toHaveLength(2);
+    });
+
+    it('should return all listings when authenticatedOnly is false', () => {
+      const listings = [
+        createListing({ source: { is_authenticated: true } }),
+        createListing({ source: { is_authenticated: false } }),
+      ];
+
+      const filtered = filter.filterByAuthentication(listings, false);
+
+      expect(filtered).toHaveLength(2);
+    });
+  });
+
+  describe('filterByOGAll', () => {
+    it('should filter listings with og_all tag', () => {
+      const listings = [
+        createListing({ listing: { tags: ['og_all', 'vnds'] } }),
+        createListing({ listing: { tags: ['og_box'] } }),
+        createListing({ listing: { tags: ['no_box'] } }),
+        createListing({ listing: { tags: [] } }),
+      ];
+
+      const filtered = filter.filterByOGAll(listings, true);
+
+      expect(filtered).toHaveLength(2);
+    });
+
+    it('should return all listings when requireOGAll is false', () => {
+      const listings = [
+        createListing({ listing: { tags: ['og_all'] } }),
+        createListing({ listing: { tags: [] } }),
+      ];
+
+      const filtered = filter.filterByOGAll(listings, false);
+
+      expect(filtered).toHaveLength(2);
+    });
+  });
+
+  describe('filterByListingType', () => {
+    it('should filter out auction listings', () => {
+      const listings = [
+        createListing({ listing: { type: 'sell', tags: [] } }),
+        createListing({ listing: { type: 'auction', tags: ['auction'] } }),
+        createListing({ listing: { type: 'sell', tags: ['buy_it_now'] } }),
+      ];
+
+      const filtered = filter.filterByListingType(listings, true);
+
+      expect(filtered).toHaveLength(2);
+    });
+
+    it('should return all listings when excludeAuctions is false', () => {
+      const listings = [
+        createListing({ listing: { type: 'sell' } }),
+        createListing({ listing: { type: 'auction' } }),
+      ];
+
+      const filtered = filter.filterByListingType(listings, false);
+
+      expect(filtered).toHaveLength(2);
+    });
+  });
+
+  describe('filterBySellerQuality', () => {
+    it('should filter by minimum seller rating', () => {
+      const listings = [
+        createListing({ seller: { rating: 4.8, reviewCount: 100 } }),
+        createListing({ seller: { rating: 4.2, reviewCount: 50 } }),
+        createListing({ seller: { rating: 5.0, reviewCount: 200 } }),
+        createListing({ seller: { rating: null, reviewCount: 10 } }),
+      ];
+
+      const filtered = filter.filterBySellerQuality(listings, { minRating: 4.5, minReviewCount: 0 });
+
+      expect(filtered).toHaveLength(2);
+    });
+
+    it('should filter by minimum review count', () => {
+      const listings = [
+        createListing({ seller: { rating: 4.5, reviewCount: 100 } }),
+        createListing({ seller: { rating: 4.8, reviewCount: 25 } }),
+        createListing({ seller: { rating: 5.0, reviewCount: 200 } }),
+      ];
+
+      const filtered = filter.filterBySellerQuality(listings, { minRating: 0, minReviewCount: 50 });
+
+      expect(filtered).toHaveLength(2);
+    });
+
+    it('should filter by both rating and review count', () => {
+      const listings = [
+        createListing({ seller: { rating: 4.8, reviewCount: 100 } }),
+        createListing({ seller: { rating: 4.2, reviewCount: 150 } }),
+        createListing({ seller: { rating: 5.0, reviewCount: 25 } }),
+        createListing({ seller: { rating: 4.9, reviewCount: 200 } }),
+      ];
+
+      const filtered = filter.filterBySellerQuality(listings, { minRating: 4.5, minReviewCount: 50 });
+
+      expect(filtered).toHaveLength(2);
+    });
+
+    it('should handle null seller data gracefully', () => {
+      const listings = [
+        createListing({ seller: { rating: null, reviewCount: null } }),
+        createListing({ seller: { rating: 4.5, reviewCount: 100 } }),
+      ];
+
+      const filtered = filter.filterBySellerQuality(listings, { minRating: 4.0, minReviewCount: 50 });
+
+      expect(filtered).toHaveLength(1);
     });
   });
 });

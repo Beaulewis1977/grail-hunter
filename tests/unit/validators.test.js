@@ -137,5 +137,124 @@ describe('Input Validators', () => {
       expect(normalized.condition).toBe('new_in_box');
       expect(normalized.maxResults).toBe(100);
     });
+
+    // Phase 3.x: Advanced filter validation tests
+    it('should normalize advanced filter fields', () => {
+      const input = {
+        keywords: ['Test'],
+        authenticatedOnly: true,
+        requireOGAll: true,
+        minSellerRating: 4.5,
+        minSellerReviewCount: 50,
+      };
+
+      const normalized = normalizeInput(input);
+
+      expect(normalized.authenticatedOnly).toBe(true);
+      expect(normalized.requireOGAll).toBe(true);
+      expect(normalized.minSellerRating).toBe(4.5);
+      expect(normalized.minSellerReviewCount).toBe(50);
+    });
+
+    it('should default advanced filter fields when not provided', () => {
+      const input = {
+        keywords: ['Test'],
+      };
+
+      const normalized = normalizeInput(input);
+
+      expect(normalized.authenticatedOnly).toBe(false);
+      expect(normalized.requireOGAll).toBe(false);
+      expect(normalized.minSellerRating).toBe(0);
+      expect(normalized.minSellerReviewCount).toBe(0);
+    });
+  });
+
+  describe('Phase 3.x: Advanced Filter Validation', () => {
+    it('should accept valid authenticatedOnly boolean', () => {
+      const input = {
+        keywords: ['Test'],
+        authenticatedOnly: true,
+      };
+
+      expect(() => validateInput(input)).not.toThrow();
+    });
+
+    it('should reject invalid authenticatedOnly type', () => {
+      const input = {
+        keywords: ['Test'],
+        authenticatedOnly: 'yes',
+      };
+
+      expect(() => validateInput(input)).toThrow(ValidationError);
+      expect(() => validateInput(input)).toThrow('authenticatedOnly must be a boolean');
+    });
+
+    it('should accept valid requireOGAll boolean', () => {
+      const input = {
+        keywords: ['Test'],
+        requireOGAll: false,
+      };
+
+      expect(() => validateInput(input)).not.toThrow();
+    });
+
+    it('should reject invalid requireOGAll type', () => {
+      const input = {
+        keywords: ['Test'],
+        requireOGAll: 1,
+      };
+
+      expect(() => validateInput(input)).toThrow(ValidationError);
+      expect(() => validateInput(input)).toThrow('requireOGAll must be a boolean');
+    });
+
+    it('should accept valid minSellerRating', () => {
+      const input = {
+        keywords: ['Test'],
+        minSellerRating: 4.5,
+      };
+
+      expect(() => validateInput(input)).not.toThrow();
+    });
+
+    it('should reject minSellerRating below 0', () => {
+      const input = {
+        keywords: ['Test'],
+        minSellerRating: -1,
+      };
+
+      expect(() => validateInput(input)).toThrow(ValidationError);
+      expect(() => validateInput(input)).toThrow('minSellerRating must be between 0 and 5');
+    });
+
+    it('should reject minSellerRating above 5', () => {
+      const input = {
+        keywords: ['Test'],
+        minSellerRating: 5.5,
+      };
+
+      expect(() => validateInput(input)).toThrow(ValidationError);
+      expect(() => validateInput(input)).toThrow('minSellerRating must be between 0 and 5');
+    });
+
+    it('should accept valid minSellerReviewCount', () => {
+      const input = {
+        keywords: ['Test'],
+        minSellerReviewCount: 100,
+      };
+
+      expect(() => validateInput(input)).not.toThrow();
+    });
+
+    it('should reject negative minSellerReviewCount', () => {
+      const input = {
+        keywords: ['Test'],
+        minSellerReviewCount: -10,
+      };
+
+      expect(() => validateInput(input)).toThrow(ValidationError);
+      expect(() => validateInput(input)).toThrow('minSellerReviewCount must be between 0 and 100000');
+    });
   });
 });
