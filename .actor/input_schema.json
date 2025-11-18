@@ -73,7 +73,7 @@
     "platforms": {
       "title": "Platforms",
       "type": "array",
-      "description": "Select one or more platforms to search. Phase 4.0 added Depop and Poshmark as safer marketplaces. Phase 4.1 added Mercari and OfferUp as BETA platforms. Phase 4.2 added GOAT as HIGH RISK platform (requires enableGOAT toggle). Leave empty to fall back to the single 'Legacy Single Platform' field.",
+      "description": "Select one or more platforms to search. Phase 4.0 added Depop and Poshmark as safer marketplaces. Phase 4.1 added Mercari and OfferUp as BETA platforms. Phase 4.2 added GOAT (HIGH RISK, requires enableGOAT toggle) and upgraded StockX to hybrid strategy (orchestrated actor + API fallback). Leave empty to fall back to the single 'Legacy Single Platform' field.",
       "editor": "select",
       "items": {
         "type": "string",

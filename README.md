@@ -366,9 +366,9 @@ npm install
 npm test
 
 # Expected output:
-# ✅ Test Suites: 21 passed
-# ✅ Tests: 155 passed
-# ✅ Coverage: 83%+
+# ✅ Test Suites: 26 passed
+# ✅ Tests: 212 passed (2 skipped)
+# ✅ Coverage: 82%+
 
 # 4. Check code quality
 npm run lint
@@ -609,9 +609,9 @@ market data comparison and price tracking.
 npm test
 
 # Expected output:
-# Test Suites: 21 passed, 21 total
-# Tests:       155 passed, 155 total
-# Coverage:    83.42% statements, 68.99% branches
+# Test Suites: 26 passed, 26 total
+# Tests:       212 passed, 2 skipped, 214 total
+# Coverage:    82.82% statements, 68.99% branches
 ```
 
 ### Run Specific Tests
@@ -795,18 +795,18 @@ grail-hunter/
 - ✅ Deduplication across runs
 - ✅ Webhook notifications
 - ✅ Dataset storage
-- ✅ Comprehensive test suite (155 tests, 83%+ coverage)
+- ✅ Comprehensive test suite (212 passing/214 total tests, 82%+ coverage)
 - ✅ Code quality tools (ESLint, Prettier, Husky)
 - ✅ Full documentation
 
-### Coming in Future Phases
+### Development Phases
 
 - ✅ **Phase 2:** eBay integration (Complete)
 - ✅ **Phase 3:** StockX integration + market value benchmarking (Complete)
 - ✅ **Phase 3.x:** Advanced filters & monitoring (Complete)
 - ✅ **Phase 4.0:** Depop + Poshmark integration (Complete)
 - ✅ **Phase 4.1:** Mercari + OfferUp (Beta platforms - opt-in required)
-- ⏳ **Phase 4.2:** GOAT integration + hybrid intelligence
+- ✅ **Phase 4.2:** GOAT integration + hybrid intelligence (Complete)
 
 See [IMPLEMENTATION_STATUS.md](./IMPLEMENTATION_STATUS.md) for detailed status and
 [DEVELOPMENT_PHASES.md](./DEVELOPMENT_PHASES.md) for the complete roadmap.
@@ -974,7 +974,8 @@ This project is developed for the **Apify $1M Challenge (2024-2025)**.
 }
 ```
 
-This allows you to provide GOAT/StockX-like data via Apify datasets without violating ToS.
+This allows you to provide GOAT/StockX-like data via Apify datasets, shifting the responsibility for
+data acquisition to your own compliant methods (manual exports, authorized APIs, etc.).
 
 ### Liability Waiver
 

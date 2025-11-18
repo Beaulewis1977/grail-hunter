@@ -54,6 +54,11 @@ describe('StockXScraper Hybrid Strategy (Phase 4.2)', () => {
     mockApifyClientDataset.mockReturnValue({ listItems: mockDatasetListItems });
   });
 
+  afterEach(() => {
+    // Clean up global.fetch mock to prevent test pollution
+    delete global.fetch;
+  });
+
   describe('Hybrid mode (orchestrated actor + API fallback)', () => {
     it('should try orchestrated actor first when actorId is configured', async () => {
       mockActorCall.mockResolvedValue({

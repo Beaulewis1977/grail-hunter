@@ -38,7 +38,10 @@ export class StockXScraper extends BaseScraper {
           actorId: this.config.actorId,
         });
         const results = await this.scrapeViaActor(searchParams);
-        this.failureCount = 0; // Reset on success
+        // Reset all failure counters on actor success
+        // This ensures a working actor path doesn't get penalized by API failures
+        this.failureCount = 0;
+        this.actorFailureCount = 0;
         return results;
       } catch (error) {
         this.actorFailureCount += 1;

@@ -101,7 +101,8 @@ export class ScraperManager {
         }
 
         // Create a unique scraper ID for this dataset
-        const scraperId = `${datasetConfig.platform}_ingestion_${datasetConfig.datasetId.substring(0, 8)}`;
+        const datasetIdPrefix = String(datasetConfig.datasetId).substring(0, 8);
+        const scraperId = `${datasetConfig.platform}_ingestion_${datasetIdPrefix}`;
 
         this.scrapers[scraperId] = new DatasetIngestionScraper({
           name: datasetConfig.platformLabel || `${datasetConfig.platform}_ingestion`,

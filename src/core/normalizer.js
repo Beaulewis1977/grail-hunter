@@ -309,7 +309,8 @@ export class DataNormalizer {
       },
       source: {
         platform: 'GOAT',
-        url: raw.url || raw.productUrl || raw.slug ? `https://goat.com/sneakers/${raw.slug}` : '',
+        url:
+          raw.url || raw.productUrl || (raw.slug && `https://goat.com/sneakers/${raw.slug}`) || '',
         id: String(raw.id || raw.productId || raw.slug || ''),
         is_authenticated: true,
         imageUrl: raw.imageUrl || raw.image || raw.mainPictureUrl || null,
