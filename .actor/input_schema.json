@@ -126,6 +126,34 @@
       "description": "If enabled, filters eBay results to Buy It Now where possible and marks auctions distinctly.",
       "default": false
     },
+    "authenticatedOnly": {
+      "title": "Authenticated Listings Only",
+      "type": "boolean",
+      "description": "Only show listings from authenticated platforms (StockX, GOAT) or with authenticity guarantees (eBay). Filters out peer-to-peer marketplaces without authentication.",
+      "default": false
+    },
+    "requireOGAll": {
+      "title": "Require Original Box & Accessories",
+      "type": "boolean",
+      "description": "Only show listings that include the original box and all accessories (OG All). Filters out listings with replacement boxes or no box.",
+      "default": false
+    },
+    "minSellerRating": {
+      "title": "Minimum Seller Rating",
+      "type": "number",
+      "description": "Minimum seller rating on a 0-5 scale (e.g., 4.5). Listings from sellers below this rating will be filtered out. Set to 0 to disable.",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 5
+    },
+    "minSellerReviewCount": {
+      "title": "Minimum Seller Review Count",
+      "type": "number",
+      "description": "Minimum number of seller reviews/transactions. Filters out sellers with fewer reviews. Set to 0 to disable.",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 100000
+    },
     "dealScoreThreshold": {
       "title": "Deal Score Threshold (%)",
       "type": "number",
