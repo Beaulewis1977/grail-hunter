@@ -51,6 +51,8 @@ export class DataNormalizer {
         return this.normalizeEbay(rawListing);
       case 'stockx':
         return this.normalizeStockX(rawListing);
+      case 'goat':
+        return this.normalizeGoat(rawListing);
       case 'depop':
         return this.normalizeDepop(rawListing);
       case 'poshmark':
@@ -256,6 +258,77 @@ export class DataNormalizer {
         dealScore: {
           isBelowMarket: false,
           marketValue: raw.lastSale || raw.lowestAsk || null,
+          savingsPercentage: null,
+          savingsAmount: null,
+          dealQuality: null,
+        },
+        priceChange: {
+          hasDrop: false,
+          previousPrice: null,
+          currentPrice,
+          dropPercent: null,
+        },
+      },
+    };
+  }
+
+  /**
+   * Normalize GOAT listing
+   * Phase 4.2: GOAT & StockX Hybrid Intelligence Layers
+   * @param {object} raw - Raw GOAT data from ecomscrape/goat-product-search-scraper
+   * @returns {object} Normalized listing
+   */
+  normalizeGoat(raw) {
+    const title = raw.name || raw.title || raw.productName || '';
+    const currentPrice = this.parsePrice(
+      raw.lowestPrice || raw.price || raw.lowestPriceUsd || raw.retailPrice
+    );
+
+    // GOAT provides size in various formats - extract US Men's size
+    const sizeUsMens = raw.size || raw.sizeUs || raw.usSize || null;
+
+    return {
+      product: {
+        name: title || 'Unknown',
+        brand: raw.brand || raw.brandName || this.extractBrand(title),
+        model: this.extractModel(title),
+        colorway: raw.colorway || raw.color || null,
+        sku: raw.sku || raw.styleId || raw.productSku || null,
+        releaseYear: raw.releaseDate ? new Date(raw.releaseDate).getFullYear() : null,
+      },
+      listing: {
+        price: currentPrice,
+        currency: 'USD',
+        size_us_mens: sizeUsMens,
+        size_us_womens: null,
+        size_eu: null,
+        condition: 'new_in_box', // GOAT sells authenticated new sneakers
+        tags: ['authenticated', 'verified', 'goat'],
+        type: 'sell',
+        description: this.truncateDescription(raw.description || raw.details || ''),
+      },
+      source: {
+        platform: 'GOAT',
+        url: raw.url || raw.productUrl || raw.slug ? `https://goat.com/sneakers/${raw.slug}` : '',
+        id: String(raw.id || raw.productId || raw.slug || ''),
+        is_authenticated: true,
+        imageUrl: raw.imageUrl || raw.image || raw.mainPictureUrl || null,
+      },
+      seller: {
+        name: 'GOAT',
+        rating: null, // GOAT is a marketplace, not individual sellers
+        reviewCount: null,
+        verified: true,
+      },
+      scrape: {
+        timestamp: new Date().toISOString(),
+        runId: process.env.APIFY_ACT_RUN_ID || 'local',
+        version: '1.0.0',
+      },
+      metadata: {
+        dealScore: {
+          isBelowMarket: false,
+          marketValue: raw.lowestPrice || raw.price || null, // Use GOAT price as market reference
           savingsPercentage: null,
           savingsAmount: null,
           dealQuality: null,

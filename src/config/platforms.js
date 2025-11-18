@@ -44,8 +44,17 @@ export const PLATFORM_CONFIGS = {
   },
   goat: {
     name: 'GOAT',
-    type: 'custom',
-    enabled: false, // Phase 4
+    type: 'orchestrated',
+    actorId: 'ecomscrape/goat-product-search-scraper',
+    rateLimit: 50, // Conservative limit for high-risk platform
+    cacheTimeout: 60, // 60 minutes
+    isAuthenticated: true,
+    requiresProxy: true,
+    enabled: false, // Disabled by default - HIGH RISK platform
+    baseUrl: 'https://goat.com',
+    riskLevel: 'very_high', // Phase 4.2: HIGH RISK - actively enforces ToS
+    timeoutMs: 180000, // 3 minute timeout for actor calls
+    maxRetries: 2, // Conservative retry strategy
   },
   // Phase 4.0: Safer Marketplaces
   depop: {

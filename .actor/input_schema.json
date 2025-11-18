@@ -73,11 +73,11 @@
     "platforms": {
       "title": "Platforms",
       "type": "array",
-      "description": "Select one or more platforms to search. Phase 4.0 added Depop and Poshmark as safer marketplaces. Phase 4.1 added Mercari and OfferUp as BETA platforms (requires betaPlatformsEnabled + per-platform toggles). Leave empty to fall back to the single 'Legacy Single Platform' field.",
+      "description": "Select one or more platforms to search. Phase 4.0 added Depop and Poshmark as safer marketplaces. Phase 4.1 added Mercari and OfferUp as BETA platforms. Phase 4.2 added GOAT as HIGH RISK platform (requires enableGOAT toggle). Leave empty to fall back to the single 'Legacy Single Platform' field.",
       "editor": "select",
       "items": {
         "type": "string",
-        "enum": ["grailed", "ebay", "stockx", "depop", "poshmark", "mercari", "offerup"],
+        "enum": ["grailed", "ebay", "stockx", "depop", "poshmark", "mercari", "offerup", "goat"],
         "enumTitles": [
           "Grailed",
           "eBay",
@@ -85,7 +85,8 @@
           "Depop",
           "Poshmark",
           "Mercari (🧪 BETA)",
-          "OfferUp (🧪 BETA)"
+          "OfferUp (🧪 BETA)",
+          "GOAT (⚠️  HIGH RISK)"
         ]
       },
       "uniqueItems": true
@@ -196,7 +197,13 @@
     "enableStockX": {
       "title": "Enable StockX Scraping (⚠️  HIGH RISK)",
       "type": "boolean",
-      "description": "WARNING: StockX actively enforces ToS. Scraping may result in IP blocks or legal action. Use at your own risk.",
+      "description": "WARNING: StockX actively enforces ToS. Scraping may result in IP blocks or legal action. Dataset ingestion (Pattern C) recommended instead. Use at your own risk.",
+      "default": false
+    },
+    "enableGOAT": {
+      "title": "Enable GOAT Scraping (⚠️  HIGH RISK)",
+      "type": "boolean",
+      "description": "WARNING: GOAT actively enforces ToS. Scraping may result in IP blocks or legal action. Dataset ingestion (Pattern C) strongly recommended instead. Use at your own risk. Default: false (disabled).",
       "default": false
     },
     "betaPlatformsEnabled": {
@@ -224,6 +231,37 @@
       "editor": "textfield",
       "pattern": "^[0-9]{5}$",
       "example": "10001"
+    },
+    "ingestionDatasets": {
+      "title": "Dataset Ingestion (Pattern C - Recommended for GOAT/StockX)",
+      "type": "array",
+      "description": "Provide GOAT/StockX-like data via Apify datasets when scraping is blocked or undesirable. This is the RECOMMENDED approach for high-risk platforms. Each dataset should contain listings with fields: name, price, brand, sku, etc. Default: empty array (no ingestion).",
+      "editor": "json",
+      "items": {
+        "type": "object",
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "title": "Dataset ID",
+            "description": "Apify dataset ID containing GOAT/StockX-like listings"
+          },
+          "platform": {
+            "type": "string",
+            "title": "Platform",
+            "description": "Platform identifier for normalization routing",
+            "enum": ["goat", "stockx"],
+            "enumTitles": ["GOAT", "StockX"]
+          },
+          "platformLabel": {
+            "type": "string",
+            "title": "Platform Label (Optional)",
+            "description": "Custom label for this dataset source (e.g., 'GOAT Market Data Q4 2025')"
+          }
+        },
+        "required": ["datasetId", "platform"]
+      },
+      "default": [],
+      "prefill": []
     }
   },
   "required": ["keywords"]
