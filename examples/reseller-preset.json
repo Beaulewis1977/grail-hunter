@@ -1,0 +1,16 @@
+{
+  "keywords": ["Jordan 1", "Dunk Low", "Yeezy 350"],
+  "priceRange": {
+    "max": 300
+  },
+  "platforms": ["grailed", "ebay"],
+  "authenticatedOnly": false,
+  "excludeAuctions": true,
+  "maxResults": 100,
+  "dealScoreThreshold": 25,
+  "excellentDealThreshold": 40,
+  "priceDropThreshold": 15,
+  "notificationConfig": {
+    "webhookUrl": "https://your-webhook-url.com/deals"
+  }
+}

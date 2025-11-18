@@ -96,16 +96,51 @@ Actor.main(async () => {
     const settled = await Promise.allSettled(scrapeTasks);
 
     const rawByPlatform = settled.filter((r) => r.status === 'fulfilled').map((r) => r.value);
+    const failedPlatforms = settled
+      .filter((r) => r.status === 'rejected')
+      .map((r, idx) => ({ platform: platforms[idx], error: r.reason?.message }));
 
     const totalRaw = rawByPlatform.reduce((acc, cur) => acc + (cur.items?.length || 0), 0);
     logger.info(`📦 Scraped ${totalRaw} raw listings total`, {
       perPlatform: Object.fromEntries(rawByPlatform.map((x) => [x.platform, x.items.length])),
     });
 
+    // Phase 3.x: Initialize per-platform stats tracking
+    const platformStats = {};
+    platforms.forEach((platform) => {
+      platformStats[platform] = {
+        scraped: 0,
+        normalized: 0,
+        filtered: 0,
+        new: 0,
+        priceDrops: 0,
+        errors: 0,
+      };
+    });
+
+    // Track scraped counts
+    rawByPlatform.forEach(({ platform, items }) => {
+      platformStats[platform].scraped = items.length;
+    });
+
+    // Track failed platforms
+    failedPlatforms.forEach(({ platform }) => {
+      if (platformStats[platform]) {
+        platformStats[platform].errors = 1;
+      }
+    });
+
     logger.info('🔄 Normalizing listings...');
-    const normalizedListings = rawByPlatform
-      .flatMap(({ platform, items }) => items.map((raw) => normalizer.normalize(raw, platform)))
-      .filter((listing) => listing != null);
+    const normalizedListings = rawByPlatform.flatMap(({ platform, items }) => {
+      const normalized = items
+        .map((raw) => normalizer.normalize(raw, platform))
+        .filter((listing) => listing != null);
+
+      // Phase 3.x: Track normalized count per platform
+      platformStats[platform].normalized = normalized.length;
+
+      return normalized;
+    });
 
     const droppedCount = totalRaw - normalizedListings.length;
     if (droppedCount > 0) {
@@ -122,16 +157,68 @@ Actor.main(async () => {
     logger.info('✅ Deal scoring complete', dealStats);
 
     logger.info('🔍 Applying filters...');
+
+    // Phase 3.x: Track which filters are active
+    const appliedFilters = [];
+    if (input.size) appliedFilters.push('size');
+    if (input.priceRange && (input.priceRange.min || input.priceRange.max))
+      appliedFilters.push('priceRange');
+    if (input.condition) appliedFilters.push('condition');
+    if (input.authenticatedOnly) appliedFilters.push('authenticatedOnly');
+    if (input.requireOGAll) appliedFilters.push('requireOGAll');
+    if (input.excludeAuctions) appliedFilters.push('excludeAuctions');
+    if (input.minSellerRating > 0) appliedFilters.push('minSellerRating');
+    if (input.minSellerReviewCount > 0) appliedFilters.push('minSellerReviewCount');
+
+    const preFilterCount = scoredListings.length;
+
     const filteredListings = filter.filter(scoredListings, {
       size: input.size,
       priceRange: input.priceRange,
       condition: input.condition,
+      // Phase 3.x: Advanced filters
+      authenticatedOnly: input.authenticatedOnly,
+      requireOGAll: input.requireOGAll,
+      excludeAuctions: input.excludeAuctions,
+      minSellerRating: input.minSellerRating,
+      minSellerReviewCount: input.minSellerReviewCount,
+    });
+
+    // Phase 3.x: Track filtered counts per platform
+    const platformCounts = {};
+    filteredListings.forEach((listing) => {
+      const platform = listing.source?.platform?.toLowerCase();
+      if (!platform) return;
+      platformCounts[platform] = (platformCounts[platform] || 0) + 1;
+    });
+
+    Object.keys(platformStats).forEach((platform) => {
+      platformStats[platform].filtered = platformCounts[platform] || 0;
     });
 
     logger.info(`✅ ${filteredListings.length} listings passed filters`);
 
     logger.info('🔎 Checking for new listings and tracking prices...');
     const newListings = await deduplicator.findNewListings(filteredListings);
+
+    // Phase 3.x: Track new listings and price drops per platform
+    const newCounts = {};
+    const priceDropCounts = {};
+    filteredListings.forEach((listing) => {
+      const platform = listing.source?.platform?.toLowerCase();
+      if (!platform) return;
+      if (listing.scrape?.isNew) {
+        newCounts[platform] = (newCounts[platform] || 0) + 1;
+      }
+      if (listing.metadata?.priceChange?.hasDrop) {
+        priceDropCounts[platform] = (priceDropCounts[platform] || 0) + 1;
+      }
+    });
+
+    Object.keys(platformStats).forEach((platform) => {
+      platformStats[platform].new = newCounts[platform] || 0;
+      platformStats[platform].priceDrops = priceDropCounts[platform] || 0;
+    });
 
     if (newListings.length === 0) {
       logger.info('ℹ️  No new listings found');
@@ -145,24 +232,50 @@ Actor.main(async () => {
       input.notificationConfig
     );
 
+    // Phase 3.x: Calculate aggregate stats
+    const aggregateStats = {
+      totalScraped: Object.values(platformStats).reduce((sum, p) => sum + p.scraped, 0),
+      totalNormalized: Object.values(platformStats).reduce((sum, p) => sum + p.normalized, 0),
+      totalFiltered: Object.values(platformStats).reduce((sum, p) => sum + p.filtered, 0),
+      totalNew: Object.values(platformStats).reduce((sum, p) => sum + p.new, 0),
+      totalPriceDrops: Object.values(platformStats).reduce((sum, p) => sum + p.priceDrops, 0),
+      totalErrors: Object.values(platformStats).reduce((sum, p) => sum + p.errors, 0),
+    };
+
+    const dedupStats = deduplicator.getStats();
+
     const stats = {
+      runMetadata: {
+        timestamp: new Date().toISOString(),
+        runId: process.env.APIFY_ACT_RUN_ID || 'local',
+        duration: null, // Calculated below
+        platforms,
+      },
+      platformStats,
+      aggregateStats,
+      filtering: {
+        appliedFilters,
+        preFilterCount,
+        postFilterCount: filteredListings.length,
+        filtersRemoved: preFilterCount - filteredListings.length,
+      },
+      deduplication: {
+        ...dedupStats,
+        newHashesAdded: newListings.length,
+      },
+      dealStatistics: dealStats,
+      notifications: notificationResult,
+      // Legacy fields for backward compatibility
       platforms,
       totalScraped: totalRaw,
       afterFiltering: filteredListings.length,
       newListings: newListings.length,
-      dealStatistics: dealStats,
-      notifications: notificationResult,
-      deduplication: deduplicator.getStats(),
     };
 
     logger.info('📊 Run statistics', stats);
 
     const kvStore = await Actor.openKeyValueStore();
-    await kvStore.setValue('last_run_stats', {
-      ...stats,
-      timestamp: new Date().toISOString(),
-      input,
-    });
+    await kvStore.setValue('last_run_stats', stats);
 
     logger.info('✅ Grail Hunter actor completed successfully');
   } catch (error) {

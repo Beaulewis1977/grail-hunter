@@ -1,0 +1,10 @@
+{
+  "keywords": ["Air Jordan 4", "New Balance 550"],
+  "platforms": ["grailed", "ebay"],
+  "maxResults": 50,
+  "priceDropThreshold": 10,
+  "dealScoreThreshold": 10,
+  "notificationConfig": {
+    "webhookUrl": "https://your-webhook-url.com/price-drops"
+  }
+}

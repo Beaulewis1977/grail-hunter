@@ -112,6 +112,192 @@ Grail Hunter monitors these major sneaker marketplaces:
 - Prevents duplicate alerts
 - Persistent state management
 
+### 🔧 Advanced Filters (Phase 3.x)
+
+- **Authentication Filtering**: Only show authenticated listings from verified platforms (StockX,
+  GOAT) or eBay's Authenticity Guarantee
+- **Original Box Requirement**: Filter for listings that include original box and all accessories
+  (OG All)
+- **Auction Exclusion**: Remove auction-style listings, focus on Buy It Now only
+- **Seller Quality**: Set minimum seller rating (0-5 scale) and review count requirements
+- **Flexible Combinations**: Apply multiple filters together for precise targeting
+
+**Example Use Cases:**
+
+- Collectors: `requireOGAll: true` + `minSellerRating: 4.5` for quality grails
+- Resellers: `excludeAuctions: true` + `minSellerReviewCount: 50` for fast flips
+- Authenticated Only: `authenticatedOnly: true` to avoid fakes
+
+### 📊 Monitoring & Observability (Phase 3.x)
+
+Grail Hunter provides comprehensive run statistics for monitoring performance and debugging issues.
+
+#### Accessing Run Statistics
+
+After each run, detailed statistics are saved to Apify's Key-Value Store:
+
+**Via Apify Console:**
+
+1. Navigate to your actor run
+2. Go to "Storage" → "Key-Value Stores"
+3. Open `last_run_stats` key
+
+**Via Apify API:**
+
+```javascript
+const client = new ApifyClient({ token: 'YOUR_TOKEN' });
+const kvStore = client.keyValueStore('YOUR_KV_STORE_ID');
+const stats = await kvStore.getRecord('last_run_stats');
+```
+
+**Via CLI (local development):**
+
+```bash
+# Stats are logged at the end of each run
+npm start
+# Look for "📊 Run statistics" in the output
+```
+
+#### Stats Structure
+
+**Run Metadata:**
+
+- `timestamp`: ISO 8601 timestamp of the run
+- `runId`: Apify run ID or 'local'
+- `duration`: Run duration in milliseconds
+- `platforms`: Array of platforms scraped
+
+**Per-Platform Statistics (`platformStats`):**
+
+Each platform (grailed, ebay, stockx) has detailed metrics:
+
+```json
+{
+  "grailed": {
+    "scraped": 50, // Raw listings fetched
+    "normalized": 48, // Successfully normalized
+    "filtered": 12, // Passed all filters
+    "new": 5, // New listings (not seen before)
+    "priceDrops": 2, // Listings with price drops
+    "errors": 0 // Scraping errors (1 if failed, 0 if success)
+  }
+}
+```
+
+**Aggregate Statistics (`aggregateStats`):**
+
+- `totalScraped`: Total raw listings across all platforms
+- `totalNormalized`: Total successfully normalized
+- `totalFiltered`: Total passing filters
+- `totalNew`: Total new listings found
+- `totalPriceDrops`: Total price drops detected
+- `totalErrors`: Number of platforms that failed
+
+**Filtering Breakdown (`filtering`):**
+
+- `appliedFilters`: Array of active filter names (e.g., ["size", "priceRange", "authenticatedOnly"])
+- `preFilterCount`: Listings before filtering
+- `postFilterCount`: Listings after filtering
+- `filtersRemoved`: Number of listings filtered out
+
+**Deduplication Stats (`deduplication`):**
+
+- `totalHashes`: Total listings in dedup memory
+- `newHashesAdded`: New listings added this run
+- `priceUpdates`: Listings with updated prices
+- `oldestEntry`: Timestamp of oldest tracked listing
+
+**Deal Statistics (`dealStatistics`):**
+
+- `totalListings`: Total scored listings
+- `belowMarket`: Count below market value
+- `dealQualityDistribution`: Breakdown by excellent/good/fair/market
+
+#### Example Stats Output
+
+```json
+{
+  "runMetadata": {
+    "timestamp": "2025-11-18T10:30:00Z",
+    "runId": "abc123",
+    "duration": 45000,
+    "platforms": ["grailed", "ebay"]
+  },
+  "platformStats": {
+    "grailed": {
+      "scraped": 50,
+      "normalized": 48,
+      "filtered": 12,
+      "new": 5,
+      "priceDrops": 2,
+      "errors": 0
+    },
+    "ebay": {
+      "scraped": 45,
+      "normalized": 42,
+      "filtered": 8,
+      "new": 3,
+      "priceDrops": 1,
+      "errors": 0
+    }
+  },
+  "aggregateStats": {
+    "totalScraped": 95,
+    "totalNormalized": 90,
+    "totalFiltered": 20,
+    "totalNew": 8,
+    "totalPriceDrops": 3,
+    "totalErrors": 0
+  },
+  "filtering": {
+    "appliedFilters": ["size", "priceRange", "minSellerRating"],
+    "preFilterCount": 90,
+    "postFilterCount": 20,
+    "filtersRemoved": 70
+  }
+}
+```
+
+#### Interpreting Metrics
+
+**High Normalization Failure Rate** (scraped >> normalized):
+
+- Platform data format may have changed
+- Check logs for normalization errors
+- Review normalizer.js for the affected platform
+
+**Low Filter Pass Rate** (normalized >> filtered):
+
+- Your filters may be too restrictive
+- Consider relaxing criteria (e.g., lower minSellerRating)
+- Check `appliedFilters` to see which filters are active
+
+**No New Listings** (new = 0):
+
+- All listings have been seen before
+- Consider expanding search keywords
+- Increase `maxResults` to scrape more listings
+
+**High Error Count** (totalErrors > 0):
+
+- Platform scraping failed
+- Check logs for error details
+- May indicate platform blocking or API changes
+
+**Low Price Drops** (priceDrops = 0):
+
+- Prices haven't changed since last run
+- Increase run frequency to catch drops faster
+- Adjust `priceDropThreshold` if it's too strict
+
+#### Monitoring Best Practices
+
+1. **Track Trends**: Monitor aggregateStats over time to spot issues
+2. **Set Alerts**: Use Apify's monitoring to alert on totalErrors > 0
+3. **Review Filters**: Check filtering.filtersRemoved to optimize criteria
+4. **Platform Health**: Watch platformStats.errors to identify failing platforms
+5. **Debug with Logs**: Cross-reference stats with actor logs for detailed investigation
+
 ---
 
 ## 📋 Use Cases
@@ -757,4 +943,4 @@ For technical issues or questions:
 
 **Made with ❤️ for the sneaker community**
 
-**Status:** ✅ Phase 2 Complete | ⏳ Phase 3-4 In Progress
+**Status:** ✅ Phase 3.x Complete (Advanced Filters & Monitoring) | ⏳ Phase 4 In Planning

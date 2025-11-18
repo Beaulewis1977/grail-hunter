@@ -136,6 +136,14 @@ export class DataNormalizer {
     const isAuthenticated = tags.includes('authenticity_guarantee');
     const currentPrice = this.parsePrice(raw.price);
 
+    // Determine listing type from tags
+    const listingType =
+      tags.includes('auction') && !tags.includes('buy_it_now') ? 'auction' : 'sell';
+
+    // Extract seller information
+    const sellerRating = this.parseSellerRating(raw.sellerPositiveFeedbackPercent);
+    const sellerReviewCount = this.parseSellerReviewCount(raw.sellerFeedbackScore);
+
     return {
       product: {
         name: title || 'Unknown',
@@ -153,7 +161,7 @@ export class DataNormalizer {
         size_eu: null,
         condition: 'unspecified',
         tags,
-        type: 'sell',
+        type: listingType,
         description: this.truncateDescription(raw.subTitle || ''),
       },
       source: {
@@ -165,8 +173,8 @@ export class DataNormalizer {
       },
       seller: {
         name: raw.seller || null,
-        rating: null,
-        reviewCount: null,
+        rating: sellerRating,
+        reviewCount: sellerReviewCount,
         verified: false,
       },
       scrape: {
@@ -459,10 +467,34 @@ export class DataNormalizer {
     const tags = [];
     const desc = description.toLowerCase();
 
-    if (desc.includes('og all') || desc.includes('og box')) tags.push('og_all');
-    if (desc.includes('no box')) tags.push('no_box');
-    if (desc.includes('deadstock') || desc.includes('ds')) tags.push('deadstock');
-    if (desc.includes('vnds')) tags.push('vnds');
+    // Box condition tags - check exclusions first to avoid substring collisions
+    if (desc.includes('no box') || desc.includes('without box')) {
+      tags.push('no_box');
+    } else if (desc.includes('replacement box') || desc.includes('rep box')) {
+      tags.push('replacement_box');
+    } else if (
+      desc.includes('og all') ||
+      desc.includes('og box') ||
+      desc.includes('original box')
+    ) {
+      tags.push('og_all');
+    }
+
+    // Condition tags
+    if (desc.includes('deadstock') || desc.includes(' ds ') || desc.includes('ds,')) {
+      tags.push('deadstock');
+    }
+    if (desc.includes('vnds')) {
+      tags.push('vnds');
+    }
+    if (desc.includes('nds') || desc.includes('near deadstock')) {
+      tags.push('nds');
+    }
+
+    // Authentication tags
+    if (desc.includes('authenticated') || desc.includes('legit checked')) {
+      tags.push('authenticated');
+    }
 
     return tags;
   }
@@ -508,5 +540,45 @@ export class DataNormalizer {
 
     const truncatedLength = Math.max(0, MAX_DESCRIPTION_LENGTH - 3);
     return `${desc.substring(0, truncatedLength)}...`;
+  }
+
+  /**
+   * Parse seller rating from eBay feedback data
+   * Converts positive feedback percentage to 0-5 scale
+   * @param {number|string} positiveFeedbackPercent - Positive feedback percentage (0-100)
+   * @returns {number|null} Rating on 0-5 scale, or null if invalid
+   */
+  parseSellerRating(positiveFeedbackPercent) {
+    if (positiveFeedbackPercent === undefined || positiveFeedbackPercent === null) {
+      return null;
+    }
+
+    const percent =
+      typeof positiveFeedbackPercent === 'string'
+        ? parseFloat(positiveFeedbackPercent)
+        : positiveFeedbackPercent;
+
+    if (Number.isNaN(percent)) {
+      return null;
+    }
+
+    // Convert 0-100 percentage to 0-5 scale
+    // 100% = 5.0, 95% = 4.75, 90% = 4.5, etc.
+    return Math.min(5, Math.max(0, (percent / 100) * 5));
+  }
+
+  /**
+   * Parse seller review count from eBay feedback score
+   * @param {number|string} feedbackScore - Total feedback score
+   * @returns {number|null} Number of reviews
+   */
+  parseSellerReviewCount(feedbackScore) {
+    if (feedbackScore === undefined || feedbackScore === null) {
+      return null;
+    }
+
+    const count = typeof feedbackScore === 'string' ? parseInt(feedbackScore, 10) : feedbackScore;
+
+    return Number.isNaN(count) ? null : count;
   }
 }

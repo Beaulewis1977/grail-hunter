@@ -196,6 +196,36 @@ export function validateInput(input) {
   if (input.disableStockX !== undefined && typeof input.disableStockX !== 'boolean') {
     throw new ValidationError('disableStockX must be a boolean when provided');
   }
+
+  // Phase 3.x: Advanced filter validations
+  if (input.authenticatedOnly !== undefined && typeof input.authenticatedOnly !== 'boolean') {
+    throw new ValidationError('authenticatedOnly must be a boolean');
+  }
+
+  if (input.requireOGAll !== undefined && typeof input.requireOGAll !== 'boolean') {
+    throw new ValidationError('requireOGAll must be a boolean');
+  }
+
+  if (input.minSellerRating !== undefined) {
+    if (typeof input.minSellerRating !== 'number' || Number.isNaN(input.minSellerRating)) {
+      throw new ValidationError('minSellerRating must be a number');
+    }
+    if (input.minSellerRating < 0 || input.minSellerRating > 5) {
+      throw new ValidationError('minSellerRating must be between 0 and 5');
+    }
+  }
+
+  if (input.minSellerReviewCount !== undefined) {
+    if (
+      typeof input.minSellerReviewCount !== 'number' ||
+      Number.isNaN(input.minSellerReviewCount)
+    ) {
+      throw new ValidationError('minSellerReviewCount must be a number');
+    }
+    if (input.minSellerReviewCount < 0 || input.minSellerReviewCount > 100000) {
+      throw new ValidationError('minSellerReviewCount must be between 0 and 100000');
+    }
+  }
 }
 
 /**
@@ -245,5 +275,10 @@ export function normalizeInput(input) {
         : {},
     enableStockX: input.enableStockX === true,
     disableStockX: input.disableStockX === true,
+    // Phase 3.x: Advanced filters
+    authenticatedOnly: input.authenticatedOnly === true,
+    requireOGAll: input.requireOGAll === true,
+    minSellerRating: input.minSellerRating !== undefined ? input.minSellerRating : 0,
+    minSellerReviewCount: input.minSellerReviewCount !== undefined ? input.minSellerReviewCount : 0,
   };
 }
