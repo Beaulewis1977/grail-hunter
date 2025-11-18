@@ -1,0 +1,24 @@
+{
+  "keywords": [
+    "Air Jordan 1 Chicago",
+    "Nike Dunk Low Panda"
+  ],
+  "size": "10.5",
+  "priceRange": {
+    "max": 500
+  },
+  "condition": "used_like_new",
+  "platforms": [
+    "grailed",
+    "ebay"
+  ],
+  "requireOGAll": true,
+  "minSellerRating": 4.5,
+  "maxResults": 30,
+  "dealScoreThreshold": 20,
+  "excellentDealThreshold": 35,
+  "priceDropThreshold": 10,
+  "notificationConfig": {
+    "webhookUrl": "https://your-webhook-url.com/grails"
+  }
+}
