@@ -15,7 +15,16 @@ export class ListingFilter {
   filter(listings, filters = {}) {
     // Bug Fix #5: Add default parameter for filters and use destructuring
     logger.info(`Filtering ${listings.length} listings`, { filters });
-    const { size, priceRange, condition } = filters;
+    const {
+      size,
+      priceRange,
+      condition,
+      authenticatedOnly,
+      requireOGAll,
+      excludeAuctions,
+      minSellerRating,
+      minSellerReviewCount,
+    } = filters;
 
     let filtered = listings;
 
@@ -32,6 +41,26 @@ export class ListingFilter {
     // Filter by condition
     if (condition) {
       filtered = this.filterByCondition(filtered, condition);
+    }
+
+    // Phase 3.x: Advanced filters
+    if (authenticatedOnly) {
+      filtered = this.filterByAuthentication(filtered, authenticatedOnly);
+    }
+
+    if (requireOGAll) {
+      filtered = this.filterByOGAll(filtered, requireOGAll);
+    }
+
+    if (excludeAuctions) {
+      filtered = this.filterByListingType(filtered, excludeAuctions);
+    }
+
+    if (minSellerRating || minSellerReviewCount) {
+      filtered = this.filterBySellerQuality(filtered, {
+        minRating: minSellerRating,
+        minReviewCount: minSellerReviewCount,
+      });
     }
 
     // Remove listings with missing critical data
@@ -130,6 +159,121 @@ export class ListingFilter {
       if (!listing.source.url) {
         logger.debug('Filtering out listing with no URL', { id: listing.source.id });
         return false;
+      }
+
+      return true;
+    });
+  }
+
+  /**
+   * Filter by authentication status (Phase 3.x)
+   * @param {Array} listings - Normalized listings
+   * @param {boolean} authenticatedOnly - Require authenticated listings
+   * @returns {Array} Filtered listings
+   */
+  filterByAuthentication(listings, authenticatedOnly) {
+    if (!authenticatedOnly) return listings;
+
+    return listings.filter((listing) => {
+      const isAuthenticated =
+        listing.source.is_authenticated ||
+        listing.listing.tags?.includes('authenticated') ||
+        listing.listing.tags?.includes('authenticity_guarantee');
+
+      if (!isAuthenticated) {
+        logger.debug('Filtering out non-authenticated listing', { id: listing.source.id });
+      }
+
+      return isAuthenticated;
+    });
+  }
+
+  /**
+   * Filter by OG All requirement (Phase 3.x)
+   * @param {Array} listings - Normalized listings
+   * @param {boolean} requireOGAll - Require original box/accessories
+   * @returns {Array} Filtered listings
+   */
+  filterByOGAll(listings, requireOGAll) {
+    if (!requireOGAll) return listings;
+
+    return listings.filter((listing) => {
+      const hasOGAll =
+        listing.listing.tags?.includes('og_all') || listing.listing.tags?.includes('og_box');
+
+      if (!hasOGAll) {
+        logger.debug('Filtering out listing without OG All', { id: listing.source.id });
+      }
+
+      return hasOGAll;
+    });
+  }
+
+  /**
+   * Filter by listing type (exclude auctions) (Phase 3.x)
+   * @param {Array} listings - Normalized listings
+   * @param {boolean} excludeAuctions - Exclude auction listings
+   * @returns {Array} Filtered listings
+   */
+  filterByListingType(listings, excludeAuctions) {
+    if (!excludeAuctions) return listings;
+
+    return listings.filter((listing) => {
+      const isAuction =
+        listing.listing.type === 'auction' || listing.listing.tags?.includes('auction');
+
+      if (isAuction) {
+        logger.debug('Filtering out auction listing', { id: listing.source.id });
+      }
+
+      return !isAuction;
+    });
+  }
+
+  /**
+   * Filter by seller quality (Phase 3.x)
+   * @param {Array} listings - Normalized listings
+   * @param {object} criteria - { minRating, minReviewCount }
+   * @returns {Array} Filtered listings
+   */
+  filterBySellerQuality(listings, criteria) {
+    const { minRating, minReviewCount } = criteria;
+
+    return listings.filter((listing) => {
+      const seller = listing.seller || {};
+
+      // Check rating if specified
+      if (minRating !== undefined && minRating > 0) {
+        if (seller.rating === null || seller.rating === undefined) {
+          logger.debug('Filtering out listing with no seller rating', { id: listing.source.id });
+          return false; // No rating data
+        }
+        if (seller.rating < minRating) {
+          logger.debug('Filtering out listing with low seller rating', {
+            id: listing.source.id,
+            rating: seller.rating,
+            minRating,
+          });
+          return false;
+        }
+      }
+
+      // Check review count if specified
+      if (minReviewCount !== undefined && minReviewCount > 0) {
+        if (seller.reviewCount === null || seller.reviewCount === undefined) {
+          logger.debug('Filtering out listing with no seller review count', {
+            id: listing.source.id,
+          });
+          return false;
+        }
+        if (seller.reviewCount < minReviewCount) {
+          logger.debug('Filtering out listing with insufficient seller reviews', {
+            id: listing.source.id,
+            reviewCount: seller.reviewCount,
+            minReviewCount,
+          });
+          return false;
+        }
       }
 
       return true;

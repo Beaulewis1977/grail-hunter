@@ -126,6 +126,12 @@ Actor.main(async () => {
       size: input.size,
       priceRange: input.priceRange,
       condition: input.condition,
+      // Phase 3.x: Advanced filters
+      authenticatedOnly: input.authenticatedOnly,
+      requireOGAll: input.requireOGAll,
+      excludeAuctions: input.excludeAuctions,
+      minSellerRating: input.minSellerRating,
+      minSellerReviewCount: input.minSellerReviewCount,
     });
 
     logger.info(`✅ ${filteredListings.length} listings passed filters`);
