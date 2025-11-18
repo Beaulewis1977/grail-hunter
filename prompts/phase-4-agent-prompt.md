@@ -46,6 +46,19 @@ work, hardening the product, and preparing launch materials.
 
 Document completion of the reading checklist before coding.
 
+## Execution Plan & Sub-Phases
+
+Phase 4 work is executed via the following sub-phases defined in `audit/COVERAGE_ROADMAP.md` and
+per-phase prompts in `prompts/`:
+
+- Phase 3.x – Advanced filters, monitoring, and UX hardening (`prompts/phase-3x-agent-prompt.md`)
+- Phase 4.0 – Safer marketplaces (Depop + Poshmark) (`prompts/phase-40-agent-prompt.md`)
+- Phase 4.1 – Beta platforms (Mercari, OfferUp) (`prompts/phase-41-agent-prompt.md`)
+- Phase 4.2 – GOAT & StockX hybrid intelligence (`prompts/phase-42-agent-prompt.md`)
+
+When working on a specific sub-phase, follow this Phase 4 prompt **together with** the corresponding
+per-phase prompt and roadmap section.
+
 ## GitHub Issue Tracking
 
 - Review **Phase 4 Issue**:
