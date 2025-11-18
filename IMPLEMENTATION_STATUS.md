@@ -8,6 +8,26 @@ Phase 3 adds StockX integration, advanced deal scoring, and price tracking intel
 
 ---
 
+## Roadmap Overview (Phase 3.x & Phase 4)
+
+The following phases are planned and not yet started at the time of this document:
+
+- **Phase 3.x – Advanced Filters & Monitoring (No New Platforms):** Harden existing
+  Grailed/eBay/StockX flows with advanced filters, improved `last_run_stats`, and sample presets.
+  See `audit/COVERAGE_ROADMAP.md` and `prompts/phase-3x-agent-prompt.md`.
+- **Phase 4.0 – Safer Marketplaces (Depop + Poshmark):** Add Depop and Poshmark as safer platforms
+  using orchestrated actors/APIs. See `audit/COVERAGE_ROADMAP.md` and
+  `prompts/phase-40-agent-prompt.md`.
+- **Phase 4.1 – Beta Platforms (Mercari, OfferUp):** Introduce Mercari and OfferUp as opt-in beta
+  platforms, controlled via `betaPlatformsEnabled`, `enableMercari`, and `enableOfferUp`. See
+  `audit/COVERAGE_ROADMAP.md` and `prompts/phase-41-agent-prompt.md`.
+- **Phase 4.2 – GOAT & StockX Hybrid Intelligence:** Implement GOAT/StockX using a hybrid of
+  orchestrated actors (Pattern A) and dataset ingestion (Pattern C), with both platforms disabled by
+  default and clearly documented as high risk. See `audit/COVERAGE_ROADMAP.md` and
+  `prompts/phase-42-agent-prompt.md`.
+
+All four phases are considered **must-ship** for the Apify Challenge submission.
+
 ## Executive Summary
 
 Phase 3 of the Grail Hunter actor is **complete and production-ready**. This implementation delivers

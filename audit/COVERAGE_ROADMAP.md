@@ -23,6 +23,20 @@ concrete phases that fit the existing architecture.
 
 ---
 
+## Execution Notes
+
+- **Phase sequencing:** The project will execute Phase 3.x, 4.0, 4.1, and 4.2 in order, treating
+  each as a discrete milestone.
+- **Challenge scope:** All phases (3.x, 4.0, 4.1, 4.2) are considered must-ship for the Apify
+  Challenge submission.
+- **Safer marketplaces:** For Phase 4.0, the chosen safer platforms are **Depop** and **Poshmark**.
+  Vinted is a future candidate but not part of the initial 4.0 scope.
+- **Beta toggles:** For Phase 4.1, the design includes both a global `betaPlatformsEnabled` flag and
+  per-platform flags (`enableMercari`, `enableOfferUp`).
+- **GOAT/StockX strategy:** For Phase 4.2, the actor will use a **hybrid** strategy combining
+  orchestrated actors (Pattern A) with dataset ingestion (Pattern C) for GOAT and StockX, with both
+  platforms disabled by default and clearly marked as high risk.
+
 ## Phase 3.x – Near-Term Hardening & UX Wins (No New Platforms)
 
 **Goal:** Make current Grailed + eBay (+ optional StockX) actor feel mature and polished before
@@ -104,19 +118,17 @@ Preferred approaches:
   - [ ] Update README and Implementation Status to reflect Depop support
   - [ ] Add Depop examples to input docs if any platform-specific fields exist
 
-### 4.0.3 Vinted or Poshmark (Pick One First)
+### 4.0.3 Poshmark (Chosen Second Safer Platform)
 
-- [ ] Choose Vinted or Poshmark as the second “safer” platform based on:
-  - [ ] Actor availability and stability on Apify
-  - [ ] Regional coverage and sneaker relevance
+- [ ] Implement Poshmark as the second “safer” platform based on prior analysis:
+  - [ ] Stable actor availability and sneaker relevance for core users.
 - [ ] Mirror Depop steps:
-  - [ ] `VintedScraper` or `PoshmarkScraper` using Pattern A/B
-  - [ ] `normalizeVinted()` / `normalizePoshmark()` in `DataNormalizer`
+  - [ ] `PoshmarkScraper` using Pattern A/B
+  - [ ] `normalizePoshmark()` in `DataNormalizer`
   - [ ] Parser updates if needed
   - [ ] Tests and docs
 
-**Deliverable:** A stable **Grailed + eBay + Depop + (Vinted/Poshmark)** actor, with clear docs and
-tests.
+**Deliverable:** A stable **Grailed + eBay + Depop + Poshmark** actor, with clear docs and tests.
 
 ---
 
@@ -130,8 +142,9 @@ safeguards.
 - [ ] Update `.actor/input_schema.json` with:
   - [ ] `mercari` and `offerup` in `platforms` enum
   - [ ] Clear descriptions: `BETA`, higher ToS/anti-bot risk, may fail or be blocked
-  - [ ] `betaPlatformsEnabled` or individual `enableMercari`/`enableOfferUp` toggles (default
-        `false`)
+  - [ ] `betaPlatformsEnabled` (global beta toggle, default `false`)
+  - [ ] `enableMercari` and `enableOfferUp` per-platform toggles (default `false`), which work in
+        combination with `betaPlatformsEnabled`
 - [ ] Implement **strict limits** for beta platforms:
   - [ ] Maximum per-platform `maxResults` capped
   - [ ] Global time budget for each beta platform
@@ -183,9 +196,12 @@ monitoring.
     - [ ] Input provides dataset ID and platform name
     - [ ] Scraper reads dataset and treats entries as listings
 
+For Grail Hunter, the chosen approach is a **hybrid strategy** that combines Pattern A and Pattern C
+for both GOAT and StockX.
+
 ### 4.2.2 GOAT
 
-- [ ] Decide on integration pattern (A vs C vs a hybrid).
+- [ ] Implement the hybrid integration pattern chosen above (Pattern A + C).
 - [ ] If Pattern A:
   - [ ] Implement `GoatScraper` orchestrating an Apify GOAT actor
   - [ ] Mark GOAT as `HIGH RISK` and disabled by default
