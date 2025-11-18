@@ -86,9 +86,8 @@ describe('StockXScraper', () => {
       });
 
       expect(results).toEqual([]);
-      // Note: failureCount only increments on outer scrape() failure,
-      // not individual keyword failures - this is intentional behavior
-      expect(stockxScraper.failureCount).toBe(0);
+      // Phase 4.2: failureCount increments when ALL keywords fail
+      expect(stockxScraper.failureCount).toBe(1);
     });
 
     it('should handle rate limits (429)', async () => {
