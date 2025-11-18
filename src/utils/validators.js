@@ -306,5 +306,10 @@ export function normalizeInput(input) {
     requireOGAll: input.requireOGAll === true,
     minSellerRating: input.minSellerRating !== undefined ? input.minSellerRating : 0,
     minSellerReviewCount: input.minSellerReviewCount !== undefined ? input.minSellerReviewCount : 0,
+    // Phase 4.1: Beta platform toggles
+    betaPlatformsEnabled: input.betaPlatformsEnabled === true,
+    enableMercari: input.enableMercari === true,
+    enableOfferUp: input.enableOfferUp === true,
+    zipCode: input.zipCode || null,
   };
 }

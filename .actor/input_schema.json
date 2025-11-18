@@ -216,6 +216,14 @@
       "type": "boolean",
       "description": "Enable OfferUp scraping. Requires betaPlatformsEnabled=true and a US ZIP code for location-based search. WARNING: OfferUp uses Cloudflare protection and browser automation, which may be slow and fail frequently. Use at your own risk. Default: false.",
       "default": false
+    },
+    "zipCode": {
+      "title": "ZIP Code (for OfferUp)",
+      "type": "string",
+      "description": "US ZIP code for location-based search on OfferUp. Required when OfferUp is enabled. Format: 5-digit ZIP code (e.g., '10001' for NYC, '90210' for Beverly Hills). Defaults to 10001 (NYC) if not provided.",
+      "editor": "textfield",
+      "pattern": "^[0-9]{5}$",
+      "example": "10001"
     }
   },
   "required": ["keywords"]

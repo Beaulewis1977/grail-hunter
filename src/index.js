@@ -87,16 +87,22 @@ Actor.main(async () => {
           maxResults: input.maxResults,
           proxyConfig: input.proxyConfig,
           excludeAuctions: input.excludeAuctions,
+          zipCode: input.zipCode, // Phase 4.1: Required for OfferUp location-based search
         })
         .then((items) => ({ platform, items }))
     );
 
     const settled = await Promise.allSettled(scrapeTasks);
 
-    const rawByPlatform = settled.filter((r) => r.status === 'fulfilled').map((r) => r.value);
+    // Use map() then filter() to preserve original indices for correct platform attribution
+    const rawByPlatform = settled
+      .map((r) => (r.status === 'fulfilled' ? r.value : null))
+      .filter((v) => v !== null);
     const failedPlatforms = settled
-      .filter((r) => r.status === 'rejected')
-      .map((r, idx) => ({ platform: platforms[idx], error: r.reason?.message }));
+      .map((r, idx) =>
+        r.status === 'rejected' ? { platform: platforms[idx], error: r.reason?.message } : null
+      )
+      .filter((v) => v !== null);
 
     const totalRaw = rawByPlatform.reduce((acc, cur) => acc + (cur.items?.length || 0), 0);
     logger.info(`📦 Scraped ${totalRaw} raw listings total`, {

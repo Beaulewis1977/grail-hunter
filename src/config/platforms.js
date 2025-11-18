@@ -108,6 +108,7 @@ export const PLATFORM_CONFIGS = {
   },
 };
 
+// Export all platforms that are either enabled OR are beta platforms (beta platforms use explicit toggle-based validation)
 export const SUPPORTED_PLATFORMS = Object.keys(PLATFORM_CONFIGS).filter(
-  (key) => PLATFORM_CONFIGS[key].enabled !== false
+  (key) => PLATFORM_CONFIGS[key].enabled !== false || PLATFORM_CONFIGS[key].isBeta === true
 );

@@ -52,17 +52,25 @@ export class ScraperManager {
     const betaPlatformsEnabled = this.userInput.betaPlatformsEnabled === true;
 
     if (betaPlatformsEnabled && this.userInput.enableMercari === true) {
-      this.scrapers.mercari = new MercariScraper(this.platformConfigs.mercari);
-      logger.warn(
-        '🧪 Mercari scraper enabled (BETA) - Expect higher failure rates and anti-bot blocking'
-      );
+      if (!this.platformConfigs.mercari) {
+        logger.error('Mercari platform config not found. Cannot initialize Mercari scraper.');
+      } else {
+        this.scrapers.mercari = new MercariScraper(this.platformConfigs.mercari);
+        logger.warn(
+          '🧪 Mercari scraper enabled (BETA) - Expect higher failure rates and anti-bot blocking'
+        );
+      }
     }
 
     if (betaPlatformsEnabled && this.userInput.enableOfferUp === true) {
-      this.scrapers.offerup = new OfferUpScraper(this.platformConfigs.offerup);
-      logger.warn(
-        '🧪 OfferUp scraper enabled (BETA) - Expect higher failure rates, Cloudflare challenges, and slower scraping'
-      );
+      if (!this.platformConfigs.offerup) {
+        logger.error('OfferUp platform config not found. Cannot initialize OfferUp scraper.');
+      } else {
+        this.scrapers.offerup = new OfferUpScraper(this.platformConfigs.offerup);
+        logger.warn(
+          '🧪 OfferUp scraper enabled (BETA) - Expect higher failure rates, Cloudflare challenges, and slower scraping'
+        );
+      }
     }
 
     logger.info('Initialized scrapers', {
@@ -89,7 +97,9 @@ export class ScraperManager {
 
     try {
       scraper.validate();
-      const results = await this.retryWithBackoff(() => scraper.scrape(searchParams));
+      // Use platform-specific maxRetries from config (e.g., 2 for beta platforms)
+      const maxRetries = scraper.config?.maxRetries || 3;
+      const results = await this.retryWithBackoff(() => scraper.scrape(searchParams), maxRetries);
       return results || [];
     } catch (error) {
       logger.error(`${platform} scraping failed`, {
