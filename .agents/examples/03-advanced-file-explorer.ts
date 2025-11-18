@@ -38,8 +38,12 @@ const definition: AgentDefinition = {
     type: 'object',
     properties: {
       results: {
-        type: 'string',
-        description: 'The results of the file exploration',
+        type: 'array',
+        description: 'The results from the spawned file-picker agents',
+        items: {
+          type: 'object',
+          description: 'ToolResultOutput from a file-picker agent',
+        },
       },
     },
     required: ['results'],
@@ -61,10 +65,13 @@ const definition: AgentDefinition = {
           })),
         },
       } satisfies ToolCall;
+    const safeResults = spawnResult ?? [];
     yield {
       toolName: 'set_output',
       input: {
-        results: spawnResult,
+        output: {
+          results: safeResults,
+        },
       },
     } satisfies ToolCall;
   },

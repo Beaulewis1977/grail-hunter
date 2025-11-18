@@ -2,9 +2,9 @@
 
 ## Project Overview
 
-Grail Hunter is an Apify Actor that monitors sneaker listings across multiple marketplaces (eBay,
-Grailed, StockX, GOAT) and sends real-time alerts when target sneakers appear. This is an Apify
-Challenge 2024-2025 submission.
+Grail Hunter is an Apify Actor that monitors sneaker listings across multiple marketplaces (Grailed,
+eBay, and optionally StockX) and sends real-time alerts when target sneakers appear. GOAT and other
+platforms are planned as roadmap integrations. This is an Apify Challenge 2024-2025 submission.
 
 ## Critical Rules
 
@@ -17,8 +17,8 @@ Challenge 2024-2025 submission.
 ### Architecture
 
 - **Orchestrator Model**: Calls existing Apify Actors + builds custom scrapers
-- **Core Platforms (MVP)**: StockX, GOAT, eBay, Grailed
-- **Phase 2 Platforms**: Flight Club, Stadium Goods (custom scrapers)
+- **Core Platforms (current)**: Grailed, eBay, StockX (optional, high-risk)
+- **Planned / Roadmap Platforms**: GOAT, Flight Club, Stadium Goods
 
 ### Development Practices
 
