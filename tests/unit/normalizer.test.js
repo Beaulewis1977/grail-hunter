@@ -693,4 +693,138 @@ describe('DataNormalizer', () => {
       });
     });
   });
+
+  // Phase 4.2: GOAT & StockX Hybrid Intelligence Layers
+  describe('normalizeGoat', () => {
+    it('should normalize GOAT listing with all fields', () => {
+      const rawListing = {
+        id: 'goat123',
+        name: 'Air Jordan 1 Retro High OG Bred',
+        brand: 'Air Jordan',
+        lowestPrice: 950,
+        price: 950,
+        sku: '555088-001',
+        colorway: 'Bred',
+        size: '10.5',
+        slug: 'air-jordan-1-retro-high-og-bred',
+        imageUrl: 'https://image.goat.com/attachments/product_templates/photos/...jpg',
+        description: 'Air Jordan 1 Retro High OG in iconic Bred colorway',
+        releaseDate: '2016-09-03',
+      };
+
+      const normalized = normalizer.normalizeGoat(rawListing);
+
+      // Product fields
+      expect(normalized.product.name).toBe('Air Jordan 1 Retro High OG Bred');
+      expect(normalized.product.brand).toBe('Air Jordan');
+      expect(normalized.product.colorway).toBe('Bred');
+      expect(normalized.product.sku).toBe('555088-001');
+      expect(normalized.product.releaseYear).toBe(2016);
+
+      // Listing fields
+      expect(normalized.listing.price).toBe(950);
+      expect(normalized.listing.currency).toBe('USD');
+      expect(normalized.listing.size_us_mens).toBe('10.5');
+      expect(normalized.listing.condition).toBe('new_in_box');
+      expect(normalized.listing.tags).toContain('authenticated');
+      expect(normalized.listing.tags).toContain('verified');
+      expect(normalized.listing.tags).toContain('goat');
+      expect(normalized.listing.type).toBe('sell');
+
+      // Source fields (authenticated platform)
+      expect(normalized.source.platform).toBe('GOAT');
+      expect(normalized.source.url).toBe(
+        'https://goat.com/sneakers/air-jordan-1-retro-high-og-bred'
+      );
+      expect(normalized.source.id).toBe('goat123');
+      expect(normalized.source.is_authenticated).toBe(true);
+      expect(normalized.source.imageUrl).toBe(
+        'https://image.goat.com/attachments/product_templates/photos/...jpg'
+      );
+
+      // Seller fields (GOAT is the marketplace)
+      expect(normalized.seller.name).toBe('GOAT');
+      expect(normalized.seller.verified).toBe(true);
+
+      // Metadata fields for deal scoring
+      expect(normalized.metadata.dealScore).toBeDefined();
+      expect(normalized.metadata.dealScore.marketValue).toBe(950);
+      expect(normalized.metadata.priceChange).toBeDefined();
+      expect(normalized.metadata.priceChange.currentPrice).toBe(950);
+    });
+
+    it('should handle missing optional fields gracefully', () => {
+      const rawListing = {
+        id: 'goat456',
+        name: 'Nike Dunk Low',
+        lowestPrice: 180,
+      };
+
+      const normalized = normalizer.normalizeGoat(rawListing);
+
+      expect(normalized.product.name).toBe('Nike Dunk Low');
+      expect(normalized.listing.price).toBe(180);
+      expect(normalized.product.brand).toBeTruthy(); // Extracted from title
+      expect(normalized.product.colorway).toBeNull();
+      expect(normalized.product.sku).toBeNull();
+      expect(normalized.listing.size_us_mens).toBeNull();
+      expect(normalized.source.url).toBe(''); // No slug provided
+    });
+
+    it('should extract brand from title when brand field missing', () => {
+      const rawListing = {
+        id: 'goat789',
+        name: 'Air Jordan 4 Retro Military Blue',
+        lowestPrice: 500,
+      };
+
+      const normalized = normalizer.normalizeGoat(rawListing);
+
+      expect(normalized.product.brand).toBeTruthy();
+      expect(normalized.product.brand).toContain('Jordan');
+    });
+
+    it('should handle alternative field names (productName, lowestPriceUsd)', () => {
+      const rawListing = {
+        productId: 'goat999',
+        productName: 'Yeezy Boost 350 V2',
+        lowestPriceUsd: 300,
+        styleId: 'FZ5000',
+      };
+
+      const normalized = normalizer.normalizeGoat(rawListing);
+
+      expect(normalized.product.name).toBe('Yeezy Boost 350 V2');
+      expect(normalized.listing.price).toBe(300);
+      expect(normalized.product.sku).toBe('FZ5000');
+      expect(normalized.source.id).toBe('goat999');
+    });
+
+    it('should use GOAT price as market value for deal scoring', () => {
+      const rawListing = {
+        id: 'goat111',
+        name: 'Test Sneaker',
+        lowestPrice: 450,
+      };
+
+      const normalized = normalizer.normalizeGoat(rawListing);
+
+      // GOAT price should be used as market reference
+      expect(normalized.metadata.dealScore.marketValue).toBe(450);
+    });
+
+    it('should always mark GOAT listings as authenticated', () => {
+      const rawListing = {
+        id: 'goat222',
+        name: 'Test Sneaker',
+        lowestPrice: 200,
+      };
+
+      const normalized = normalizer.normalizeGoat(rawListing);
+
+      expect(normalized.source.is_authenticated).toBe(true);
+      expect(normalized.listing.tags).toContain('authenticated');
+      expect(normalized.seller.verified).toBe(true);
+    });
+  });
 });

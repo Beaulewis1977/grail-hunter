@@ -6,10 +6,12 @@
 import { GrailedScraper } from './grailed.js';
 import { EbayScraper } from './ebay.js';
 import { StockXScraper } from './stockx.js';
+import { GoatScraper } from './goat.js';
 import { DepopScraper } from './depop.js';
 import { PoshmarkScraper } from './poshmark.js';
 import { MercariScraper } from './mercari.js';
 import { OfferUpScraper } from './offerup.js';
+import { DatasetIngestionScraper } from './dataset-ingestion.js';
 import { PLATFORM_CONFIGS } from '../config/platforms.js';
 import { PlatformScrapingError } from '../utils/errors.js';
 import { logger } from '../utils/logger.js';
@@ -73,9 +75,56 @@ export class ScraperManager {
       }
     }
 
+    // Phase 4.2: GOAT (High-Risk Platform)
+    // GOAT requires explicit opt-in via enableGOAT toggle
+    if (this.userInput.enableGOAT === true) {
+      if (!this.platformConfigs.goat) {
+        logger.error('GOAT platform config not found. Cannot initialize GOAT scraper.');
+      } else {
+        this.scrapers.goat = new GoatScraper(this.platformConfigs.goat);
+        logger.warn(
+          '⚠️  GOAT scraper enabled - HIGH RISK: Platform actively enforces ToS. Dataset ingestion recommended. Use at your own discretion.'
+        );
+      }
+    }
+
+    // Phase 4.2: Dataset Ingestion (Pattern C)
+    // Allow users to provide GOAT/StockX-like data via datasets
+    if (this.userInput.ingestionDatasets && Array.isArray(this.userInput.ingestionDatasets)) {
+      for (const datasetConfig of this.userInput.ingestionDatasets) {
+        if (!datasetConfig.datasetId || !datasetConfig.platform) {
+          logger.warn('Invalid dataset ingestion config - missing datasetId or platform', {
+            datasetConfig,
+          });
+          // eslint-disable-next-line no-continue
+          continue;
+        }
+
+        // Create a unique scraper ID for this dataset
+        // Use full datasetId sanitized to prevent collisions (e.g., "dataset_123" vs "dataset_456")
+        const sanitizedDatasetId = String(datasetConfig.datasetId).replace(/[^a-zA-Z0-9_-]/g, '_');
+        const scraperId = `${datasetConfig.platform}_ingestion_${sanitizedDatasetId}`;
+
+        this.scrapers[scraperId] = new DatasetIngestionScraper({
+          name: datasetConfig.platformLabel || `${datasetConfig.platform}_ingestion`,
+          datasetId: datasetConfig.datasetId,
+          platform: datasetConfig.platform,
+          platformLabel: datasetConfig.platformLabel,
+        });
+
+        logger.info('Dataset ingestion scraper registered', {
+          scraperId,
+          datasetId: datasetConfig.datasetId,
+          platform: datasetConfig.platform,
+        });
+      }
+    }
+
     logger.info('Initialized scrapers', {
       platforms: Object.keys(this.scrapers),
       betaPlatformsEnabled,
+      goatEnabled: this.userInput.enableGOAT === true,
+      ingestionCount: this.userInput.ingestionDatasets?.length || 0,
     });
   }
 
