@@ -112,6 +112,19 @@ Grail Hunter monitors these major sneaker marketplaces:
 - Prevents duplicate alerts
 - Persistent state management
 
+### 🔧 Advanced Filters (Phase 3.x)
+
+- **Authentication Filtering**: Only show authenticated listings from verified platforms (StockX, GOAT) or eBay's Authenticity Guarantee
+- **Original Box Requirement**: Filter for listings that include original box and all accessories (OG All)
+- **Auction Exclusion**: Remove auction-style listings, focus on Buy It Now only
+- **Seller Quality**: Set minimum seller rating (0-5 scale) and review count requirements
+- **Flexible Combinations**: Apply multiple filters together for precise targeting
+
+**Example Use Cases:**
+- Collectors: `requireOGAll: true` + `minSellerRating: 4.5` for quality grails
+- Resellers: `excludeAuctions: true` + `minSellerReviewCount: 50` for fast flips
+- Authenticated Only: `authenticatedOnly: true` to avoid fakes
+
 ---
 
 ## 📋 Use Cases

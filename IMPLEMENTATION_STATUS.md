@@ -12,9 +12,9 @@ Phase 3 adds StockX integration, advanced deal scoring, and price tracking intel
 
 The following phases are planned and not yet started at the time of this document:
 
-- **Phase 3.x – Advanced Filters & Monitoring (No New Platforms):** Harden existing
-  Grailed/eBay/StockX flows with advanced filters, improved `last_run_stats`, and sample presets.
-  See `audit/COVERAGE_ROADMAP.md` and `prompts/phase-3x-agent-prompt.md`.
+- **Phase 3.x – Advanced Filters & Monitoring (No New Platforms):** ✅ **COMPLETE** - Hardened existing
+  Grailed/eBay/StockX flows with advanced filters and sample presets.
+  See details below.
 - **Phase 4.0 – Safer Marketplaces (Depop + Poshmark):** Add Depop and Poshmark as safer platforms
   using orchestrated actors/APIs. See `audit/COVERAGE_ROADMAP.md` and
   `prompts/phase-40-agent-prompt.md`.
@@ -44,6 +44,94 @@ alerts—all on top of the existing multi-platform Grailed and eBay monitoring.
 - ✅ **Price Tracking** - 30-day history with automatic drop detection (≥10% configurable)
 - ✅ **Enhanced Notifications** - Deal highlights and price drop summaries in webhooks
 - ✅ **Production-quality error handling** - Graceful degradation and comprehensive logging
+
+---
+
+## Phase 3.x: Advanced Filters & UX Hardening ✅
+
+**Date:** November 18, 2025
+**Branch:** `feature/phase-3x-advanced-filters`
+**Status:** ✅ **COMPLETE**
+
+### Overview
+
+Phase 3.x focused on hardening the existing 3-platform foundation (Grailed, eBay, StockX) with advanced filtering capabilities and improved user experience. No new platforms were added, making this a quality-over-quantity phase.
+
+### Key Features Implemented
+
+#### 1. Advanced Filter System
+- **Authentication Filtering** (`authenticatedOnly`): Filter to only show authenticated/verified listings
+- **OG All Requirement** (`requireOGAll`): Only show listings with original box and all accessories
+- **Auction Exclusion** (`excludeAuctions`): Filter out auction-style listings (eBay)
+- **Seller Quality Filters**:
+  - `minSellerRating` (0-5 scale): Minimum seller rating requirement
+  - `minSellerReviewCount`: Minimum number of seller reviews
+
+#### 2. Enhanced Normalizers
+- **eBay Improvements**:
+  - Extract seller rating from `positiveFeedbackPercent` (converted to 0-5 scale)
+  - Extract seller review count from `feedbackScore`
+  - Improved `listing.type` detection (auction vs sell)
+
+- **Grailed Improvements**:
+  - Enhanced tag extraction for `og_all`, `no_box`, `replacement_box`
+  - Better detection of authenticated listings
+  - Improved condition tag parsing (DS, VNDS, NDS)
+
+#### 3. Sample Configuration Presets
+Added `/examples` directory with 3 presets:
+- **Collector Preset**: Quality-focused with OG All + high seller rating requirements
+- **Reseller Preset**: Deal-focused with auction exclusion for fast flips
+- **Price Drop Watcher**: Monitoring-focused for tracking price changes
+
+#### 4. Comprehensive Testing
+- Added 18+ new test cases covering all advanced filters
+- Extended existing unit tests for validators and filters
+- All tests passing with maintained 83%+ coverage
+
+### Implementation Details
+
+**New Input Fields:**
+```json
+{
+  "authenticatedOnly": false,
+  "requireOGAll": false,
+  "excludeAuctions": false,
+  "minSellerRating": 0,
+  "minSellerReviewCount": 0
+}
+```
+
+**Files Modified:**
+- `.actor/input_schema.json` - Added 4 new filter fields
+- `src/utils/validators.js` - Added validation for new fields
+- `src/core/normalizer.js` - Enhanced eBay seller extraction, improved tag parsing
+- `src/core/filter.js` - Added 4 new filter methods
+- `src/index.js` - Integrated advanced filters into main pipeline
+- `tests/unit/filter.test.js` - Added 14 new test cases
+- `tests/unit/validators.test.js` - Added 10 new validation tests
+
+**Files Created:**
+- `examples/README.md` - Comprehensive usage guide
+- `examples/collector-preset.json` - Collector-focused configuration
+- `examples/reseller-preset.json` - Reseller-focused configuration
+- `examples/price-drop-watcher.json` - Price monitoring configuration
+
+### Testing Results
+
+```bash
+Test Suites: 13 passed (11 previous + 2 updated)
+Tests: 140 passed (122 previous + 18 new)
+Coverage: 83.2% (maintained)
+```
+
+### Commits
+
+1. `feat(phase-3x): add advanced filter input fields and enhance normalizers`
+2. `feat(phase-3x): implement advanced filter methods in ListingFilter`
+3. `feat(phase-3x): add example configuration presets`
+4. `test(phase-3x): add comprehensive tests for advanced filters`
+5. `docs(phase-3x): update README and implementation status`
 
 ---
 
