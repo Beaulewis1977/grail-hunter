@@ -163,8 +163,10 @@ describe('OfferUpScraper (mocked Apify integration)', () => {
 
     const scraper = new OfferUpScraper(config);
 
-    await expect(scraper.scrape(defaultParams)).rejects.toThrow(ActorCallError);
-    await expect(scraper.scrape(defaultParams)).rejects.toThrow(/failed with status: FAILED/);
+    const error = await scraper.scrape(defaultParams).catch((e) => e);
+    expect(error).toBeInstanceOf(ActorCallError);
+    expect(error.message).toMatch(/failed with status: FAILED/);
+    expect(error.recoverable).toBe(true);
   });
 
   it('should apply strict maxResults limit for beta platform', async () => {
@@ -197,11 +199,8 @@ describe('OfferUpScraper (mocked Apify integration)', () => {
 
     const scraper = new OfferUpScraper(config);
 
-    try {
-      await scraper.scrape(defaultParams);
-    } catch (error) {
-      expect(error).toBeInstanceOf(ActorCallError);
-      expect(error.recoverable).toBe(true); // Should be marked as recoverable
-    }
+    const error = await scraper.scrape(defaultParams).catch((e) => e);
+    expect(error).toBeInstanceOf(ActorCallError);
+    expect(error.recoverable).toBe(true); // Should be marked as recoverable
   });
 });

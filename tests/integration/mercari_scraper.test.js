@@ -119,8 +119,10 @@ describe('MercariScraper (mocked Apify integration)', () => {
 
     const scraper = new MercariScraper(config);
 
-    await expect(scraper.scrape(defaultParams)).rejects.toThrow(ActorCallError);
-    await expect(scraper.scrape(defaultParams)).rejects.toThrow(/failed with status: FAILED/);
+    const error = await scraper.scrape(defaultParams).catch((e) => e);
+    expect(error).toBeInstanceOf(ActorCallError);
+    expect(error.message).toMatch(/failed with status: FAILED/);
+    expect(error.recoverable).toBe(true);
   });
 
   it('should handle null actor response', async () => {
