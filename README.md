@@ -37,20 +37,29 @@ Grail Hunter monitors sneaker listings across multiple platforms in real-time:
 
 Grail Hunter monitors these major sneaker marketplaces:
 
-| Platform                  | Type          | Status       | Description                                          |
-| ------------------------- | ------------- | ------------ | ---------------------------------------------------- |
-| **eBay**                  | Marketplace   | ✅ Available | World's largest P2P marketplace                      |
-| **Grailed**               | Marketplace   | ✅ Available | Premium streetwear and sneaker marketplace           |
-| **Depop**                 | Marketplace   | ✅ Available | Safer peer-to-peer marketplace (Phase 4.0)           |
-| **Poshmark**              | Marketplace   | ✅ Available | Safer peer-to-peer marketplace (Phase 4.0)           |
-| **Mercari (🧪 BETA)**     | Marketplace   | 🧪 Beta      | Beta platform - requires explicit opt-in (Phase 4.1) |
-| **OfferUp (🧪 BETA)**     | Marketplace   | 🧪 Beta      | Beta platform - requires explicit opt-in (Phase 4.1) |
-| **StockX (⚠️ HIGH RISK)** | Authenticated | ⚠️ Optional  | Stock market for sneakers with authentication        |
-| **GOAT (Planned)**        | Authenticated | 🚧 Phase 4.2 | Premium authenticated sneaker platform               |
+| Platform                  | Type          | Status       | Description                                           |
+| ------------------------- | ------------- | ------------ | ----------------------------------------------------- |
+| **eBay**                  | Marketplace   | ✅ Available | World's largest P2P marketplace                       |
+| **Grailed**               | Marketplace   | ✅ Available | Premium streetwear and sneaker marketplace            |
+| **Depop**                 | Marketplace   | ✅ Available | Safer peer-to-peer marketplace (Phase 4.0)            |
+| **Poshmark**              | Marketplace   | ✅ Available | Safer peer-to-peer marketplace (Phase 4.0)            |
+| **Mercari (🧪 BETA)**     | Marketplace   | 🧪 Beta      | Beta platform - requires explicit opt-in (Phase 4.1)  |
+| **OfferUp (🧪 BETA)**     | Marketplace   | 🧪 Beta      | Beta platform - requires explicit opt-in (Phase 4.1)  |
+| **StockX (⚠️ HIGH RISK)** | Authenticated | ⚠️ Optional  | Hybrid: orchestrated actor + API fallback (Phase 4.2) |
+| **GOAT (⚠️ HIGH RISK)**   | Authenticated | ⚠️ Optional  | Hybrid intelligence layer (Phase 4.2)                 |
 
-> **⚠️ StockX WARNING**: StockX actively enforces their Terms of Service and uses advanced anti-bot
-> protection. Scraping may result in IP blocks or legal action. Use at your own risk and consider
-> disabling StockX scraping (enabled via `enableStockX` configuration option).
+> **⚠️ HIGH RISK PLATFORMS (GOAT & StockX)**: Both platforms actively enforce their Terms of Service
+> and use aggressive anti-bot protection. Scraping may result in IP blocks or legal action.
+>
+> **Phase 4.2 Hybrid Strategy**:
+>
+> - **Pattern A (Orchestrated)**: Calls existing Apify actors when available (best-effort)
+> - **Pattern C (Dataset Ingestion)**: **RECOMMENDED** - Bring your own data via Apify datasets
+> - **API Fallback (StockX only)**: Direct API scraping (Phase 3 legacy, high-risk)
+>
+> **Recommendation**: Use dataset ingestion (`ingestionDatasets` field) instead of scraping. Both
+> platforms are **disabled by default** and require explicit opt-in via `enableGOAT` and
+> `enableStockX` configuration options. See legal disclaimer below.
 
 ---
 
@@ -937,6 +946,50 @@ This project is developed for the **Apify $1M Challenge (2024-2025)**.
 
 ---
 
+## ⚖️ Legal Disclaimer
+
+**IMPORTANT**: This software is provided for educational and research purposes only.
+
+### Terms of Service Compliance
+
+**GOAT and StockX** are high-risk platforms that actively enforce their Terms of Service:
+
+- ⚠️ **Scraping may violate platform ToS** - Both GOAT and StockX prohibit automated access
+- ⚠️ **IP blocks and legal action possible** - Platforms employ sophisticated anti-bot protection
+- ⚠️ **Use at your own risk** - The authors assume NO liability for ToS violations or consequences
+
+### Recommended Approach
+
+**Dataset Ingestion (Pattern C)** is the RECOMMENDED and SAFER alternative:
+
+```json
+{
+  "ingestionDatasets": [
+    {
+      "datasetId": "your-goat-dataset-id",
+      "platform": "goat",
+      "platformLabel": "GOAT Market Data"
+    }
+  ]
+}
+```
+
+This allows you to provide GOAT/StockX-like data via Apify datasets without violating ToS.
+
+### Liability Waiver
+
+By using GOAT or StockX scraping features, you acknowledge that:
+
+1. You are solely responsible for compliance with platform Terms of Service
+2. The authors provide no warranties or guarantees regarding scraping success or safety
+3. You assume all risks, including but not limited to IP blocks, account bans, and legal action
+4. Dataset ingestion (Pattern C) is the recommended approach for high-risk platforms
+
+**For safer alternatives**, use the 5 core platforms: eBay, Grailed, Depop, Poshmark, and beta
+platforms (Mercari, OfferUp) which have lower risk profiles.
+
+---
+
 ## 📞 Support
 
 For technical issues or questions:
@@ -950,4 +1003,4 @@ For technical issues or questions:
 
 **Made with ❤️ for the sneaker community**
 
-**Status:** ✅ Phase 4.1 Complete (Beta Platforms: Mercari + OfferUp) | ⏳ Phase 4.2 Next Planning
+**Status:** ✅ Phase 4.2 Complete (GOAT & StockX Hybrid Intelligence) | 🚀 Ready for Production
