@@ -55,6 +55,10 @@ export class DataNormalizer {
         return this.normalizeDepop(rawListing);
       case 'poshmark':
         return this.normalizePoshmark(rawListing);
+      case 'mercari':
+        return this.normalizeMercari(rawListing);
+      case 'offerup':
+        return this.normalizeOfferUp(rawListing);
       default:
         logger.warn(`Unknown platform: ${platformTrimmed}, using generic normalizer`);
         return this.normalizeGeneric(rawListing, platformTrimmed);
@@ -412,6 +416,158 @@ export class DataNormalizer {
     };
   }
 
+  /**
+   * Normalize Mercari listing
+   * Phase 4.1: Beta Platforms
+   * @param {object} raw - Raw Mercari data from jupri/mercari-scraper
+   * @returns {object} Normalized listing
+   */
+  normalizeMercari(raw) {
+    const title = raw.title || raw.name || raw.productName || '';
+    const currentPrice = this.parsePrice(raw.price || raw.priceAmount);
+
+    // Extract tags from description and available metadata
+    const tags = this.extractTags(raw.description || title);
+
+    // Mercari seller info
+    const sellerRating = raw.sellerRating || raw.seller?.rating || null;
+    const sellerReviewCount = raw.sellerReviewCount || raw.seller?.reviewCount || null;
+
+    return {
+      product: {
+        name: title || 'Unknown',
+        brand: raw.brand || this.extractBrand(title),
+        model: this.extractModel(title),
+        colorway: null,
+        sku: null,
+        releaseYear: null,
+      },
+      listing: {
+        price: currentPrice,
+        currency: raw.currency || 'USD',
+        size_us_mens: raw.size || null,
+        size_us_womens: null,
+        size_eu: null,
+        condition: this.mapMercariCondition(raw.condition || raw.itemCondition),
+        tags,
+        type: 'sell', // Mercari is peer-to-peer, always fixed-price
+        description: this.truncateDescription(raw.description || ''),
+      },
+      source: {
+        platform: 'Mercari',
+        url: raw.url || raw.productUrl || raw.itemUrl || '',
+        id: String(raw.id || raw.itemId || raw.listingId || ''),
+        is_authenticated: false,
+        imageUrl: raw.image || raw.imageUrl || raw.photo || raw.photos?.[0] || null,
+      },
+      seller: {
+        name: raw.sellerName || raw.seller?.name || raw.seller?.username || null,
+        rating: sellerRating,
+        reviewCount: sellerReviewCount,
+        verified: raw.seller?.verified || false,
+      },
+      scrape: {
+        timestamp: new Date().toISOString(),
+        runId: process.env.APIFY_ACT_RUN_ID || 'local',
+        version: '1.0.0',
+      },
+      metadata: {
+        dealScore: {
+          isBelowMarket: false,
+          marketValue: null,
+          savingsPercentage: null,
+          savingsAmount: null,
+          dealQuality: null,
+        },
+        priceChange: {
+          hasDrop: false,
+          previousPrice: null,
+          currentPrice,
+          dropPercent: null,
+        },
+        betaPlatform: true,
+        riskLevel: 'medium-high',
+      },
+    };
+  }
+
+  /**
+   * Normalize OfferUp listing
+   * Phase 4.1: Beta Platforms
+   * @param {object} raw - Raw OfferUp data from igolaizola/offerup-scraper
+   * @returns {object} Normalized listing
+   */
+  normalizeOfferUp(raw) {
+    const title = raw.title || raw.name || '';
+    const currentPrice = this.parsePrice(raw.price || raw.formattedPrice);
+
+    // Extract tags from description and available metadata
+    const tags = this.extractTags(raw.description || title);
+
+    // OfferUp includes detailed listing info in _details object
+    // eslint-disable-next-line no-underscore-dangle
+    const details = raw._details || {};
+    const sellerInfo = details.seller || raw.seller || {};
+
+    return {
+      product: {
+        name: title || 'Unknown',
+        brand: raw.brand || this.extractBrand(title),
+        model: this.extractModel(title),
+        colorway: null,
+        sku: null,
+        releaseYear: null,
+      },
+      listing: {
+        price: currentPrice,
+        currency: 'USD', // OfferUp is US-only
+        size_us_mens: raw.size || null,
+        size_us_womens: null,
+        size_eu: null,
+        condition: this.mapOfferUpCondition(raw.condition || details.condition),
+        tags,
+        type: 'sell', // OfferUp is peer-to-peer, always fixed-price
+        description: this.truncateDescription(raw.description || details.description || ''),
+      },
+      source: {
+        platform: 'OfferUp',
+        url: raw.url || raw.listingUrl || '',
+        id: String(raw.listingId || raw.id || ''),
+        is_authenticated: false,
+        imageUrl: raw.image || raw.imageUrl || details.photos?.[0] || null,
+      },
+      seller: {
+        name: sellerInfo.name || sellerInfo.username || null,
+        rating: sellerInfo.rating || null,
+        reviewCount: sellerInfo.reviewCount || null,
+        verified: sellerInfo.verified || false,
+      },
+      scrape: {
+        timestamp: new Date().toISOString(),
+        runId: process.env.APIFY_ACT_RUN_ID || 'local',
+        version: '1.0.0',
+      },
+      metadata: {
+        dealScore: {
+          isBelowMarket: false,
+          marketValue: null,
+          savingsPercentage: null,
+          savingsAmount: null,
+          dealQuality: null,
+        },
+        priceChange: {
+          hasDrop: false,
+          previousPrice: null,
+          currentPrice,
+          dropPercent: null,
+        },
+        betaPlatform: true,
+        riskLevel: 'medium-high',
+        location: raw.locationName || details.location?.name || null,
+      },
+    };
+  }
+
   extractEbayIdFromUrl(url) {
     if (typeof url !== 'string') return null;
     const match = url.match(/\/(?:itm|p)\/(\d+)/);
@@ -646,6 +802,48 @@ export class DataNormalizer {
       'gently used': 'used_like_new',
       good: 'used_good',
       'good pre-owned': 'used_good',
+      fair: 'used_fair',
+      poor: 'used_poor',
+    };
+
+    return mapping[conditionStr] || 'unspecified';
+  }
+
+  /**
+   * Map Mercari condition to standardized enum
+   * Phase 4.1: Beta Platforms
+   */
+  mapMercariCondition(condition) {
+    if (!condition || typeof condition !== 'string') return 'unspecified';
+
+    const conditionStr = condition.toLowerCase();
+    const mapping = {
+      new: 'new_in_box',
+      'new with tags': 'new_in_box',
+      'new without tags': 'new_in_box',
+      'like new': 'used_like_new',
+      excellent: 'used_like_new',
+      good: 'used_good',
+      fair: 'used_fair',
+      poor: 'used_poor',
+    };
+
+    return mapping[conditionStr] || 'unspecified';
+  }
+
+  /**
+   * Map OfferUp condition to standardized enum
+   * Phase 4.1: Beta Platforms
+   */
+  mapOfferUpCondition(condition) {
+    if (!condition || typeof condition !== 'string') return 'unspecified';
+
+    const conditionStr = condition.toLowerCase();
+    const mapping = {
+      new: 'new_in_box',
+      'like new': 'used_like_new',
+      excellent: 'used_like_new',
+      good: 'used_good',
       fair: 'used_fair',
       poor: 'used_poor',
     };

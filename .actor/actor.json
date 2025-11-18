@@ -1,9 +1,9 @@
 {
   "actorSpecVersion": 1,
   "name": "grail-hunter",
-  "title": "Grail Hunter - Phase 2 Multi-Platform Monitor",
-  "description": "Aggregates sneaker listings from Grailed and eBay with intelligent parsing, deduplication, and real-time alerts. Future phases will add StockX and GOAT.",
-  "version": "0.2.0",
+  "title": "Grail Hunter - Phase 4.1: Beta Platforms (Mercari + OfferUp)",
+  "description": "Aggregates sneaker listings from 7 platforms (Grailed, eBay, StockX, Depop, Poshmark, Mercari, OfferUp) with intelligent parsing, deal scoring, price tracking, and real-time alerts. Beta platforms require explicit opt-in.",
+  "version": "0.4.1",
   "author": {
     "name": "Beaulewis1977",
     "email": "support@grailhunter.app"

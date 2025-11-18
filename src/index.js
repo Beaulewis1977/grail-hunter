@@ -20,9 +20,7 @@ import { PLATFORM_CONFIGS } from './config/platforms.js';
 import { ValidationError } from './utils/errors.js';
 
 Actor.main(async () => {
-  logger.info(
-    '🚀 Grail Hunter actor started - Phase 3: StockX Integration & Advanced Intelligence'
-  );
+  logger.info('🚀 Grail Hunter actor started - Phase 4.1: Beta Platforms (Mercari + OfferUp)');
 
   try {
     const rawInput = await Actor.getInput();
@@ -58,7 +56,7 @@ Actor.main(async () => {
       enableStockX: input.enableStockX,
     });
 
-    const scraperManager = new ScraperManager(runtimePlatformConfigs);
+    const scraperManager = new ScraperManager(runtimePlatformConfigs, input);
     const normalizer = new DataNormalizer();
     const parser = new SneakerParser();
     const filter = new ListingFilter();
@@ -89,25 +87,32 @@ Actor.main(async () => {
           maxResults: input.maxResults,
           proxyConfig: input.proxyConfig,
           excludeAuctions: input.excludeAuctions,
+          zipCode: input.zipCode, // Phase 4.1: Required for OfferUp location-based search
         })
         .then((items) => ({ platform, items }))
     );
 
     const settled = await Promise.allSettled(scrapeTasks);
 
-    const rawByPlatform = settled.filter((r) => r.status === 'fulfilled').map((r) => r.value);
+    // Use map() then filter() to preserve original indices for correct platform attribution
+    const rawByPlatform = settled
+      .map((r) => (r.status === 'fulfilled' ? r.value : null))
+      .filter((v) => v !== null);
     const failedPlatforms = settled
-      .filter((r) => r.status === 'rejected')
-      .map((r, idx) => ({ platform: platforms[idx], error: r.reason?.message }));
+      .map((r, idx) =>
+        r.status === 'rejected' ? { platform: platforms[idx], error: r.reason?.message } : null
+      )
+      .filter((v) => v !== null);
 
     const totalRaw = rawByPlatform.reduce((acc, cur) => acc + (cur.items?.length || 0), 0);
     logger.info(`📦 Scraped ${totalRaw} raw listings total`, {
       perPlatform: Object.fromEntries(rawByPlatform.map((x) => [x.platform, x.items.length])),
     });
 
-    // Phase 3.x: Initialize per-platform stats tracking
+    // Phase 3.x/4.1: Initialize per-platform stats tracking
     const platformStats = {};
     platforms.forEach((platform) => {
+      const isBeta = PLATFORM_CONFIGS[platform]?.isBeta || false;
       platformStats[platform] = {
         scraped: 0,
         normalized: 0,
@@ -115,6 +120,10 @@ Actor.main(async () => {
         new: 0,
         priceDrops: 0,
         errors: 0,
+        // Phase 4.1: Beta platform monitoring
+        isBeta,
+        riskLevel: PLATFORM_CONFIGS[platform]?.riskLevel || 'low',
+        failed: false,
       };
     });
 
@@ -124,9 +133,11 @@ Actor.main(async () => {
     });
 
     // Track failed platforms
-    failedPlatforms.forEach(({ platform }) => {
+    failedPlatforms.forEach(({ platform, error }) => {
       if (platformStats[platform]) {
         platformStats[platform].errors = 1;
+        platformStats[platform].failed = true; // Phase 4.1
+        platformStats[platform].errorMessage = error; // Phase 4.1
       }
     });
 
@@ -232,7 +243,20 @@ Actor.main(async () => {
       input.notificationConfig
     );
 
-    // Phase 3.x: Calculate aggregate stats
+    // Phase 3.x/4.1: Calculate aggregate stats
+    const betaPlatformStats = Object.values(platformStats).filter((p) => p.isBeta);
+    const betaPlatformsUsed = betaPlatformStats.length;
+    const betaPlatformsFailed = betaPlatformStats.filter((p) => p.failed).length;
+    const betaFailureRate =
+      betaPlatformsUsed > 0 ? (betaPlatformsFailed / betaPlatformsUsed) * 100 : 0;
+
+    // Phase 4.1: Warn about high beta platform failure rates
+    if (betaFailureRate > 50 && betaPlatformsUsed > 0) {
+      logger.warn(
+        `⚠️  Beta platform failure rate is ${betaFailureRate.toFixed(1)}% (${betaPlatformsFailed}/${betaPlatformsUsed} failed). Consider disabling beta platforms if this persists.`
+      );
+    }
+
     const aggregateStats = {
       totalScraped: Object.values(platformStats).reduce((sum, p) => sum + p.scraped, 0),
       totalNormalized: Object.values(platformStats).reduce((sum, p) => sum + p.normalized, 0),
@@ -240,6 +264,10 @@ Actor.main(async () => {
       totalNew: Object.values(platformStats).reduce((sum, p) => sum + p.new, 0),
       totalPriceDrops: Object.values(platformStats).reduce((sum, p) => sum + p.priceDrops, 0),
       totalErrors: Object.values(platformStats).reduce((sum, p) => sum + p.errors, 0),
+      // Phase 4.1: Beta platform health
+      betaPlatformsUsed,
+      betaPlatformsFailed,
+      betaFailureRate: `${betaFailureRate.toFixed(1)}%`,
     };
 
     const dedupStats = deduplicator.getStats();
@@ -250,9 +278,41 @@ Actor.main(async () => {
         runId: process.env.APIFY_ACT_RUN_ID || 'local',
         duration: null, // Calculated below
         platforms,
+        version: '0.4.1', // Phase 4.1
+        // Phase 4.1: Beta platform tracking in metadata
+        betaPlatformsEnabled: input.betaPlatformsEnabled || false,
+        enabledBetaPlatforms: {
+          mercari: input.enableMercari || false,
+          offerup: input.enableOfferUp || false,
+        },
       },
       platformStats,
       aggregateStats,
+      // Phase 4.1: Beta platform health monitoring
+      betaPlatformHealth: {
+        failureRate: betaFailureRate,
+        warning: (() => {
+          if (betaFailureRate > 50) return 'HIGH_FAILURE_RATE - Consider disabling beta platforms';
+          if (betaFailureRate > 25)
+            return 'ELEVATED_FAILURE_RATE - Monitor beta platform performance';
+          return 'HEALTHY';
+        })(),
+        failedPlatforms: Object.entries(platformStats)
+          .filter(([, platformStat]) => platformStat.isBeta && platformStat.failed)
+          .map(([platform, platformStat]) => ({
+            platform,
+            errorMessage: platformStat.errorMessage,
+            riskLevel: platformStat.riskLevel,
+          })),
+        recommendations:
+          betaFailureRate > 50
+            ? [
+                'Disable beta platforms by setting betaPlatformsEnabled=false',
+                'Check Apify actor status for jupri/mercari-scraper and igolaizola/offerup-scraper',
+                'Verify proxy configuration is using RESIDENTIAL proxy groups',
+              ]
+            : [],
+      },
       filtering: {
         appliedFilters,
         preFilterCount,

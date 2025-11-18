@@ -72,8 +72,43 @@ export const PLATFORM_CONFIGS = {
     baseUrl: 'https://poshmark.com',
     riskLevel: 'low', // Safer marketplace
   },
+  // Phase 4.1: Beta Platforms (Higher Risk)
+  mercari: {
+    name: 'Mercari',
+    type: 'orchestrated',
+    actorId: 'jupri/mercari-scraper',
+    rateLimit: 50, // Conservative limit for beta platform
+    cacheTimeout: 15, // Shorter cache for beta
+    isAuthenticated: false,
+    requiresProxy: true,
+    enabled: false, // Disabled by default - beta platform
+    baseUrl: 'https://www.mercari.com',
+    riskLevel: 'medium-high', // Beta platform with anti-bot measures
+    isBeta: true,
+    maxResults: 30, // Strict limit for beta
+    timeoutMs: 120000, // 2 minute timeout
+    maxRetries: 2, // Conservative retry strategy
+  },
+  offerup: {
+    name: 'OfferUp',
+    type: 'orchestrated',
+    actorId: 'igolaizola/offerup-scraper',
+    rateLimit: 30, // Very conservative for Cloudflare protection
+    cacheTimeout: 15,
+    isAuthenticated: false,
+    requiresProxy: true,
+    enabled: false, // Disabled by default - beta platform
+    baseUrl: 'https://offerup.com',
+    riskLevel: 'medium-high', // Beta platform with Cloudflare
+    isBeta: true,
+    maxResults: 30, // Strict limit for beta
+    timeoutMs: 180000, // 3 minute timeout (browser automation is slower)
+    maxRetries: 2, // Conservative retry strategy
+    requiresZipCode: true, // OfferUp requires location-based search
+  },
 };
 
+// Export all platforms that are either enabled OR are beta platforms (beta platforms use explicit toggle-based validation)
 export const SUPPORTED_PLATFORMS = Object.keys(PLATFORM_CONFIGS).filter(
-  (key) => PLATFORM_CONFIGS[key].enabled !== false
+  (key) => PLATFORM_CONFIGS[key].enabled !== false || PLATFORM_CONFIGS[key].isBeta === true
 );

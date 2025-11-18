@@ -37,14 +37,16 @@ Grail Hunter monitors sneaker listings across multiple platforms in real-time:
 
 Grail Hunter monitors these major sneaker marketplaces:
 
-| Platform                  | Type          | Status       | Description                                   |
-| ------------------------- | ------------- | ------------ | --------------------------------------------- |
-| **eBay**                  | Marketplace   | ✅ Available | World's largest P2P marketplace               |
-| **Grailed**               | Marketplace   | ✅ Available | Premium streetwear and sneaker marketplace    |
-| **Depop**                 | Marketplace   | ✅ Available | Safer peer-to-peer marketplace (Phase 4.0)    |
-| **Poshmark**              | Marketplace   | ✅ Available | Safer peer-to-peer marketplace (Phase 4.0)    |
-| **StockX (⚠️ HIGH RISK)** | Authenticated | ⚠️ Optional  | Stock market for sneakers with authentication |
-| **GOAT (Planned)**        | Authenticated | 🚧 Phase 4.2 | Premium authenticated sneaker platform        |
+| Platform                  | Type          | Status       | Description                                          |
+| ------------------------- | ------------- | ------------ | ---------------------------------------------------- |
+| **eBay**                  | Marketplace   | ✅ Available | World's largest P2P marketplace                      |
+| **Grailed**               | Marketplace   | ✅ Available | Premium streetwear and sneaker marketplace           |
+| **Depop**                 | Marketplace   | ✅ Available | Safer peer-to-peer marketplace (Phase 4.0)           |
+| **Poshmark**              | Marketplace   | ✅ Available | Safer peer-to-peer marketplace (Phase 4.0)           |
+| **Mercari (🧪 BETA)**     | Marketplace   | 🧪 Beta      | Beta platform - requires explicit opt-in (Phase 4.1) |
+| **OfferUp (🧪 BETA)**     | Marketplace   | 🧪 Beta      | Beta platform - requires explicit opt-in (Phase 4.1) |
+| **StockX (⚠️ HIGH RISK)** | Authenticated | ⚠️ Optional  | Stock market for sneakers with authentication        |
+| **GOAT (Planned)**        | Authenticated | 🚧 Phase 4.2 | Premium authenticated sneaker platform               |
 
 > **⚠️ StockX WARNING**: StockX actively enforces their Terms of Service and uses advanced anti-bot
 > protection. Scraping may result in IP blocks or legal action. Use at your own risk and consider
@@ -794,7 +796,7 @@ grail-hunter/
 - ✅ **Phase 3:** StockX integration + market value benchmarking (Complete)
 - ✅ **Phase 3.x:** Advanced filters & monitoring (Complete)
 - ✅ **Phase 4.0:** Depop + Poshmark integration (Complete)
-- ⏳ **Phase 4.1:** Mercari + OfferUp (Beta platforms)
+- ✅ **Phase 4.1:** Mercari + OfferUp (Beta platforms - opt-in required)
 - ⏳ **Phase 4.2:** GOAT integration + hybrid intelligence
 
 See [IMPLEMENTATION_STATUS.md](./IMPLEMENTATION_STATUS.md) for detailed status and
@@ -948,5 +950,4 @@ For technical issues or questions:
 
 **Made with ❤️ for the sneaker community**
 
-**Status:** ✅ Phase 4.0 Complete (Safer Marketplaces: Depop + Poshmark) | ⏳ Phase 4.1-4.2 In
-Planning
+**Status:** ✅ Phase 4.1 Complete (Beta Platforms: Mercari + OfferUp) | ⏳ Phase 4.2 Next Planning

@@ -226,6 +226,32 @@ export function validateInput(input) {
       throw new ValidationError('minSellerReviewCount must be between 0 and 100000');
     }
   }
+
+  // Phase 4.1: Beta platform toggle validations
+  if (input.betaPlatformsEnabled !== undefined && typeof input.betaPlatformsEnabled !== 'boolean') {
+    throw new ValidationError('betaPlatformsEnabled must be a boolean');
+  }
+
+  if (input.enableMercari !== undefined && typeof input.enableMercari !== 'boolean') {
+    throw new ValidationError('enableMercari must be a boolean');
+  }
+
+  if (input.enableOfferUp !== undefined && typeof input.enableOfferUp !== 'boolean') {
+    throw new ValidationError('enableOfferUp must be a boolean');
+  }
+
+  // Validate beta platform precedence rules
+  if (input.enableMercari === true && input.betaPlatformsEnabled !== true) {
+    throw new ValidationError(
+      'enableMercari requires betaPlatformsEnabled to be true. Beta platforms must be explicitly enabled.'
+    );
+  }
+
+  if (input.enableOfferUp === true && input.betaPlatformsEnabled !== true) {
+    throw new ValidationError(
+      'enableOfferUp requires betaPlatformsEnabled to be true. Beta platforms must be explicitly enabled.'
+    );
+  }
 }
 
 /**
@@ -280,5 +306,10 @@ export function normalizeInput(input) {
     requireOGAll: input.requireOGAll === true,
     minSellerRating: input.minSellerRating !== undefined ? input.minSellerRating : 0,
     minSellerReviewCount: input.minSellerReviewCount !== undefined ? input.minSellerReviewCount : 0,
+    // Phase 4.1: Beta platform toggles
+    betaPlatformsEnabled: input.betaPlatformsEnabled === true,
+    enableMercari: input.enableMercari === true,
+    enableOfferUp: input.enableOfferUp === true,
+    zipCode: input.zipCode || null,
   };
 }

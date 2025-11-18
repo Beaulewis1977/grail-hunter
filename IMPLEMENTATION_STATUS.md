@@ -15,9 +15,10 @@ Phase status:
   existing Grailed/eBay/StockX flows with advanced filters and sample presets. See details below.
 - **Phase 4.0 – Safer Marketplaces (Depop + Poshmark):** ✅ **COMPLETE** - Added Depop and Poshmark
   as safer platforms using orchestrated actors. See details below.
-- **Phase 4.1 – Beta Platforms (Mercari, OfferUp):** ⏳ **PLANNED** - Introduce Mercari and OfferUp
-  as opt-in beta platforms, controlled via `betaPlatformsEnabled`, `enableMercari`, and
-  `enableOfferUp`. See `audit/COVERAGE_ROADMAP.md` and `prompts/phase-41-agent-prompt.md`.
+- **Phase 4.1 – Beta Platforms (Mercari, OfferUp):** ✅ **COMPLETE** - Mercari and OfferUp added as
+  opt-in beta platforms, controlled via `betaPlatformsEnabled`, `enableMercari`, and `enableOfferUp`
+  toggles. Strict limits (30 max results, conservative retries), comprehensive tests, and graceful
+  degradation implemented. See `audit/COVERAGE_ROADMAP.md` and `prompts/phase-41-agent-prompt.md`.
 - **Phase 4.2 – GOAT & StockX Hybrid Intelligence:** ⏳ **PLANNED** - Implement GOAT/StockX using a
   hybrid of orchestrated actors (Pattern A) and dataset ingestion (Pattern C), with both platforms
   disabled by default and clearly documented as high risk. See `audit/COVERAGE_ROADMAP.md` and
