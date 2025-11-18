@@ -12,3 +12,4 @@ reports/
 .out-static/
 public/
 **/*.min.md
+.agents/

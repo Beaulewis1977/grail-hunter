@@ -71,3 +71,4 @@ archive/
 .mcp.json
 settings.local.json
 .claude.json
+mcp.json
