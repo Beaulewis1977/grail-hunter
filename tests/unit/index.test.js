@@ -194,7 +194,10 @@ describe('Actor main entrypoint', () => {
         afterFiltering: filteredListings.length,
         newListings: newListings.length,
         notifications: notificationResult,
-        deduplication: dedupStats,
+        deduplication: expect.objectContaining({
+          ...dedupStats,
+          newHashesAdded: newListings.length,
+        }),
       })
     );
     // Phase 3: KV store opened twice - once for deduplicator, once for deal scorer
