@@ -287,6 +287,63 @@ describe('DataNormalizer', () => {
       expect(normalizer.mapDepopCondition(null)).toBe('unspecified');
       expect(normalizer.mapDepopCondition('unknown')).toBe('unspecified');
     });
+
+    it('should handle missing title/name fields using description fallback', () => {
+      const rawListing = {
+        id: 'dep789',
+        description: 'Air Jordan 1 Bred - Size 10.5 - VNDS',
+        price: 200,
+      };
+
+      const normalized = normalizer.normalizeDepop(rawListing);
+      expect(normalized.product.name).toBe('Air Jordan 1 Bred - Size 10.5 - VNDS');
+    });
+
+    it('should handle nested seller object structure', () => {
+      const rawListing = {
+        id: 'dep999',
+        title: 'Nike Dunk Low',
+        price: 150,
+        seller: {
+          username: 'nestedseller',
+          rating: 4.5,
+          reviewCount: 75,
+          verified: true,
+        },
+      };
+
+      const normalized = normalizer.normalizeDepop(rawListing);
+      expect(normalized.seller.name).toBe('nestedseller');
+      expect(normalized.seller.rating).toBe(4.5);
+      expect(normalized.seller.reviewCount).toBe(75);
+      expect(normalized.seller.verified).toBe(true);
+    });
+
+    it('should handle alternative field names (productUrl, productId, images array)', () => {
+      const rawListing = {
+        productId: 'altdep123',
+        title: 'Yeezy 350',
+        price: 220,
+        productUrl: 'https://depop.com/alt/altdep123',
+        images: ['https://depop.com/img1.jpg', 'https://depop.com/img2.jpg'],
+      };
+
+      const normalized = normalizer.normalizeDepop(rawListing);
+      expect(normalized.source.id).toBe('altdep123');
+      expect(normalized.source.url).toBe('https://depop.com/alt/altdep123');
+      expect(normalized.source.imageUrl).toBe('https://depop.com/img1.jpg');
+    });
+
+    it('should handle missing/null price with parsePrice fallback', () => {
+      const rawListing = {
+        id: 'depprice',
+        title: 'Nike Air Max',
+        priceAmount: 100,
+      };
+
+      const normalized = normalizer.normalizeDepop(rawListing);
+      expect(normalized.listing.price).toBe(100);
+    });
   });
 
   // Phase 4.0: Poshmark normalizer tests
@@ -335,6 +392,63 @@ describe('DataNormalizer', () => {
       expect(normalizer.mapPoshmarkCondition('poor')).toBe('used_poor');
       expect(normalizer.mapPoshmarkCondition(null)).toBe('unspecified');
       expect(normalizer.mapPoshmarkCondition('unknown')).toBe('unspecified');
+    });
+
+    it('should handle missing title/name fields using description fallback', () => {
+      const rawListing = {
+        id: 'posh999',
+        description: 'Jordan 1 Chicago - Size 11 - NWT',
+        price: 350,
+      };
+
+      const normalized = normalizer.normalizePoshmark(rawListing);
+      expect(normalized.product.name).toBe('Jordan 1 Chicago - Size 11 - NWT');
+    });
+
+    it('should handle nested seller object structure', () => {
+      const rawListing = {
+        id: 'posh888',
+        title: 'New Balance 550',
+        price: 120,
+        seller: {
+          username: 'poshnestedseller',
+          rating: 4.7,
+          reviewCount: 120,
+          verified: true,
+        },
+      };
+
+      const normalized = normalizer.normalizePoshmark(rawListing);
+      expect(normalized.seller.name).toBe('poshnestedseller');
+      expect(normalized.seller.rating).toBe(4.7);
+      expect(normalized.seller.reviewCount).toBe(120);
+      expect(normalized.seller.verified).toBe(true);
+    });
+
+    it('should handle alternative field names (productUrl, listingId, pictures array)', () => {
+      const rawListing = {
+        listingId: 'altposh456',
+        title: 'Adidas Yeezy Boost',
+        price: 280,
+        productUrl: 'https://poshmark.com/alt/altposh456',
+        pictures: ['https://posh.com/pic1.jpg', 'https://posh.com/pic2.jpg'],
+      };
+
+      const normalized = normalizer.normalizePoshmark(rawListing);
+      expect(normalized.source.id).toBe('altposh456');
+      expect(normalized.source.url).toBe('https://poshmark.com/alt/altposh456');
+      expect(normalized.source.imageUrl).toBe('https://posh.com/pic1.jpg');
+    });
+
+    it('should handle missing/null price with parsePrice fallback', () => {
+      const rawListing = {
+        id: 'poshprice',
+        title: 'Nike Cortez',
+        priceAmount: 85,
+      };
+
+      const normalized = normalizer.normalizePoshmark(rawListing);
+      expect(normalized.listing.price).toBe(85);
     });
   });
 });

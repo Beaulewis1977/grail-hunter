@@ -1,6 +1,6 @@
 {
-  "title": "Grail Hunter - Phase 3: Multi-Platform with Advanced Intelligence",
-  "description": "Monitor Grailed, eBay, and StockX for sneaker listings with deal scoring, price tracking, and real-time alerts.",
+  "title": "Grail Hunter - Phase 4.0: Safer Marketplaces (Depop + Poshmark)",
+  "description": "Monitor 5 platforms (Grailed, eBay, StockX, Depop, Poshmark) for sneaker listings with deal scoring, price tracking, advanced filters, and real-time alerts.",
   "type": "object",
   "schemaVersion": 1,
   "properties": {

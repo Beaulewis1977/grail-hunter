@@ -205,7 +205,8 @@ Added two new normalizer methods:
 - **`mapDepopCondition()`** (lines 613-634): Maps 9 Depop condition terms to standardized enum
 - **`mapPoshmarkCondition()`** (lines 636-654): Maps 10 Poshmark condition terms including "NWT"
 
-**Test Coverage:** `tests/unit/normalizer.test.js` - Added 26 new test cases (13 per platform)
+**Test Coverage:** `tests/unit/normalizer.test.js` - Added 10 new test cases (5 per platform) with
+34 assertions total
 
 #### 4. Platform Configuration ✅
 
@@ -289,9 +290,11 @@ Both platforms integrate with Phase 3.x monitoring:
 
 **Updated Test Files:**
 
-- `tests/unit/normalizer.test.js` - Added 26 test cases:
-  - 13 test cases for `normalizeDepop()` and `mapDepopCondition()`
-  - 13 test cases for `normalizePoshmark()` and `mapPoshmarkCondition()`
+- `tests/unit/normalizer.test.js` - Added 10 test cases (5 per platform):
+  - Depop: Basic normalization, condition mapping, edge cases (missing fields, nested objects,
+    alternative fields)
+  - Poshmark: Basic normalization, condition mapping, edge cases (missing fields, nested objects,
+    alternative fields)
 
 **Overall Coverage:** 83.42% (maintained above 80% target ✅)
 
@@ -306,17 +309,18 @@ Coverage:    83.42% statements, 68.99% branches
 **Created:**
 
 - `src/scrapers/depop.js` (94 lines)
-- `src/scrapers/poshmark.js` (95 lines)
-- `tests/integration/depop_scraper.test.js` (119 lines)
-- `tests/integration/poshmark_scraper.test.js` (119 lines)
+- `src/scrapers/poshmark.js` (94 lines)
+- `tests/integration/depop_scraper.test.js` (112 lines)
+- `tests/integration/poshmark_scraper.test.js` (118 lines)
 
 **Modified:**
 
 - `src/config/platforms.js` - Added 2 platform configs
-- `src/core/normalizer.js` - Added 2 normalizer methods + 2 condition mappers
+- `src/core/normalizer.js` - Added 2 normalizer methods + 2 condition mappers + description fallback
+  fix
 - `src/scrapers/manager.js` - Registered both scrapers
 - `.actor/input_schema.json` - Added platforms to enum
-- `tests/unit/normalizer.test.js` - Added 26 test cases
+- `tests/unit/normalizer.test.js` - Added 10 test cases with edge case coverage
 
 ### Phase 4.0 Commits
 

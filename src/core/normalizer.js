@@ -346,7 +346,7 @@ export class DataNormalizer {
    * @returns {object} Normalized listing
    */
   normalizePoshmark(raw) {
-    const title = raw.title || raw.name || '';
+    const title = raw.title || raw.name || raw.description || '';
     const currentPrice = this.parsePrice(raw.price || raw.priceAmount);
 
     // Extract tags from description and available metadata
