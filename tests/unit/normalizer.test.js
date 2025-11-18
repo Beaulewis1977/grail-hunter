@@ -237,4 +237,104 @@ describe('DataNormalizer', () => {
       expect(normalized.metadata.priceChange.currentPrice).toBeNull();
     });
   });
+
+  // Phase 4.0: Depop normalizer tests
+  describe('normalizeDepop', () => {
+    it('should normalize Depop listing correctly', () => {
+      const rawListing = {
+        id: 'dep123',
+        title: 'Air Jordan 1 Retro High OG Bred',
+        price: 250,
+        description: 'VNDS condition, OG all included',
+        brand: 'Nike',
+        size: '10.5',
+        condition: 'like new',
+        url: 'https://depop.com/products/dep123',
+        sellerUsername: 'sneakercollector',
+        sellerRating: 4.8,
+        sellerReviewCount: 150,
+        image: 'https://depop.com/images/dep123.jpg',
+      };
+
+      const normalized = normalizer.normalizeDepop(rawListing);
+
+      expect(normalized.product.name).toBe('Air Jordan 1 Retro High OG Bred');
+      expect(normalized.product.brand).toBe('Nike');
+      expect(normalized.listing.price).toBe(250);
+      expect(normalized.listing.size_us_mens).toBe('10.5');
+      expect(normalized.listing.condition).toBe('used_like_new');
+      expect(normalized.listing.type).toBe('sell');
+      expect(normalized.listing.tags).toEqual(expect.arrayContaining(['vnds', 'og_all']));
+      expect(normalized.source.platform).toBe('Depop');
+      expect(normalized.source.url).toBe('https://depop.com/products/dep123');
+      expect(normalized.source.is_authenticated).toBe(false);
+      expect(normalized.seller.name).toBe('sneakercollector');
+      expect(normalized.seller.rating).toBe(4.8);
+      expect(normalized.seller.reviewCount).toBe(150);
+    });
+
+    it('should map Depop conditions correctly', () => {
+      expect(normalizer.mapDepopCondition('new')).toBe('new_in_box');
+      expect(normalizer.mapDepopCondition('brand new')).toBe('new_in_box');
+      expect(normalizer.mapDepopCondition('new with tags')).toBe('new_in_box');
+      expect(normalizer.mapDepopCondition('like new')).toBe('used_like_new');
+      expect(normalizer.mapDepopCondition('gently used')).toBe('used_like_new');
+      expect(normalizer.mapDepopCondition('good')).toBe('used_good');
+      expect(normalizer.mapDepopCondition('used')).toBe('used_good');
+      expect(normalizer.mapDepopCondition('fair')).toBe('used_fair');
+      expect(normalizer.mapDepopCondition('worn')).toBe('used_fair');
+      expect(normalizer.mapDepopCondition('poor')).toBe('used_poor');
+      expect(normalizer.mapDepopCondition(null)).toBe('unspecified');
+      expect(normalizer.mapDepopCondition('unknown')).toBe('unspecified');
+    });
+  });
+
+  // Phase 4.0: Poshmark normalizer tests
+  describe('normalizePoshmark', () => {
+    it('should normalize Poshmark listing correctly', () => {
+      const rawListing = {
+        id: 'posh456',
+        title: 'Nike Air Jordan 1 Retro High OG Chicago',
+        price: 300,
+        description: 'NWT, brand new with tags, OG box included',
+        brand: 'Nike',
+        size: '11',
+        condition: 'nwt',
+        url: 'https://poshmark.com/listing/posh456',
+        sellerUsername: 'poshseller99',
+        sellerRating: 4.9,
+        sellerReviewCount: 200,
+        image: 'https://poshmark.com/img/posh456.jpg',
+      };
+
+      const normalized = normalizer.normalizePoshmark(rawListing);
+
+      expect(normalized.product.name).toBe('Nike Air Jordan 1 Retro High OG Chicago');
+      expect(normalized.product.brand).toBe('Nike');
+      expect(normalized.listing.price).toBe(300);
+      expect(normalized.listing.size_us_mens).toBe('11');
+      expect(normalized.listing.condition).toBe('new_in_box');
+      expect(normalized.listing.type).toBe('sell');
+      expect(normalized.source.platform).toBe('Poshmark');
+      expect(normalized.source.url).toBe('https://poshmark.com/listing/posh456');
+      expect(normalized.source.is_authenticated).toBe(false);
+      expect(normalized.seller.name).toBe('poshseller99');
+      expect(normalized.seller.rating).toBe(4.9);
+      expect(normalized.seller.reviewCount).toBe(200);
+    });
+
+    it('should map Poshmark conditions correctly', () => {
+      expect(normalizer.mapPoshmarkCondition('nwt')).toBe('new_in_box');
+      expect(normalizer.mapPoshmarkCondition('new with tags')).toBe('new_in_box');
+      expect(normalizer.mapPoshmarkCondition('new')).toBe('new_in_box');
+      expect(normalizer.mapPoshmarkCondition('like new')).toBe('used_like_new');
+      expect(normalizer.mapPoshmarkCondition('gently used')).toBe('used_like_new');
+      expect(normalizer.mapPoshmarkCondition('good')).toBe('used_good');
+      expect(normalizer.mapPoshmarkCondition('good pre-owned')).toBe('used_good');
+      expect(normalizer.mapPoshmarkCondition('fair')).toBe('used_fair');
+      expect(normalizer.mapPoshmarkCondition('poor')).toBe('used_poor');
+      expect(normalizer.mapPoshmarkCondition(null)).toBe('unspecified');
+      expect(normalizer.mapPoshmarkCondition('unknown')).toBe('unspecified');
+    });
+  });
 });
