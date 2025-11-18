@@ -20,9 +20,7 @@ import { PLATFORM_CONFIGS } from './config/platforms.js';
 import { ValidationError } from './utils/errors.js';
 
 Actor.main(async () => {
-  logger.info(
-    '🚀 Grail Hunter actor started - Phase 3: StockX Integration & Advanced Intelligence'
-  );
+  logger.info('🚀 Grail Hunter actor started - Phase 4.1: Beta Platforms (Mercari + OfferUp)');
 
   try {
     const rawInput = await Actor.getInput();
@@ -58,7 +56,7 @@ Actor.main(async () => {
       enableStockX: input.enableStockX,
     });
 
-    const scraperManager = new ScraperManager(runtimePlatformConfigs);
+    const scraperManager = new ScraperManager(runtimePlatformConfigs, input);
     const normalizer = new DataNormalizer();
     const parser = new SneakerParser();
     const filter = new ListingFilter();

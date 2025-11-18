@@ -451,4 +451,246 @@ describe('DataNormalizer', () => {
       expect(normalized.listing.price).toBe(85);
     });
   });
+
+  // Phase 4.1: Beta Platforms (Mercari, OfferUp)
+  describe('normalizeMercari', () => {
+    it('should normalize Mercari listing with all fields', () => {
+      const rawListing = {
+        id: 'merc123',
+        title: 'Air Jordan 1 Retro High OG Chicago',
+        price: 280,
+        description: 'Brand new with tags, never worn',
+        brand: 'Nike',
+        size: '11',
+        condition: 'new',
+        url: 'https://mercari.com/us/item/merc123',
+        sellerName: 'sneakerdealer',
+        sellerRating: 4.9,
+        sellerReviewCount: 200,
+        image: 'https://mercari.com/images/merc123.jpg',
+      };
+
+      const normalized = normalizer.normalizeMercari(rawListing);
+
+      expect(normalized.product.name).toBe('Air Jordan 1 Retro High OG Chicago');
+      expect(normalized.product.brand).toBe('Nike');
+      expect(normalized.listing.price).toBe(280);
+      expect(normalized.listing.size_us_mens).toBe('11');
+      expect(normalized.listing.condition).toBe('new_in_box');
+      expect(normalized.listing.type).toBe('sell');
+      expect(normalized.source.platform).toBe('Mercari');
+      expect(normalized.source.url).toBe('https://mercari.com/us/item/merc123');
+      expect(normalized.source.id).toBe('merc123');
+      expect(normalized.source.is_authenticated).toBe(false);
+      expect(normalized.seller.name).toBe('sneakerdealer');
+      expect(normalized.seller.rating).toBe(4.9);
+      expect(normalized.seller.reviewCount).toBe(200);
+      expect(normalized.metadata.betaPlatform).toBe(true);
+      expect(normalized.metadata.riskLevel).toBe('medium-high');
+    });
+
+    it('should handle alternative Mercari field names', () => {
+      const rawListing = {
+        itemId: 'merc456',
+        productName: 'Nike Dunk Low Panda',
+        priceAmount: 180,
+        itemCondition: 'like new',
+        productUrl: 'https://mercari.com/us/item/merc456',
+        photo: 'https://mercari.com/images/merc456.jpg',
+      };
+
+      const normalized = normalizer.normalizeMercari(rawListing);
+
+      expect(normalized.product.name).toBe('Nike Dunk Low Panda');
+      expect(normalized.listing.price).toBe(180);
+      expect(normalized.listing.condition).toBe('used_like_new');
+      expect(normalized.source.id).toBe('merc456');
+      expect(normalized.source.url).toBe('https://mercari.com/us/item/merc456');
+      expect(normalized.source.imageUrl).toBe('https://mercari.com/images/merc456.jpg');
+    });
+
+    it('should handle nested seller object', () => {
+      const rawListing = {
+        id: 'merc789',
+        title: 'Yeezy Boost 350',
+        price: 250,
+        seller: {
+          name: 'yeezy_seller',
+          rating: 4.8,
+          reviewCount: 150,
+          verified: true,
+        },
+      };
+
+      const normalized = normalizer.normalizeMercari(rawListing);
+
+      expect(normalized.seller.name).toBe('yeezy_seller');
+      expect(normalized.seller.rating).toBe(4.8);
+      expect(normalized.seller.reviewCount).toBe(150);
+      expect(normalized.seller.verified).toBe(true);
+    });
+
+    it('should handle missing optional fields', () => {
+      const rawListing = {
+        id: 'merc999',
+        title: 'Nike Air Max',
+        price: 100,
+      };
+
+      const normalized = normalizer.normalizeMercari(rawListing);
+
+      expect(normalized.product.name).toBe('Nike Air Max');
+      expect(normalized.listing.price).toBe(100);
+      expect(normalized.listing.condition).toBe('unspecified');
+      expect(normalized.seller.name).toBeNull();
+      expect(normalized.seller.rating).toBeNull();
+    });
+
+    it('should map Mercari-specific conditions correctly', () => {
+      const testCases = [
+        { input: 'new with tags', expected: 'new_in_box' },
+        { input: 'excellent', expected: 'used_like_new' },
+        { input: 'good', expected: 'used_good' },
+        { input: 'fair', expected: 'used_fair' },
+        { input: 'poor', expected: 'used_poor' },
+      ];
+
+      testCases.forEach(({ input, expected }) => {
+        const rawListing = {
+          id: 'test',
+          title: 'Test Sneaker',
+          price: 100,
+          condition: input,
+        };
+        const normalized = normalizer.normalizeMercari(rawListing);
+        expect(normalized.listing.condition).toBe(expected);
+      });
+    });
+  });
+
+  describe('normalizeOfferUp', () => {
+    it('should normalize OfferUp listing with all fields including _details', () => {
+      const rawListing = {
+        listingId: 'offer123',
+        title: 'Air Jordan 1 Shadow',
+        price: 220,
+        formattedPrice: '$220',
+        description: 'Good condition',
+        size: '10',
+        condition: 'good',
+        url: 'https://offerup.com/item/detail/offer123',
+        image: 'https://offerup.com/photos/offer123.jpg',
+        locationName: 'Los Angeles, CA',
+        _details: {
+          description: 'Good condition, worn a few times. OG box included.',
+          condition: 'good',
+          seller: {
+            name: 'john_doe',
+            rating: 4.7,
+            reviewCount: 85,
+            verified: true,
+          },
+          location: {
+            name: 'Los Angeles, CA',
+            zipCode: '90001',
+          },
+          photos: ['https://offerup.com/photos/offer123.jpg'],
+        },
+      };
+
+      const normalized = normalizer.normalizeOfferUp(rawListing);
+
+      expect(normalized.product.name).toBe('Air Jordan 1 Shadow');
+      expect(normalized.listing.price).toBe(220);
+      expect(normalized.listing.size_us_mens).toBe('10');
+      expect(normalized.listing.condition).toBe('used_good');
+      expect(normalized.listing.type).toBe('sell');
+      expect(normalized.listing.currency).toBe('USD');
+      expect(normalized.source.platform).toBe('OfferUp');
+      expect(normalized.source.url).toBe('https://offerup.com/item/detail/offer123');
+      expect(normalized.source.id).toBe('offer123');
+      expect(normalized.source.is_authenticated).toBe(false);
+      expect(normalized.seller.name).toBe('john_doe');
+      expect(normalized.seller.rating).toBe(4.7);
+      expect(normalized.seller.reviewCount).toBe(85);
+      expect(normalized.seller.verified).toBe(true);
+      expect(normalized.metadata.betaPlatform).toBe(true);
+      expect(normalized.metadata.riskLevel).toBe('medium-high');
+      expect(normalized.metadata.location).toBe('Los Angeles, CA');
+    });
+
+    it('should handle listings without _details object', () => {
+      const rawListing = {
+        id: 'offer456',
+        title: 'Yeezy Boost 350',
+        price: 300,
+        condition: 'new',
+        listingUrl: 'https://offerup.com/item/detail/offer456',
+        seller: {
+          name: 'yeezy_fan',
+          rating: 4.9,
+        },
+      };
+
+      const normalized = normalizer.normalizeOfferUp(rawListing);
+
+      expect(normalized.product.name).toBe('Yeezy Boost 350');
+      expect(normalized.listing.price).toBe(300);
+      expect(normalized.listing.condition).toBe('new_in_box');
+      expect(normalized.source.id).toBe('offer456');
+      expect(normalized.source.url).toBe('https://offerup.com/item/detail/offer456');
+      expect(normalized.seller.name).toBe('yeezy_fan');
+      expect(normalized.seller.rating).toBe(4.9);
+    });
+
+    it('should handle formattedPrice parsing', () => {
+      const rawListing = {
+        listingId: 'offer789',
+        title: 'Nike Dunk',
+        formattedPrice: '$150',
+      };
+
+      const normalized = normalizer.normalizeOfferUp(rawListing);
+
+      expect(normalized.listing.price).toBe(150);
+    });
+
+    it('should handle missing optional fields', () => {
+      const rawListing = {
+        id: 'offer999',
+        title: 'Adidas Sneaker',
+        price: 80,
+      };
+
+      const normalized = normalizer.normalizeOfferUp(rawListing);
+
+      expect(normalized.product.name).toBe('Adidas Sneaker');
+      expect(normalized.listing.price).toBe(80);
+      expect(normalized.listing.condition).toBe('unspecified');
+      expect(normalized.seller.name).toBeNull();
+      expect(normalized.metadata.location).toBeNull();
+    });
+
+    it('should map OfferUp-specific conditions correctly', () => {
+      const testCases = [
+        { input: 'new', expected: 'new_in_box' },
+        { input: 'like new', expected: 'used_like_new' },
+        { input: 'excellent', expected: 'used_like_new' },
+        { input: 'good', expected: 'used_good' },
+        { input: 'fair', expected: 'used_fair' },
+        { input: 'poor', expected: 'used_poor' },
+      ];
+
+      testCases.forEach(({ input, expected }) => {
+        const rawListing = {
+          id: 'test',
+          title: 'Test Sneaker',
+          price: 100,
+          condition: input,
+        };
+        const normalized = normalizer.normalizeOfferUp(rawListing);
+        expect(normalized.listing.condition).toBe(expected);
+      });
+    });
+  });
 });

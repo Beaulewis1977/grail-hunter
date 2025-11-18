@@ -1,5 +1,5 @@
 {
-  "title": "Grail Hunter - Phase 4.0: Safer Marketplaces (Depop + Poshmark)",
+  "title": "Grail Hunter - Phase 4.1: Beta Platforms (Mercari + OfferUp)",
   "description": "Monitor 5 platforms (Grailed, eBay, StockX, Depop, Poshmark) for sneaker listings with deal scoring, price tracking, advanced filters, and real-time alerts.",
   "type": "object",
   "schemaVersion": 1,
@@ -73,12 +73,20 @@
     "platforms": {
       "title": "Platforms",
       "type": "array",
-      "description": "Select one or more platforms to search. Phase 4.0 added Depop and Poshmark as safer marketplace options. Leave empty to fall back to the single 'Legacy Single Platform' field.",
+      "description": "Select one or more platforms to search. Phase 4.0 added Depop and Poshmark as safer marketplaces. Phase 4.1 added Mercari and OfferUp as BETA platforms (requires betaPlatformsEnabled + per-platform toggles). Leave empty to fall back to the single 'Legacy Single Platform' field.",
       "editor": "select",
       "items": {
         "type": "string",
-        "enum": ["grailed", "ebay", "stockx", "depop", "poshmark"],
-        "enumTitles": ["Grailed", "eBay", "StockX (⚠️  HIGH RISK)", "Depop", "Poshmark"]
+        "enum": ["grailed", "ebay", "stockx", "depop", "poshmark", "mercari", "offerup"],
+        "enumTitles": [
+          "Grailed",
+          "eBay",
+          "StockX (⚠️  HIGH RISK)",
+          "Depop",
+          "Poshmark",
+          "Mercari (🧪 BETA)",
+          "OfferUp (🧪 BETA)"
+        ]
       },
       "uniqueItems": true
     },
@@ -189,6 +197,24 @@
       "title": "Enable StockX Scraping (⚠️  HIGH RISK)",
       "type": "boolean",
       "description": "WARNING: StockX actively enforces ToS. Scraping may result in IP blocks or legal action. Use at your own risk.",
+      "default": false
+    },
+    "betaPlatformsEnabled": {
+      "title": "Enable Beta Platforms (🧪 EXPERIMENTAL)",
+      "type": "boolean",
+      "description": "Global toggle to enable beta platforms (Mercari, OfferUp). Beta platforms have higher risk of blocking, anti-bot detection, and may fail more frequently. You must also enable individual beta platforms below. Default: false (disabled).",
+      "default": false
+    },
+    "enableMercari": {
+      "title": "Enable Mercari (🧪 BETA)",
+      "type": "boolean",
+      "description": "Enable Mercari scraping. Requires betaPlatformsEnabled=true. WARNING: Mercari has aggressive anti-bot measures and the underlying actor may be unreliable. Scraping may fail frequently. Use at your own risk. Default: false.",
+      "default": false
+    },
+    "enableOfferUp": {
+      "title": "Enable OfferUp (🧪 BETA)",
+      "type": "boolean",
+      "description": "Enable OfferUp scraping. Requires betaPlatformsEnabled=true and a US ZIP code for location-based search. WARNING: OfferUp uses Cloudflare protection and browser automation, which may be slow and fail frequently. Use at your own risk. Default: false.",
       "default": false
     }
   },

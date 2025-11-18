@@ -8,13 +8,16 @@ import { EbayScraper } from './ebay.js';
 import { StockXScraper } from './stockx.js';
 import { DepopScraper } from './depop.js';
 import { PoshmarkScraper } from './poshmark.js';
+import { MercariScraper } from './mercari.js';
+import { OfferUpScraper } from './offerup.js';
 import { PLATFORM_CONFIGS } from '../config/platforms.js';
 import { PlatformScrapingError } from '../utils/errors.js';
 import { logger } from '../utils/logger.js';
 
 export class ScraperManager {
-  constructor(platformConfigs = PLATFORM_CONFIGS) {
+  constructor(platformConfigs = PLATFORM_CONFIGS, userInput = {}) {
     this.platformConfigs = platformConfigs;
+    this.userInput = userInput; // Store user input for beta platform toggles
     this.scrapers = {};
     this.initializeScrapers();
   }
@@ -44,7 +47,28 @@ export class ScraperManager {
       this.scrapers.poshmark = new PoshmarkScraper(this.platformConfigs.poshmark);
     }
 
-    logger.info('Initialized scrapers', { platforms: Object.keys(this.scrapers) });
+    // Phase 4.1: Beta Platforms (Higher Risk)
+    // Beta platforms require explicit opt-in via betaPlatformsEnabled + per-platform toggles
+    const betaPlatformsEnabled = this.userInput.betaPlatformsEnabled === true;
+
+    if (betaPlatformsEnabled && this.userInput.enableMercari === true) {
+      this.scrapers.mercari = new MercariScraper(this.platformConfigs.mercari);
+      logger.warn(
+        '🧪 Mercari scraper enabled (BETA) - Expect higher failure rates and anti-bot blocking'
+      );
+    }
+
+    if (betaPlatformsEnabled && this.userInput.enableOfferUp === true) {
+      this.scrapers.offerup = new OfferUpScraper(this.platformConfigs.offerup);
+      logger.warn(
+        '🧪 OfferUp scraper enabled (BETA) - Expect higher failure rates, Cloudflare challenges, and slower scraping'
+      );
+    }
+
+    logger.info('Initialized scrapers', {
+      platforms: Object.keys(this.scrapers),
+      betaPlatformsEnabled,
+    });
   }
 
   /**
