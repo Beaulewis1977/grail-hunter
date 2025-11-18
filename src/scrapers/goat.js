@@ -10,6 +10,7 @@ import { Actor } from 'apify';
 import { BaseScraper } from './base.js';
 import { ActorCallError } from '../utils/errors.js';
 import { logger } from '../utils/logger.js';
+import { fetchAllDatasetItems } from '../utils/pagination.js';
 
 export class GoatScraper extends BaseScraper {
   constructor(config) {
@@ -69,18 +70,7 @@ export class GoatScraper extends BaseScraper {
       }
 
       // Fetch all results from the dataset with pagination
-      const dataset = await Actor.apifyClient.dataset(run.defaultDatasetId);
-      const allItems = [];
-      let offset = 0;
-      const limit = 1000;
-
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const page = await dataset.listItems({ limit, offset });
-        if (page?.items?.length) allItems.push(...page.items);
-        if (!page?.items?.length || page.items.length < limit) break;
-        offset += limit;
-      }
+      const allItems = await fetchAllDatasetItems(run.defaultDatasetId);
 
       // Reset failure count on success
       this.failureCount = 0;

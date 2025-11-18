@@ -8,6 +8,7 @@ import { Actor } from 'apify';
 import { BaseScraper } from './base.js';
 import { ActorCallError } from '../utils/errors.js';
 import { logger } from '../utils/logger.js';
+import { fetchAllDatasetItems } from '../utils/pagination.js';
 
 export class StockXScraper extends BaseScraper {
   constructor(config) {
@@ -90,18 +91,7 @@ export class StockXScraper extends BaseScraper {
       }
 
       // Fetch results from dataset
-      const dataset = await Actor.apifyClient.dataset(run.defaultDatasetId);
-      const allItems = [];
-      let offset = 0;
-      const limit = 1000;
-
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const page = await dataset.listItems({ limit, offset });
-        if (page?.items?.length) allItems.push(...page.items);
-        if (!page?.items?.length || page.items.length < limit) break;
-        offset += limit;
-      }
+      const allItems = await fetchAllDatasetItems(run.defaultDatasetId);
 
       logger.info(`StockX actor scraping completed: ${allItems.length} items`, { keywords });
       return allItems;

@@ -248,7 +248,9 @@ describe('DatasetIngestionScraper', () => {
     });
 
     it('should return empty array when dataset access fails', async () => {
-      mockApifyClientDataset.mockRejectedValue(new Error('Access denied'));
+      // Mock dataset.listItems() to throw an error (simulating access denied, network failure, etc.)
+      mockDatasetListItems.mockRejectedValue(new Error('Access denied'));
+      mockApifyClientDataset.mockReturnValue({ listItems: mockDatasetListItems });
 
       const scraper = new DatasetIngestionScraper({
         name: 'GOAT Access Error',
@@ -259,6 +261,8 @@ describe('DatasetIngestionScraper', () => {
       const results = await scraper.scrape({});
 
       expect(results).toEqual([]);
+      // Verify that listItems was actually called and rejected
+      expect(mockDatasetListItems).toHaveBeenCalled();
     });
 
     it('should throw validation error when datasetId is missing', () => {
@@ -293,8 +297,7 @@ describe('DatasetIngestionScraper', () => {
       mockDatasetListItems.mockResolvedValue({ items: mockGoatIngestionData });
     });
 
-    // TODO: Fix mock interference issue - test logic is correct but mock setup needs debugging
-    it.skip('should use platformLabel when provided', async () => {
+    it('should use platformLabel when provided', async () => {
       const scraper = new DatasetIngestionScraper({
         name: 'GOAT Custom Label',
         datasetId: 'dataset_labeled',
@@ -308,8 +311,7 @@ describe('DatasetIngestionScraper', () => {
       expect(results[0]._ingestionSource.platformLabel).toBe('GOAT Q4 2025 Market Data');
     });
 
-    // TODO: Same mock interference issue as above
-    it.skip('should fallback to platform name when platformLabel not provided', async () => {
+    it('should fallback to platform name when platformLabel not provided', async () => {
       const scraper = new DatasetIngestionScraper({
         name: 'GOAT No Label',
         datasetId: 'dataset_nolabel',

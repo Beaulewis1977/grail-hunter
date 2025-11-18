@@ -101,8 +101,9 @@ export class ScraperManager {
         }
 
         // Create a unique scraper ID for this dataset
-        const datasetIdPrefix = String(datasetConfig.datasetId).substring(0, 8);
-        const scraperId = `${datasetConfig.platform}_ingestion_${datasetIdPrefix}`;
+        // Use full datasetId sanitized to prevent collisions (e.g., "dataset_123" vs "dataset_456")
+        const sanitizedDatasetId = String(datasetConfig.datasetId).replace(/[^a-zA-Z0-9_-]/g, '_');
+        const scraperId = `${datasetConfig.platform}_ingestion_${sanitizedDatasetId}`;
 
         this.scrapers[scraperId] = new DatasetIngestionScraper({
           name: datasetConfig.platformLabel || `${datasetConfig.platform}_ingestion`,

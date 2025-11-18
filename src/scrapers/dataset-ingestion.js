@@ -10,6 +10,7 @@
 import { Actor } from 'apify';
 import { BaseScraper } from './base.js';
 import { logger } from '../utils/logger.js';
+import { fetchAllDatasetItems } from '../utils/pagination.js';
 
 export class DatasetIngestionScraper extends BaseScraper {
   constructor(config) {
@@ -45,29 +46,10 @@ export class DatasetIngestionScraper extends BaseScraper {
         return [];
       }
 
-      // Fetch all items from the dataset with pagination
-      const allItems = [];
-      let offset = 0;
-      const limit = 1000;
-
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const page = await dataset.listItems({ limit, offset });
-
-        if (!page?.items?.length) {
-          break;
-        }
-
-        // Validate and filter items based on schema
-        const validItems = page.items.filter((item) => this.validateIngestionRecord(item));
-        allItems.push(...validItems);
-
-        if (page.items.length < limit) {
-          break;
-        }
-
-        offset += limit;
-      }
+      // Fetch all items from the dataset with pagination and validation
+      const allItems = await fetchAllDatasetItems(this.datasetId, {
+        filter: (item) => this.validateIngestionRecord(item),
+      });
 
       logger.info(`Ingested ${allItems.length} listings from dataset`, {
         datasetId: this.datasetId,
