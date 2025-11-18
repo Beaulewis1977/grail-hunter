@@ -51,6 +51,10 @@ export class DataNormalizer {
         return this.normalizeEbay(rawListing);
       case 'stockx':
         return this.normalizeStockX(rawListing);
+      case 'depop':
+        return this.normalizeDepop(rawListing);
+      case 'poshmark':
+        return this.normalizePoshmark(rawListing);
       default:
         logger.warn(`Unknown platform: ${platformTrimmed}, using generic normalizer`);
         return this.normalizeGeneric(rawListing, platformTrimmed);
@@ -262,6 +266,152 @@ export class DataNormalizer {
     };
   }
 
+  /**
+   * Normalize Depop listing
+   * Phase 4.0: Safer Marketplaces
+   * @param {object} raw - Raw Depop data from lexis-solutions/depop-scraper
+   * @returns {object} Normalized listing
+   */
+  normalizeDepop(raw) {
+    const title = raw.title || raw.name || raw.description || '';
+    const currentPrice = this.parsePrice(raw.price || raw.priceAmount);
+
+    // Extract tags from description and available metadata
+    const tags = this.extractTags(raw.description || title);
+
+    // Depop seller ratings (typically 0-5 stars)
+    const sellerRating = raw.sellerRating || raw.seller?.rating || null;
+    const sellerReviewCount = raw.sellerReviewCount || raw.seller?.reviewCount || null;
+
+    return {
+      product: {
+        name: title || 'Unknown',
+        brand: raw.brand || this.extractBrand(title),
+        model: this.extractModel(title),
+        colorway: null,
+        sku: null,
+        releaseYear: null,
+      },
+      listing: {
+        price: currentPrice,
+        currency: raw.currency || 'USD',
+        size_us_mens: raw.size || null,
+        size_us_womens: null,
+        size_eu: null,
+        condition: this.mapDepopCondition(raw.condition),
+        tags,
+        type: 'sell', // Depop is peer-to-peer, always fixed-price
+        description: this.truncateDescription(raw.description || ''),
+      },
+      source: {
+        platform: 'Depop',
+        url: raw.url || raw.productUrl || '',
+        id: String(raw.id || raw.productId || ''),
+        is_authenticated: false,
+        imageUrl: raw.image || raw.imageUrl || raw.images?.[0] || null,
+      },
+      seller: {
+        name: raw.sellerUsername || raw.seller?.username || null,
+        rating: sellerRating,
+        reviewCount: sellerReviewCount,
+        verified: raw.seller?.verified || false,
+      },
+      scrape: {
+        timestamp: new Date().toISOString(),
+        runId: process.env.APIFY_ACT_RUN_ID || 'local',
+        version: '1.0.0',
+      },
+      metadata: {
+        dealScore: {
+          isBelowMarket: false,
+          marketValue: null,
+          savingsPercentage: null,
+          savingsAmount: null,
+          dealQuality: null,
+        },
+        priceChange: {
+          hasDrop: false,
+          previousPrice: null,
+          currentPrice,
+          dropPercent: null,
+        },
+      },
+    };
+  }
+
+  /**
+   * Normalize Poshmark listing
+   * Phase 4.0: Safer Marketplaces
+   * @param {object} raw - Raw Poshmark data from lexis-solutions/poshmark-scraper
+   * @returns {object} Normalized listing
+   */
+  normalizePoshmark(raw) {
+    const title = raw.title || raw.name || '';
+    const currentPrice = this.parsePrice(raw.price || raw.priceAmount);
+
+    // Extract tags from description and available metadata
+    const tags = this.extractTags(raw.description || title);
+
+    // Poshmark seller info
+    const sellerRating = raw.sellerRating || raw.seller?.rating || null;
+    const sellerReviewCount = raw.sellerReviewCount || raw.seller?.reviewCount || null;
+
+    return {
+      product: {
+        name: title || 'Unknown',
+        brand: raw.brand || this.extractBrand(title),
+        model: this.extractModel(title),
+        colorway: null,
+        sku: null,
+        releaseYear: null,
+      },
+      listing: {
+        price: currentPrice,
+        currency: raw.currency || 'USD',
+        size_us_mens: raw.size || null,
+        size_us_womens: null,
+        size_eu: null,
+        condition: this.mapPoshmarkCondition(raw.condition),
+        tags,
+        type: 'sell', // Poshmark is peer-to-peer, always fixed-price
+        description: this.truncateDescription(raw.description || ''),
+      },
+      source: {
+        platform: 'Poshmark',
+        url: raw.url || raw.productUrl || '',
+        id: String(raw.id || raw.listingId || ''),
+        is_authenticated: false,
+        imageUrl: raw.image || raw.imageUrl || raw.pictures?.[0] || null,
+      },
+      seller: {
+        name: raw.sellerUsername || raw.seller?.username || null,
+        rating: sellerRating,
+        reviewCount: sellerReviewCount,
+        verified: raw.seller?.verified || false,
+      },
+      scrape: {
+        timestamp: new Date().toISOString(),
+        runId: process.env.APIFY_ACT_RUN_ID || 'local',
+        version: '1.0.0',
+      },
+      metadata: {
+        dealScore: {
+          isBelowMarket: false,
+          marketValue: null,
+          savingsPercentage: null,
+          savingsAmount: null,
+          dealQuality: null,
+        },
+        priceChange: {
+          hasDrop: false,
+          previousPrice: null,
+          currentPrice,
+          dropPercent: null,
+        },
+      },
+    };
+  }
+
   extractEbayIdFromUrl(url) {
     if (typeof url !== 'string') return null;
     const match = url.match(/\/(?:itm|p)\/(\d+)/);
@@ -451,6 +601,53 @@ export class DataNormalizer {
       'gently used': 'used_like_new',
       used: 'used_good',
       worn: 'used_fair',
+    };
+
+    return mapping[conditionStr] || 'unspecified';
+  }
+
+  /**
+   * Map Depop condition to standardized enum
+   * Phase 4.0: Safer Marketplaces
+   */
+  mapDepopCondition(condition) {
+    if (!condition || typeof condition !== 'string') return 'unspecified';
+
+    const conditionStr = condition.toLowerCase();
+    const mapping = {
+      new: 'new_in_box',
+      'brand new': 'new_in_box',
+      'new with tags': 'new_in_box',
+      'like new': 'used_like_new',
+      'gently used': 'used_like_new',
+      good: 'used_good',
+      used: 'used_good',
+      fair: 'used_fair',
+      worn: 'used_fair',
+      poor: 'used_poor',
+    };
+
+    return mapping[conditionStr] || 'unspecified';
+  }
+
+  /**
+   * Map Poshmark condition to standardized enum
+   * Phase 4.0: Safer Marketplaces
+   */
+  mapPoshmarkCondition(condition) {
+    if (!condition || typeof condition !== 'string') return 'unspecified';
+
+    const conditionStr = condition.toLowerCase();
+    const mapping = {
+      nwt: 'new_in_box', // New With Tags
+      'new with tags': 'new_in_box',
+      new: 'new_in_box',
+      'like new': 'used_like_new',
+      'gently used': 'used_like_new',
+      good: 'used_good',
+      'good pre-owned': 'used_good',
+      fair: 'used_fair',
+      poor: 'used_poor',
     };
 
     return mapping[conditionStr] || 'unspecified';

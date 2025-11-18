@@ -47,6 +47,31 @@ export const PLATFORM_CONFIGS = {
     type: 'custom',
     enabled: false, // Phase 4
   },
+  // Phase 4.0: Safer Marketplaces
+  depop: {
+    name: 'Depop',
+    type: 'orchestrated',
+    actorId: 'lexis-solutions/depop-scraper',
+    rateLimit: 100, // requests per hour
+    cacheTimeout: 30, // minutes
+    isAuthenticated: false,
+    requiresProxy: true,
+    enabled: true,
+    baseUrl: 'https://www.depop.com',
+    riskLevel: 'low', // Safer marketplace
+  },
+  poshmark: {
+    name: 'Poshmark',
+    type: 'orchestrated',
+    actorId: 'lexis-solutions/poshmark-scraper',
+    rateLimit: 100,
+    cacheTimeout: 30,
+    isAuthenticated: false,
+    requiresProxy: true,
+    enabled: true,
+    baseUrl: 'https://poshmark.com',
+    riskLevel: 'low', // Safer marketplace
+  },
 };
 
 export const SUPPORTED_PLATFORMS = Object.keys(PLATFORM_CONFIGS).filter(

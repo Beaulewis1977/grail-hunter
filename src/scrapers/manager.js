@@ -6,6 +6,8 @@
 import { GrailedScraper } from './grailed.js';
 import { EbayScraper } from './ebay.js';
 import { StockXScraper } from './stockx.js';
+import { DepopScraper } from './depop.js';
+import { PoshmarkScraper } from './poshmark.js';
 import { PLATFORM_CONFIGS } from '../config/platforms.js';
 import { PlatformScrapingError } from '../utils/errors.js';
 import { logger } from '../utils/logger.js';
@@ -31,6 +33,15 @@ export class ScraperManager {
     if (this.platformConfigs.stockx?.enabled) {
       this.scrapers.stockx = new StockXScraper(this.platformConfigs.stockx);
       logger.warn('⚠️  StockX scraper enabled - HIGH RISK: Use at your own discretion');
+    }
+
+    // Phase 4.0: Safer Marketplaces
+    if (this.platformConfigs.depop?.enabled) {
+      this.scrapers.depop = new DepopScraper(this.platformConfigs.depop);
+    }
+
+    if (this.platformConfigs.poshmark?.enabled) {
+      this.scrapers.poshmark = new PoshmarkScraper(this.platformConfigs.poshmark);
     }
 
     logger.info('Initialized scrapers', { platforms: Object.keys(this.scrapers) });

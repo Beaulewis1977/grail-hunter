@@ -73,12 +73,12 @@
     "platforms": {
       "title": "Platforms",
       "type": "array",
-      "description": "Select one or more platforms to search. Leave empty to fall back to the single 'Legacy Single Platform' field.",
+      "description": "Select one or more platforms to search. Phase 4.0 added Depop and Poshmark as safer marketplace options. Leave empty to fall back to the single 'Legacy Single Platform' field.",
       "editor": "select",
       "items": {
         "type": "string",
-        "enum": ["grailed", "ebay", "stockx"],
-        "enumTitles": ["Grailed", "eBay", "StockX (⚠️  HIGH RISK)"]
+        "enum": ["grailed", "ebay", "stockx", "depop", "poshmark"],
+        "enumTitles": ["Grailed", "eBay", "StockX (⚠️  HIGH RISK)", "Depop", "Poshmark"]
       },
       "uniqueItems": true
     },
