@@ -12,8 +12,8 @@ Multi-platform sneaker monitoring and alert system built for sneaker collectors 
 
 ## 🎯 Overview
 
-**Grail Hunter** is a sophisticated Apify actor that aggregates sneaker listings from 4 major
-marketplaces and delivers real-time alerts when your target sneakers appear. Stop manually checking
+**Grail Hunter** is a sophisticated Apify actor that aggregates sneaker listings from 5 major
+platforms and delivers real-time alerts when your target sneakers appear. Stop manually checking
 multiple tabs—let Grail Hunter find the deals for you.
 
 This project is developed as part of the **Apify Challenge 2024-2025**.
@@ -24,7 +24,7 @@ This project is developed as part of the **Apify Challenge 2024-2025**.
 
 Grail Hunter monitors sneaker listings across multiple platforms in real-time:
 
-- 🔍 **Searches** for your desired sneakers across 4 major marketplaces simultaneously
+- 🔍 **Searches** for your desired sneakers across 5 platforms simultaneously
 - 📊 **Normalizes** disparate data into a unified, easy-to-use format
 - 🤖 **Parses** sneakerhead terminology (DS, VNDS, OG All, etc.) automatically
 - 🔔 **Alerts** you instantly via email, Slack, Discord, or webhooks when matches are found
@@ -41,8 +41,10 @@ Grail Hunter monitors these major sneaker marketplaces:
 | ------------------------- | ------------- | ------------ | --------------------------------------------- |
 | **eBay**                  | Marketplace   | ✅ Available | World's largest P2P marketplace               |
 | **Grailed**               | Marketplace   | ✅ Available | Premium streetwear and sneaker marketplace    |
+| **Depop**                 | Marketplace   | ✅ Available | Safer peer-to-peer marketplace (Phase 4.0)    |
+| **Poshmark**              | Marketplace   | ✅ Available | Safer peer-to-peer marketplace (Phase 4.0)    |
 | **StockX (⚠️ HIGH RISK)** | Authenticated | ⚠️ Optional  | Stock market for sneakers with authentication |
-| **GOAT (Planned)**        | Authenticated | 🚧 Phase 4   | Premium authenticated sneaker platform        |
+| **GOAT (Planned)**        | Authenticated | 🚧 Phase 4.2 | Premium authenticated sneaker platform        |
 
 > **⚠️ StockX WARNING**: StockX actively enforces their Terms of Service and uses advanced anti-bot
 > protection. Scraping may result in IP blocks or legal action. Use at your own risk and consider
@@ -353,9 +355,9 @@ npm install
 npm test
 
 # Expected output:
-# ✅ Test Suites: 11 passed
-# ✅ Tests: 75 passed
-# ✅ Coverage: 80%+
+# ✅ Test Suites: 21 passed
+# ✅ Tests: 155 passed
+# ✅ Coverage: 83%+
 
 # 4. Check code quality
 npm run lint
@@ -596,9 +598,9 @@ market data comparison and price tracking.
 npm test
 
 # Expected output:
-# Test Suites: 11 passed, 11 total
-# Tests:       75 passed, 75 total
-# Coverage:    80.34% statements, 80.66% lines
+# Test Suites: 21 passed, 21 total
+# Tests:       155 passed, 155 total
+# Coverage:    83.42% statements, 68.99% branches
 ```
 
 ### Run Specific Tests
@@ -782,15 +784,18 @@ grail-hunter/
 - ✅ Deduplication across runs
 - ✅ Webhook notifications
 - ✅ Dataset storage
-- ✅ Comprehensive test suite (75 tests, 80%+ coverage)
+- ✅ Comprehensive test suite (155 tests, 83%+ coverage)
 - ✅ Code quality tools (ESLint, Prettier, Husky)
 - ✅ Full documentation
 
 ### Coming in Future Phases
 
 - ✅ **Phase 2:** eBay integration (Complete)
-- ⏳ **Phase 3:** StockX integration + market value benchmarking
-- ⏳ **Phase 4:** GOAT integration + advanced features
+- ✅ **Phase 3:** StockX integration + market value benchmarking (Complete)
+- ✅ **Phase 3.x:** Advanced filters & monitoring (Complete)
+- ✅ **Phase 4.0:** Depop + Poshmark integration (Complete)
+- ⏳ **Phase 4.1:** Mercari + OfferUp (Beta platforms)
+- ⏳ **Phase 4.2:** GOAT integration + hybrid intelligence
 
 See [IMPLEMENTATION_STATUS.md](./IMPLEMENTATION_STATUS.md) for detailed status and
 [DEVELOPMENT_PHASES.md](./DEVELOPMENT_PHASES.md) for the complete roadmap.
@@ -943,4 +948,5 @@ For technical issues or questions:
 
 **Made with ❤️ for the sneaker community**
 
-**Status:** ✅ Phase 3.x Complete (Advanced Filters & Monitoring) | ⏳ Phase 4 In Planning
+**Status:** ✅ Phase 4.0 Complete (Safer Marketplaces: Depop + Poshmark) | ⏳ Phase 4.1-4.2 In
+Planning

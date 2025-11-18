@@ -1,47 +1,46 @@
-# Implementation Status - Phase 3 Complete
+# Implementation Status - Phase 4.0 Complete
 
-**Date:** November 13, 2025  
-**Version:** 0.3.0  
-**Branch:** `feature/phase-3-stockx-intelligence`  
-Phase 3 adds StockX integration, advanced deal scoring, and price tracking intelligence. **Status:**
-✅ **PRODUCTION READY** - 122 tests passing, 83%+ coverage, comprehensive Phase 3 features
+**Date:** November 18, 2025 **Version:** 0.4.0 **Branch:** `feature/phase-40-safer-marketplaces`
+Phase 4.0 adds Depop and Poshmark as safer marketplace alternatives. **Status:** ✅ **PRODUCTION
+READY** - 155 tests passing, 83.42% coverage, 5 platforms supported (Grailed, eBay, StockX, Depop,
+Poshmark)
 
 ---
 
 ## Roadmap Overview (Phase 3.x & Phase 4)
 
-The following phases are planned and not yet started at the time of this document:
+Phase status:
 
 - **Phase 3.x – Advanced Filters & Monitoring (No New Platforms):** ✅ **COMPLETE** - Hardened
   existing Grailed/eBay/StockX flows with advanced filters and sample presets. See details below.
-- **Phase 4.0 – Safer Marketplaces (Depop + Poshmark):** Add Depop and Poshmark as safer platforms
-  using orchestrated actors/APIs. See `audit/COVERAGE_ROADMAP.md` and
-  `prompts/phase-40-agent-prompt.md`.
-- **Phase 4.1 – Beta Platforms (Mercari, OfferUp):** Introduce Mercari and OfferUp as opt-in beta
-  platforms, controlled via `betaPlatformsEnabled`, `enableMercari`, and `enableOfferUp`. See
-  `audit/COVERAGE_ROADMAP.md` and `prompts/phase-41-agent-prompt.md`.
-- **Phase 4.2 – GOAT & StockX Hybrid Intelligence:** Implement GOAT/StockX using a hybrid of
-  orchestrated actors (Pattern A) and dataset ingestion (Pattern C), with both platforms disabled by
-  default and clearly documented as high risk. See `audit/COVERAGE_ROADMAP.md` and
+- **Phase 4.0 – Safer Marketplaces (Depop + Poshmark):** ✅ **COMPLETE** - Added Depop and Poshmark
+  as safer platforms using orchestrated actors. See details below.
+- **Phase 4.1 – Beta Platforms (Mercari, OfferUp):** ⏳ **PLANNED** - Introduce Mercari and OfferUp
+  as opt-in beta platforms, controlled via `betaPlatformsEnabled`, `enableMercari`, and
+  `enableOfferUp`. See `audit/COVERAGE_ROADMAP.md` and `prompts/phase-41-agent-prompt.md`.
+- **Phase 4.2 – GOAT & StockX Hybrid Intelligence:** ⏳ **PLANNED** - Implement GOAT/StockX using a
+  hybrid of orchestrated actors (Pattern A) and dataset ingestion (Pattern C), with both platforms
+  disabled by default and clearly documented as high risk. See `audit/COVERAGE_ROADMAP.md` and
   `prompts/phase-42-agent-prompt.md`.
 
 All four phases are considered **must-ship** for the Apify Challenge submission.
 
 ## Executive Summary
 
-Phase 3 of the Grail Hunter actor is **complete and production-ready**. This implementation delivers
-advanced intelligence features including StockX integration (with high-risk safeguards), market
-value benchmarking across 152 sneakers, automated deal scoring, and price tracking with drop
-alerts—all on top of the existing multi-platform Grailed and eBay monitoring.
+Phase 4.0 of the Grail Hunter actor is **complete and production-ready**. This implementation adds
+Depop and Poshmark as safer peer-to-peer marketplace alternatives, bringing the total platform count
+to 5 (Grailed, eBay, StockX, Depop, Poshmark). Both new platforms use orchestrated Apify actors for
+reliable scraping with low anti-bot risk, and seamlessly integrate with all existing Phase 3.x
+advanced filters.
 
 ### Key Achievements
 
-- ✅ **122 unit and integration tests** - all passing after recent fixes
-- ✅ **83.2% code coverage** - Exceeding 80% target
-- ✅ **StockX Integration** - Minimal API scraper with graceful fallback and ToS compliance warnings
-- ✅ **Deal Scoring Engine** - 152-sneaker market value database with configurable thresholds
-- ✅ **Price Tracking** - 30-day history with automatic drop detection (≥10% configurable)
-- ✅ **Enhanced Notifications** - Deal highlights and price drop summaries in webhooks
+- ✅ **155 unit and integration tests** - all passing with comprehensive coverage
+- ✅ **83.42% code coverage** - Maintained above 80% target
+- ✅ **5 Platforms Supported** - Grailed, eBay, StockX, Depop, Poshmark
+- ✅ **Safer Marketplaces** - Depop and Poshmark marked as low-risk alternatives
+- ✅ **Phase 3.x Compatibility** - All advanced filters work with new platforms
+- ✅ **Orchestrated Actors** - Pattern A implementation for both platforms
 - ✅ **Production-quality error handling** - Graceful degradation and comprehensive logging
 
 ---
@@ -141,6 +140,212 @@ Coverage: 83.2% (maintained)
 3. `feat(phase-3x): add example configuration presets`
 4. `test(phase-3x): add comprehensive tests for advanced filters`
 5. `docs(phase-3x): update README and implementation status`
+
+---
+
+## Phase 4.0: Safer Marketplaces (Depop + Poshmark) ✅
+
+**Date:** November 18, 2025 **Branch:** `feature/phase-40-safer-marketplaces` **GitHub Issue:**
+[#14 - Phase 4.0: Safer Marketplaces](https://github.com/Beaulewis1977/grail-hunter/issues/14)
+**Status:** ✅ **COMPLETE**
+
+### Phase 4.0 Overview
+
+Phase 4.0 adds Depop and Poshmark as safer peer-to-peer marketplace alternatives to the existing
+platform lineup. Both platforms have lower anti-scraping risk compared to StockX and provide quality
+sneaker listings with active seller communities.
+
+### Features Delivered in Phase 4.0
+
+#### 1. Depop Scraper ✅
+
+**File:** `src/scrapers/depop.js`
+
+- Orchestrated scraper using `lexis-solutions/depop-scraper` Apify actor
+- Pattern A implementation (Actor.call + dataset pagination)
+- Handles search queries, max results, and proxy configuration
+- Graceful error handling with ActorCallError
+- Conservative rate limits (100 req/hr) and 30-min cache timeout
+
+**Test Coverage:** `tests/integration/depop_scraper.test.js` - 4 integration test cases
+
+#### 2. Poshmark Scraper ✅
+
+**File:** `src/scrapers/poshmark.js`
+
+- Orchestrated scraper using `lexis-solutions/poshmark-scraper` Apify actor
+- Mirrors Depop implementation for consistency
+- Same conservative configuration and error handling approach
+- Registered in ScraperManager with conditional enablement
+
+**Test Coverage:** `tests/integration/poshmark_scraper.test.js` - 4 integration test cases
+
+#### 3. Data Normalizers ✅
+
+**File:** `src/core/normalizer.js`
+
+Added two new normalizer methods:
+
+- **`normalizeDepop()`** (lines 275-340):
+  - Maps Depop data to unified schema
+  - Extracts seller rating and review count for Phase 3.x filter compatibility
+  - Sets `listing.type` to 'sell' (peer-to-peer, fixed-price)
+  - Populates `listing.tags` from description parsing
+  - Sets `source.is_authenticated` to false
+  - Handles platform-specific condition terminology
+
+- **`normalizePoshmark()`** (lines 342-410):
+  - Similar structure to Depop normalizer
+  - Handles Poshmark-specific fields (sellerUsername, sellerRating, sellerReviewCount)
+  - Maps "NWT" (New With Tags) and other Poshmark condition terms
+  - Ensures Phase 3.x advanced filters work seamlessly
+
+**Condition Mapping Functions:**
+
+- **`mapDepopCondition()`** (lines 613-634): Maps 9 Depop condition terms to standardized enum
+- **`mapPoshmarkCondition()`** (lines 636-654): Maps 10 Poshmark condition terms including "NWT"
+
+**Test Coverage:** `tests/unit/normalizer.test.js` - Added 10 new test cases (5 per platform) with
+34 assertions total
+
+#### 4. Platform Configuration ✅
+
+**File:** `src/config/platforms.js`
+
+Added two new platform configs:
+
+```javascript
+depop: {
+  name: 'Depop',
+  type: 'orchestrated',
+  actorId: 'lexis-solutions/depop-scraper',
+  rateLimit: 100,
+  cacheTimeout: 30,
+  isAuthenticated: false,
+  requiresProxy: true,
+  enabled: true,
+  baseUrl: 'https://www.depop.com',
+  riskLevel: 'low', // Safer marketplace
+},
+poshmark: {
+  name: 'Poshmark',
+  type: 'orchestrated',
+  actorId: 'lexis-solutions/poshmark-scraper',
+  rateLimit: 100,
+  cacheTimeout: 30,
+  isAuthenticated: false,
+  requiresProxy: true,
+  enabled: true,
+  baseUrl: 'https://poshmark.com',
+  riskLevel: 'low', // Safer marketplace
+}
+```
+
+#### 5. Scraper Manager Integration ✅
+
+**File:** `src/scrapers/manager.js`
+
+- Imported both new scrapers
+- Registered conditionally in `initializeScrapers()` based on platform config
+- Both scrapers integrate seamlessly with existing multi-platform architecture
+- Graceful degradation maintained (if one platform fails, others continue)
+
+#### 6. Input Schema Updates ✅
+
+**File:** `.actor/input_schema.json`
+
+- Added `"depop"` and `"poshmark"` to `platforms` enum (line 80)
+- Added enum titles: "Depop" and "Poshmark" (line 81)
+- Updated description to mention Phase 4.0 safer marketplace options (line 76)
+- No risk warnings added (unlike StockX which has "⚠️ HIGH RISK" label)
+
+### Phase 4.0 Implementation Details
+
+**Phase 3.x Compatibility:**
+
+All Phase 3.x advanced filters work seamlessly with Depop and Poshmark:
+
+- ✅ `authenticatedOnly`: Both platforms set `source.is_authenticated` to false
+- ✅ `requireOGAll`: Both normalizers populate `listing.tags` from description parsing
+- ✅ `minSellerRating`: Both normalizers extract `seller.rating` (0-5 scale)
+- ✅ `minSellerReviewCount`: Both normalizers extract `seller.reviewCount`
+- ✅ `excludeAuctions`: Both platforms set `listing.type` to 'sell' (fixed-price only)
+
+**Platform Stats Tracking:**
+
+Both platforms integrate with Phase 3.x monitoring:
+
+- Per-platform metrics: `scraped`, `normalized`, `filtered`, `new`, `priceDrops`, `errors`
+- Aggregate statistics included in run stats
+- KV store key: `last_run_stats`
+
+### Phase 4.0 Testing Results
+
+**Total Tests:** 155 (all passing)
+
+**New Test Files:**
+
+- `tests/integration/depop_scraper.test.js` - 4 integration tests
+- `tests/integration/poshmark_scraper.test.js` - 4 integration tests
+
+**Updated Test Files:**
+
+- `tests/unit/normalizer.test.js` - Added 10 test cases (5 per platform):
+  - Depop: Basic normalization, condition mapping, edge cases (missing fields, nested objects,
+    alternative fields)
+  - Poshmark: Basic normalization, condition mapping, edge cases (missing fields, nested objects,
+    alternative fields)
+
+**Overall Coverage:** 83.42% (maintained above 80% target ✅)
+
+```bash
+Test Suites: 21 passed, 21 total
+Tests:       155 passed, 155 total
+Coverage:    83.42% statements, 68.99% branches
+```
+
+### Files Modified/Created
+
+**Created:**
+
+- `src/scrapers/depop.js` (94 lines)
+- `src/scrapers/poshmark.js` (94 lines)
+- `tests/integration/depop_scraper.test.js` (112 lines)
+- `tests/integration/poshmark_scraper.test.js` (118 lines)
+
+**Modified:**
+
+- `src/config/platforms.js` - Added 2 platform configs
+- `src/core/normalizer.js` - Added 2 normalizer methods + 2 condition mappers + description fallback
+  fix
+- `src/scrapers/manager.js` - Registered both scrapers
+- `.actor/input_schema.json` - Added platforms to enum
+- `tests/unit/normalizer.test.js` - Added 10 test cases with edge case coverage
+
+### Phase 4.0 Commits
+
+1. `feat(phase-40): add Depop and Poshmark scrapers with orchestrated actors`
+2. `feat(phase-40): add normalizers and condition mapping for Depop and Poshmark`
+3. `feat(phase-40): register Depop and Poshmark in ScraperManager and input schema`
+4. `test(phase-40): add comprehensive tests for Depop and Poshmark`
+5. `docs(phase-40): update README and implementation status for Phase 4.0`
+
+### Phase 4.0 Known Limitations
+
+1. **Platform-Specific Search:** Both actors expect search queries as keywords, not URLs
+2. **Actor Dependencies:** Relies on third-party `lexis-solutions` actors; if actors become
+   unavailable, scrapers will fail gracefully
+3. **No Brand Filtering:** Unlike some platforms, Depop/Poshmark searches are keyword-based without
+   native brand filters
+4. **Rate Limits:** Conservative 100 req/hr limits may require adjustment for high-volume use cases
+
+### Phase 4.0 Documentation Updates
+
+- ✅ `README.md` - Added Depop and Poshmark to platform table
+- ✅ `README.md` - Updated test counts (155 tests, 83% coverage)
+- ✅ `README.md` - Updated status to Phase 4.0 Complete
+- ✅ `IMPLEMENTATION_STATUS.md` - This section
+- ✅ `.actor/input_schema.json` - Platform descriptions updated
 
 ---
 

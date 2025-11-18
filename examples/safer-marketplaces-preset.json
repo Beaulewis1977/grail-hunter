@@ -1,0 +1,19 @@
+{
+  "keywords": ["Air Jordan 1", "Nike Dunk Low", "New Balance 550"],
+  "size": "10.5",
+  "priceRange": {
+    "min": 50,
+    "max": 400
+  },
+  "condition": "used_like_new",
+  "platforms": ["depop", "poshmark"],
+  "minSellerRating": 4.0,
+  "minSellerReviewCount": 25,
+  "maxResults": 50,
+  "dealScoreThreshold": 15,
+  "excellentDealThreshold": 30,
+  "priceDropThreshold": 10,
+  "notificationConfig": {
+    "webhookUrl": "https://your-webhook-url.com/safer-marketplaces"
+  }
+}

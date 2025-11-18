@@ -57,6 +57,24 @@ significantly.
 
 ---
 
+### 4. Safer Marketplaces Preset (`safer-marketplaces-preset.json`)
+
+**Best for:** Users preferring lower-risk platforms (Depop + Poshmark) over high-risk alternatives
+
+**Features:**
+
+- **Depop + Poshmark only** (low-risk peer-to-peer platforms)
+- Moderate seller quality filters (4.0+ rating, 25+ reviews)
+- Balanced deal thresholds (15% minimum, 30% for excellent)
+- Size filtering (10.5 US Men's)
+- Good condition or better
+- Multiple keyword search (Air Jordan 1, Nike Dunk Low, New Balance 550)
+
+**Use when:** You want to avoid high-risk platforms like StockX while still accessing quality
+peer-to-peer listings from safer marketplaces.
+
+---
+
 ## 🚀 How to Use
 
 ### Option 1: Apify Console
@@ -191,5 +209,6 @@ Configure recurring runs in Apify Console:
 
 - All webhook URLs in these presets are placeholders - replace with your actual endpoint
 - StockX scraping is disabled by default due to high risk (add `"enableStockX": true` to enable)
+- **Phase 4.0 Platforms:** Depop and Poshmark are now available as safer marketplace alternatives
 - For email notifications, add `emailTo` to `notificationConfig`
 - Adjust thresholds based on your market knowledge and goals
