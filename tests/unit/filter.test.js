@@ -198,7 +198,10 @@ describe('ListingFilter', () => {
     it('should filter authenticated listings', () => {
       const listings = [
         createListing({ source: { is_authenticated: true } }),
-        createListing({ source: { is_authenticated: false }, listing: { tags: ['authenticated'] } }),
+        createListing({
+          source: { is_authenticated: false },
+          listing: { tags: ['authenticated'] },
+        }),
         createListing({ source: { is_authenticated: false }, listing: { tags: [] } }),
       ];
 
@@ -279,7 +282,10 @@ describe('ListingFilter', () => {
         createListing({ seller: { rating: null, reviewCount: 10 } }),
       ];
 
-      const filtered = filter.filterBySellerQuality(listings, { minRating: 4.5, minReviewCount: 0 });
+      const filtered = filter.filterBySellerQuality(listings, {
+        minRating: 4.5,
+        minReviewCount: 0,
+      });
 
       expect(filtered).toHaveLength(2);
     });
@@ -304,7 +310,10 @@ describe('ListingFilter', () => {
         createListing({ seller: { rating: 4.9, reviewCount: 200 } }),
       ];
 
-      const filtered = filter.filterBySellerQuality(listings, { minRating: 4.5, minReviewCount: 50 });
+      const filtered = filter.filterBySellerQuality(listings, {
+        minRating: 4.5,
+        minReviewCount: 50,
+      });
 
       expect(filtered).toHaveLength(2);
     });
@@ -315,7 +324,10 @@ describe('ListingFilter', () => {
         createListing({ seller: { rating: 4.5, reviewCount: 100 } }),
       ];
 
-      const filtered = filter.filterBySellerQuality(listings, { minRating: 4.0, minReviewCount: 50 });
+      const filtered = filter.filterBySellerQuality(listings, {
+        minRating: 4.0,
+        minReviewCount: 50,
+      });
 
       expect(filtered).toHaveLength(1);
     });

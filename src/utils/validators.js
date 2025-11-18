@@ -199,11 +199,11 @@ export function validateInput(input) {
 
   // Phase 3.x: Advanced filter validations
   if (input.authenticatedOnly !== undefined && typeof input.authenticatedOnly !== 'boolean') {
-    throw new ValidationError('authenticatedOnly must be a boolean when provided');
+    throw new ValidationError('authenticatedOnly must be a boolean');
   }
 
   if (input.requireOGAll !== undefined && typeof input.requireOGAll !== 'boolean') {
-    throw new ValidationError('requireOGAll must be a boolean when provided');
+    throw new ValidationError('requireOGAll must be a boolean');
   }
 
   if (input.minSellerRating !== undefined) {
@@ -216,7 +216,10 @@ export function validateInput(input) {
   }
 
   if (input.minSellerReviewCount !== undefined) {
-    if (typeof input.minSellerReviewCount !== 'number' || Number.isNaN(input.minSellerReviewCount)) {
+    if (
+      typeof input.minSellerReviewCount !== 'number' ||
+      Number.isNaN(input.minSellerReviewCount)
+    ) {
       throw new ValidationError('minSellerReviewCount must be a number');
     }
     if (input.minSellerReviewCount < 0 || input.minSellerReviewCount > 100000) {

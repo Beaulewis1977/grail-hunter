@@ -254,7 +254,9 @@ describe('Input Validators', () => {
       };
 
       expect(() => validateInput(input)).toThrow(ValidationError);
-      expect(() => validateInput(input)).toThrow('minSellerReviewCount must be between 0 and 100000');
+      expect(() => validateInput(input)).toThrow(
+        'minSellerReviewCount must be between 0 and 100000'
+      );
     });
   });
 });

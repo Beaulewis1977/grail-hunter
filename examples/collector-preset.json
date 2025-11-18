@@ -1,17 +1,11 @@
 {
-  "keywords": [
-    "Air Jordan 1 Chicago",
-    "Nike Dunk Low Panda"
-  ],
+  "keywords": ["Air Jordan 1 Chicago", "Nike Dunk Low Panda"],
   "size": "10.5",
   "priceRange": {
     "max": 500
   },
   "condition": "used_like_new",
-  "platforms": [
-    "grailed",
-    "ebay"
-  ],
+  "platforms": ["grailed", "ebay"],
   "requireOGAll": true,
   "minSellerRating": 4.5,
   "maxResults": 30,

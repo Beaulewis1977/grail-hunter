@@ -137,12 +137,11 @@ export class DataNormalizer {
     const currentPrice = this.parsePrice(raw.price);
 
     // Determine listing type from tags
-    const listingType = tags.includes('auction') && !tags.includes('buy_it_now')
-      ? 'auction'
-      : 'sell';
+    const listingType =
+      tags.includes('auction') && !tags.includes('buy_it_now') ? 'auction' : 'sell';
 
     // Extract seller information
-    const sellerRating = this.parseSellerRating(raw.sellerFeedbackScore, raw.sellerPositiveFeedbackPercent);
+    const sellerRating = this.parseSellerRating(raw.sellerPositiveFeedbackPercent);
     const sellerReviewCount = this.parseSellerReviewCount(raw.sellerFeedbackScore);
 
     return {
@@ -468,15 +467,17 @@ export class DataNormalizer {
     const tags = [];
     const desc = description.toLowerCase();
 
-    // Box condition tags
-    if (desc.includes('og all') || desc.includes('og box') || desc.includes('original box')) {
-      tags.push('og_all');
-    }
+    // Box condition tags - check exclusions first to avoid substring collisions
     if (desc.includes('no box') || desc.includes('without box')) {
       tags.push('no_box');
-    }
-    if (desc.includes('replacement box') || desc.includes('rep box')) {
+    } else if (desc.includes('replacement box') || desc.includes('rep box')) {
       tags.push('replacement_box');
+    } else if (
+      desc.includes('og all') ||
+      desc.includes('og box') ||
+      desc.includes('original box')
+    ) {
+      tags.push('og_all');
     }
 
     // Condition tags
@@ -544,18 +545,18 @@ export class DataNormalizer {
   /**
    * Parse seller rating from eBay feedback data
    * Converts positive feedback percentage to 0-5 scale
-   * @param {number|string} feedbackScore - Total feedback score
-   * @param {number|string} positiveFeedbackPercent - Positive feedback percentage
-   * @returns {number|null} Rating on 0-5 scale
+   * @param {number|string} positiveFeedbackPercent - Positive feedback percentage (0-100)
+   * @returns {number|null} Rating on 0-5 scale, or null if invalid
    */
-  parseSellerRating(feedbackScore, positiveFeedbackPercent) {
+  parseSellerRating(positiveFeedbackPercent) {
     if (positiveFeedbackPercent === undefined || positiveFeedbackPercent === null) {
       return null;
     }
 
-    const percent = typeof positiveFeedbackPercent === 'string'
-      ? parseFloat(positiveFeedbackPercent)
-      : positiveFeedbackPercent;
+    const percent =
+      typeof positiveFeedbackPercent === 'string'
+        ? parseFloat(positiveFeedbackPercent)
+        : positiveFeedbackPercent;
 
     if (Number.isNaN(percent)) {
       return null;
@@ -576,9 +577,7 @@ export class DataNormalizer {
       return null;
     }
 
-    const count = typeof feedbackScore === 'string'
-      ? parseInt(feedbackScore, 10)
-      : feedbackScore;
+    const count = typeof feedbackScore === 'string' ? parseInt(feedbackScore, 10) : feedbackScore;
 
     return Number.isNaN(count) ? null : count;
   }

@@ -1,16 +1,9 @@
 {
-  "keywords": [
-    "Jordan 1",
-    "Dunk Low",
-    "Yeezy 350"
-  ],
+  "keywords": ["Jordan 1", "Dunk Low", "Yeezy 350"],
   "priceRange": {
     "max": 300
   },
-  "platforms": [
-    "grailed",
-    "ebay"
-  ],
+  "platforms": ["grailed", "ebay"],
   "authenticatedOnly": false,
   "excludeAuctions": true,
   "maxResults": 100,
