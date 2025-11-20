@@ -119,10 +119,37 @@ npm install
 
 (or `npm ci` if you want a clean, lockfile-driven install.)
 
-### 2.3 Prepare Local Input
+### 2.3 Configure Local Input and Secrets
 
-Edit `.actor/INPUT.json` in the repo (or create one if needed) with a configuration similar to the
-safe starter run, for example:
+Before you run `apify run` locally, you need to:
+
+1. **Define your input payload in `.actor/INPUT.json`.**
+2. **Set any environment variables or secrets you plan to use.**
+
+#### 2.3.1 Understand Required Input Fields
+
+The authoritative definition of the input schema lives in:
+
+- `.actor/input_schema.json`
+
+At minimum, the actor requires:
+
+- `keywords` – a non-empty array of strings
+
+Other fields are optional but strongly recommended for real runs, such as:
+
+- `platforms` (or legacy `platform`)
+- `priceRange`
+- `condition`
+- Advanced filters (`authenticatedOnly`, `requireOGAll`, `excludeAuctions`, `minSellerRating`,
+  `minSellerReviewCount`)
+
+Refer to `.actor/input_schema.json` for the full list of fields, defaults, and descriptions.
+
+#### 2.3.2 Minimal `.actor/INPUT.json` Example
+
+Create or edit `.actor/INPUT.json` in the repo root with a configuration similar to the safe starter
+run, for example:
 
 ```json
 {
@@ -154,6 +181,53 @@ safe starter run, for example:
   }
 }
 ```
+
+This satisfies validation (`keywords` present and non-empty) while keeping all high-risk and beta
+platforms disabled.
+
+#### 2.3.3 Environment Variables and Secrets
+
+For local development, you may want to configure environment variables used by the actor or by
+future integrations (for example, API keys and encryption secrets referenced in the technical
+architecture docs):
+
+- `EBAY_APP_ID` – example value for eBay API access.
+- `ENCRYPTION_KEY` – example value for a credential manager / encryption helper.
+- `SENDGRID_API_KEY`, `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, etc. – if you add email/SMS
+  integrations in your local experiments.
+
+In the current implementation, the critical runtime env variables are:
+
+- `LOG_LEVEL` – controls logger verbosity (defaults to `info` if not set).
+- `APIFY_ACT_RUN_ID` – set automatically by Apify; defaults to `local` when running outside Apify.
+
+**Recommended local setup patterns:**
+
+- **Option A – Export in your shell (simple):**
+
+  ```bash
+  export EBAY_APP_ID="your-ebay-app-id"
+  export ENCRYPTION_KEY="your-32-byte-encryption-key"
+  export LOG_LEVEL="debug"      # optional
+
+  apify run
+  ```
+
+- **Option B – `.env.local` file (for your own scripts):**
+
+  Create a `.env.local` file in the repo root:
+
+  ```dotenv
+  EBAY_APP_ID=your-ebay-app-id
+  ENCRYPTION_KEY=your-32-byte-encryption-key
+  LOG_LEVEL=debug
+  ```
+
+  Then, if you write custom local scripts or use `node -r dotenv/config`, they can load
+  `.env.local`. On Apify itself, configure these as environment variables or secrets via the actor
+  settings UI.
+
+---
 
 ### 2.4 Run the Actor Locally
 
