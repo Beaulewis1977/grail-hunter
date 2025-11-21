@@ -17,6 +17,8 @@ export class StockXScraper extends BaseScraper {
     this.maxFailures = 3;
     this.actorFailureCount = 0;
     this.useOrchestrated = config.actorId && config.useOrchestrated !== false;
+    this.allowApiFallback = config.allowApiFallback === true;
+    this.requireResidentialProxy = config.requireResidentialProxy !== false;
   }
 
   /**
@@ -24,6 +26,18 @@ export class StockXScraper extends BaseScraper {
    * Phase 4.2: Try orchestrated actor first (if configured), fallback to API
    */
   async scrape(searchParams) {
+    const riskAcknowledged =
+      searchParams?.acknowledgePlatformTerms === true || this.config?.riskAcknowledged === true;
+    const apiFallbackAllowed =
+      searchParams?.allowStockXApiFallback === true || this.allowApiFallback === true;
+
+    if (!riskAcknowledged) {
+      logger.warn(
+        'StockX scraping blocked: acknowledgePlatformTerms must be true to enable high-risk scraping. Consider dataset ingestion instead.'
+      );
+      return [];
+    }
+
     if (this.failureCount >= this.maxFailures) {
       logger.warn('StockX scraper disabled after repeated failures - skipping platform', {
         failureCount: this.failureCount,
@@ -54,7 +68,14 @@ export class StockXScraper extends BaseScraper {
       }
     }
 
-    // Existing API scraping (Phase 3 - preserved for backward compatibility)
+    // API scraping is disabled by default for compliance; requires explicit opt-in
+    if (!apiFallbackAllowed) {
+      logger.warn(
+        'StockX API fallback disabled for compliance. Enable allowStockXApiFallback=true to use API (high risk).'
+      );
+      return [];
+    }
+
     return this.scrapeViaAPI(searchParams);
   }
 
@@ -67,13 +88,12 @@ export class StockXScraper extends BaseScraper {
     const { actorId } = this.config;
 
     try {
+      const proxyConfiguration = this.enforceProxy(searchParams.proxyConfig);
+
       const input = {
         query: keywords.join(' '), // Actor expects single query string
         maxItems: maxResults,
-        proxyConfiguration: searchParams.proxyConfig || {
-          useApifyProxy: true,
-          apifyProxyGroups: ['RESIDENTIAL'],
-        },
+        proxyConfiguration,
       };
 
       logger.debug(`Calling ${actorId} actor`, { input });
@@ -110,13 +130,15 @@ export class StockXScraper extends BaseScraper {
 
     logger.info('Attempting StockX API scraping (HIGH RISK)', { keywords });
 
+    const proxyConfiguration = this.enforceProxy(searchParams.proxyConfig);
+
     const results = [];
     let hadError = false;
     let lastError = null;
 
     for (const keyword of keywords) {
       try {
-        const items = await this.searchStockX(keyword, maxResults);
+        const items = await this.searchStockX(keyword, maxResults, proxyConfiguration);
         results.push(...items);
       } catch (error) {
         hadError = true;
@@ -157,12 +179,16 @@ export class StockXScraper extends BaseScraper {
     return results;
   }
 
-  async searchStockX(keyword, maxResults) {
+  async searchStockX(keyword, maxResults, proxyConfiguration) {
     try {
       const encodedQuery = encodeURIComponent(keyword);
       const url = `https://stockx.com/api/browse?_search=${encodedQuery}`;
 
-      logger.debug('Fetching StockX API', { url });
+      logger.debug('Fetching StockX API', {
+        url,
+        proxyConfigured: Boolean(proxyConfiguration),
+        proxyGroups: proxyConfiguration?.apifyProxyGroups,
+      });
 
       const response = await fetch(url, {
         headers: {
@@ -219,5 +245,27 @@ export class StockXScraper extends BaseScraper {
 
   buildSearchUrls(keywords) {
     return keywords.map((keyword) => `https://stockx.com/search?s=${encodeURIComponent(keyword)}`);
+  }
+
+  enforceProxy(proxyConfig) {
+    if (!this.requireResidentialProxy) {
+      return proxyConfig;
+    }
+
+    if (!proxyConfig || proxyConfig.useApifyProxy !== true) {
+      throw new Error(
+        'StockX scraping requires Apify residential proxy. Set proxyConfig.useApifyProxy=true and include RESIDENTIAL group.'
+      );
+    }
+
+    const groups = Array.isArray(proxyConfig.apifyProxyGroups)
+      ? Array.from(new Set([...proxyConfig.apifyProxyGroups, 'RESIDENTIAL']))
+      : ['RESIDENTIAL'];
+
+    return {
+      ...proxyConfig,
+      useApifyProxy: true,
+      apifyProxyGroups: groups,
+    };
   }
 }

@@ -7,6 +7,7 @@ import { Actor } from 'apify';
 import { BaseScraper } from './base.js';
 import { ActorCallError } from '../utils/errors.js';
 import { logger } from '../utils/logger.js';
+import { fetchAllDatasetItems } from '../utils/pagination.js';
 
 export class EbayScraper extends BaseScraper {
   /**
@@ -59,8 +60,7 @@ export class EbayScraper extends BaseScraper {
         throw new ActorCallError(actorId, `Actor run failed with status: ${run.status}`);
       }
 
-      const dataset = await Actor.apifyClient.dataset(run.defaultDatasetId);
-      const { items } = await dataset.listItems();
+      const items = await fetchAllDatasetItems(run.defaultDatasetId);
 
       logger.info(`Scraped ${items.length} listings from eBay`);
 

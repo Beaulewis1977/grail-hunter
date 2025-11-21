@@ -1,10 +1,10 @@
-# Implementation Status - Phase 4.2 Complete
+# Implementation Status - Phase 4.2 (Compliance-First) Complete
 
-**Date:** November 18, 2025 **Version:** 0.4.2 **Branch:**
-`claude/phase-42-planning-01YSv2qL7y2LERHWXTAGW8rx` Phase 4.2 adds GOAT integration and StockX
-hybrid intelligence using orchestrated actors + dataset ingestion. **Status:** ✅ **PRODUCTION
-READY** - 212 tests passing, 82.82% coverage, 7 platforms supported (Grailed, eBay, StockX, GOAT,
-Depop, Poshmark, Mercari, OfferUp)
+**Date:** November 20, 2025 **Version:** 0.4.2 **Branch:** `feature/challenge-hardening`  
+Phase 4.2 adds compliance-first hardening, persistent state, live market scoring, and safer defaults
+for GOAT/StockX (ingestion-first, API fallback opt-in). **Status:** ✅ **PRODUCTION READY** - 219
+tests passing, ~80% coverage, 8 platforms available (Grailed, eBay, StockX, GOAT, Depop, Poshmark,
+Mercari, OfferUp) with high-risk/beta gated by acknowledgments.
 
 ---
 
@@ -30,11 +30,10 @@ All four phases are considered **must-ship** for the Apify Challenge submission.
 
 ## Executive Summary
 
-Phase 4.0 of the Grail Hunter actor is **complete and production-ready**. This implementation adds
-Depop and Poshmark as safer peer-to-peer marketplace alternatives, bringing the total platform count
-to 5 (Grailed, eBay, StockX, Depop, Poshmark). Both new platforms use orchestrated Apify actors for
-reliable scraping with low anti-bot risk, and seamlessly integrate with all existing Phase 3.x
-advanced filters.
+Phase 4.2 is **complete and production-ready** with compliance-first defaults. GOAT/StockX remain
+available but are disabled unless explicitly enabled with acknowledgments and residential proxies.
+Persistent dedupe/price history now uses a named KV store; live market scoring can ingest external
+datasets; webhook delivery is more resilient.
 
 ### Key Achievements
 

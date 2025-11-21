@@ -16,14 +16,18 @@ export class DeduplicationEngine {
     this.priceDropThreshold = config.priceDropThreshold || 10;
     this.maxHistoryEntriesPerItem = config.maxHistoryEntriesPerItem || 50;
     this.historyRetentionDays = config.historyRetentionDays || 30;
+    this.stateStoreId = config.stateStoreId || 'grail-hunter-state';
+    this.priceHistoryIndexKey = 'price_history_index';
+    this.priceHistoryIndex = new Map();
   }
 
   /**
    * Initialize the deduplication engine
    */
   async initialize() {
-    this.kvStore = await Actor.openKeyValueStore();
+    this.kvStore = await Actor.openKeyValueStore(this.stateStoreId);
 
+    await this.loadPriceHistoryIndex();
     await this.cleanupOldHistory();
 
     const storedHashes = await this.kvStore.getValue(this.seenHashesKey);
@@ -106,6 +110,39 @@ export class DeduplicationEngine {
     logger.info(`Found ${newListings.length} new listings out of ${safeListings.length} total`);
 
     return newListings;
+  }
+
+  getPriceHistoryKey(hash) {
+    return `price_history_${hash}`;
+  }
+
+  async loadPriceHistoryIndex() {
+    try {
+      const storedIndex = await this.kvStore.getValue(this.priceHistoryIndexKey);
+      if (Array.isArray(storedIndex)) {
+        this.priceHistoryIndex = new Map(
+          storedIndex
+            .filter((entry) => entry && entry.key)
+            .map((entry) => [entry.key, entry.lastUpdated || Date.now()])
+        );
+      }
+    } catch (error) {
+      logger.warn('Failed to load price history index', { error: error.message });
+      this.priceHistoryIndex = new Map();
+    }
+  }
+
+  async persistPriceHistoryIndex() {
+    const payload = Array.from(this.priceHistoryIndex.entries()).map(([key, lastUpdated]) => ({
+      key,
+      lastUpdated,
+    }));
+
+    try {
+      await this.kvStore.setValue(this.priceHistoryIndexKey, payload);
+    } catch (error) {
+      logger.warn('Failed to persist price history index', { error: error.message });
+    }
   }
 
   migrateHash(hash) {
@@ -194,7 +231,7 @@ export class DeduplicationEngine {
 
   async trackPriceChange(listing, hash) {
     const currentPrice = listing.listing?.price || 0;
-    const priceHistoryKey = `price_history_${hash}`;
+    const priceHistoryKey = this.getPriceHistoryKey(hash);
 
     try {
       const storedHistory = await this.kvStore.getValue(priceHistoryKey);
@@ -246,6 +283,10 @@ export class DeduplicationEngine {
         const trimmedHistory = priceHistory.slice(-this.maxHistoryEntriesPerItem);
 
         await this.kvStore.setValue(priceHistoryKey, trimmedHistory);
+
+        // Track last updated timestamp in index for scalable cleanup
+        this.priceHistoryIndex.set(priceHistoryKey, Date.now());
+        await this.persistPriceHistoryIndex();
       }
     } catch (error) {
       logger.warn('Failed to track price change', {
@@ -273,21 +314,17 @@ export class DeduplicationEngine {
       const cutoffDate = Date.now() - this.historyRetentionDays * 24 * 60 * 60 * 1000;
       let cleanedCount = 0;
 
-      const keys = await this.kvStore.getKeys();
-
-      for (const key of keys) {
-        if (key.startsWith('price_history_')) {
-          const history = await this.kvStore.getValue(key);
-
-          if (Array.isArray(history) && history.length > 0) {
-            const lastEntry = history[history.length - 1];
-
-            if (lastEntry.timestamp < cutoffDate) {
-              await this.kvStore.delete(key);
-              cleanedCount++;
-            }
-          }
+      // Use index map instead of scanning entire store
+      for (const [key, lastUpdated] of this.priceHistoryIndex.entries()) {
+        if (lastUpdated < cutoffDate) {
+          await this.kvStore.setValue(key, null);
+          this.priceHistoryIndex.delete(key);
+          cleanedCount++;
         }
+      }
+
+      if (cleanedCount > 0) {
+        await this.persistPriceHistoryIndex();
       }
 
       if (cleanedCount > 0) {

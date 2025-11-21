@@ -62,6 +62,7 @@ describe('GoatScraper (mocked Apify integration)', () => {
       useApifyProxy: true,
       apifyProxyGroups: ['RESIDENTIAL'],
     },
+    acknowledgePlatformTerms: true,
   };
 
   let scraper;
