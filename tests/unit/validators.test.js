@@ -105,6 +105,26 @@ describe('Input Validators', () => {
 
       expect(() => validateInput(input)).toThrow('must be a valid URL');
     });
+
+    it('should require enableStockX when platform includes stockx', () => {
+      const input = {
+        keywords: ['test'],
+        platforms: ['stockx'],
+      };
+
+      expect(() => validateInput(input)).toThrow('enableStockX=true');
+    });
+
+    it('should require acknowledgment for high-risk/beta platforms', () => {
+      const input = {
+        keywords: ['test'],
+        platforms: ['goat'],
+        enableGOAT: true,
+        proxyConfig: { useApifyProxy: true, apifyProxyGroups: ['RESIDENTIAL'] },
+      };
+
+      expect(() => validateInput(input)).toThrow('acknowledgePlatformTerms');
+    });
   });
 
   describe('normalizeInput', () => {
@@ -167,6 +187,24 @@ describe('Input Validators', () => {
       expect(normalized.requireOGAll).toBe(false);
       expect(normalized.minSellerRating).toBe(0);
       expect(normalized.minSellerReviewCount).toBe(0);
+    });
+
+    it('should normalize ingestion datasets, market data sources, and state store', () => {
+      const input = {
+        keywords: ['Test'],
+        ingestionDatasets: [{ datasetId: 'abc', platform: 'stockx', platformLabel: 'StockX Feed' }],
+        marketDataSources: [{ datasetId: 'market-dataset', label: 'Live StockX' }],
+        stateStoreId: 'custom-store',
+      };
+
+      const normalized = normalizeInput(input);
+      expect(normalized.ingestionDatasets).toEqual([
+        { datasetId: 'abc', platform: 'stockx', platformLabel: 'StockX Feed' },
+      ]);
+      expect(normalized.marketDataSources).toEqual([
+        { datasetId: 'market-dataset', label: 'Live StockX' },
+      ]);
+      expect(normalized.stateStoreId).toBe('custom-store');
     });
   });
 

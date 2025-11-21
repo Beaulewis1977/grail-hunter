@@ -17,6 +17,8 @@ export class GoatScraper extends BaseScraper {
     super(config);
     this.failureCount = 0;
     this.maxFailures = 3;
+    this.requireResidentialProxy = config.requireResidentialProxy !== false;
+    this.riskAcknowledged = config.riskAcknowledged === true;
   }
 
   /**
@@ -25,6 +27,16 @@ export class GoatScraper extends BaseScraper {
    * @returns {Promise<Array>} Raw listings
    */
   async scrape(searchParams) {
+    const riskAcknowledged =
+      searchParams?.acknowledgePlatformTerms === true || this.riskAcknowledged === true;
+
+    if (!riskAcknowledged) {
+      logger.warn(
+        'GOAT scraping blocked: acknowledgePlatformTerms must be true to enable high-risk scraping. Consider dataset ingestion instead.'
+      );
+      return [];
+    }
+
     // Check if scraper is disabled due to repeated failures
     if (this.failureCount >= this.maxFailures) {
       logger.warn('GOAT scraper disabled after repeated failures - skipping platform', {
@@ -44,13 +56,12 @@ export class GoatScraper extends BaseScraper {
 
     try {
       // Build search input for GOAT actor
+      const proxyConfiguration = this.enforceProxy(searchParams.proxyConfig);
+
       const input = {
         query: searchParams.keywords.join(' '), // GOAT actor expects single query string
         maxItems: searchParams.maxResults || 50,
-        proxyConfiguration: searchParams.proxyConfig || {
-          useApifyProxy: true,
-          apifyProxyGroups: ['RESIDENTIAL'],
-        },
+        proxyConfiguration,
       };
 
       logger.debug(`Calling ${actorId} actor`, { input });
@@ -124,5 +135,27 @@ export class GoatScraper extends BaseScraper {
   validate() {
     super.validate();
     // actorId is optional; scrape() falls back to 'ecomscrape/goat-product-search-scraper' when not provided
+  }
+
+  enforceProxy(proxyConfig) {
+    if (!this.requireResidentialProxy) {
+      return proxyConfig;
+    }
+
+    if (!proxyConfig || proxyConfig.useApifyProxy !== true) {
+      throw new Error(
+        'GOAT scraping requires Apify residential proxy. Set proxyConfig.useApifyProxy=true and include RESIDENTIAL group.'
+      );
+    }
+
+    const groups = Array.isArray(proxyConfig.apifyProxyGroups)
+      ? Array.from(new Set([...proxyConfig.apifyProxyGroups, 'RESIDENTIAL']))
+      : ['RESIDENTIAL'];
+
+    return {
+      ...proxyConfig,
+      useApifyProxy: true,
+      apifyProxyGroups: groups,
+    };
   }
 }

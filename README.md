@@ -18,6 +18,14 @@ multiple tabs—let Grail Hunter find the deals for you.
 
 This project is developed as part of the **Apify Challenge 2024-2025**.
 
+**Phase 4.2 improvements (compliance-first):**
+
+- Persistent dedupe/price history across runs via named KV store
+- Safer defaults for GOAT/StockX (ingestion-first, API fallback off unless explicitly allowed)
+- Live market scoring from optional dataset feeds + static baselines
+- Updated Apify input UI with acknowledgments, presets, and better defaults for proxies/beta
+  platforms
+
 ---
 
 ## ✨ What It Does

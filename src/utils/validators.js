@@ -6,6 +6,10 @@
 import { ValidationError } from './errors.js';
 import { SUPPORTED_PLATFORMS } from '../config/platforms.js';
 
+// Risk tiers for compliance gating
+const HIGH_RISK_PLATFORMS = ['stockx', 'goat'];
+const BETA_PLATFORMS = ['mercari', 'offerup'];
+
 /**
  * Validates the actor input
  * @param {object} input - User input
@@ -56,6 +60,18 @@ export function validateInput(input) {
       throw new ValidationError(
         `Platform "${input.platform}" is not supported. Supported platforms: ${supported.join(', ')}`
       );
+    }
+  }
+
+  // Require explicit enableStockX/GOAT flags when provided in platforms list
+  if (Array.isArray(input.platforms)) {
+    if (input.platforms.includes('stockx') && input.enableStockX !== true) {
+      throw new ValidationError(
+        'StockX is high risk and is disabled by default. Set enableStockX=true to proceed.'
+      );
+    }
+    if (input.platforms.includes('goat') && input.enableGOAT !== true) {
+      throw new ValidationError('GOAT is high risk and requires enableGOAT=true to proceed.');
     }
   }
 
@@ -193,6 +209,17 @@ export function validateInput(input) {
     throw new ValidationError('enableStockX must be a boolean when provided');
   }
 
+  if (input.enableGOAT !== undefined && typeof input.enableGOAT !== 'boolean') {
+    throw new ValidationError('enableGOAT must be a boolean when provided');
+  }
+
+  if (
+    input.allowStockXApiFallback !== undefined &&
+    typeof input.allowStockXApiFallback !== 'boolean'
+  ) {
+    throw new ValidationError('allowStockXApiFallback must be a boolean when provided');
+  }
+
   if (input.disableStockX !== undefined && typeof input.disableStockX !== 'boolean') {
     throw new ValidationError('disableStockX must be a boolean when provided');
   }
@@ -252,6 +279,121 @@ export function validateInput(input) {
       'enableOfferUp requires betaPlatformsEnabled to be true. Beta platforms must be explicitly enabled.'
     );
   }
+
+  // Validate ingestion datasets (Pattern C - bring your own data)
+  if (input.ingestionDatasets !== undefined) {
+    if (!Array.isArray(input.ingestionDatasets)) {
+      throw new ValidationError('ingestionDatasets must be an array of { datasetId, platform }');
+    }
+
+    input.ingestionDatasets.forEach((datasetConfig, index) => {
+      if (
+        !datasetConfig ||
+        typeof datasetConfig !== 'object' ||
+        Array.isArray(datasetConfig) ||
+        !datasetConfig.datasetId ||
+        !datasetConfig.platform
+      ) {
+        throw new ValidationError(
+          `ingestionDatasets[${index}] must include datasetId and platform properties`
+        );
+      }
+      if (
+        typeof datasetConfig.datasetId !== 'string' ||
+        datasetConfig.datasetId.trim().length === 0
+      ) {
+        throw new ValidationError(
+          `ingestionDatasets[${index}].datasetId must be a non-empty string`
+        );
+      }
+      if (
+        typeof datasetConfig.platform !== 'string' ||
+        datasetConfig.platform.trim().length === 0
+      ) {
+        throw new ValidationError(
+          `ingestionDatasets[${index}].platform must be a non-empty string`
+        );
+      }
+    });
+  }
+
+  // Validate live market data sources for scoring
+  if (input.marketDataSources !== undefined) {
+    if (!Array.isArray(input.marketDataSources)) {
+      throw new ValidationError('marketDataSources must be an array of { datasetId, label }');
+    }
+
+    input.marketDataSources.forEach((source, index) => {
+      if (!source || typeof source !== 'object' || Array.isArray(source) || !source.datasetId) {
+        throw new ValidationError(
+          `marketDataSources[${index}] must include a datasetId property (string)`
+        );
+      }
+      if (typeof source.datasetId !== 'string' || source.datasetId.trim().length === 0) {
+        throw new ValidationError(
+          `marketDataSources[${index}].datasetId must be a non-empty string`
+        );
+      }
+      if (source.label && typeof source.label !== 'string') {
+        throw new ValidationError(
+          `marketDataSources[${index}].label must be a string when provided`
+        );
+      }
+    });
+  }
+
+  // Validate state store id for persistence
+  if (input.stateStoreId !== undefined) {
+    if (typeof input.stateStoreId !== 'string' || input.stateStoreId.trim().length < 3) {
+      throw new ValidationError('stateStoreId must be a string of at least 3 characters');
+    }
+  }
+
+  // Compliance gating for high-risk or beta platforms
+  let selectedPlatforms = [];
+  if (Array.isArray(input.platforms) && input.platforms.length) {
+    selectedPlatforms = input.platforms;
+  } else if (input.platform) {
+    selectedPlatforms = [input.platform];
+  }
+
+  const wantsHighRisk =
+    (Array.isArray(selectedPlatforms) &&
+      selectedPlatforms.some((p) => HIGH_RISK_PLATFORMS.includes(String(p).toLowerCase()))) ||
+    input.enableStockX === true ||
+    input.enableGOAT === true;
+
+  const wantsBeta =
+    (Array.isArray(selectedPlatforms) &&
+      selectedPlatforms.some((p) => BETA_PLATFORMS.includes(String(p).toLowerCase()))) ||
+    input.enableMercari === true ||
+    input.enableOfferUp === true;
+
+  if ((wantsHighRisk || wantsBeta) && input.acknowledgePlatformTerms !== true) {
+    throw new ValidationError(
+      'acknowledgePlatformTerms must be true to run beta or high-risk platforms. Confirm you have rights to scrape these sites.'
+    );
+  }
+
+  // Proxy validation for risky platforms (must use residential Apify proxy)
+  if (wantsHighRisk || wantsBeta) {
+    const { proxyConfig } = input;
+    if (!proxyConfig || proxyConfig.useApifyProxy !== true) {
+      throw new ValidationError(
+        'High-risk/beta platforms require Apify residential proxy. Set proxyConfig.useApifyProxy=true (apifyProxyGroups will default to ["RESIDENTIAL"] if not provided).'
+      );
+    }
+
+    if (
+      proxyConfig.apifyProxyGroups &&
+      Array.isArray(proxyConfig.apifyProxyGroups) &&
+      !proxyConfig.apifyProxyGroups.includes('RESIDENTIAL')
+    ) {
+      throw new ValidationError(
+        'High-risk/beta platforms require RESIDENTIAL proxy group. Include "RESIDENTIAL" in proxyConfig.apifyProxyGroups.'
+      );
+    }
+  }
 }
 
 /**
@@ -285,10 +427,29 @@ export function normalizeInput(input) {
     platforms: Array.isArray(input.platforms) ? input.platforms : [input.platform || 'grailed'],
     maxResults: input.maxResults || 50,
     notificationConfig: input.notificationConfig || {},
-    proxyConfig: input.proxyConfig || {
-      useApifyProxy: true,
-      apifyProxyGroups: ['RESIDENTIAL'],
-    },
+    proxyConfig: (() => {
+      if (input.proxyConfig && typeof input.proxyConfig === 'object') {
+        // Ensure RESIDENTIAL group is present when using Apify proxy
+        const groups = Array.isArray(input.proxyConfig.apifyProxyGroups)
+          ? Array.from(new Set([...input.proxyConfig.apifyProxyGroups, 'RESIDENTIAL']))
+          : ['RESIDENTIAL'];
+
+        if (input.proxyConfig.useApifyProxy === false) {
+          return input.proxyConfig;
+        }
+
+        return {
+          ...input.proxyConfig,
+          useApifyProxy: true,
+          apifyProxyGroups: groups,
+        };
+      }
+
+      return {
+        useApifyProxy: true,
+        apifyProxyGroups: ['RESIDENTIAL'],
+      };
+    })(),
     excludeAuctions: Boolean(input.excludeAuctions) || false,
     dealScoreThreshold: input.dealScoreThreshold,
     excellentDealThreshold: input.excellentDealThreshold,
@@ -300,6 +461,8 @@ export function normalizeInput(input) {
         ? input.marketValueOverrides
         : {},
     enableStockX: input.enableStockX === true,
+    enableGOAT: input.enableGOAT === true,
+    allowStockXApiFallback: input.allowStockXApiFallback === true,
     disableStockX: input.disableStockX === true,
     // Phase 3.x: Advanced filters
     authenticatedOnly: input.authenticatedOnly === true,
@@ -311,5 +474,25 @@ export function normalizeInput(input) {
     enableMercari: input.enableMercari === true,
     enableOfferUp: input.enableOfferUp === true,
     zipCode: input.zipCode || null,
+    ingestionDatasets:
+      Array.isArray(input.ingestionDatasets) && input.ingestionDatasets.length
+        ? input.ingestionDatasets.map((cfg) => ({
+            datasetId: cfg.datasetId,
+            platform: cfg.platform,
+            platformLabel: cfg.platformLabel || cfg.platform,
+          }))
+        : [],
+    marketDataSources:
+      Array.isArray(input.marketDataSources) && input.marketDataSources.length
+        ? input.marketDataSources.map((cfg) => ({
+            datasetId: cfg.datasetId,
+            label: cfg.label || cfg.datasetId,
+          }))
+        : [],
+    stateStoreId:
+      typeof input.stateStoreId === 'string' && input.stateStoreId.trim().length >= 3
+        ? input.stateStoreId.trim()
+        : 'grail-hunter-state',
+    acknowledgePlatformTerms: input.acknowledgePlatformTerms === true,
   };
 }

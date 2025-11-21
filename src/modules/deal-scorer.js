@@ -8,6 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { Actor } from 'apify';
 import { logger } from '../utils/logger.js';
+import { fetchAllDatasetItems } from '../utils/pagination.js';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -21,6 +22,14 @@ export class DealScorer {
     this.marketValues = null;
     this.userOverrides = config.marketValueOverrides || {};
     this.kvStore = null;
+    this.marketDataSources = Array.isArray(config.marketDataSources)
+      ? config.marketDataSources
+      : [];
+    this.cacheStoreId = config.cacheStoreId || null;
+    this.liveMarketValues = {
+      sku: new Map(),
+      name: new Map(),
+    };
   }
 
   /**
@@ -33,14 +42,16 @@ export class DealScorer {
   }
 
   async initialize() {
-    this.kvStore = await Actor.openKeyValueStore();
+    this.kvStore = await Actor.openKeyValueStore(this.cacheStoreId || 'grail-hunter-state');
     await this.loadMarketValues();
+    await this.loadLiveMarketValues();
     logger.info('Deal scorer initialized', {
       excellentThreshold: this.excellentDealThreshold,
       goodThreshold: this.goodDealThreshold,
       fairThreshold: this.fairDealThreshold,
       marketValuesLoaded: this.marketValues?.sneakers?.length || 0,
       userOverrides: Object.keys(this.userOverrides).length,
+      liveMarketSources: this.marketDataSources.length,
     });
   }
 
@@ -58,6 +69,80 @@ export class DealScorer {
       });
       this.marketValues = { sneakers: [] };
     }
+  }
+
+  async loadLiveMarketValues() {
+    if (!this.marketDataSources.length) {
+      return;
+    }
+
+    for (const source of this.marketDataSources) {
+      const datasetId = source?.datasetId;
+      if (!datasetId) {
+        logger.warn('Live market data source missing datasetId, skipping');
+      } else {
+        try {
+          const items = await fetchAllDatasetItems(datasetId, { limit: 500 });
+
+          for (const item of items) {
+            const sku = this.resolveSku(item);
+            const name = (item.name || item.title || item.productName || '').trim().toLowerCase();
+            const value = this.extractMarketValue(item);
+            if (value) {
+              if (sku) {
+                this.liveMarketValues.sku.set(sku, value);
+              }
+
+              if (name) {
+                this.liveMarketValues.name.set(name, value);
+              }
+            }
+          }
+
+          logger.info('Loaded live market data', {
+            datasetId,
+            label: source.label || datasetId,
+            count: items.length,
+          });
+        } catch (error) {
+          logger.warn('Failed to load live market data source', {
+            datasetId,
+            error: error.message,
+          });
+        }
+      }
+    }
+  }
+
+  resolveSku(record = {}) {
+    const candidates = [
+      record.sku,
+      record.styleId,
+      record.style_id,
+      record.id,
+      record.productId,
+      record.product_id,
+    ];
+
+    const sku = candidates.find((c) => typeof c === 'string' && c.trim().length > 0);
+    return sku ? sku.trim().toLowerCase() : null;
+  }
+
+  extractMarketValue(record = {}) {
+    const fields = [
+      record.marketValue,
+      record.lowestAsk,
+      record.lowestAskPrice,
+      record.price,
+      record.buyPrice,
+      record.lastSale,
+      record.averagePrice,
+      record.avgPrice,
+      record.avg_price,
+    ];
+
+    const numeric = fields.find((v) => typeof v === 'number' && Number.isFinite(v) && v > 0);
+    return numeric || null;
   }
 
   async scoreListings(listings) {
@@ -185,6 +270,12 @@ export class DealScorer {
       return this.userOverrides[sku];
     }
 
+    // Live data (dataset ingestion for market baselines)
+    const liveValue = this.findLiveMarketValue(productName, sku);
+    if (liveValue) {
+      return liveValue;
+    }
+
     const marketValue = this.findMarketValue(productName, model, colorway, sku);
 
     if (marketValue) {
@@ -289,5 +380,20 @@ export class DealScorer {
       fair: fair.length,
       dealRate: scored.length > 0 ? Number(((deals.length / scored.length) * 100).toFixed(1)) : 0,
     };
+  }
+
+  findLiveMarketValue(productName, sku) {
+    const normalizedProductName = (productName || '').trim().toLowerCase();
+    const normalizedSku = (sku || '').trim().toLowerCase();
+
+    if (normalizedSku && this.liveMarketValues.sku.has(normalizedSku)) {
+      return this.liveMarketValues.sku.get(normalizedSku);
+    }
+
+    if (normalizedProductName && this.liveMarketValues.name.has(normalizedProductName)) {
+      return this.liveMarketValues.name.get(normalizedProductName);
+    }
+
+    return null;
   }
 }

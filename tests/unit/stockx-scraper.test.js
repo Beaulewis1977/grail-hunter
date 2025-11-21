@@ -14,6 +14,8 @@ describe('StockXScraper', () => {
     name: 'StockX',
     type: 'custom',
     enabled: true,
+    allowApiFallback: true,
+    riskAcknowledged: true,
   };
 
   beforeEach(() => {
@@ -32,6 +34,9 @@ describe('StockXScraper', () => {
       const results = await stockxScraper.scrape({
         keywords: ['Air Jordan 1'],
         maxResults: 50,
+        acknowledgePlatformTerms: true,
+        allowStockXApiFallback: true,
+        proxyConfig: { useApifyProxy: true, apifyProxyGroups: ['RESIDENTIAL'] },
       });
 
       expect(results).toEqual([]);
@@ -65,6 +70,9 @@ describe('StockXScraper', () => {
       const results = await stockxScraper.scrape({
         keywords: ['Air Jordan 1'],
         maxResults: 50,
+        acknowledgePlatformTerms: true,
+        allowStockXApiFallback: true,
+        proxyConfig: { useApifyProxy: true, apifyProxyGroups: ['RESIDENTIAL'] },
       });
 
       expect(results).toHaveLength(1);
@@ -83,6 +91,9 @@ describe('StockXScraper', () => {
       const results = await stockxScraper.scrape({
         keywords: ['Air Jordan 1'],
         maxResults: 50,
+        acknowledgePlatformTerms: true,
+        allowStockXApiFallback: true,
+        proxyConfig: { useApifyProxy: true, apifyProxyGroups: ['RESIDENTIAL'] },
       });
 
       expect(results).toEqual([]);
@@ -100,6 +111,9 @@ describe('StockXScraper', () => {
       const results = await stockxScraper.scrape({
         keywords: ['Air Jordan 1'],
         maxResults: 50,
+        acknowledgePlatformTerms: true,
+        allowStockXApiFallback: true,
+        proxyConfig: { useApifyProxy: true, apifyProxyGroups: ['RESIDENTIAL'] },
       });
 
       expect(results).toEqual([]);
@@ -111,6 +125,9 @@ describe('StockXScraper', () => {
       const results = await stockxScraper.scrape({
         keywords: ['Air Jordan 1'],
         maxResults: 50,
+        acknowledgePlatformTerms: true,
+        allowStockXApiFallback: true,
+        proxyConfig: { useApifyProxy: true, apifyProxyGroups: ['RESIDENTIAL'] },
       });
 
       expect(results).toEqual([]);
