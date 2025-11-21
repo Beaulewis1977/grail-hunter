@@ -380,7 +380,7 @@ export function validateInput(input) {
     const { proxyConfig } = input;
     if (!proxyConfig || proxyConfig.useApifyProxy !== true) {
       throw new ValidationError(
-        'High-risk/beta platforms require Apify residential proxy. Set proxyConfig.useApifyProxy=true and apifyProxyGroups to include RESIDENTIAL.'
+        'High-risk/beta platforms require Apify residential proxy. Set proxyConfig.useApifyProxy=true (apifyProxyGroups will default to ["RESIDENTIAL"] if not provided).'
       );
     }
 
@@ -461,6 +461,7 @@ export function normalizeInput(input) {
         ? input.marketValueOverrides
         : {},
     enableStockX: input.enableStockX === true,
+    enableGOAT: input.enableGOAT === true,
     allowStockXApiFallback: input.allowStockXApiFallback === true,
     disableStockX: input.disableStockX === true,
     // Phase 3.x: Advanced filters
