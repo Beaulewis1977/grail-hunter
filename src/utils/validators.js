@@ -209,6 +209,10 @@ export function validateInput(input) {
     throw new ValidationError('enableStockX must be a boolean when provided');
   }
 
+  if (input.enableGOAT !== undefined && typeof input.enableGOAT !== 'boolean') {
+    throw new ValidationError('enableGOAT must be a boolean when provided');
+  }
+
   if (
     input.allowStockXApiFallback !== undefined &&
     typeof input.allowStockXApiFallback !== 'boolean'
