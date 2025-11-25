@@ -14,7 +14,13 @@ export class WebhookNotifier {
    * @param {object} config - Webhook configuration
    */
   async send(listings, config = {}) {
-    const { webhookUrl, webhookSecret, requestTimeoutMs = 10000 } = config || {};
+    const {
+      webhookUrl,
+      webhookSecret,
+      requestTimeoutMs = 10000,
+      retryAttempts = 2,
+      retryBackoffMs = 750,
+    } = config || {};
     const normalizedListings = Array.isArray(listings) ? listings : [];
 
     if (!webhookUrl) {
@@ -24,43 +30,60 @@ export class WebhookNotifier {
 
     const timestamp = new Date().toISOString();
 
-    const controller = new AbortController();
-    let timeoutId;
+    const payload = this.buildPayload(normalizedListings, timestamp);
+    const headers = this.buildHeaders(payload, webhookSecret, timestamp);
 
-    try {
-      const payload = this.buildPayload(normalizedListings, timestamp);
-      const headers = this.buildHeaders(payload, webhookSecret, timestamp);
+    for (let attempt = 1; attempt <= retryAttempts; attempt++) {
+      const controller = new AbortController();
+      let timeoutId;
 
-      logger.info(`Sending webhook notification to ${webhookUrl}`, {
-        listingCount: normalizedListings.length,
-      });
+      try {
+        logger.info(`Sending webhook notification to ${webhookUrl}`, {
+          listingCount: normalizedListings.length,
+          attempt,
+        });
 
-      timeoutId = setTimeout(() => controller.abort(), requestTimeoutMs);
+        timeoutId = setTimeout(() => controller.abort(), requestTimeoutMs);
 
-      const response = await fetch(webhookUrl, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(payload),
-        signal: controller.signal,
-      });
+        const response = await fetch(webhookUrl, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+        });
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
 
-      logger.info('Webhook notification sent successfully', {
-        status: response.status,
-      });
-    } catch (error) {
-      const isTimeout = error.name === 'AbortError';
-      const message = isTimeout
-        ? `Webhook request timed out after ${requestTimeoutMs}ms`
-        : error.message;
-      logger.error('Webhook notification failed', { error: message });
-      throw new NotificationError('webhook', message, error);
-    } finally {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
+        logger.info('Webhook notification sent successfully', {
+          status: response.status,
+          attempt,
+        });
+        return;
+      } catch (error) {
+        const isTimeout = error.name === 'AbortError';
+        const message = isTimeout
+          ? `Webhook request timed out after ${requestTimeoutMs}ms`
+          : error.message;
+
+        if (attempt >= retryAttempts) {
+          logger.error('Webhook notification failed', { error: message });
+          throw new NotificationError('webhook', message, error);
+        } else {
+          logger.warn('Webhook attempt failed, retrying', {
+            attempt,
+            remaining: retryAttempts - attempt,
+            error: message,
+          });
+          await new Promise((resolve) => {
+            setTimeout(resolve, retryBackoffMs * attempt);
+          });
+        }
+      } finally {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
       }
     }
   }

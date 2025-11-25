@@ -152,6 +152,27 @@ describe('DealScorer', () => {
     });
   });
 
+  describe('live market data sources', () => {
+    it('should use live market dataset values when available', async () => {
+      const scorer = new DealScorer({
+        marketDataSources: [],
+        marketValueOverrides: {},
+      });
+      await scorer.initialize();
+      scorer.liveMarketValues.sku.set('live-001', 300);
+
+      const listing = {
+        product: { name: 'Live Shoe', sku: 'LIVE-001' },
+        listing: { price: 250 },
+      };
+
+      const scored = await scorer.scoreListing(listing);
+
+      expect(scored.metadata.dealScore.marketValue).toBe(300);
+      expect(scored.metadata.dealScore.isBelowMarket).toBe(true);
+    });
+  });
+
   describe('getStatistics', () => {
     it('should calculate deal statistics', () => {
       const listings = [

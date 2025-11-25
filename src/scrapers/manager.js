@@ -31,12 +31,18 @@ export class ScraperManager {
     const grailedConfig = this.platformConfigs.grailed;
     this.scrapers.grailed = new GrailedScraper(grailedConfig);
 
+    const riskAcknowledged = this.userInput.acknowledgePlatformTerms === true;
+
     if (this.platformConfigs.ebay) {
       this.scrapers.ebay = new EbayScraper(this.platformConfigs.ebay);
     }
 
     if (this.platformConfigs.stockx?.enabled) {
-      this.scrapers.stockx = new StockXScraper(this.platformConfigs.stockx);
+      this.scrapers.stockx = new StockXScraper({
+        ...this.platformConfigs.stockx,
+        allowApiFallback: this.userInput.allowStockXApiFallback === true,
+        riskAcknowledged,
+      });
       logger.warn('⚠️  StockX scraper enabled - HIGH RISK: Use at your own discretion');
     }
 
@@ -81,7 +87,10 @@ export class ScraperManager {
       if (!this.platformConfigs.goat) {
         logger.error('GOAT platform config not found. Cannot initialize GOAT scraper.');
       } else {
-        this.scrapers.goat = new GoatScraper(this.platformConfigs.goat);
+        this.scrapers.goat = new GoatScraper({
+          ...this.platformConfigs.goat,
+          riskAcknowledged,
+        });
         logger.warn(
           '⚠️  GOAT scraper enabled - HIGH RISK: Platform actively enforces ToS. Dataset ingestion recommended. Use at your own discretion.'
         );
@@ -148,7 +157,15 @@ export class ScraperManager {
       scraper.validate();
       // Use platform-specific maxRetries from config (e.g., 2 for beta platforms)
       const maxRetries = scraper.config?.maxRetries || 3;
-      const results = await this.retryWithBackoff(() => scraper.scrape(searchParams), maxRetries);
+      const results = await this.retryWithBackoff(
+        () =>
+          scraper.scrape({
+            ...searchParams,
+            acknowledgePlatformTerms: this.userInput.acknowledgePlatformTerms === true,
+            allowStockXApiFallback: this.userInput.allowStockXApiFallback === true,
+          }),
+        maxRetries
+      );
       return results || [];
     } catch (error) {
       logger.error(`${platform} scraping failed`, {

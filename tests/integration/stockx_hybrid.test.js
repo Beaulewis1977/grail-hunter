@@ -46,6 +46,7 @@ describe('StockXScraper Hybrid Strategy (Phase 4.2)', () => {
       useApifyProxy: true,
       apifyProxyGroups: ['RESIDENTIAL'],
     },
+    acknowledgePlatformTerms: true,
   };
 
   beforeEach(() => {
@@ -120,9 +121,13 @@ describe('StockXScraper Hybrid Strategy (Phase 4.2)', () => {
       const scraper = new StockXScraper({
         name: 'StockX',
         actorId: 'some-stockx-actor',
+        allowApiFallback: true,
       });
 
-      const results = await scraper.scrape(defaultParams);
+      const results = await scraper.scrape({
+        ...defaultParams,
+        allowStockXApiFallback: true,
+      });
 
       // Should try actor first
       expect(mockActorCall).toHaveBeenCalled();
@@ -165,7 +170,7 @@ describe('StockXScraper Hybrid Strategy (Phase 4.2)', () => {
   });
 
   describe('Backward compatibility (API-only mode)', () => {
-    it('should use API-only when no actorId is configured', async () => {
+    it('should use API-only when no actorId is configured and API fallback is allowed', async () => {
       global.fetch = jest.fn().mockResolvedValue({
         ok: true,
         status: 200,
@@ -184,9 +189,12 @@ describe('StockXScraper Hybrid Strategy (Phase 4.2)', () => {
       });
 
       // No actorId configured (backward compatible)
-      const scraper = new StockXScraper({ name: 'StockX' });
+      const scraper = new StockXScraper({ name: 'StockX', allowApiFallback: true });
 
-      const results = await scraper.scrape(defaultParams);
+      const results = await scraper.scrape({
+        ...defaultParams,
+        allowStockXApiFallback: true,
+      });
 
       // Should NOT call actor
       expect(mockActorCall).not.toHaveBeenCalled();
@@ -197,7 +205,7 @@ describe('StockXScraper Hybrid Strategy (Phase 4.2)', () => {
       expect(results[0].id).toBe('api-only-123');
     });
 
-    it('should respect useOrchestrated=false flag', async () => {
+    it('should respect useOrchestrated=false flag when API fallback is allowed', async () => {
       global.fetch = jest.fn().mockResolvedValue({
         ok: true,
         status: 200,
@@ -208,9 +216,13 @@ describe('StockXScraper Hybrid Strategy (Phase 4.2)', () => {
         name: 'StockX',
         actorId: 'some-actor',
         useOrchestrated: false, // Explicitly disable
+        allowApiFallback: true,
       });
 
-      await scraper.scrape(defaultParams);
+      await scraper.scrape({
+        ...defaultParams,
+        allowStockXApiFallback: true,
+      });
 
       // Should NOT call actor when explicitly disabled
       expect(mockActorCall).not.toHaveBeenCalled();
@@ -222,20 +234,32 @@ describe('StockXScraper Hybrid Strategy (Phase 4.2)', () => {
     it('should disable scraper after 3 consecutive API failures', async () => {
       global.fetch = jest.fn().mockRejectedValue(new Error('403 Forbidden'));
 
-      const scraper = new StockXScraper({ name: 'StockX' });
+      const scraper = new StockXScraper({ name: 'StockX', allowApiFallback: true });
 
       // First 3 failures
-      await scraper.scrape(defaultParams);
+      await scraper.scrape({
+        ...defaultParams,
+        allowStockXApiFallback: true,
+      });
       expect(scraper.failureCount).toBe(1);
 
-      await scraper.scrape(defaultParams);
+      await scraper.scrape({
+        ...defaultParams,
+        allowStockXApiFallback: true,
+      });
       expect(scraper.failureCount).toBe(2);
 
-      await scraper.scrape(defaultParams);
+      await scraper.scrape({
+        ...defaultParams,
+        allowStockXApiFallback: true,
+      });
       expect(scraper.failureCount).toBe(3);
 
       // 4th attempt should skip scraping
-      const results = await scraper.scrape(defaultParams);
+      const results = await scraper.scrape({
+        ...defaultParams,
+        allowStockXApiFallback: true,
+      });
       expect(results).toEqual([]);
       expect(global.fetch).toHaveBeenCalledTimes(3); // Not called on 4th attempt
     });
@@ -252,12 +276,38 @@ describe('StockXScraper Hybrid Strategy (Phase 4.2)', () => {
       const scraper = new StockXScraper({ name: 'StockX' });
 
       // First call fails
-      await scraper.scrape(defaultParams);
+      await scraper.scrape({
+        ...defaultParams,
+        allowStockXApiFallback: true,
+      });
       expect(scraper.failureCount).toBe(1);
 
       // Second call succeeds
-      await scraper.scrape(defaultParams);
+      await scraper.scrape({
+        ...defaultParams,
+        allowStockXApiFallback: true,
+      });
       expect(scraper.failureCount).toBe(0); // Reset
+    });
+  });
+
+  describe('Compliance-first defaults', () => {
+    it('should return empty results when API fallback is disabled and actor fails', async () => {
+      mockActorCall.mockResolvedValue({
+        id: 'run_fail',
+        status: 'FAILED',
+        defaultDatasetId: 'dataset_fail',
+      });
+
+      const scraper = new StockXScraper({
+        name: 'StockX',
+        actorId: 'some-stockx-actor',
+        allowApiFallback: false,
+      });
+
+      const results = await scraper.scrape(defaultParams);
+      expect(results).toEqual([]);
+      expect(global.fetch).toBeUndefined();
     });
   });
 });

@@ -1,6 +1,6 @@
 {
-  "title": "Grail Hunter - Phase 4.1: Beta Platforms (Mercari + OfferUp)",
-  "description": "Monitor 5 platforms (Grailed, eBay, StockX, Depop, Poshmark) for sneaker listings with deal scoring, price tracking, advanced filters, and real-time alerts.",
+  "title": "Grail Hunter - Phase 4.2: Compliance-First Hybrid",
+  "description": "Monitor 8 platforms with ingestion-first options for GOAT/StockX, safer defaults, live market scoring, persistent dedupe, and real-time alerts. High-risk/beta platforms require acknowledgment.",
   "type": "object",
   "schemaVersion": 1,
   "properties": {
@@ -73,7 +73,7 @@
     "platforms": {
       "title": "Platforms",
       "type": "array",
-      "description": "Select one or more platforms to search. Phase 4.0 added Depop and Poshmark as safer marketplaces. Phase 4.1 added Mercari and OfferUp as BETA platforms. Phase 4.2 added GOAT (HIGH RISK, requires enableGOAT toggle) and upgraded StockX to hybrid strategy (orchestrated actor + API fallback). Leave empty to fall back to the single 'Legacy Single Platform' field.",
+      "description": "Select one or more platforms to search. Depop/Poshmark are safer. Mercari/OfferUp are BETA (higher failure risk). GOAT/StockX are HIGH RISK and require explicit toggles + acknowledgment. Leave empty to fall back to the single 'Legacy Single Platform' field.",
       "editor": "select",
       "items": {
         "type": "string",
@@ -91,13 +91,62 @@
       },
       "uniqueItems": true
     },
+    "ingestionDatasets": {
+      "title": "Dataset Ingestion (Safer Mode)",
+      "type": "array",
+      "description": "Bring-your-own data for GOAT/StockX (recommended). Each entry should include datasetId and platform (goat or stockx).",
+      "editor": "json",
+      "items": {
+        "type": "object",
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "title": "Dataset ID",
+            "description": "Apify dataset ID containing listing-like records"
+          },
+          "platform": {
+            "type": "string",
+            "title": "Platform",
+            "enum": ["goat", "stockx"]
+          },
+          "platformLabel": {
+            "type": "string",
+            "title": "Label (optional)",
+            "description": "Custom label for observability"
+          }
+        },
+        "required": ["datasetId", "platform"]
+      }
+    },
     "maxResults": {
       "title": "Max Results to Scrape",
       "type": "number",
-      "description": "Maximum number of listings to scrape from Grailed (1-500)",
+      "description": "Maximum number of listings to scrape per platform (1-500)",
       "default": 50,
       "minimum": 1,
       "maximum": 500
+    },
+    "marketDataSources": {
+      "title": "Live Market Data Datasets",
+      "type": "array",
+      "description": "Optional: dataset IDs providing live market baselines (e.g., StockX/GOAT asks/bids). Improves deal scoring accuracy.",
+      "editor": "json",
+      "items": {
+        "type": "object",
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "title": "Dataset ID",
+            "description": "Apify dataset ID with market price records"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "description": "Friendly label for observability"
+          }
+        },
+        "required": ["datasetId"]
+      }
     },
     "notificationConfig": {
       "title": "Notification Settings",
@@ -154,6 +203,13 @@
           "items": { "type": "string" }
         }
       }
+    },
+    "stateStoreId": {
+      "title": "State Store ID",
+      "type": "string",
+      "description": "KV store name for deduplication and price history persistence across runs (default: grail-hunter-state)",
+      "default": "grail-hunter-state",
+      "pattern": "^.{3,}$"
     },
     "proxyConfig": {
       "title": "Proxy Configuration",
@@ -236,6 +292,12 @@
       "description": "WARNING: StockX actively enforces ToS. Scraping may result in IP blocks or legal action. Dataset ingestion (Pattern C) recommended instead. Use at your own risk.",
       "default": false
     },
+    "allowStockXApiFallback": {
+      "title": "Allow StockX API Fallback (⚠️  VERY HIGH RISK)",
+      "type": "boolean",
+      "description": "Disabled by default. When true, permits direct StockX API fallback if orchestrated actor fails. Requires acknowledgePlatformTerms=true and residential proxies.",
+      "default": false
+    },
     "enableGOAT": {
       "title": "Enable GOAT Scraping (⚠️  HIGH RISK)",
       "type": "boolean",
@@ -268,36 +330,11 @@
       "pattern": "^[0-9]{5}$",
       "example": "10001"
     },
-    "ingestionDatasets": {
-      "title": "Dataset Ingestion (Pattern C - Recommended for GOAT/StockX)",
-      "type": "array",
-      "description": "Provide GOAT/StockX-like data via Apify datasets when scraping is blocked or undesirable. This is the RECOMMENDED approach for high-risk platforms. Each dataset should contain listings with fields: name, price, brand, sku, etc. Default: empty array (no ingestion).",
-      "editor": "json",
-      "items": {
-        "type": "object",
-        "properties": {
-          "datasetId": {
-            "type": "string",
-            "title": "Dataset ID",
-            "description": "Apify dataset ID containing GOAT/StockX-like listings"
-          },
-          "platform": {
-            "type": "string",
-            "title": "Platform",
-            "description": "Platform identifier for normalization routing",
-            "enum": ["goat", "stockx"],
-            "enumTitles": ["GOAT", "StockX"]
-          },
-          "platformLabel": {
-            "type": "string",
-            "title": "Platform Label (Optional)",
-            "description": "Custom label for this dataset source (e.g., 'GOAT Market Data Q4 2025')"
-          }
-        },
-        "required": ["datasetId", "platform"]
-      },
-      "default": [],
-      "prefill": []
+    "acknowledgePlatformTerms": {
+      "title": "I have rights to access these platforms (required for high-risk/beta)",
+      "type": "boolean",
+      "description": "Must be true when enabling StockX, GOAT, Mercari, OfferUp, or other beta/high-risk platforms.",
+      "default": false
     }
   },
   "required": ["keywords"]

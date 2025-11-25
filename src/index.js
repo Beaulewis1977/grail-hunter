@@ -23,6 +23,7 @@ Actor.main(async () => {
   logger.info('🚀 Grail Hunter actor started - Phase 4.1: Beta Platforms (Mercari + OfferUp)');
 
   try {
+    const runStart = Date.now();
     const rawInput = await Actor.getInput();
 
     if (!rawInput) {
@@ -62,12 +63,15 @@ Actor.main(async () => {
     const filter = new ListingFilter();
     const deduplicator = new DeduplicationEngine({
       priceDropThreshold: input.priceDropThreshold ?? 10,
+      stateStoreId: input.stateStoreId,
     });
     const notificationManager = new NotificationManager();
     const dealScorer = new DealScorer({
       dealScoreThreshold: input.dealScoreThreshold ?? 10,
       excellentDealThreshold: input.excellentDealThreshold ?? 30,
       marketValueOverrides: input.marketValueOverrides || {},
+      marketDataSources: input.marketDataSources || [],
+      cacheStoreId: input.stateStoreId,
     });
 
     await deduplicator.initialize();
@@ -276,9 +280,9 @@ Actor.main(async () => {
       runMetadata: {
         timestamp: new Date().toISOString(),
         runId: process.env.APIFY_ACT_RUN_ID || 'local',
-        duration: null, // Calculated below
+        duration: Date.now() - runStart,
         platforms,
-        version: '0.4.1', // Phase 4.1
+        version: '0.4.2', // Phase 4.2
         // Phase 4.1: Beta platform tracking in metadata
         betaPlatformsEnabled: input.betaPlatformsEnabled || false,
         enabledBetaPlatforms: {
@@ -330,6 +334,10 @@ Actor.main(async () => {
       totalScraped: totalRaw,
       afterFiltering: filteredListings.length,
       newListings: newListings.length,
+      compliance: {
+        acknowledgePlatformTerms: input.acknowledgePlatformTerms || false,
+        allowStockXApiFallback: input.allowStockXApiFallback || false,
+      },
     };
 
     logger.info('📊 Run statistics', stats);
