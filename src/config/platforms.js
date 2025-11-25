@@ -6,13 +6,22 @@
 export const PLATFORM_CONFIGS = {
   grailed: {
     name: 'Grailed',
-    type: 'orchestrated',
-    actorId: 'vmscrapers/grailed',
+    type: 'custom',
     rateLimit: 100, // requests per hour
+    requestsPerMinute: 90,
+    maxConcurrency: 2,
+    maxRequestRetries: 2,
+    navigationTimeoutSecs: 45,
     cacheTimeout: 30, // minutes
     isAuthenticated: false,
     requiresProxy: true,
+    proxyConfiguration: {
+      useApifyProxy: true,
+      apifyProxyGroups: ['RESIDENTIAL'],
+    },
     baseUrl: 'https://www.grailed.com',
+    maxResults: 80,
+    maxResultsCap: 150,
     // Mapping for search URLs
     searchUrlTemplate: 'https://www.grailed.com/shop?q={query}',
     categoryUrls: {
@@ -23,9 +32,14 @@ export const PLATFORM_CONFIGS = {
   // Placeholder for future platforms
   ebay: {
     name: 'eBay',
-    type: 'orchestrated',
-    actorId: 'dtrungtin/ebay-items-scraper',
+    type: 'custom',
     rateLimit: 200,
+    requestsPerMinute: 120,
+    maxConcurrency: 2,
+    maxRequestRetries: 2,
+    navigationTimeoutSecs: 45,
+    maxResults: 80,
+    maxResultsCap: 200,
     cacheTimeout: 60,
     isAuthenticated: false,
     requiresProxy: true,
@@ -59,34 +73,47 @@ export const PLATFORM_CONFIGS = {
   // Phase 4.0: Safer Marketplaces
   depop: {
     name: 'Depop',
-    type: 'orchestrated',
-    actorId: 'lexis-solutions/depop-scraper',
+    type: 'custom',
     rateLimit: 100, // requests per hour
+    requestsPerMinute: 70,
+    maxConcurrency: 2,
+    maxRequestRetries: 2,
+    navigationTimeoutSecs: 45,
     cacheTimeout: 30, // minutes
     isAuthenticated: false,
     requiresProxy: true,
     enabled: true,
     baseUrl: 'https://www.depop.com',
     riskLevel: 'low', // Safer marketplace
+    maxResults: 60,
+    maxResultsCap: 120,
   },
   poshmark: {
     name: 'Poshmark',
-    type: 'orchestrated',
-    actorId: 'lexis-solutions/poshmark-scraper',
+    type: 'custom',
     rateLimit: 100,
+    requestsPerMinute: 70,
+    maxConcurrency: 2,
+    maxRequestRetries: 2,
+    navigationTimeoutSecs: 45,
     cacheTimeout: 30,
     isAuthenticated: false,
     requiresProxy: true,
     enabled: true,
     baseUrl: 'https://poshmark.com',
     riskLevel: 'low', // Safer marketplace
+    maxResults: 60,
+    maxResultsCap: 120,
   },
   // Phase 4.1: Beta Platforms (Higher Risk)
   mercari: {
     name: 'Mercari',
-    type: 'orchestrated',
-    actorId: 'jupri/mercari-scraper',
+    type: 'custom',
     rateLimit: 50, // Conservative limit for beta platform
+    requestsPerMinute: 40,
+    maxConcurrency: 2,
+    maxRequestRetries: 2, // Conservative retry strategy
+    navigationTimeoutSecs: 45,
     cacheTimeout: 15, // Shorter cache for beta
     isAuthenticated: false,
     requiresProxy: true,
@@ -95,14 +122,17 @@ export const PLATFORM_CONFIGS = {
     riskLevel: 'medium-high', // Beta platform with anti-bot measures
     isBeta: true,
     maxResults: 30, // Strict limit for beta
+    maxResultsCap: 60,
     timeoutMs: 120000, // 2 minute timeout
-    maxRetries: 2, // Conservative retry strategy
   },
   offerup: {
     name: 'OfferUp',
-    type: 'orchestrated',
-    actorId: 'igolaizola/offerup-scraper',
+    type: 'custom',
     rateLimit: 30, // Very conservative for Cloudflare protection
+    requestsPerMinute: 30,
+    maxConcurrency: 2,
+    maxRequestRetries: 2,
+    navigationTimeoutSecs: 60,
     cacheTimeout: 15,
     isAuthenticated: false,
     requiresProxy: true,
@@ -111,8 +141,8 @@ export const PLATFORM_CONFIGS = {
     riskLevel: 'medium-high', // Beta platform with Cloudflare
     isBeta: true,
     maxResults: 30, // Strict limit for beta
+    maxResultsCap: 60,
     timeoutMs: 180000, // 3 minute timeout (browser automation is slower)
-    maxRetries: 2, // Conservative retry strategy
     requiresZipCode: true, // OfferUp requires location-based search
   },
 };

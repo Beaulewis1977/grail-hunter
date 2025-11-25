@@ -8,6 +8,10 @@ import { NotificationManager } from '../../src/notifications/manager.js';
 // Mock notifiers
 const mockWebhookSend = jest.fn(() => Promise.resolve());
 const mockDatasetSend = jest.fn(() => Promise.resolve());
+const mockSlackSend = jest.fn(() => Promise.resolve());
+const mockDiscordSend = jest.fn(() => Promise.resolve());
+const mockEmailSend = jest.fn(() => Promise.resolve());
+const mockSmsSend = jest.fn(() => Promise.resolve());
 
 jest.unstable_mockModule('../../src/notifications/webhook.js', () => ({
   WebhookNotifier: jest.fn(() => ({
@@ -21,6 +25,30 @@ jest.unstable_mockModule('../../src/notifications/dataset.js', () => ({
   })),
 }));
 
+jest.unstable_mockModule('../../src/notifications/slack.js', () => ({
+  SlackNotifier: jest.fn(() => ({
+    send: mockSlackSend,
+  })),
+}));
+
+jest.unstable_mockModule('../../src/notifications/discord.js', () => ({
+  DiscordNotifier: jest.fn(() => ({
+    send: mockDiscordSend,
+  })),
+}));
+
+jest.unstable_mockModule('../../src/notifications/email.js', () => ({
+  EmailNotifier: jest.fn(() => ({
+    send: mockEmailSend,
+  })),
+}));
+
+jest.unstable_mockModule('../../src/notifications/sms.js', () => ({
+  SmsNotifier: jest.fn(() => ({
+    send: mockSmsSend,
+  })),
+}));
+
 describe('NotificationManager', () => {
   let manager;
 
@@ -28,8 +56,16 @@ describe('NotificationManager', () => {
     manager = new NotificationManager();
     manager.webhookNotifier = { send: mockWebhookSend };
     manager.datasetNotifier = { send: mockDatasetSend };
+    manager.slackNotifier = { send: mockSlackSend };
+    manager.discordNotifier = { send: mockDiscordSend };
+    manager.emailNotifier = { send: mockEmailSend };
+    manager.smsNotifier = { send: mockSmsSend };
     mockWebhookSend.mockClear();
     mockDatasetSend.mockClear();
+    mockSlackSend.mockClear();
+    mockDiscordSend.mockClear();
+    mockEmailSend.mockClear();
+    mockSmsSend.mockClear();
   });
 
   it('should send to dataset for all listings', async () => {
@@ -72,5 +108,22 @@ describe('NotificationManager', () => {
     expect(result.success).toBe(false);
     expect(result.errors).toHaveLength(1);
     expect(mockDatasetSend).toHaveBeenCalled(); // Dataset still called
+  });
+
+  it('should call optional channels when configured', async () => {
+    const listings = [{ product: { name: 'Test' }, listing: { price: 100 } }];
+    const config = {
+      slackWebhookUrl: 'https://hooks.slack.com/services/test',
+      discordWebhookUrl: 'https://discord.com/api/webhooks/test',
+      emailWebhookUrl: 'https://email.example.com/webhook',
+      smsWebhookUrl: 'https://sms.example.com/webhook',
+    };
+
+    await manager.send(listings, config);
+
+    expect(mockSlackSend).toHaveBeenCalled();
+    expect(mockDiscordSend).toHaveBeenCalled();
+    expect(mockEmailSend).toHaveBeenCalled();
+    expect(mockSmsSend).toHaveBeenCalled();
   });
 });

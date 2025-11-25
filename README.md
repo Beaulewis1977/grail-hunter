@@ -107,7 +107,7 @@ Grail Hunter monitors these major sneaker marketplaces:
 
 - Email notifications with rich HTML formatting
 - Slack/Discord webhooks with embed cards
-- Custom webhook integration for automation tools
+- SMS and custom webhook integration for automation tools
 - Real-time alerts for new listings
 
 ### 💰 Deal Scoring & Intelligence

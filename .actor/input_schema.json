@@ -165,6 +165,42 @@
           "title": "Webhook Secret (Optional)",
           "description": "Secret key for HMAC-SHA256 signature verification (sent in X-Grail-Hunter-Signature header)",
           "editor": "textfield"
+        },
+        "emailWebhookUrl": {
+          "type": "string",
+          "title": "Email Webhook URL",
+          "description": "Endpoint to fan out emails (e.g., SendGrid/Twilio/Zapier webhook). Payload includes subject, recipients, listings.",
+          "editor": "textfield"
+        },
+        "emailRecipients": {
+          "type": "array",
+          "title": "Email Recipients",
+          "description": "List of recipient emails when using emailWebhookUrl",
+          "items": { "type": "string" }
+        },
+        "slackWebhookUrl": {
+          "type": "string",
+          "title": "Slack Webhook URL",
+          "description": "Slack incoming webhook for alerts",
+          "editor": "textfield"
+        },
+        "discordWebhookUrl": {
+          "type": "string",
+          "title": "Discord Webhook URL",
+          "description": "Discord webhook for alerts",
+          "editor": "textfield"
+        },
+        "smsWebhookUrl": {
+          "type": "string",
+          "title": "SMS Webhook URL",
+          "description": "Endpoint to trigger SMS (e.g., Twilio/SNS webhook)",
+          "editor": "textfield"
+        },
+        "smsRecipients": {
+          "type": "array",
+          "title": "SMS Recipients",
+          "description": "Phone numbers to alert via smsWebhookUrl",
+          "items": { "type": "string" }
         }
       }
     },

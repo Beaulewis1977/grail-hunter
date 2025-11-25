@@ -5,12 +5,20 @@
 
 import { WebhookNotifier } from './webhook.js';
 import { DatasetNotifier } from './dataset.js';
+import { SlackNotifier } from './slack.js';
+import { DiscordNotifier } from './discord.js';
+import { EmailNotifier } from './email.js';
+import { SmsNotifier } from './sms.js';
 import { logger } from '../utils/logger.js';
 
 export class NotificationManager {
   constructor() {
     this.webhookNotifier = new WebhookNotifier();
     this.datasetNotifier = new DatasetNotifier();
+    this.slackNotifier = new SlackNotifier();
+    this.discordNotifier = new DiscordNotifier();
+    this.emailNotifier = new EmailNotifier();
+    this.smsNotifier = new SmsNotifier();
   }
 
   /**
@@ -67,9 +75,49 @@ export class NotificationManager {
       }
     }
 
-    // TODO: Add email notifications (future phase)
-    // TODO: Add Slack notifications (future phase)
-    // TODO: Add Discord notifications (future phase)
+    if (config.slackWebhookUrl) {
+      try {
+        await this.slackNotifier.send(listings, config);
+        results.channels.push({ channel: 'slack', status: 'success' });
+      } catch (error) {
+        results.success = false;
+        results.errors.push({ channel: 'slack', error: error.message });
+        logger.warn('Slack notification failed (non-critical)', { error: error.message });
+      }
+    }
+
+    if (config.discordWebhookUrl) {
+      try {
+        await this.discordNotifier.send(listings, config);
+        results.channels.push({ channel: 'discord', status: 'success' });
+      } catch (error) {
+        results.success = false;
+        results.errors.push({ channel: 'discord', error: error.message });
+        logger.warn('Discord notification failed (non-critical)', { error: error.message });
+      }
+    }
+
+    if (config.emailWebhookUrl) {
+      try {
+        await this.emailNotifier.send(listings, config);
+        results.channels.push({ channel: 'email', status: 'success' });
+      } catch (error) {
+        results.success = false;
+        results.errors.push({ channel: 'email', error: error.message });
+        logger.warn('Email notification failed (non-critical)', { error: error.message });
+      }
+    }
+
+    if (config.smsWebhookUrl) {
+      try {
+        await this.smsNotifier.send(listings, config);
+        results.channels.push({ channel: 'sms', status: 'success' });
+      } catch (error) {
+        results.success = false;
+        results.errors.push({ channel: 'sms', error: error.message });
+        logger.warn('SMS notification failed (non-critical)', { error: error.message });
+      }
+    }
 
     logger.info('Notification delivery complete', {
       success: results.success,
