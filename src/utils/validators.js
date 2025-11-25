@@ -125,6 +125,38 @@ export function validateInput(input) {
     if (webhookSecret && typeof webhookSecret !== 'string') {
       throw new ValidationError('notificationConfig.webhookSecret must be a string');
     }
+
+    const channelUrlFields = [
+      'emailWebhookUrl',
+      'slackWebhookUrl',
+      'discordWebhookUrl',
+      'smsWebhookUrl',
+    ];
+    channelUrlFields.forEach((field) => {
+      const val = input.notificationConfig[field];
+      if (val !== undefined && typeof val !== 'string') {
+        throw new ValidationError(`notificationConfig.${field} must be a string when provided`);
+      }
+      if (typeof val === 'string' && val.trim().length > 0 && !isValidUrl(val)) {
+        throw new ValidationError(`notificationConfig.${field} must be a valid URL`);
+      }
+    });
+
+    if (
+      input.notificationConfig.emailRecipients !== undefined &&
+      !Array.isArray(input.notificationConfig.emailRecipients)
+    ) {
+      throw new ValidationError('notificationConfig.emailRecipients must be an array of emails');
+    }
+
+    if (
+      input.notificationConfig.smsRecipients !== undefined &&
+      !Array.isArray(input.notificationConfig.smsRecipients)
+    ) {
+      throw new ValidationError(
+        'notificationConfig.smsRecipients must be an array of phone strings'
+      );
+    }
   }
 
   // Validate maxResults

@@ -1,87 +1,226 @@
 /**
  * Depop Scraper
- * Orchestrates the lexis-solutions/depop-scraper Apify actor
- * Part of Phase 4.0: Safer Marketplaces
+ * First-party Playwright/Crawlee implementation.
  */
 
-import { Actor } from 'apify';
+import { PlaywrightCrawler } from 'crawlee';
 import { BaseScraper } from './base.js';
-import { ActorCallError } from '../utils/errors.js';
+import { PlatformScrapingError } from '../utils/errors.js';
 import { logger } from '../utils/logger.js';
+import {
+  createResidentialProxyConfig,
+  isBlockStatus,
+  logBlock,
+  randomUserAgent,
+  sleepWithJitter,
+} from './utils/playwright.js';
 
 export class DepopScraper extends BaseScraper {
   /**
-   * Scrape Depop listings
+   * Scrape Depop listings via Playwright + Crawlee
    * @param {object} searchParams - Search parameters
    * @returns {Promise<Array>} Raw listings
    */
-  async scrape(searchParams) {
+  async scrape(searchParams = {}) {
+    const maxResults = Math.min(
+      searchParams.maxResults || this.config.maxResults || 60,
+      this.config.maxResultsCap || 120
+    );
+
     logger.info('Starting Depop scraping', {
       keywords: searchParams.keywords,
-      maxResults: searchParams.maxResults,
+      maxResults,
+      via: 'playwright',
     });
 
-    // Get actor ID from config with fallback
-    const actorId = this.config.actorId || 'lexis-solutions/depop-scraper';
+    const startUrls = this.buildSearchUrls(searchParams.keywords);
+    const results = [];
+    const seenIds = new Set();
 
     try {
-      // Build search input for Depop actor
-      // Note: Depop actor expects search queries as keywords
-      const input = {
-        searchQueries: searchParams.keywords,
-        maxItems: searchParams.maxResults || 50,
-        proxyConfiguration: searchParams.proxyConfig || {
-          useApifyProxy: true,
-          apifyProxyGroups: ['RESIDENTIAL'],
+      const proxyConfiguration = await createResidentialProxyConfig(searchParams.proxyConfig);
+      const crawler = new PlaywrightCrawler({
+        proxyConfiguration,
+        maxConcurrency: this.config.maxConcurrency || 2,
+        maxRequestRetries: this.config.maxRequestRetries ?? 2,
+        maxRequestsPerMinute: this.config.requestsPerMinute || 60,
+        navigationTimeoutSecs: this.config.navigationTimeoutSecs || 45,
+        requestHandlerTimeoutSecs: this.config.requestHandlerTimeoutSecs || 60,
+        launchContext: {
+          useIncognitoPages: true,
+          launchOptions: {
+            headless: true,
+          },
         },
-      };
+        requestHandler: async ({ page, request, response, enqueueLinks }) => {
+          const ua = randomUserAgent();
+          await page.setExtraHTTPHeaders({ 'User-Agent': ua });
 
-      logger.debug(`Calling ${actorId} actor`, { input });
+          if (response && isBlockStatus(response.status())) {
+            logBlock('depop', response.status(), request.loadedUrl || request.url);
+            const err = new Error(`Depop responded with ${response.status()}`);
+            err.recoverable = true;
+            throw err;
+          }
 
-      const run = await Actor.call(actorId, input);
+          await page
+            .waitForSelector('article, [data-testid="productCard"]', {
+              timeout: 15000,
+            })
+            .catch(() => {});
 
-      if (!run) {
-        throw new ActorCallError(actorId, 'Actor call returned null');
-      }
+          const listings = await this.extractListings(page, request.loadedUrl || request.url);
 
-      logger.info('Depop actor run finished', { runId: run.id, status: run.status });
+          for (const listing of listings) {
+            const id = listing.id || listing.url;
+            const shouldSkip = !id || seenIds.has(id);
 
-      if (run.status !== 'SUCCEEDED') {
-        throw new ActorCallError(actorId, `Actor run failed with status: ${run.status}`);
-      }
+            if (!shouldSkip) {
+              seenIds.add(id);
+              results.push(listing);
+            }
 
-      // Fetch all results from the dataset with pagination
-      const dataset = await Actor.apifyClient.dataset(run.defaultDatasetId);
-      const allItems = [];
-      let offset = 0;
-      const limit = 1000;
+            if (results.length >= maxResults) {
+              break;
+            }
+          }
 
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const page = await dataset.listItems({ limit, offset });
-        if (page?.items?.length) allItems.push(...page.items);
-        if (!page?.items?.length || page.items.length < limit) break;
-        offset += limit;
-      }
+          if (results.length < maxResults) {
+            const nextPage = await this.findNextPage(page, request.url);
+            if (nextPage) {
+              await enqueueLinks({ urls: [nextPage] });
+            }
+          }
 
-      logger.info(`Scraped ${allItems.length} listings from Depop`);
+          await sleepWithJitter(400, 500);
+        },
+        failedRequestHandler({ request, error }) {
+          logger.warn('Depop request failed', {
+            url: request.url,
+            retries: request.retryCount,
+            error: error.message,
+          });
+        },
+      });
 
-      return allItems;
+      await crawler.run(startUrls);
+
+      logger.info(`Scraped ${results.length} listings from Depop`, {
+        maxResults,
+        startUrls: startUrls.length,
+      });
+
+      return results.slice(0, maxResults);
     } catch (error) {
       logger.error('Depop scraping failed', { error: error.message });
-      throw new ActorCallError(actorId, error.message, error);
+      const wrapped =
+        error instanceof PlatformScrapingError
+          ? error
+          : new PlatformScrapingError('depop', error.message, error);
+      wrapped.recoverable = true;
+      throw wrapped;
     }
   }
 
   /**
    * Build search URLs from keywords
    * @param {Array} keywords - Search keywords
-   * @returns {Array} Search queries for Depop
+   * @returns {Array} Search URLs
    */
-  buildSearchUrls(keywords) {
-    // Depop actor expects search queries, not URLs
-    // Return keywords as-is for compatibility with base interface
-    return keywords.map((keyword) => keyword);
+  buildSearchUrls(keywords = []) {
+    const safeKeywords = Array.isArray(keywords) ? keywords : [];
+    return safeKeywords.map((keyword) => {
+      const query = encodeURIComponent(keyword);
+      return `https://www.depop.com/search/?q=${query}&sort=newest`;
+    });
+  }
+
+  /**
+   * Extract listings from Depop search page
+   */
+  async extractListings(page, currentUrl) {
+    const injected = await page
+      // eslint-disable-next-line no-underscore-dangle, dot-notation
+      .evaluate(() => globalThis['__SCRAPER_TEST_DATA__'] || null)
+      .catch(() => null);
+    if (Array.isArray(injected)) {
+      return injected;
+    }
+
+    return page.$$eval(
+      'article, [data-testid="productCard"]',
+      (cards, url) => {
+        const toPrice = (text) => {
+          if (!text) return null;
+          const cleaned = text.replace(/[^0-9.]/g, '');
+          const parsed = parseFloat(cleaned);
+          return Number.isNaN(parsed) ? null : parsed;
+        };
+
+        return cards
+          .map((card) => {
+            const titleEl = card.querySelector('[data-testid="productCardTitle"], h3, h2, a');
+            const priceEl = card.querySelector(
+              '[data-testid="productCardPrice"], [itemprop="price"], .price'
+            );
+            const sizeEl = card.querySelector('[data-testid="productCardSize"], .size');
+            const conditionEl = card.querySelector(
+              '[data-testid="productCardCondition"], .condition'
+            );
+            const sellerEl = card.querySelector('[data-testid="user"], .seller, [href*="/user/"]');
+            const urlAnchor =
+              card.querySelector('a[href*="/products/"]') ||
+              card.querySelector('a[href*="/listing/"]');
+            const imageEl = card.querySelector('img');
+
+            const title = titleEl?.textContent?.trim() || null;
+            const priceText = priceEl?.textContent?.trim() || null;
+            const urlPath = urlAnchor?.getAttribute('href') || null;
+            let absoluteUrl = null;
+            if (urlPath) {
+              absoluteUrl = urlPath.startsWith('http') ? urlPath : new URL(urlPath, url).toString();
+            }
+
+            const id =
+              urlAnchor?.getAttribute('data-testid') ||
+              urlAnchor?.getAttribute('data-item-id') ||
+              absoluteUrl;
+
+            return {
+              id,
+              title,
+              price: priceText,
+              priceAmount: toPrice(priceText),
+              size: sizeEl?.textContent?.trim() || null,
+              condition: conditionEl?.textContent?.trim() || null,
+              description: card.innerText?.trim() || '',
+              url: absoluteUrl,
+              image: imageEl?.getAttribute('src') || null,
+              sellerUsername: sellerEl?.textContent?.trim() || null,
+              sellerRating: null,
+              sellerReviewCount: null,
+            };
+          })
+          .filter((l) => l && l.title && l.url);
+      },
+      currentUrl
+    );
+  }
+
+  async findNextPage(page, currentUrl) {
+    const nextHref = await page
+      .$eval('a[rel="next"], a[aria-label="Next"]', (el) => el.href)
+      .catch(() => null);
+    if (nextHref) return nextHref;
+
+    try {
+      const url = new URL(currentUrl);
+      const pageParam = parseInt(url.searchParams.get('page') || '1', 10);
+      url.searchParams.set('page', String(pageParam + 1));
+      return url.toString();
+    } catch (e) {
+      return null;
+    }
   }
 
   /**
@@ -89,6 +228,8 @@ export class DepopScraper extends BaseScraper {
    */
   validate() {
     super.validate();
-    // actorId is optional; scrape() falls back to 'lexis-solutions/depop-scraper' when not provided
+    if (this.config.requiresProxy !== true) {
+      throw new PlatformScrapingError('depop', 'Depop scraper must enforce proxy usage');
+    }
   }
 }

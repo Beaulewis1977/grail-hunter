@@ -72,3 +72,6 @@ archive/
 settings.local.json
 .claude.json
 mcp.json
+# Local development files
+storage-local/
+input.local.json
