@@ -224,10 +224,8 @@ export class MercariScraper extends BaseScraper {
 
     try {
       const url = new URL(currentUrl);
-      if (!url.searchParams.has('page')) return null;
-
       const pageParamRaw = url.searchParams.get('page');
-      const pageParam = parseInt(pageParamRaw || '', 10);
+      const pageParam = pageParamRaw ? parseInt(pageParamRaw, 10) : 1;
       if (Number.isNaN(pageParam)) return null;
 
       url.searchParams.set('page', String(pageParam + 1));

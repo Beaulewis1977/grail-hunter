@@ -52,13 +52,10 @@ export class GrailedScraper extends BaseScraper {
             headless: true,
           },
         },
-        preNavigationHooks: [
-          async ({ page }) => {
-            const ua = randomUserAgent();
-            await page.context().setExtraHTTPHeaders({ 'User-Agent': ua });
-          },
-        ],
         requestHandler: async ({ page, request, response, enqueueLinks }) => {
+          const ua = randomUserAgent();
+          await page.setExtraHTTPHeaders({ 'User-Agent': ua });
+
           if (response && isBlockStatus(response.status())) {
             logBlock('grailed', response.status(), request.loadedUrl || request.url);
             const error = new Error(`Grailed responded with ${response.status()}`);

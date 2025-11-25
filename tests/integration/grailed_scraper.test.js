@@ -43,7 +43,7 @@ beforeAll(async () => {
 const createPage = (data, nextUrl = null) => ({
   setExtraHTTPHeaders: jest.fn(async () => {}),
   waitForSelector: jest.fn(async () => {}),
-  evaluate: jest.fn(async () => data),
+  evaluate: jest.fn(async () => null),
   $$eval: jest.fn(async () => data),
   $eval: jest.fn(async () => nextUrl),
 });

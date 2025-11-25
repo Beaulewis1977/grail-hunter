@@ -115,7 +115,7 @@ export class EbayScraper extends BaseScraper {
         },
       });
 
-      await crawler.run(startUrls.map((url) => ({ url })));
+      await crawler.run(startUrls);
 
       logger.info(`Scraped ${results.length} listings from eBay`, {
         maxResults,

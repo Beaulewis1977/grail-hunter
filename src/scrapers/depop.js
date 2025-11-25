@@ -228,7 +228,16 @@ export class DepopScraper extends BaseScraper {
    */
   validate() {
     super.validate();
-    if (this.config.requiresProxy !== true) {
+    const { requiresProxy } = this.config;
+
+    if (requiresProxy !== undefined && typeof requiresProxy !== 'boolean') {
+      throw new PlatformScrapingError(
+        'depop',
+        'Depop scraper config: requiresProxy must be a boolean if set'
+      );
+    }
+
+    if (requiresProxy !== undefined && requiresProxy !== true) {
       throw new PlatformScrapingError('depop', 'Depop scraper must enforce proxy usage');
     }
   }

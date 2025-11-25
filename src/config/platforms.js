@@ -143,7 +143,6 @@ export const PLATFORM_CONFIGS = {
     maxResults: 30, // Strict limit for beta
     maxResultsCap: 60,
     timeoutMs: 180000, // 3 minute timeout (browser automation is slower)
-    maxRetries: 2, // Conservative retry strategy
     requiresZipCode: true, // OfferUp requires location-based search
   },
 };

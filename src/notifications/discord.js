@@ -13,7 +13,16 @@ export class DiscordNotifier {
 
     const lines = safeListings.slice(0, 10).map((l) => {
       const name = l.product?.name || 'Unknown';
-      const price = l.listing?.price ? `$${l.listing.price}` : 'N/A';
+      const rawPrice = l.listing?.price;
+      let price = 'N/A';
+      if (rawPrice !== undefined && rawPrice !== null) {
+        if (typeof rawPrice === 'string') {
+          const trimmed = rawPrice.trim();
+          price = trimmed.startsWith('$') ? trimmed : `$${trimmed}`;
+        } else if (typeof rawPrice === 'number') {
+          price = `$${rawPrice}`;
+        }
+      }
       const platform = l.source?.platform || 'unknown';
       const url = l.source?.url || '';
       return `• ${name} (${platform}) - ${price} ${url}`;
